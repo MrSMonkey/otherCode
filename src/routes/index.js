@@ -1,0 +1,160 @@
+import views from '../views'
+/* react router 4 不建议做中心化配置，只配置一级菜单 */
+const routes = [
+  {
+    path: '/',
+    component: views.Home,
+    exact: true,
+    title: '星空业主服务号',
+    metas: [
+      {
+        name: '星空业主服务号',
+        content: 'content'
+      }
+    ]
+  },
+  {
+    path: '/houses',
+    component: views.HouseList,
+    exact: true,
+    needBind: true,
+    title: '我的房源列表'
+  },
+  {
+    path: '/houses/:id',
+    component: views.MyHouse,
+    needBind: true,
+    title: '我的房源'
+  },
+  {
+    path: '/bills',
+    component: views.BillList,
+    exact: true,
+    needBind: true,
+    title: '我的账单'
+  },
+  {
+    path: '/house-bills/:houseId/:contractId',
+    component: views.HouseBillList,
+    exact: true,
+    needBind: true,
+    title: '房源账单'
+  },
+  {
+    path: '/contract/:contractId',
+    component: views.HouseContract,
+    needBind: true,
+    title: '房源合同'
+  },
+  {
+    path: '/bills/:houseId/:billId',
+    component: views.BillDetail,
+    needBind: true,
+    title: '账单详情'
+  },
+  {
+    path: '/entrustplan',
+    component: views.EntrustPlan,
+    title: '星级房屋托管计划'
+  },
+  {
+    path: '/house-pic/:houseId/:contractId',
+    component: views.HousePicture,
+    needBind: true,
+    title: '房源照片'
+  },
+  {
+    path: '/entrust',
+    component: views.Entrust,
+    title: '在线委托'
+  },
+  {
+    path: '/user/qr',
+    component: views.MyQRcode,
+    needBind: true,
+    title: '我的二维码'
+  },
+  {
+    path: '/user/bc',
+    component: views.MyBussinessCard,
+    needBind: true,
+    title: '我的名片'
+  },
+  {
+    path: '/fortune',
+    component: views.Fortune,
+    exact: true,
+    title: '星空财神'
+  },
+  {
+    path: '/fortune/result/:money',
+    component: views.FortuneResult,
+    exact: true,
+    title: '星空财神'
+  },
+  {
+    path: '/fortune/law',
+    component: views.FortuneLaw,
+    exact: true,
+    title: '4321定律'
+  },
+  {
+    path: '/bind',
+    component: views.Bind,
+    title: '绑定'
+  },
+  {
+    path: '/wallet/openWallet',
+    component: views.OpenWallet,
+    title: '开通钱包'
+  },
+  {
+    path: '/wallet/myWallet',
+    component: views.MyWallet,
+    title: '我的钱包',
+    exact: true,
+    needBind: true,
+  },
+  {
+    path: '/wallet/addCard',
+    component: views.AddCard,
+    title: '添加银行卡',
+    exact: true,
+    needBind: true
+  },
+  {
+    path: '/wallet/apply',
+    component: views.ApplyForward,
+    title: '申请提现',
+    exact: true,
+    needBind: true
+  },
+  {
+    path: '/wallet/bankCard',
+    component: views.BankCard,
+    title: '银行卡管理',
+    exact: true,
+    needBind: true,
+  },
+  {
+    path: '/wallet/balance',
+    component: views.Balance,
+    title: '余额明细',
+    exact: false,
+    needBind: false
+  },
+  {
+    path: '/wallet/bankDetails',
+    component: views.BankDetail,
+    title: '银行卡管理',
+    exact: true,
+    needBind: true
+  },
+  {
+    path: '',
+    component: views.NoMatch,
+    title: '404'
+  }
+]
+
+export default routes

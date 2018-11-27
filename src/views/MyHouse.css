@@ -1,0 +1,52 @@
+@import '../styles/variables.global.css';
+
+.banner-box {
+  height: 300px;
+  padding-top: 44px;
+  padding-left: 50px;
+  padding-right: 50px;
+  color:#fff;
+}
+
+.banner-title {
+  position: relative;
+  font-size: 20px; /*no*/
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.banner-dec {
+  position: relative;
+  font-size: 12px; /*no*/
+  font-weight: lighter;
+}
+
+.room-block {
+  position: relative;
+  width: 100%;
+  padding: 30px;
+  padding-bottom: 20px;
+  white-space:nowrap;  
+  overflow-x: scroll;
+}
+
+.icon-plant {
+  padding: 45px 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: $color-white;
+}
+
+.icon-box {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  img {
+    width: 120px;
+    height: 120px;
+  }
+  p {
+    font-size: 15px; /* no */
+    font-weight: bold;
+  }
+}

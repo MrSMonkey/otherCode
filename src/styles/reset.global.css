@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  text-decoration: none;
+}
+
+input {
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+input {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+::placeholder {
+  color: #d8d8d8;
+  font-size: 14px; /* no */
+  opacity: 1; /* Firefox */
+}
+
+::-ms-input-placeholder {
+  color: #d8d8d8;
+}
+
+::-ms-input-placeholder {
+  color: #d8d8d8;
+}

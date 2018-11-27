@@ -1,0 +1,22 @@
+@import '../../styles/variables.global.css';
+
+.plant {
+  position: relative;
+  padding: 40px 0;
+  margin: 20px 30px;
+  background-color: $color-white;
+  border-radius: 4px; /*no*/
+}
+
+.title {
+  margin-left: 50px;
+  color: $font-color-light;
+  font-size: 14px; /*no*/
+  font-weight: bold;
+}
+.price {
+  margin-left: 38px;
+  color: $color-golden;
+  font-size: 32px; /*no*/
+  font-weight: bold;
+}

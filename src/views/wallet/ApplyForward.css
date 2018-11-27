@@ -1,0 +1,121 @@
+.apply {
+    background: #fff;
+    min-height: 100%;
+}
+.apply-select {
+    height: 170px;
+    margin: 0 30px;
+    /* line-height: 170px; */
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #e7e7e7;
+}
+.bank img{
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 30px;
+}
+
+.bank-info{
+    font-size: 28px;
+    font-family: PingFang-SC;
+    font-weight: 400;
+}
+.bank-info p:nth-child(1) {
+    color: #474747;
+}
+.bank-info p:nth-child(2) {
+    color: #B8B8B8;
+}
+.bank-right {
+    text-align: right;
+    width: 60%;
+}
+.bank-right img {
+    display: inline-block;
+    width: 16px;
+    height: 26px;
+}
+.bank-input {
+    height: 170px;
+    margin: 0 30px;
+    border-bottom: 1px solid #e7e7e7;
+}
+.bank-input input {
+    border-width: 0; 
+    height: 169px;
+    font-size: 32px;
+    outline: none;
+}
+
+.bank-input input::-webkit-input-placeholder {
+    font-size: 32px;
+}
+
+.bank-balance {
+    font-size: 28px;
+    margin: 0 30px;
+    height: 80px;
+    line-height: 80px;
+    font-family: PingFang-SC;
+}
+.bank-balance span:nth-child(1) {
+    color: #474747;
+}
+.bank-balance span:nth-child(2) {
+    color: #C3AA82;
+}
+.bank-btn {
+    margin: 50px 30px 0px;
+}
+.bank-btn button {
+    border-radius: 8px;
+    font-family: PingFang-SC;
+}
+.bank-footet-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, .3);
+}
+.bank-footer {
+    height:400px;
+    position: fixed;
+    bottom: 0;
+    right:0;
+    background: #fff;
+    width: 100%;
+    z-index: 100;
+}
+.bank-footer-tilte {
+    height: 80px;
+    line-height: 80px;
+    display: flex;
+    text-align: center;
+    border-bottom: 1px solid #e7e7e7;
+}
+.bank-footer-left {
+    height: 100%;
+    width: 100px;
+}
+.bank-footer-center {
+    flex: 1;
+}
+.bank-footer-right {
+    height: 100%;
+    width: 100px;
+}
+.bank-select-add {
+    margin: 0 30px;
+}

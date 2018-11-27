@@ -1,0 +1,161 @@
+@import '../styles/variables.global.css';
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 398px;
+  color: $color-white;
+  p {
+    position: absolute;
+    left: 59px;
+    letter-spacing: 1px; /* no */
+  }
+}
+
+.asset-title {
+  top: 100px;
+  font-size: 12px; /* no */
+  font-weight: lighter;
+}
+
+.asset-num {
+  top: 133px;
+  font-size: 32px; /* no */
+}
+
+.house-title {
+  top: 261px;
+  font-size: 12px; /* no */
+  font-weight: lighter;
+}
+
+.house-num {
+  top: 294px;
+  font-size: 12px; /* no */
+  font-weight: lighter;
+}
+
+.star-home {
+  padding: 20px 30px 0 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  & img {
+    margin-top: 20px;
+    width: 335px;
+    height: 200px;
+    vertical-align: bottom;
+  }
+}
+
+.call-number {
+  color: $color-golden;
+  font-size: 15px; /* no */
+  line-height: 88px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  img {
+    width: 32px;
+    height: 41px;
+  }
+}
+
+.hr-title {
+  margin-top: 60px;
+}
+
+.smart-lock {
+  position: relative;
+  margin-top: 30px;
+  padding-top: 102px;
+  width: 100%;
+  height: 1190px;
+  color: $color-white;
+  text-align: center;
+  h3 {
+    font-size: 28px; /* no */
+    line-height: 60px;
+    background-image: -webkit-gradient(
+      linear,
+      0 0,
+      0 bottom,
+      from(rgba(255, 255, 255, 1)),
+      to(rgba(255, 255, 255, 0.2))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  button {
+    width: 200px;
+    height: 60px;
+    color: #b8b8b8;
+    background-color: transparent;
+    border: 1px solid; /* no */
+    font-size: 14px; /* no */
+    font-weight: ;
+  }
+  button:focus {
+    outline: 0;
+  }
+}
+
+.lock-dec {
+  margin-top: 40px;
+  color: $color-gray-light;
+  font-size: 12px; /* no */
+  font-weight: lighter;
+  span {
+    color: $color-white;
+  }
+}
+
+.lock-price {
+  font-size: 32px; /* no */
+  line-height: 90px;
+  i {
+    position: relative;
+    left: 4px; /* no */
+    font-style: normal;
+  }
+  span {
+    font-size: 12px; /* no */
+    color: $color-gray-light;
+    text-decoration: line-through;
+  }
+}
+
+.lock-footer {
+  position: absolute;
+  left: 50%;
+  bottom: 45px;
+  width: 100%;
+  font-size: 10px; /* no */
+  color: $font-color-light;
+  transform: translateX(-50%);
+}
+
+.user-info {
+  position: absolute;
+  right: 40px;
+  bottom: 65px;
+  white-space: nowrap;
+}
+.user-avatar {
+  display: inline-block;
+  vertical-align: middle;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: contain;
+}
+
+.user-nickname {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 12px;
+}

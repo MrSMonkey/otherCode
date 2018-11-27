@@ -1,0 +1,31 @@
+.bill-brief {
+  padding: 42px 30px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+.brief-desc {
+  font-size: 12px; /* no */
+  color: #757575;
+}
+.brief-num {
+  font-size: 21px; /* no */
+  font-weight: bold;
+  color: #474747;
+}
+
+.bills-main {
+  background: #fff;
+}
+
+.bill-tabs {
+  height: 120px;
+  line-height: 120px;
+  font-size: 15px; /* no */
+  color: #c3aa82;
+}
+.bill-tab {
+  display: inline-block;
+  box-sizing: border-box;
+  border-bottom: 6px solid #c3aa82;
+  padding: 0 30px;
+}

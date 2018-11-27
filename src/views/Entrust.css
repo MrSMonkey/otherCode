@@ -1,0 +1,35 @@
+@import '../styles/variables.global.css';
+
+.title {
+  margin-top: 54px;
+  font-size: 18px; /* no */
+  text-align: center;
+}
+.descripe {
+  margin-top: 13px;
+  font-size: 12px; /* no */
+  color: $font-color-light;
+  display: block;
+}
+
+.input-group {
+  margin: 31px 0;
+  padding: 0 30px;
+  div {
+    margin-top: -1px; /* no */
+  }
+  div:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  div:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+.form-footer {
+  position: relative;
+  margin-top: 90px;
+  width: 100%;
+}

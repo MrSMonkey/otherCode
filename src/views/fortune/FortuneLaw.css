@@ -1,0 +1,28 @@
+.law {
+  padding: 30px 40px;
+}
+.tit {
+  font-weight: bold;
+  font-size: 14px; /* no */
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.coin {
+  width: width('fortune/coin.png');
+  height: height('fortune/coin.png');
+  display: inline-block;
+  line-height: 1;
+  background-image: url('../../assets/imgs/fortune/coin.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+.tit-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.text-spec {
+  color: #c3aa82;
+}

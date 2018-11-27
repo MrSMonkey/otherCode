@@ -1,0 +1,174 @@
+/* global style */
+/* use css-next , visit http://cssnext.io/features/ to learn all features */
+@import './reset.global.css';
+@import './variables.global.css';
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-size: $font-size-default; /* no */
+  font-family: system-ui;
+  line-height: 1.5;
+  color: $color-default;
+}
+
+.app-container {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  background: $bg-color-default;
+}
+
+.app-header {
+  height: 100px;
+  line-height: 100px;
+  display: flex;
+  text-align: center;
+}
+
+.app-header-left,
+.app-header-right {
+  height: 100%;
+  width: 100px;
+}
+.app-header-center {
+  flex: 1;
+}
+
+.wallet-header {
+  height: 100px;
+  line-height: 100px;
+  display: flex;
+  text-align: center;
+  border-bottom: 1px solid #e7e7e7;
+  background: #fff;
+}
+
+.wallet-header-left {
+  height: 100%;
+  width: 100px;
+}
+.wallet-header-right {
+  height: 100%;
+  max-width: 180px;
+  min-width: 100px;
+}
+.wallet-header-center {
+  flex: 1;
+}
+.wallet-title {
+  color: #474747;
+  letter-spacing: 0;
+  font-family: PingFang-SC;
+  font-weight: bold;
+  font-size: 36px;
+}
+
+.color-special {
+  color: $font-color-special;
+}
+/* center loading component */
+.global-loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%);
+}
+
+.bg-color-white {
+  background-color: $color-white;
+}
+
+.bg-img-full {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.house-pic-gallery {
+  padding: 30px;
+  background-color: #fff;
+
+  .pswp-thumbnails {
+    overflow: hidden;
+  }
+  .pswp-thumbnail {
+    float: left;
+    width: 210px;
+    height: 210px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    &:nth-of-type(3n) {
+      margin-right: 0;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.border-warning {
+  box-shadow: 0 0 0 1px $color-warning inset;
+}
+
+.infinte-loader {
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.background-tips {
+  text-align: center;
+  color: $border-color-default;
+  font-size: 12px; /* no */
+  padding: 60px 0;
+}
+
+.no-match-page {
+  text-align: center;
+  padding: 200px 0;
+  color: #bbb;
+
+  .btn-box {
+    margin-top: 100px;
+  }
+}
+
+.inline-btn {
+  padding: 0.6em 2em;
+  color: $color-white;
+  background-color: $color-golden;
+  border-radius: 6px;
+}
+
+.pswp__img {
+  z-index: 99;
+}
+.pswp__container,
+.pswp__img {
+  user-select: text !important;
+}
+.recharge {
+    border-bottom: 2px solid #e7e7e7;
+    line-height: 120px;
+}
+.recharge>span {
+    color: #474747;
+    font-size: 32px;
+}
+.recharge>img {
+    width: 16px;
+    height: 26px;
+    float: right;
+    margin-top: 50px;
+}

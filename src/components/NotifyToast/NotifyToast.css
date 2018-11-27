@@ -1,0 +1,49 @@
+:global {
+  .nt-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .nt-content {
+    padding: 4px 20px;
+    border-radius: 4px;
+    font-size: 12px; /* no */
+    z-index: 9999;
+    &.normal {
+    }
+    &.warning {
+    }
+    &.success {
+      background-color: rgb(63, 203, 192);
+      color: #fff;
+    }
+    &.error {
+      background-color: rgb(255, 117, 121);
+      color: #fff;
+    }
+  }
+
+  .nt-animation-enter {
+    opacity: 0.01;
+    transform: translateY(-200%);
+  }
+  .nt-animation-enter-active {
+    opacity: 1;
+    transform: translateY(0%);
+    transition: all 0.3s ease;
+  }
+
+  .nt-animation-exit {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+
+  .nt-animation-exit-active {
+    opacity: 0.01;
+    transform: translateY(-200%);
+    transition: all 0.3s ease;
+  }
+}
