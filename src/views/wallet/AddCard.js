@@ -58,7 +58,7 @@ class AddCard extends Component {
 		}
 		let reg = /^\d*$/; //全数字
 		if(!reg.exec(bankno)) {
-			this.props.showNotice("银行卡号必须全为数字", "error");　
+			this.props.showNotice("银行卡号必须全为数字", "error");
 			return false;
 		}
 

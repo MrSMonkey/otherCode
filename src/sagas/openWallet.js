@@ -11,7 +11,7 @@ function* submit() {
     // const {data} = yield call(api.activatewallet, {})
     
   } catch (e) {
-   
+    console.log(e)
   }
 }
 
