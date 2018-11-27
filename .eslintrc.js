@@ -1,9 +1,11 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
+  root: true,
   env: {
-    es6: true,
-    browser: true
+    node: true,
+    browser: true,
+    commonjs: true
   },
   extends: 'eslint:recommended',
   parserOptions: {
@@ -16,12 +18,16 @@ module.exports = {
     sourceType: "module"
   },
   parser: "babel-eslint",
-  // required to lint *.vue files
   plugins: [
     'react'
   ],
-  // add your custom rules here
   rules: {
+    'eol-last':0,
+    'spaced-comment':0,
+    'linebreak-style':0,
+    'comma-dangle':0,
+    'no-unused-vars':0,
+    'no-trailing-spaces':0,
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
