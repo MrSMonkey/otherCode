@@ -6,7 +6,8 @@ const initialState = {
     CommunityName: '',
   },
   isLoading: false,
-  isModle: false
+  isModle: false,
+  isShow: false,
 }
 
 export const actionTypes = {
@@ -14,7 +15,7 @@ export const actionTypes = {
   SUBLIMT_FORM: 'SUBLIMT_FORM',
   SUBLIMT_FORM_SUCCESS: 'SUBLIMT_FORM_SUCCESS',
   CHANGE_ENTRUS_SUBLIMT_LODING: 'CHANGE_ENTRUS_SUBLIMT_LODING',
-  IS_MODLE: 'IS_MODLE'
+  IS_MODLE: 'IS_MODLE',
 }
 
 export const actions = {

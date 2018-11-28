@@ -19,8 +19,7 @@ class Input extends PureComponent {
         onBlur={event => {
           const val = event.target.value
           if (verify) {
-            const isSuccess =
-              verify && verify.type ? hasVerify[verify.type](val).success : true
+            const isSuccess = verify && verify.type ? hasVerify[verify.type](val).success : true
             const empty = verify ? val === '' : false
             verify.cb(isSuccess && !empty)
           }
@@ -38,7 +37,6 @@ class Input extends PureComponent {
 class Select extends PureComponent {
   render() {
     const { data, value, verify, placeholder, onChange } = this.props
-    console.log(value)
     return (
       <select
         value={value}

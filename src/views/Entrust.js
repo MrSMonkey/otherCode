@@ -8,6 +8,58 @@ import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
 import Button from '../components/Button'
 
 @CSSModules(styles)
+class Popup extends Component {
+  state = {
+    itemList: [{
+      name: '山河小区装换'
+    }, {
+      name: '山河小区'
+    }, {
+      name: '山河小区'
+    }, {
+      name: '山河小区'
+    }]
+  }
+  render() {
+    const { itemList } = this.state
+    const { isModle, optionModle, isShow } = this.props
+    return (
+      <div styleName="plan-box" style={{display: isShow}}>
+        <div styleName="layout" style={{opacity: isModle ? '0.7' : '0'}} onClick={() => { optionModle(isModle); }}></div>
+        <div styleName="plan"  style={{height: isModle ? '50%' : '0'}}>
+          <FormItem>
+            <Input
+              maxLength={16}
+              placeholder="请输入您爱屋所在的小区"
+              onChange={val => changeForm(val, 'CommunityName')}
+            />
+          </FormItem>
+          <ul styleName="list">
+            {
+              itemList.map((item, index) => {
+                return (
+                  <li key={index}>{item.name}</li>
+                )
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    )
+  }
+}
+
+const PopupComponent = connect(
+  state => ({
+    isModle: state.entrust.isModle,
+    isShow: state.entrust.isShow
+  }),
+  {
+    ...entrustAction
+  }
+)(Popup)
+
+@CSSModules(styles)
 class Entrust extends Component {
   state = {
     isErr: {
@@ -97,25 +149,7 @@ class Entrust extends Component {
             />
           </FormItem>
           <FormItem label="小区名称" isErr={isErr.CommunityName}>
-            <Button type="Default" onClick={() => {
-              optionModle(isModle);
-            }}></Button>
-            <div styleName="plan-box">
-              <div styleName="plan">
-                <FormItem>
-                  <Input
-                    value={form.CommunityName}
-                    maxLength={16}
-                    placeholder="请输入您爱屋所在的小区"
-                    onChange={val => changeForm(val, 'CommunityName')}
-                    verify={{
-                      cb: val =>
-                        this.setState({ isErr: { ...isErr, CommunityName: !val } })
-                    }}
-                  />
-                </FormItem>
-              </div>
-            </div>
+            <Button type="Default" onClick={() => { optionModle(isModle); }}></Button>
           </FormItem>
         </div>
 
@@ -188,6 +222,7 @@ class Entrust extends Component {
             {isLoading ? '中...' : ''}
           </Button>
         </footer>
+        <PopupComponent />
       </Form>
     )
   }
