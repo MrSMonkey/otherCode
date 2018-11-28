@@ -22,55 +22,9 @@ const imgs = {
 /**头图 */
 
 const Banner = ({ data, loading, user }) => {
-  const totalPrice = num => {
-    if (!num) {
-      return 0.0
-    }
-    const price = num.toFixed(2).toString()
-    const arr = price.split('.')
-    const intString = arr[0]
-      .split('')
-      .reverse()
-      .join('')
-      .replace(/(\d{3})(?=[^$])/g, '$1,')
-      .split('')
-      .reverse()
-      .join('')
-    return `${intString}.${arr[1]}`
-  }
-
   return (
     <HeaderBanner img={imgs.homeBg}>
       <header styleName="banner">
-        <p styleName="asset-title">星空业主总资产（元）</p>
-        <p styleName="asset-num">
-          {loading ? (
-            <span>--</span>
-          ) : (
-            <span>{totalPrice(data.TotalAmount)}</span>
-          )}
-        </p>
-        <p styleName="house-title">当月新增资产</p>
-        <p styleName="house-num">
-          {loading ? (
-            <span>--</span>
-          ) : (
-            <span>
-              {data.MonthTotalAmount && data.MonthTotalAmount.toFixed(2)}
-            </span>
-          )}
-        </p>
-
-        <div styleName="user-info">
-          <span
-            styleName="user-avatar"
-            style={{
-              backgroundImage: `url(${user.HeadImgurl ||
-                imgs.userAvatarDefault}`
-            }}
-          />
-          <span styleName="user-nickname">{user.Nickname || '星空房东'}</span>
-        </div>
       </header>
     </HeaderBanner>
   )
