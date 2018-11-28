@@ -45,9 +45,9 @@ const AppInstance = ({ isInitiating, showNotice, noticeType, noticeMsg }) => {
                 key={i}
                 path={route.path}
                 render={props => {
-                  if (route.needBind) {
-                    return <AuthedView routeConfig={route} {...props} />
-                  }
+                //   if (route.needBind) {
+                //     return <AuthedView routeConfig={route} {...props} />
+                //   }
                   return <ViewWithMeta routeConfig={route} {...props} />
                 }}
               />

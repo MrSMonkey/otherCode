@@ -41,6 +41,7 @@ module.exports = {
     'no-irregular-whitespace': 1,
     // allow async-await
     'generator-star-spacing': 0,
+    'css-semicolonexpected': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'off' : 'off'
   }

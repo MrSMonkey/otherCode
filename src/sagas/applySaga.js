@@ -13,7 +13,7 @@ function* getBankList() {
       loginId: Id
     })
 
-    if (data && data                                                .length > 0) {
+    if (data && data.length > 0) {
       const res = yield call(api.getwalletinfo, {
         loginId: Id
       })

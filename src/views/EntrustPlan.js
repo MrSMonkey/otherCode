@@ -247,14 +247,6 @@ class EntrustPlan extends Component {
 
         <footer styleName="footer">
           <div>
-            <Button
-              type="Default"
-              onClick={() => (window.location.href = 'tel:10105288')}
-            >
-              轻松咨询
-            </Button>
-          </div>
-          <div>
             <Button type="Primary" onClick={() => dispatch(push('/entrust'))}>
               在线委托
             </Button>

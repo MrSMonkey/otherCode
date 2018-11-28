@@ -13,22 +13,14 @@ class Entrust extends Component {
     isErr: {
       Name: false,
       Phone: false,
-      Area: false,
       CityId: false,
       CityName: false,
       CommunityName: false,
-      HallNum: false,
-      ToileNum: false,
-      RoomNum: false
     }
   }
-  formartSelectData(num) {
-    const data = []
-    for (let i = 0; i < num; i++) {
-      data.push({ Text: i, Value: i })
-    }
-    return data
-  }
+  /**
+   * 提交
+   */
   sublimt = () => {
     const { form } = this.props
     const { isErr } = this.state
@@ -40,7 +32,7 @@ class Entrust extends Component {
 
       if (hasOwn) {
         if (val === '' || isErr[i]) {
-          //验证必填项目 || 验证是否正确
+          /* 验证必填项目 || 验证是否正确 */
           // console.log('hasOwn', i, hasOwn)
           // console.log('isErr',isValid,val)
           isErr[i] = true
@@ -73,13 +65,64 @@ class Entrust extends Component {
   }
   render() {
     const { isErr } = this.state
-    const { form, citys, changeForm, isLoading } = this.props
+    const { form, citys, changeForm, isLoading, isModle, optionModle } = this.props
     return (
       <Form data={form}>
         <h2 styleName="title">
+          添加房屋信息
+          <span styleName="descripe">添加爱屋信息，更好地对房屋实施评估</span>
+        </h2>
+        <div styleName="input-group">
+          <FormItem label="城市" isErr={isErr.CityId}>
+            <Select
+              data={citys}
+              value={form.CityId}
+              placeholder="请选择您爱屋所在的城市"
+              onChange={val => changeForm(val, 'CityId')}
+              verify={{
+                cb: val => this.setState({ isErr: { ...isErr, CityId: !val } })
+              }}
+            />
+          </FormItem>
+          <FormItem label="小区名称" isErr={isErr.CommunityName}>
+            <Input
+              value={form.CommunityName}
+              maxLength={16}
+              placeholder="请输入您爱屋所在的小区"
+              onChange={val => changeForm(val, 'CommunityName')}
+              verify={{
+                cb: val =>
+                  this.setState({ isErr: { ...isErr, CommunityName: !val } })
+              }}
+            />
+          </FormItem>
+          <FormItem label="小区名称" isErr={isErr.CommunityName}>
+            <Button type="Default" onClick={() => {
+              optionModle(isModle);
+            }}></Button>
+            <div styleName="plan-box">
+              <div styleName="plan">
+                <FormItem>
+                  <Input
+                    value={form.CommunityName}
+                    maxLength={16}
+                    placeholder="请输入您爱屋所在的小区"
+                    onChange={val => changeForm(val, 'CommunityName')}
+                    verify={{
+                      cb: val =>
+                        this.setState({ isErr: { ...isErr, CommunityName: !val } })
+                    }}
+                  />
+                </FormItem>
+              </div>
+            </div>
+          </FormItem>
+        </div>
+
+        <h2 styleName="title">
           留下联系方式
           <span styleName="descripe">
-            留下您的联系方式，您的资产管家将尽快与您联系
+            提交成功后，可以使用这个手机号登录查看房源动态
           </span>
         </h2>
         <div styleName="input-group">
@@ -109,82 +152,21 @@ class Entrust extends Component {
               }}
             />
           </FormItem>
-        </div>
-
-        <h2 styleName="title">
-          添加房屋信息
-          <span styleName="descripe">添加爱屋信息，更好地对房屋实施评估</span>
-        </h2>
-        <div styleName="input-group">
-          <FormItem label="城市" isErr={isErr.CityId}>
-            <Select
-              data={citys}
-              value={form.CityId}
-              placeholder="请选择您爱屋所在的城市"
-              onChange={val => changeForm(val, 'CityId')}
-              verify={{
-                cb: val => this.setState({ isErr: { ...isErr, CityId: !val } })
-              }}
-            />
-          </FormItem>
-          <FormItem label="小区名称" isErr={isErr.CommunityName}>
+          <FormItem label="验证码" isErr={isErr.Phone}>
             <Input
-              value={form.CommunityName}
-              maxLength={16}
-              placeholder="请输入您爱屋所在的小区"
-              onChange={val => changeForm(val, 'CommunityName')}
+              value={form.Phone}
+              placeholder="请输入验证码"
+              onChange={val => changeForm(val, 'Phone')}
+              style={{width: '100px'}}
               verify={{
-                cb: val =>
-                  this.setState({ isErr: { ...isErr, CommunityName: !val } })
+                type: 'phone',
+                cb: val => {
+                  // console.log('Phone ERR', !val)
+                  this.setState({ isErr: { ...isErr, Phone: !val } })
+                }
               }}
             />
-          </FormItem>
-          <FormItem label="面积" isErr={isErr.Area}>
-            <Input
-              value={form.Area}
-              placeholder="请输入您爱屋的面积"
-              onChange={val => changeForm(val, 'Area')}
-              verify={{
-                type: 'amout',
-                cb: val =>
-                  this.setState({
-                    isErr: { ...isErr, Area: !val || form.Area > 999 }
-                  })
-              }}
-            />
-          </FormItem>
-          <FormItem
-            label="户型"
-            isErr={isErr.RoomNum || isErr.HallNum || isErr.ToileNum}
-          >
-            <Select
-              value={form.RoomNum}
-              data={this.formartSelectData(10)}
-              onChange={val => changeForm(val, 'RoomNum')}
-              verify={{
-                cb: val => this.setState({ isErr: { ...isErr, RoomNum: !val } })
-              }}
-            />
-            室
-            <Select
-              value={form.HallNum}
-              data={this.formartSelectData(10)}
-              onChange={val => changeForm(val, 'HallNum')}
-              verify={{
-                cb: val => this.setState({ isErr: { ...isErr, HallNum: !val } })
-              }}
-            />
-            厅
-            <Select
-              value={form.ToileNum}
-              data={this.formartSelectData(10)}
-              onChange={val => changeForm(val, 'ToileNum')}
-              verify={{
-                cb: val =>
-                  this.setState({ isErr: { ...isErr, ToileNum: !val } })
-              }}
-            />
-            卫
+            <span styleName="code-button">获取验证码</span>
           </FormItem>
         </div>
 
@@ -214,6 +196,7 @@ class Entrust extends Component {
 export default connect(
   state => ({
     form: state.entrust.form,
+    isModle: state.entrust.isModle,
     citys: state.app.citys,
     isLoading: state.entrust.isLoading
   }),

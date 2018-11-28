@@ -46,7 +46,7 @@ class HouseList extends Component {
         </div>
       )
     }
-    return houseList.lenght === 0 ? (
+    return houseList.length === 0 ? (
       <div className="background-tips">暂无房源数据</div>
     ) : (
       houseList.map(h => (

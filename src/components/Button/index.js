@@ -2,6 +2,11 @@ import React, { PureComponent } from 'react'
 import CSSModules from 'react-css-modules'
 import styles from './Button.css'
 
+/**
+ * oClick()
+ * type: Primary, Default (选填)
+ * disabled: 默认 false
+ */
 
 @CSSModules(styles)
 class Button extends PureComponent {

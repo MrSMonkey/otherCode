@@ -33,3 +33,25 @@
   margin-top: 90px;
   width: 100%;
 }
+
+.code-button {
+  /* min-width: 180px; */
+  color: $color-golden;
+}
+
+.plan-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  .plan {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 1000px;
+    background-color: #fff;
+  }
+}

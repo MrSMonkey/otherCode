@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   label {
-    width: 150px;
+    min-width: 150px;
     border-right: 1px solid #eee;
     font-size: 14px; /* no */
     font-weight: bold;

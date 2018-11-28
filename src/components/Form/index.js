@@ -1,19 +1,21 @@
 import React, { Component, PureComponent } from 'react'
 // import { connect } from 'react-redux'
 import CSSModules from 'react-css-modules'
-import style from './Form.css'
+import styles from './Form.css'
 // import { actions } from '../../reducers/entrust'
 import hasVerify from '../../utils/verify.js'
 
-@CSSModules(style)
+@CSSModules(styles)
 class Input extends PureComponent {
   render() {
-    const { value, maxLength, verify, placeholder, onChange } = this.props
+    const { value, maxLength, verify, placeholder, onChange, className, style } = this.props
     return (
       <input
         value={value}
         maxLength={maxLength || ''}
         placeholder={placeholder || ''}
+        className={className || ''}
+        style={style || {}}
         onBlur={event => {
           const val = event.target.value
           if (verify) {
@@ -32,13 +34,14 @@ class Input extends PureComponent {
   }
 }
 
-@CSSModules(style)
+@CSSModules(styles)
 class Select extends PureComponent {
   render() {
     const { data, value, verify, placeholder, onChange } = this.props
+    console.log(value)
     return (
       <select
-        vaue={value}
+        value={value}
         placeholder={placeholder || ''}
         onBlur={event => {
           const val = event.target.value
@@ -67,7 +70,7 @@ class Select extends PureComponent {
   }
 }
 
-@CSSModules(style)
+@CSSModules(styles)
 class Textarea extends PureComponent {
   render() {
     const { value, rows, maxLength, placeholder, onChange } = this.props
@@ -86,7 +89,7 @@ class Textarea extends PureComponent {
   }
 }
 
-@CSSModules(style)
+@CSSModules(styles)
 class FormItem extends PureComponent {
   render() {
     const { label, width, isErr, children } = this.props
@@ -101,7 +104,7 @@ class FormItem extends PureComponent {
   }
 }
 
-@CSSModules(style)
+@CSSModules(styles)
 class Form extends Component {
   render() {
     const { children } = this.props

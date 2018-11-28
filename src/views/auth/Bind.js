@@ -282,7 +282,7 @@ class Bind extends PureComponent {
         <div styleName="main">
           <div styleName="section">
             <div styleName="section-tit">
-              手机号 (<span>*已签约用户请输入签约手机号</span>)
+              您好，请在此登录：
             </div>
             <InputField
               placeholder="请输入手机号码"
@@ -322,15 +322,12 @@ class Bind extends PureComponent {
             styleName={`login-btn ${bindLoading ? 'disabled' : ''}`}
             onClick={this.onBindClick}
           >
-            {bindLoading ? '提交中...' : '提交'}
+            {bindLoading ? '登录中，请稍等...' : '登录'}
           </a>
 
           <div styleName="go-reg">
             <span styleName="go-reg-txt">
-              没有账号?
-              <Link to="/entrust" className="color-special">
-                马上去委托
-              </Link>
+              *新用户初次登录将自动注册
             </span>
           </div>
         </div>
