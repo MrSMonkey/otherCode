@@ -32,28 +32,6 @@ function* bindUser() {
   }
 }
 
-function* checkPhone() {
-  const { phone } = yield select(state => state.bind)
-  yield put({ type: bindActionType.SET_PHONE_CHECK_STATUS, payload: true })
-  yield put({
-    type: bindActionType.SET_CHECK_ERROR,
-    payload: ''
-  })
-  try {
-    const { data } = yield call(api.checkPhoneAccountExist, phone)
-    if (!data) {
-      throw new Error('未找到可绑定的委托房源')
-    }
-  } catch (e) {
-    yield put({
-      type: bindActionType.SET_CHECK_ERROR,
-      payload: e.message
-    })
-  } finally {
-    yield put({ type: bindActionType.SET_PHONE_CHECK_STATUS, payload: false })
-  }
-}
-
 function* genCode() {
   const { phone } = yield select(state => state.bind)
   try {
@@ -68,7 +46,6 @@ function* genCode() {
 
 function* watchBind() {
   yield takeLatest(bindActionType.BIND_START, bindUser)
-  yield takeLatest(bindActionType.CHECK_PHONE, checkPhone)
   yield takeLatest(bindActionType.GEN_CODE, genCode)
 }
 

@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Icon from '../../components/Icon'
 import verify from '../../utils/verify'
+import Button from '@/components/Button'
 import Loading from 'react-loading'
 import { actions as bindActions } from '../../reducers/bind'
 import { actions as appActions } from '../../reducers/app'
@@ -23,6 +24,7 @@ const ReactLoading = () => {
   return <Loading {...loadingTheme} />
 }
 
+/**输入框 */
 @CSSModules(styles, { allowMultiple: true })
 class InputField extends PureComponent {
   static propTypes = {
@@ -133,17 +135,16 @@ class ThemedSelect extends PureComponent {
   }
 }
 
+/**获取验证码按钮 */
 @CSSModules(styles, { allowMultiple: true })
 class ValidationCodeButton extends PureComponent {
   static propTypes = {
     onCountEnd: PropTypes.func,
-    onClick: PropTypes.func,
-    validate: PropTypes.func
+    onClick: PropTypes.func
   }
   static defaultProps = {
     onCountEnd: () => null,
-    onClick: () => null,
-    validate: false
+    onClick: () => null
   }
   timeoutId = null
   totalCount = 60
@@ -171,7 +172,7 @@ class ValidationCodeButton extends PureComponent {
   }
   countStart = () => {
     this.setState({
-      isCounting: true
+      isCounting: true,
     })
     this.countDown(this.countEnd)
   }
@@ -183,27 +184,25 @@ class ValidationCodeButton extends PureComponent {
     })
   }
   onCodeButtonClick = () => {
-    if (this.state.isCounting || !this.props.validate()) {
-      return
-    }
+    if (this.state.isCounting || this.state.isDisabled) { return }
 
     this.countStart()
     this.props.onClick()
   }
+  
   componentWillUnmount() {
     this.countReset()
   }
 
   render() {
+    const { isDisabled } = this.props
     const { count, isCounting } = this.state
-
     return (
-      <a
-        onClick={this.onCodeButtonClick}
-        styleName={`getcode-btn ${isCounting ? 'disabled' : ''}`}
-      >
-        {isCounting ? `获取验证码(${count})` : '获取验证码'}
-      </a>
+      <div styleName="getcode-btn">
+        <Button type="Primary" disabled={isDisabled || isCounting} radius onClick={this.onCodeButtonClick}>
+          <span>{isCounting ? `获取验证码(${count})` : '获取验证码'}</span>
+        </Button>
+      </div>
     )
   }
 }
@@ -212,13 +211,16 @@ class ValidationCodeButton extends PureComponent {
 class Bind extends PureComponent {
   state = {
     phoneError: '',
-    codeError: ''
+    isPhoneError: true,
+    codeError: '',
+    isCodeError: true,
   }
   validatePhone = phone => {
     const { success } = verify.phone(phone)
 
     this.setState({
-      phoneError: success ? '' : '请填写正确的电话号码'
+      phoneError: success ? '' : '请填写正确的电话号码',
+      isPhoneError: !success
     })
     return success
   }
@@ -229,8 +231,6 @@ class Bind extends PureComponent {
     if (!check) {
       return check
     }
-    this.props.checkPhone()
-    return check
   }
   validatePhoneField = () => {
     const { phone, isCheckingPhone, checkError } = this.props
@@ -241,7 +241,8 @@ class Bind extends PureComponent {
   validateCode = identifyingCode => {
     identifyingCode = _.trim(identifyingCode)
     this.setState({
-      codeError: identifyingCode ? '' : '请输入验证码'
+      codeError: identifyingCode ? '' : '请输入验证码',
+      isCodeError: !identifyingCode
     })
 
     return identifyingCode
@@ -252,9 +253,9 @@ class Bind extends PureComponent {
   }
 
   onBindClick = () => {
-    const pv = this.validatePhoneField()
+    // const pv = this.validatePhoneField()
     const cv = this.validateCode(this.props.identifyingCode)
-    if (pv && cv) {
+    if (cv) {
       this.props.bindStart()
     }
   }
@@ -265,24 +266,23 @@ class Bind extends PureComponent {
       updateCode,
       genCode,
       isCheckingPhone,
-      checkError,
       router,
       bindSuccess,
       phone,
       bindLoading,
       identifyingCode
     } = this.props
-    const { phoneError, codeError } = this.state
+    const { phoneError, codeError, isPhoneError, isCodeError } = this.state
     const redirectUrl = parseQuery(router.location.search).redirect || '/'
 
     console.log('redirectUrl',redirectUrl)
     return (
       <div styleName="view">
-        <h1 styleName="header">绑定</h1>
+        <h1 styleName="header">登录</h1>
         <div styleName="main">
           <div styleName="section">
             <div styleName="section-tit">
-              您好，请在此登录：
+              手机号 (<span>*已签约用户请输入签约手机号</span>)
             </div>
             <InputField
               placeholder="请输入手机号码"
@@ -291,10 +291,7 @@ class Bind extends PureComponent {
               onInput={e => updatePhone(e.target.value)}
               onReset={e => updatePhone('')}
               isLoading={isCheckingPhone}
-              error={phoneError || checkError}
-              addonBefore={() => (
-                <ThemedSelect options={[{ value: '+86', label: '+86' }]} />
-              )}
+              error={phoneError}
             />
           </div>
 
@@ -312,24 +309,16 @@ class Bind extends PureComponent {
                 />
               </div>
               <ValidationCodeButton
+                isDisabled={isPhoneError}
                 validate={this.validatePhoneField}
                 onClick={genCode}
               />
             </div>
           </div>
 
-          <a
-            styleName={`login-btn ${bindLoading ? 'disabled' : ''}`}
-            onClick={this.onBindClick}
-          >
+          <Button type="Primary" disabled={bindLoading || isPhoneError || isCodeError} radius onClick={this.onBindClick}>
             {bindLoading ? '登录中，请稍等...' : '登录'}
-          </a>
-
-          <div styleName="go-reg">
-            <span styleName="go-reg-txt">
-              *新用户初次登录将自动注册
-            </span>
-          </div>
+          </Button>
         </div>
         {bindSuccess ? <Redirect to={decodeURIComponent(redirectUrl)} /> : null}
       </div>

@@ -3,8 +3,7 @@ const intialState = {
   identifyingCode: '',
   bindLoading: false,
   isCheckingPhone: false,
-  bindSuccess: false,
-  checkError: ''
+  bindSuccess: false
 }
 
 const actionTypes = {
@@ -14,7 +13,6 @@ const actionTypes = {
   BIND_SUCCESS: 'BIND_SUCCESS',
   BIND_FAIL: 'BIND_FAIL',
   SET_PHONE_CHECK_STATUS: 'SET_PHONE_CHECK_STATUS',
-  CHECK_PHONE: 'CHECK_PHONE',
   SET_CHECK_ERROR: 'SET_CHECK_ERROR',
   GEN_CODE: 'GEN_CODE'
 }
@@ -30,11 +28,6 @@ const actions = {
     return {
       type: actionTypes.UPDATE_CODE,
       code
-    }
-  },
-  checkPhone() {
-    return {
-      type: actionTypes.CHECK_PHONE
     }
   },
   genCode() {

@@ -96,25 +96,15 @@
   width: 420px;
   margin-right: 20px;
   display: inline-block;
+  vertical-align: middle;
 }
+
 .getcode-btn {
   display: inline-block;
-  height: 106px;
-  line-height: 106px;
   width: 250px;
-  text-align: center;
-  background: #c3aa82;
-  border-radius: 8px;
-  color: #fff;
   vertical-align: middle;
-
-  &:active {
-    background: #ab8850;
-    transition: background 0.2s ease;
-  }
-
-  &.disabled {
-    background: #d8d8d8;
+  span {
+    font-size: 14px; /* no */
   }
 }
 

@@ -11,7 +11,7 @@ import styles from './Button.css'
 @CSSModules(styles)
 class Button extends PureComponent {
   render() {
-    const {onClick ,type ,disabled, children} = this.props;
+    const {onClick ,type ,disabled, children, radius} = this.props;
     let bgColor='';
     switch (type) {
       case 'Primary': 
@@ -29,7 +29,10 @@ class Button extends PureComponent {
         styleName="button-button" 
         onClick={onClick} 
         disabled={disabled}
-        style={{backgroundColor: disabled ? '#D8D8D8' : bgColor}}>
+        style={{
+          backgroundColor: disabled ? '#D8D8D8' : bgColor,
+          borderRadius: radius ? '1.067vw' : 0 
+        }}>
         {children}
       </button>
     )
