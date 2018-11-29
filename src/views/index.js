@@ -54,5 +54,6 @@ export default {
   ApplyForward: makeLoadable(() => import('./wallet/ApplyForward')),
   BankCard: makeLoadable(() => import('./wallet/BankCard')),
   BankDetail: makeLoadable(() => import('./wallet/BankDetail')),
-  Balance: makeLoadable(() => import('./wallet/Balance'))
+  Balance: makeLoadable(() => import('./wallet/Balance')),
+  RoomInfo: makeLoadable(() => import('./RoomInfo')),
 }

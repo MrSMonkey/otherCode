@@ -4,7 +4,25 @@ const initialState = {
   houseIncome: { TotalAmount: 0 },
   income: { TotalAmount: 0 },
   roomListLoading: false,
-  incomeLoading: false
+  incomeLoading: false,
+  tabsData: [
+    {
+      name: 'houseInfo',
+      text: '房源信息',
+      href: '/houses',
+      active: true
+    }, {
+      name: 'roomInfo',
+      text: '房间信息',
+      href: '/rooms/:id',
+      active: false
+    }, {
+      name: 'photo',
+      text: '房源照片',
+      href: '/house-pic/:houseId/:contractId',
+      active: false
+    }
+  ]
 }
 
 export const actionTypes = {
@@ -13,7 +31,8 @@ export const actionTypes = {
   GET_LANDLORD_INCOME: 'GET_LANDLORD_INCOME',
   GET_LANDLORD_INCOME_SUCCESS: 'GET_LANDLORD_INCOME_SUCCESS',
   GET_HOUSE_INCOME: 'GET_HOUSE_INCOME',
-  GET_HOUSE_INCOME_SUCCESS: 'GET_HOUSE_INCOME_SUCCESS'
+  GET_HOUSE_INCOME_SUCCESS: 'GET_HOUSE_INCOME_SUCCESS',
+  TABS_DATA: 'TABS_DATA'
 }
 
 export const actions = {

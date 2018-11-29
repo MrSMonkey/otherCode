@@ -84,24 +84,6 @@ const StyleHouseStatus = CSSModules(HouseStatus, styles)
 @CSSModules(styles)
 class MyHouses extends Component {
   state = {
-    tabsData: [
-      {
-        name: 'bill',
-        text: '房源信息',
-        herf: '/',
-        active: true
-      }, {
-        name: 'contract',
-        text: '房源合同',
-        herf: '/',
-        active: false
-      }, {
-        name: 'photo',
-        text: '房源照片',
-        herf: '/',
-        active: false
-      }
-    ],
     timeLines: [{
       text: '完成带看一次，客户未签约',
       time: '2019-04-19 17:01:38'
@@ -122,17 +104,20 @@ class MyHouses extends Component {
   }
   render() {
     const {
-      roomList,
-      income,
+      tabsData,
       redirect,
-      indexHouse,
-      incomeLoading,
-      roomListLoading
+      indexHouse
     } = this.props
-    const { tabsData, timeLines } = this.state
+    const { timeLines } = this.state
     return (
       <div>
-        <Tabs data={tabsData} houseInfo={indexHouse} redirect={redirect} />
+        <Tabs data={tabsData} 
+          houseInfo={indexHouse} 
+          onClick={(data) => {
+            console.log('~~~~~~~',data)
+            if (data.href) { redirect(data.href) }
+          }} 
+        />
         {indexHouse.id ? (
           <div className="infinte-loader">
             <ReactLoading
@@ -160,7 +145,8 @@ export default connect(
     roomListLoading: state.myHouse.roomListLoading,
     income: state.myHouse.houseIncome,
     incomeLoading: state.myHouse.incomeLoading,
-    isHouseListLoading: state.houseList.isHouseListLoading
+    isHouseListLoading: state.houseList.isHouseListLoading,
+    tabsData: state.myHouse.tabsData
   }),
   {
     ...myHouseActions,

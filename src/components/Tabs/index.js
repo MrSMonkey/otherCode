@@ -8,19 +8,21 @@ import style from './Tabs.css'
  * @param {active: boolean, text: string, href: string} data 
  * redirect
  */
-const Index = ({ data = [], redirect }) => {
+const Index = ({ data = [], onClick }) => {
   return (
     <div styleName="tabs-plan">
-      {data.map((item, index) => {
-        return (
-          <div
-            styleName={item.active ? 'tabs-active' : 'tabs-box'}
-            key={index}
-            onClick={() => { if (item.href) { redirect(item.href) } }}>
-            <p>{item.text}</p>
-          </div>
-        )
-      })}
+      {
+        data && data.map((item, index) => {
+          return (
+            <div
+              styleName={item.active ? 'tabs-active' : 'tabs-box'}
+              key={index}
+              onClick={() => { onClick(item) }}>
+              <p>{item.text}</p>
+            </div>
+          )
+        })
+      }
     </div>
   )
 }

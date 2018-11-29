@@ -24,7 +24,13 @@ const routes = [
     path: '/houses/:id',
     component: views.MyHouse,
     needBind: true,
-    title: '我的房源'
+    title: '房源详情'
+  },
+  {
+    path: '/rooms/:id',
+    component: views.RoomInfo,
+    needBind: true,
+    title: '房源详情'
   },
   {
     path: '/bills',
