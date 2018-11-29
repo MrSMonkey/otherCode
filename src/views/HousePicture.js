@@ -5,6 +5,7 @@ import { actions as housePicture } from '../reducers/housePicture'
 import { actions as houseListActions } from '../reducers/houseList'
 import ReactLoading from 'react-loading'
 import ViewTitle from '../components/ViewTitle'
+import Tabs from '../components/Tabs'
 import { SectionTitle } from '../components/InfoSection'
 
 const options = {
@@ -50,7 +51,7 @@ class HousePicture extends Component {
     this.props.getHousePicture(params)
   }
   render() {
-    const { pictures, indexHouse, picturesLoading } = this.props
+    const { pictures, indexHouse, picturesLoading, tabsData } = this.props
     if (picturesLoading) {
       return (
         <div className="infinte-loader">
@@ -64,11 +65,11 @@ class HousePicture extends Component {
     }
     return (
       <React.Fragment>
-        <ViewTitle
-          title={`${indexHouse.CommunityName} ${indexHouse.HouseNumber}`}
-          desc={`${this.formDate(indexHouse.StartDate)} 至 ${this.formDate(
-            indexHouse.EndDate
-          )}`}
+        <Tabs data={tabsData} 
+          onClick={(data) => {
+            console.log('~~~~~~~',data)
+            if (data.href) { redirect(data.href) }
+          }} 
         />
         <SectionTitle>房源照片（装配前）</SectionTitle>
         <CumstomPhotoSwipeGallery data={pictures.BeforImg} />
@@ -85,7 +86,8 @@ export default connect(
   state => ({
     pictures: state.housePicture.pictures,
     indexHouse: state.houseList.indexHouse,
-    picturesLoading: state.housePicture.picturesLoading
+    picturesLoading: state.housePicture.picturesLoading,
+    tabsData: state.myHouse.tabsData
   }),
   {
     ...housePicture,
