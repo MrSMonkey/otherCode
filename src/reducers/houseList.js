@@ -1,5 +1,5 @@
 const initialState = {
-  data: [],
+  data: [{CommunityName: '天香 2栋3单元33楼3301号', isRegister: true}, {CommunityName: '天香 2栋3单元33楼3301号', isRegister: false}],
   indexHouse: {},
   indexHouseId: '',
   isHouseListLoading: false

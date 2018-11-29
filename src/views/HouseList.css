@@ -8,7 +8,7 @@
 .item-tit {
   line-height: 1;
   padding: 40px 30px;
-  font-size: 13px; /* no */
+  font-size: 18px; /* no */
   border-bottom: 1px solid $bg-color-default; /* no */
 }
 

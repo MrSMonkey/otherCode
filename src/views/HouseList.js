@@ -21,7 +21,11 @@ const HouseItem = ({ data, redirect }) => {
         {data.HouseNumber}
       </h2>
       <p styleName="item-desc">
-        合同周期: {formartDate(data.StartDate)}至{formartDate(data.EndDate)}
+      {
+        data.isRegister
+          ? '纯托管 | 整租 | 待租中' 
+          : '提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：18301347349 进行咨询'
+      }
       </p>
     </div>
   )

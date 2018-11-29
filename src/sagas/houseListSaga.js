@@ -33,14 +33,13 @@ function* getHouseListFlow() {
     }
 
     let indexHouse = {}
-    houseData &&
-      houseData.some(house => {
-        if (house.HouseId === actionData.indexHouseId) {
-          indexHouse = house
-          return true
-        }
-        return false
-      })
+    houseData && houseData.some(house => {
+      if (house.HouseId === actionData.indexHouseId) {
+        indexHouse = house
+        return true
+      }
+      return false
+    })
     yield put({ type: actionTypes.INDEX_HOUSE_INFO, payload: indexHouse })
     yield put({
       type: actionTypes.CHANGE_HOUSE_LIST_LOADING,
