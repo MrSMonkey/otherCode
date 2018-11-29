@@ -200,7 +200,7 @@ class ValidationCodeButton extends PureComponent {
     return (
       <div styleName="getcode-btn">
         <Button type="Primary" disabled={isDisabled || isCounting} radius onClick={this.onCodeButtonClick}>
-          <span>{isCounting ? `获取验证码(${count})` : '获取验证码'}</span>
+          <span>{isCounting ? `重发 (${count})` : '获取验证码'}</span>
         </Button>
       </div>
     )
