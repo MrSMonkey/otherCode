@@ -5,84 +5,114 @@ import { connect } from 'react-redux'
 import { actions as myHouseActions } from '../reducers/myHouse'
 import { actions as houseListActions } from '../reducers/houseList'
 import ReactLoading from 'react-loading'
-import HeaderBanner from '../components/HeaderBanner'
-import Icon from '../components/Icon'
-import IncomePlant from '../components/IncomePlant'
-import RoomCard from '../components/RoomCard'
+import Tabs from '../components/Tabs'
+import TimeLine from '../components/TimeLine'
 import styles from './MyHouse.css'
 
-const imgs = {
-  banner: require('../assets/imgs/banner.jpg')
-}
-
-const formartDate = val => {
-  return val ? val.slice(0, 10) : ''
-}
-
-/**banner */
-const Banner = ({ data, loading }) => {
+/**房源基本信息 */
+const BsaeInfo = ({data = {}}) => {
   return (
-    <HeaderBanner img={imgs.banner}>
-      <header styleName="banner-box">
-        <p styleName="banner-title">
-          {data.CommunityName
-            ? `${data.CommunityName} ${data.HouseNumber}`
-            : '--'}
-        </p>
-        <p styleName="banner-dec">
-          合同周期：
-          {formartDate(data.StartDate)}至{formartDate(data.EndDate)}
-        </p>
-      </header>
-    </HeaderBanner>
-  )
-}
-const StyleBanner = CSSModules(Banner, styles)
+    <div>
+      <div styleName="base-info">
+        <div styleName="block">
+          <span>门牌号</span>
+          <p>21栋1单元1101室</p>
+        </div>
+        <div styleName="block">
+          <span>运营类型</span>
+          <p>直租</p>
+        </div>
+      </div>
 
-/**icon button */
-const IconGroup = ({ houseInfo, redirect }) => {
-  const iconBtn = [
-    {
-      name: 'bill',
-      text: '房源账单',
-      href: `/house-bills/${houseInfo.HouseId}/${houseInfo.ContractId}`
-    },
-    {
-      name: 'contract',
-      text: '房源合同',
-      href: `/contract/${houseInfo.ContractId}`
-    },
-    {
-      name: 'photo',
-      text: '房源照片',
-      href: `/house-pic/${houseInfo.HouseId}/${houseInfo.ContractId}`
-    }
-  ]
-  return (
-    <div styleName="icon-plant">
-      {iconBtn.map((item, index) => {
-        return (
-          <div
-            styleName="icon-box"
-            key={index}
-            onClick={() => {
-              if (item.href) {
-                redirect(item.href)
-              }
-            }}
-          >
-            <Icon name={item.name} width={120} height={120} />
-            <p>{item.text}</p>
-          </div>
-        )
-      })}
+      <div styleName="detail-info">
+        <div styleName="block">
+          <label>小区名称：</label>
+          <span>中粮香颂丽都</span>
+        </div>
+        <div styleName="block-secondary">
+          <label>楼<span styleName="space-2"/>层：</label>
+          <span>5/24层</span>
+        </div>
+        <div styleName="block">
+          <label>原始户型：</label>
+          <span>3室2厅2卫</span>
+        </div>
+        <div styleName="block-secondary">
+          <label>朝<span styleName="space-2"/>向：</label>
+          <span>东南</span>
+        </div>
+        <div styleName="block">
+          <label>面<span styleName="space-2"/>积：</label>
+          <span>180.66㎡</span>
+        </div>
+        <div styleName="block-secondary">
+          <label>改造户型：</label>
+          <span>㎡</span>
+        </div>
+        <div>
+          <label>房东姓名：</label>
+          <span>王大锤</span>
+        </div>
+        <div>
+          <label>房东电话：</label>
+          <span>17745454545</span>
+        </div>
+        <div>
+          <label>备<span styleName="space-2"/>注：</label>
+          <span>备注备注备注备注文案占位用生命占位备注备注备注备注文案占位用生命占位备注备注备注备注文案占位用生命占位备注备注备注备注文案占位用生命占位</span>
+        </div>
+      </div>
     </div>
   )
 }
-const StyleIconGroup = CSSModules(IconGroup, styles)
+const StyleBsaeInfo = CSSModules(BsaeInfo, styles)
+
+/**房源动态 */
+const HouseStatus = ({data}) => {
+  return(
+    <div styleName="house-status">
+      <div styleName="info-header">房源动态</div>
+      <div styleName="info-content">
+        <TimeLine data={data}/>
+      </div>
+    </div>
+  )
+}
+const StyleHouseStatus = CSSModules(HouseStatus, styles)
+
 
 @CSSModules(styles)
 class MyHouses extends Component {
+  state = {
+    tabsData: [
+      {
+        name: 'bill',
+        text: '房源信息',
+        herf: '/',
+        active: true
+      }, {
+        name: 'contract',
+        text: '房源合同',
+        herf: '/',
+        active: false
+      }, {
+        name: 'photo',
+        text: '房源照片',
+        herf: '/',
+        active: false
+      }
+    ],
+    timeLines: [{
+      text: '完成带看一次，客户未签约',
+      time: '2019-04-19 17:01:38'
+    }, {
+      text: '上架推广',
+      time: '2019-01-19 17:01:38'
+    }, {
+      text: '提交意向房源',
+      time: '2019-01-19 17:01:38'
+    }]
+  }
   componentDidMount() {
     const { match, getHouseList, getRoomList, getHouseIncome } = this.props
     const id = match.params.id
@@ -99,16 +129,11 @@ class MyHouses extends Component {
       incomeLoading,
       roomListLoading
     } = this.props
+    const { tabsData, timeLines } = this.state
     return (
       <div>
-        <StyleBanner data={indexHouse} />
-        <StyleIconGroup houseInfo={indexHouse} redirect={redirect} />
-        <IncomePlant
-          title="房源累计收入"
-          income={income.TotalAmount.toFixed(2)}
-          loading={incomeLoading}
-        />
-        {roomListLoading ? (
+        <Tabs data={tabsData} houseInfo={indexHouse} redirect={redirect} />
+        {indexHouse.id ? (
           <div className="infinte-loader">
             <ReactLoading
               type="bubbles"
@@ -117,13 +142,9 @@ class MyHouses extends Component {
             />
           </div>
         ) : (
-          <div styleName="room-block" className="bg-color-white">
-            {roomList.map((item, index) => (
-              <RoomCard data={item} key={index} />
-            ))}
-            <div className="background-tips">
-              {roomList.lenght === 0 ? '暂无房间' : ''}
-            </div>
+          <div>
+            <StyleBsaeInfo data={indexHouse}/>
+            <StyleHouseStatus data={timeLines}/>
           </div>
         )}
       </div>

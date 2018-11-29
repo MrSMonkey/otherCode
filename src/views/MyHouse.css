@@ -1,52 +1,76 @@
 @import '../styles/variables.global.css';
 
-.banner-box {
-  height: 300px;
-  padding-top: 44px;
-  padding-left: 50px;
-  padding-right: 50px;
-  color:#fff;
-}
-
-.banner-title {
-  position: relative;
-  font-size: 20px; /*no*/
-  font-weight: 500;
-  letter-spacing: 0;
-}
-
-.banner-dec {
-  position: relative;
-  font-size: 12px; /*no*/
-  font-weight: lighter;
-}
-
-.room-block {
-  position: relative;
-  width: 100%;
-  padding: 30px;
-  padding-bottom: 20px;
-  white-space:nowrap;  
-  overflow-x: scroll;
-}
-
-.icon-plant {
-  padding: 45px 0;
-  display: flex;
-  justify-content: space-around;
+.base-info {
+  padding-top: 37px;
+  padding-bottom: 44px;
+  border-top: 1px solid $border-color-light;
   background-color: $color-white;
+  .block {
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    span {
+      color: $font-color-light;
+    }
+    p {
+      margin-top: 20px;
+      font-size: 17px; /* no */
+      font-weight: bold;
+    }
+    &:first-child {
+      border-right: 1px solid  $border-color-light;
+    }
+  }
 }
 
-.icon-box {
-  position: relative;
-  display: inline-block;
-  text-align: center;
-  img {
-    width: 120px;
-    height: 120px;
+.detail-info {
+  padding: 30px;
+  border-top: 1px solid $border-color-light;
+  background-color: $color-white;
+  font-size: 14px; /* no */
+  .block {
+    width: 55%;
+    display: inline-block;
+    white-space:nowrap;
+    text-overflow: ellipsis;
   }
-  p {
-    font-size: 15px; /* no */
+  .block-secondary {
+    padding-left: 10px; 
+    width: 45%;
+    display: inline-block;
+  }
+  div {
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  label {
+    color: $font-color-remark;
+    display: inline-block;
+  }
+  span {
+    max-width: 480px;
+    vertical-align: top;
+    display: inline-block;
+  }
+  .space-2 {
+    width: 28px; /* no */
+    height: 1px;
+    display: inline-block;
+  }
+}
+
+.house-status {
+  margin-top: 20px;
+  background-color: $color-white;
+  .info-header {
+    padding: 0 30px;
+    height: 90px;
+    font-size: 16px; /* no */
     font-weight: bold;
+    line-height: 90px;
+  }
+  .info-content {
+    padding: 30px;
+    border-top: 1px solid $border-color-light;
   }
 }

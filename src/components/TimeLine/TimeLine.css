@@ -1,0 +1,38 @@
+@import '../../styles/variables.global.css';
+
+.time-line {
+  width: 100%;
+  li {
+    position: relative;
+    margin-left: 12px;
+    padding-left: 42px;
+    height: 130px;
+    border-left: 1px dashed $border-color-light;
+    .dot {
+      position: absolute;
+      top: 0;
+      left: -12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: $font-color-remark;
+    }
+    p {
+      vertical-align: top;
+      line-height: 1;
+    }
+    span {
+      color: $font-color-remark;
+      font-size: 12px; /* no */
+      line-height: 3;
+    }
+    &:first-child {
+      .dot {
+        background-color: $color-golden;
+      }
+    }
+    &:last-child {
+      border: 0;
+    }
+  }
+}
