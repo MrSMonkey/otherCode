@@ -16,32 +16,38 @@ class InputList extends Component {
   state = {
     itemList: [],
     keyValue: '',
-    active: ''
+    activeId: ''
   }
 
   confirmeKey = () => {
-    const { close, form } = this.props;
-    console.log('~~~~~~~~~~')
-    form.communityId = '';
-    form.communityName = this.state.keyValue;
-    close()
+    const { changeForm } = this.props;
+    changeForm(this.state.keyValue, 'communityName')
+    changeForm(this.state.activeId, 'communityId')
+    this.cancel()
+  }
+  
+  cancel = () => {
+    const { close } = this.props;
+    this.setState({
+      keyValue: '',
+      activeId: ''
+    }, close)
   }
 
   render() {
-    const { itemList, keyValue } = this.state;
-    const { close, form, communityKey, sreachCommunity } = this.props;
+    const { keyValue, activeId } = this.state;
+    const { sreachCommunity, communityList } = this.props;
     return (
       <Modal>
         <div styleName="modal">
           <header styleName="header">
-            <div styleName="text-button" onClick={close}>取消</div>
+            <div styleName="text-button" onClick={this.cancel}>取消</div>
             <div styleName="header-title">请输入小区名称</div>
             <div styleName="text-button" onClick={this.confirmeKey}>确认</div>
           </header>
           <FormItem>
             <Input 
               value={keyValue}
-              // value={communityKey}
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
               onChange={val => {
@@ -56,17 +62,16 @@ class InputList extends Component {
           </FormItem>
           <ul styleName="list">
             {
-              itemList.map((item, index) => {
+              communityList.map(item => {
                 return (
-                  <li key={index} styleName={active === index ? 'active-item' : ''}
+                  <li key={item.id} styleName={activeId === item.id ? 'active-item' : ''}
                     onClick={() => {
-                      form.communityId = '';
-                      form.communityName = this.state.keyValue;
                       this.setState({
-                        active: index
+                        activeId: item.id,
+                        keyValue: item.communityName
                       })
                     }}>
-                    {item.name}
+                    {item.communityName}
                   </li>
                 )
               })
@@ -252,10 +257,9 @@ class Entrust extends Component {
         </Form>
         
         <InputList 
-          form={form}
           close={showModle} 
-          communityList={communityList} 
-          communityKey={communityKey} 
+          communityList={communityList}
+          changeForm={changeForm}
           sreachCommunity={sreachCommunity}
         />
       </div>
