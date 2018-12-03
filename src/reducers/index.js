@@ -15,6 +15,7 @@ import myWallet from './myWallet'
 import apply from './apply'
 import balance from './balance'
 import openWallet from './openWallet'
+import modal from './modal'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
 const reducers = combineReducers({
@@ -34,6 +35,7 @@ const reducers = combineReducers({
   apply,
   balance,
   openWallet,
+  modal,
   loadingBar: loadingBarReducer
 })
 

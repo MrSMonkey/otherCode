@@ -4,6 +4,7 @@ import { push } from 'connected-react-router'
 import { actionTypes as appActionType } from '../reducers/app'
 import { actionTypes as entrustActionType } from '../reducers/entrust'
 
+/**提交委托表单 */
 function* sublimtEntrust(form) {
   try {
     yield call(api.postEntrust, form)
@@ -28,4 +29,4 @@ function* sublimtEntrustFlow() {
   }
 }
 
-export default sublimtEntrustFlow
+export default sublimtEntrustFlow;

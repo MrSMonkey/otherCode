@@ -9,7 +9,7 @@ import getHousePictureFlow from './housePicture'
 import getHouseContractFlow from './houseContract'
 import getBillFlow from './bill'
 import getCtiysFlow from './ctiys'
-import sublimtEntrustFlow from './sublimtEntrust'
+import sublimtEntrustFlow from './entrust'
 import getMyBillsFlow from './billList'
 import getBankList from './bankList'
 import getWalletInfoFlow from './myWallet'
@@ -17,6 +17,8 @@ import watchApply from './applySaga'
 import getRecord from './balance'
 import watchAdd from './addCard'
 import watchA from './openWallet'
+import isShowModelFlow from './modal'
+import sreachCommunityFlow from './sreachCommunity'
 
 export default function* rootSaga() {
   yield fork(getHouseListFlow)
@@ -31,6 +33,7 @@ export default function* rootSaga() {
   yield fork(getBillFlow)
   yield fork(getCtiysFlow)
   yield fork(sublimtEntrustFlow)
+  yield fork(isShowModelFlow)
   yield fork(getMyBillsFlow)
   yield fork(getWalletInfoFlow)
   yield fork(watchApply)
@@ -38,4 +41,6 @@ export default function* rootSaga() {
   yield fork(getRecord)
   yield fork(watchAdd)
   yield fork(watchA)
+  yield fork(isShowModelFlow)
+  yield fork(sreachCommunityFlow)
 }

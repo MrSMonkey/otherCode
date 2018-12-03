@@ -208,6 +208,18 @@ const api = {
       params: params
     })
   },
+
+  //根据当前城市和关键字查询小区
+  getCommunityList(cityId, key){
+    if (!key) { return; }
+    console.log('发起请求: ', key)
+    return request.get(`/common/communitys/`, {
+      params: {
+        cityId: cityId,
+        key: key
+      }
+    })
+  },
 }
 
 export default api

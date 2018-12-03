@@ -6,8 +6,8 @@ const initialState = {
     CommunityName: '',
   },
   isLoading: false,
-  isModle: false,
-  isShow: false,
+  communityList: [],
+  communityKey: ''
 }
 
 export const actionTypes = {
@@ -15,7 +15,8 @@ export const actionTypes = {
   SUBLIMT_FORM: 'SUBLIMT_FORM',
   SUBLIMT_FORM_SUCCESS: 'SUBLIMT_FORM_SUCCESS',
   CHANGE_ENTRUS_SUBLIMT_LODING: 'CHANGE_ENTRUS_SUBLIMT_LODING',
-  IS_MODLE: 'IS_MODLE',
+  COMMUNITYLIST: 'COMMUNITYLIST',
+  COMMUNITYKEY: 'COMMUNITYKEY'
 }
 
 export const actions = {
@@ -30,10 +31,10 @@ export const actions = {
       type: actionTypes.SUBLIMT_FORM
     }
   },
-  optionModle(val) {
+  sreachCommunity(val) {
     return {
-      type: actionTypes.IS_MODLE,
-      text: !val
+      type: actionTypes.COMMUNITYKEY,
+      text: val
     }
   }
 }
@@ -53,10 +54,15 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoading: action.payload
       }
-    case actionTypes.IS_MODLE: 
+    case actionTypes.COMMUNITYKEY:
       return {
         ...state,
-        isModle: action.text
+        communityKey: action.text
+      }
+    case actionTypes.COMMUNITYLIST:
+      return {
+        ...state,
+        communityList: action.payload
       }
     default:
       return state

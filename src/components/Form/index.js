@@ -4,11 +4,12 @@ import CSSModules from 'react-css-modules'
 import styles from './Form.css'
 // import { actions } from '../../reducers/entrust'
 import hasVerify from '../../utils/verify.js'
+import { fastest } from 'sw-toolbox';
 
 @CSSModules(styles)
 class Input extends PureComponent {
   render() {
-    const { value, maxLength, verify, placeholder, onChange, className, style } = this.props
+    const { value, maxLength, verify, placeholder, onChange, className, style, disabled } = this.props
     return (
       <input
         value={value}
@@ -16,6 +17,7 @@ class Input extends PureComponent {
         placeholder={placeholder || ''}
         className={className || ''}
         style={style || {}}
+        disabled={disabled || false}
         onBlur={event => {
           const val = event.target.value
           if (verify) {
@@ -36,11 +38,12 @@ class Input extends PureComponent {
 @CSSModules(styles)
 class Select extends PureComponent {
   render() {
-    const { data, value, verify, placeholder, onChange } = this.props
+    const { data, value, verify, placeholder, disabled, onChange } = this.props
     return (
       <select
         value={value}
         placeholder={placeholder || ''}
+        disabled={disabled || false}
         onBlur={event => {
           const val = event.target.value
           if (verify) {
@@ -55,9 +58,6 @@ class Select extends PureComponent {
           onChange(val);
         }}
       >
-        <option value="" key="first">
-          {placeholder}
-        </option>
         {data.map(item => (
           <option value={item.Value} key={item.Value}>
             {item.Text}
@@ -71,11 +71,12 @@ class Select extends PureComponent {
 @CSSModules(styles)
 class Textarea extends PureComponent {
   render() {
-    const { value, rows, maxLength, placeholder, onChange } = this.props
+    const { value, rows, maxLength, placeholder, disabled, onChange } = this.props
     return (
       <textarea
         value={value}
         rows={rows || 2}
+        disabled={disabled || false}
         maxLength={maxLength}
         placeholder={placeholder || ''}
         onChange={(event) => {
@@ -90,9 +91,13 @@ class Textarea extends PureComponent {
 @CSSModules(styles)
 class FormItem extends PureComponent {
   render() {
-    const { label, width, isErr, children } = this.props
+    const { label, width, isErr, children, onClick } = this.props
     return (
-      <div styleName="input-box" className={isErr ? 'border-warning' : ''}>
+      <div styleName="input-box" 
+        className={isErr ? 'border-warning' : ''} 
+        onTouchEnd={() => {
+          onClick && onClick()
+        }}>
         <label style={{ display: label ? 'block' : 'none', width: width }}>
           {label}
         </label>
