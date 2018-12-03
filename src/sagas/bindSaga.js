@@ -9,19 +9,18 @@ function* bindUser() {
   const { openid, access_token } = yield select(state => state.app.wx)
   try {
     const { data } = yield call(api.bindUser, {
-      Phone: phone,
-      IdentifyingCode: identifyingCode,
-      OpenId: openid,
-      AccessToken: access_token
+      mobile: phone,
+      grantType: 'mobile',
+      registerSource: 1,
+      scope: 'server',
+      verificationCode: identifyingCode
     })
-    if (!data.Key) {
-      throw new Error(data.Value)
+    console.log(data)
+    if (!data.data) {
+      throw new Error(data.message)
     }
-    yield call(getUserInfo) /* 绑定成功后请求用户信息 */
-    yield put({
-      type: appActionType.SET_USER_BIND_STATE,
-      payload: true
-    })
+    yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
+    yield put({ type: appActionType.USER_INFO, payload: data.data || {} })
     yield put({ type: bindActionType.BIND_SUCCESS })
   } catch (e) {
     yield put({ type: bindActionType.BIND_FAIL })

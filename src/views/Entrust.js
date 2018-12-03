@@ -223,7 +223,13 @@ class Entrust extends Component {
                 onChange={val => changeForm(val, 'varityCold')}
                 style={{width: '100px'}}
               />
-              <span styleName="code-button">获取验证码</span>
+              <span 
+                styleName="code-button" 
+                onClick={() => {
+                  if (!this.state.isErr.linkPhone) { return }
+                }}>
+                获取验证码
+              </span>
             </FormItem>
           </div>
 

@@ -7,6 +7,9 @@ import appConfig from '@/appConfig'
 const host = appConfig.host
 axios.defaults.withCredentials = true
 
+/**临时登录授权 */
+axios.defaults.headers.common['Authorization'] = 'Basic b3duZXI6MTIzNDU2';
+
 const request = axios.create({
   baseURL: host.api.replace(/\/+$/, ''),
   headers: {
@@ -133,19 +136,15 @@ const api = {
     }
  */
   bindUser(data) {
-    return request.post('/login/phonelogin', data)
+    return request.post('/user/mobile/login', data)
   },
   /**城市信息 */
   getCitys() {
     return request.get('/common/city')
   },
   /* 生成验证码 */
-  genValidateCode(phone) {
-    return request.get('/login/generatecode', {
-      params: {
-        phone
-      }
-    })
+  genValidateCode(mobile) {
+    return request.post(`/user/verification_code/${mobile}`)
   },
   /**提交委托 */
   postEntrust(form) {

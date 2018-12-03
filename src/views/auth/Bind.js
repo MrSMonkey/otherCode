@@ -275,7 +275,6 @@ class Bind extends PureComponent {
     const { phoneError, codeError, isPhoneError, isCodeError } = this.state
     const redirectUrl = parseQuery(router.location.search).redirect || '/'
 
-    console.log('redirectUrl',redirectUrl)
     return (
       <div styleName="view">
         <h1 styleName="header">登录</h1>

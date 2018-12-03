@@ -25,7 +25,8 @@ const initialState = {
     code: ''
   },
   landlordInfo: {},
-  citys: []
+  citys: [],
+  userInfo: {}
 }
 
 export const actionTypes = {
@@ -43,7 +44,8 @@ export const actionTypes = {
   SHOW_ERROR_MSG: 'SHOW_ERROR_MSG',
   HIDE_ERROR_MEG: 'HIDE_ERROR_MEG',
   GET_JS_SDK_CONFIG:'GET_JS_SDK_CONFIG',
-  SAVE_JS_SDK_CONFIG:'SAVE_JS_SDK_CONFIG'
+  SAVE_JS_SDK_CONFIG:'SAVE_JS_SDK_CONFIG',
+  USER_INFO: 'USER_INFO'
 }
 
 export const actions = {
@@ -151,13 +153,18 @@ const reducer = (state = initialState, action) => {
         ...state,
         isGettingJSSDK:true
       }
-      case actionTypes.SAVE_JS_SDK_CONFIG:
+    case actionTypes.SAVE_JS_SDK_CONFIG:
       return {
         ...state,
         isGettingJSSDK:false,
         wxJsSdk:{
           ...action.payload
         }
+      }
+    case actionTypes.USER_INFO: 
+      return {
+        ...state,
+        userInfo: action.payload
       }
     default:
       return state
