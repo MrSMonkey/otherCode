@@ -4,7 +4,6 @@ import CSSModules from 'react-css-modules'
 import styles from './Form.css'
 // import { actions } from '../../reducers/entrust'
 import hasVerify from '../../utils/verify.js'
-import { fastest } from 'sw-toolbox';
 
 @CSSModules(styles)
 class Input extends PureComponent {

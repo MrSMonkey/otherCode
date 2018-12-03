@@ -172,3 +172,11 @@ body {
     float: right;
     margin-top: 50px;
 }
+
+.slef-icon-close {
+  min-width: 30px;
+  min-height: 30px;
+  background: url('../assets/imgs/btn_close.png');
+  background-position: center;
+  background-size: contain;
+}
