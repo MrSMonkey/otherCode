@@ -8,7 +8,7 @@ import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
 import Modal from '../components/Modal'
 import Button from '../components/Button'
 import styles from './Entrust.css'
-// import throttle from '../utils/throttle'
+import throttle from '../utils/throttle'
 
 
 @CSSModules(styles)
@@ -29,7 +29,7 @@ class InputList extends Component {
   cancel = () => {
     const { close } = this.props;
     this.setState({
-      keyValue: '',
+      // keyValue: '',
       activeId: ''
     }, close)
   }
@@ -53,12 +53,10 @@ class InputList extends Component {
               onChange={val => {
                 this.setState({
                   keyValue: val,
+                  activeId: ''
                 })
-              }}
-              onBlur={val => {
-                this.setState({ activeId: '' })
-                sreachCommunity(val)
-                // throttle(sreachCommunity, 2000)(val)
+                // sreachCommunity(val)
+                throttle(sreachCommunity, 2000)(val)
               }}
             />
             <i className="slef-icon-close" 
@@ -152,7 +150,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr } = this.state
-    const { form, citys, varityCold, changeForm, isLoading, showModle, communityList, communityKey, sreachCommunity} = this.props
+    const { form, citys, varityCold, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
     return (
       <div>
         <Form data={form}>
@@ -267,7 +265,7 @@ class Entrust extends Component {
         </Form>
         
         <InputList 
-          close={showModle} 
+          close={showModle}
           communityList={communityList}
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}

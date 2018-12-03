@@ -21,7 +21,7 @@ request.interceptors.request.use(
   },
   err => {
     const status = err.response.status
-    if (status === 401) {
+    if (status === 401 || status === 404) {
       return store.dispatch(appActions.doWechatAuth())
     }
     return Promise.reject(err)

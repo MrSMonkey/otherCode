@@ -60,12 +60,11 @@ const reducer = (state = initialState, action) => {
         isLoading: action.payload
       }
     case actionTypes.COMMUNITYKEY:
-      return {
+    return {
         ...state,
         communityKey: action.text
       }
     case actionTypes.COMMUNITYLIST:
-    console.log(action.payload)
       return {
         ...state,
         communityList: action.payload
