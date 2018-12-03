@@ -1,10 +1,15 @@
 const initialState = {
   form: {
-    Name: '',
-    Phone: '',
-    CityId: '278',
-    CommunityName: '',
+    cityId: '510100',
+    cityName: '',
+    communityId: '',
+    communityName: '',
+    linkName: '',
+    linkPhone: '',
+    name: '',
+    phone: '',
   },
+  varityCold: '',
   isLoading: false,
   communityList: [],
   communityKey: ''

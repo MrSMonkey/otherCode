@@ -9,7 +9,7 @@ import { fastest } from 'sw-toolbox';
 @CSSModules(styles)
 class Input extends PureComponent {
   render() {
-    const { value, maxLength, verify, placeholder, onChange, className, style, disabled } = this.props
+    const { value, maxLength, verify, placeholder, onChange, onBlur, className, style, disabled } = this.props
     return (
       <input
         value={value}
@@ -20,6 +20,7 @@ class Input extends PureComponent {
         disabled={disabled || false}
         onBlur={event => {
           const val = event.target.value
+          onBlur && onBlur(val)
           if (verify) {
             const isSuccess = verify && verify.type ? hasVerify[verify.type](val).success : true
             const empty = verify ? val === '' : false
@@ -28,7 +29,7 @@ class Input extends PureComponent {
         }}
         onChange={event => {
           const val = event.target.value
-          onChange(val)
+          onChange && onChange(val)
         }}
       />
     )
@@ -36,6 +37,11 @@ class Input extends PureComponent {
 }
 
 /**
+ * data: arry
+ * verify: {type: struing, cb: fun}
+ * placeholder: string
+ * onChange: fun
+ * disabled: boolean
  * option = {value: 'value', text: 'text'}
  */
 @CSSModules(styles)

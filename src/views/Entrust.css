@@ -53,6 +53,10 @@
       border-bottom: 1px solid #eee;
       font-size: 14px; /* no */
     }
+    .active-item {
+      background-color: $bg-color-light;
+      color: $color-golden;
+    }
   }
   
   .header {

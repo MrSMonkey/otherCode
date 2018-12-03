@@ -23,8 +23,8 @@ function* sreachCommunityFlow() {
     // yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: true })
     const key = yield select(state => state.entrust.communityKey)
     const cityId = yield select(state => state.entrust.form.CityId)
-    const list = yield throttle(3000, entrustActionType.COMMUNITYKEY, sreachCommunity, cityId, key)
-    // const list = yield call(sreachCommunity, cityId, key)
+    // const list = yield throttle(3000, entrustActionType.COMMUNITYKEY, sreachCommunity, cityId, key)
+    const list = yield call(sreachCommunity, cityId, key)
     if (list) {
       yield put({ type: entrustActionType.COMMUNITYLIST, payload: list })
       // yield put({type:appActionType.APP_SUCCESS_MSG,payload:'提交成功!'})
