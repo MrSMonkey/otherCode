@@ -35,10 +35,13 @@ class Input extends PureComponent {
   }
 }
 
+/**
+ * option = {value: 'value', text: 'text'}
+ */
 @CSSModules(styles)
 class Select extends PureComponent {
   render() {
-    const { data, value, verify, placeholder, disabled, onChange } = this.props
+    const { data, value, verify, placeholder, disabled, onChange, option = {value: 'value', text: 'text'} } = this.props
     return (
       <select
         value={value}
@@ -59,8 +62,8 @@ class Select extends PureComponent {
         }}
       >
         {data.map(item => (
-          <option value={item.Value} key={item.Value}>
-            {item.Text}
+          <option value={item[option.value]} key={item[option.value]}>
+            {item[option.text]}
           </option>
         ))}
       </select>

@@ -114,7 +114,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://ho-local.uoko.com",
+  "proxy": "http://192.168.200.126:9092",
   "devDependencies": {
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",

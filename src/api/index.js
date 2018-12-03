@@ -8,7 +8,7 @@ const host = appConfig.host
 axios.defaults.withCredentials = true
 
 const request = axios.create({
-  baseURL: host.api.replace(/\/+$/, '') + '/api',
+  baseURL: host.api.replace(/\/+$/, ''),
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   }
@@ -137,7 +137,7 @@ const api = {
   },
   /**城市信息 */
   getCitys() {
-    return request.get('/houseentrust/getcityinfo')
+    return request.get('/common/city')
   },
   /* 生成验证码 */
   genValidateCode(phone) {

@@ -140,6 +140,7 @@ class Entrust extends Component {
                 value={form.CityId}
                 placeholder="请选择您爱屋所在的城市"
                 onChange={val => changeForm(val, 'CityId')}
+                option={{value: 'id', text: 'cityName'}}
                 verify={{
                   cb: val => this.setState({ isErr: { ...isErr, CityId: !val } })
                 }}

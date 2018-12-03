@@ -6,7 +6,7 @@ import { actionTypes } from '../reducers/app'
 function* getCtiys() {
   try {
     const { data } = yield call(api.getCitys)
-    return data
+    return data.data
   } catch (err) {
     yield put({
       type: actionTypes.APP_ERROR_MSG,
