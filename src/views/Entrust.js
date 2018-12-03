@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import CSSModules from 'react-css-modules'
+import PropTypes from 'prop-types'
+import { actions as bindActions } from '../reducers/bind'
 import { actions as entrustAction } from '../reducers/entrust'
 import { actions as appAction } from '../reducers/app'
 import { actions as modalAction } from '../reducers/modal'
@@ -10,9 +12,15 @@ import Button from '../components/Button'
 import styles from './Entrust.css'
 import throttle from '../utils/throttle'
 
-
+/**检索小区 */
 @CSSModules(styles)
-class InputList extends Component {
+class InputList extends PureComponent {  
+  static propTypes = {
+    changeForm: PropTypes.func
+  }
+  static defaultProps = {
+    changeForm: () => null
+  }
   state = {
     itemList: [],
     keyValue: '',
@@ -91,31 +99,105 @@ class InputList extends Component {
   }
 }
 
+
+/**获取验证码按钮 */
+@CSSModules(styles)
+class ValidationCodeButton extends PureComponent {
+  static propTypes = {
+    onCountEnd: PropTypes.func,
+    onClick: PropTypes.func
+  }
+  static defaultProps = {
+    onCountEnd: () => null,
+    onClick: () => null
+  }
+  timeoutId = null
+  totalCount = 60
+  state = {
+    isCounting: false,
+    count: this.totalCount
+  }
+
+  countEnd = () => {
+    this.countReset()
+    this.props.onCountEnd()
+  }
+  
+  countStart = () => {
+    this.setState({
+      isCounting: true,
+    })
+    this.countDown(this.countEnd)
+  }
+
+  countDown = fn => {
+    let count = this.state.count
+    if (!count) {
+      fn && fn()
+      return
+    }
+    this.timeoutId = setTimeout(() => {
+      count--
+      this.setState({
+        count
+      })
+      this.countDown(fn)
+    }, 1000)
+  }
+
+  countReset = () => {
+    clearTimeout(this.timeoutId)
+    this.setState({
+      count: this.totalCount,
+      isCounting: false
+    })
+  }
+
+  onCodeButtonClick = () => {
+    const { isDisabled, onClick } = this.props
+    if (isDisabled) { return }
+    onClick()
+    this.countStart()
+
+  }
+  render() {
+    const { isDisabled } = this.props
+    const { count, isCounting } = this.state
+    return (
+      <span 
+        styleName={isDisabled || isCounting ? 'code-button-display' : 'code-button'}
+        onClick={this.onCodeButtonClick}>
+        {isCounting ? `重发 (${count})` : '获取验证码'}
+      </span>
+    )
+  }
+}
+
 @CSSModules(styles)
 class Entrust extends Component {
+  totalCount = 60
   state = {
     isErr: {
       communityName: false,
       linkName: false,
       linkPhone: false,
-      name: false,
-      phone: false,
-    }
+      varityCold: false
+    },
+    isErrAddPhone: false
   }
 
   /** 提交*/
   sublimt = () => {
     const { form } = this.props
-    const { isErr } = this.state
-    console.log(isErr)
+    const { isErr, isErrAddPhone } = this.state
 
     for (let i in form) {
       const val = form[i]
       const hasOwn = isErr.hasOwnProperty(i)
-
+      
+      /* 验证必填项目 || 验证是否正确 */
       if (hasOwn) {
         if (val === '' || isErr[i]) {
-          /* 验证必填项目 || 验证是否正确 */
           // console.log('hasOwn', i, hasOwn)
           // console.log('isErr',isValid,val)
           isErr[i] = true
@@ -129,12 +211,13 @@ class Entrust extends Component {
     let hasErr = false
     for (let i in isErr) {
       const val = isErr[i]
-      if (val) {
+      if (val , isErrAddPhone) {
         // console.log("hasErr", i, val)
         hasErr = true
         break
       }
     }
+
 
     if (hasErr) {
       this.setState({ ...isErr })
@@ -143,14 +226,14 @@ class Entrust extends Component {
     // console.log('~~~~~~',hasErr)
     this.props.sublimtEntrust()
   }
-
+  
   componentDidMount() {
     this.props.getCitys()
   }
   
   render() {
-    const { isErr } = this.state
-    const { form, citys, varityCold, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
+    const { isErr, isErrAddPhone } = this.state
+    const { form, citys, varityCold, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
     return (
       <div>
         <Form data={form}>
@@ -173,7 +256,6 @@ class Entrust extends Component {
                 value={form.communityName}
                 maxLength={16}
                 placeholder="请输入您爱屋所在的小区"
-                onChange={val => changeForm(val, 'communityName')}
                 disabled={true}
                 verify={{
                   cb: val =>
@@ -216,38 +298,35 @@ class Entrust extends Component {
                 }}
               />
             </FormItem>
-            <FormItem label="验证码">
+            <FormItem label="验证码" isErr={isErr.varityCold}>
               <Input
-                value={varityCold}
+                value={form.varityCold}
                 placeholder="请输入验证码"
                 onChange={val => changeForm(val, 'varityCold')}
                 style={{width: '100px'}}
+                verify={{
+                  cb: val => this.setState({ isErr: { ...isErr, varityCold: !val } })
+                }}
               />
-              <span 
-                styleName="code-button" 
-                onClick={() => {
-                  if (!this.state.isErr.linkPhone) { return }
-                }}>
-                获取验证码
-              </span>
+              <ValidationCodeButton
+                isDisabled={this.state.isErr.linkPhone || !form.linkPhone}
+                onClick={genCode}
+              />
             </FormItem>
           </div>
 
           <h2 styleName="title">添加其他信息</h2>
           <div styleName="input-group">
-            <FormItem label="姓名" isErr={isErr.name}>
+            <FormItem label="姓名">
               <Input
                 must
                 value={form.name}
                 maxLength={30}
                 placeholder="请输入您的称呼"
                 onChange={val => changeForm(val, 'name')}
-                verify={{
-                  cb: val => this.setState({ isErr: { ...isErr, name: !val } })
-                }}
               />
             </FormItem>
-            <FormItem label="手机号" isErr={isErr.phone}>
+            <FormItem label="手机号" isErr={isErrAddPhone}>
               <Input
                 value={form.phone}
                 placeholder="请输入您的手机号码"
@@ -255,8 +334,9 @@ class Entrust extends Component {
                 verify={{
                   type: 'phone',
                   cb: val => {
-                    // console.log('phone ERR', !val)
-                    this.setState({ isErr: { ...isErr, phone: !val } })
+                    this.setState({ 
+                      isErrAddPhone: form.phone === '' ? false : !val
+                    })
                   }
                 }}
               />
@@ -293,6 +373,7 @@ export default connect(
     varityCold: state.entrust.varityCold
   }),
   {
+    ...bindActions,
     ...entrustAction,
     ...appAction,
     ...modalAction

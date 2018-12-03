@@ -8,8 +8,8 @@ const initialState = {
     linkPhone: '',
     name: '',
     phone: '',
+    varityCold: '',
   },
-  varityCold: '',
   isLoading: false,
   communityList: [],
   communityKey: ''

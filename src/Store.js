@@ -10,7 +10,6 @@ const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 const reduxRouterMiddleware = routerMiddleware(history)
 const logMiddleware = store => next => action => {
-  // console.log('dispatching', action)
   let result = next(action)
   // console.log('next state', store.getState())
   return result

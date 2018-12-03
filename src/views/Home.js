@@ -93,9 +93,6 @@ const StyleSmartLock = CSSModules(SmartLock, styles)
 
 @CSSModules(styles)
 class Home extends Component {
-  componentDidMount() {
-    this.props.getIncome()
-  }
   render() {
     const { income, incomeLoading, user } = this.props
     return (

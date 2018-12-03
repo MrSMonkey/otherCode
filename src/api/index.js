@@ -148,7 +148,7 @@ const api = {
   },
   /**提交委托 */
   postEntrust(form) {
-    return request.post('/houseentrust/entrust', form)
+    return request.post('/owner/entrust', form)
   },
   /* 获取单个房源的收入 */
   getHouseIncomeById(houseId) {

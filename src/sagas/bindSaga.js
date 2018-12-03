@@ -15,7 +15,6 @@ function* bindUser() {
       scope: 'server',
       verificationCode: identifyingCode
     })
-    console.log(data)
     if (!data.data) {
       throw new Error(data.message)
     }
