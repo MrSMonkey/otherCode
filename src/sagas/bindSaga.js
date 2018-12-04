@@ -1,12 +1,13 @@
 import { select, put, call, takeLatest } from 'redux-saga/effects'
 import { actionTypes as appActionType } from '../reducers/app'
 import { actionTypes as bindActionType } from '../reducers/bind'
-import { getUserInfo } from './appSaga'
+// import { getUserInfo } from './appSaga'
+import { localStore } from '../utils'
 import api from '../api'
 
 function* bindUser() {
   const { phone, identifyingCode } = yield select(state => state.bind)
-  const { openid, access_token } = yield select(state => state.app.wx)
+  // const { openid, access_token } = yield select(state => state.app.wx)
   try {
     const { data } = yield call(api.bindUser, {
       mobile: phone,
@@ -18,6 +19,13 @@ function* bindUser() {
     if (!data.data) {
       throw new Error(data.message)
     }
+    /**设置token有效期为6天 */
+    const date = new Date()
+    const time = date.getTime() + (6 * 24* 60 * 60 * 1000)
+    localStore.set('access_token', data.data.access_token)
+    localStore.set('refresh_token', data.data.refresh_token)
+    localStore.set('userId', data.data.userId)
+    localStore.set('time', time)
     yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
     yield put({ type: appActionType.USER_INFO, payload: data.data || {} })
     yield put({ type: bindActionType.BIND_SUCCESS })

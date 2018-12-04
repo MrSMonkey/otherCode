@@ -11,6 +11,9 @@ import Modal from '../components/Modal'
 import Button from '../components/Button'
 import styles from './Entrust.css'
 import throttle from '../utils/throttle'
+import { localStore } from '../utils'
+
+const isLogin = !!localStore.get('userId')
 
 /**检索小区 */
 @CSSModules(styles)
@@ -188,18 +191,20 @@ class Entrust extends Component {
 
   /** 提交*/
   sublimt = () => {
-    const { form } = this.props
+    const { form, isLogin } = this.props
     const { isErr, isErrAddPhone } = this.state
 
     for (let i in form) {
       const val = form[i]
       const hasOwn = isErr.hasOwnProperty(i)
       
+      // 登录状态下不必验证联系人验证码
+      if (isLogin) {
+        delete isErr.varityCold
+      }
       /* 验证必填项目 || 验证是否正确 */
       if (hasOwn) {
         if (val === '' || isErr[i]) {
-          // console.log('hasOwn', i, hasOwn)
-          // console.log('isErr',isValid,val)
           isErr[i] = true
         } else {
           isErr[i] = false
@@ -211,19 +216,17 @@ class Entrust extends Component {
     let hasErr = false
     for (let i in isErr) {
       const val = isErr[i]
-      if (val , isErrAddPhone) {
+      if (val || isErrAddPhone) {
         // console.log("hasErr", i, val)
         hasErr = true
         break
       }
     }
 
-
     if (hasErr) {
       this.setState({ ...isErr })
       return
     }
-    // console.log('~~~~~~',hasErr)
     this.props.sublimtEntrust()
   }
   
@@ -233,7 +236,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone } = this.state
-    const { form, citys, varityCold, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
     return (
       <div>
         <Form data={form}>
@@ -265,13 +268,13 @@ class Entrust extends Component {
             </FormItem>
           </div>
 
-          <h2 styleName="title">
+          <h2 styleName="title" style={{display: isLogin ? 'none' : 'block'}}>
             留下联系方式
             <span styleName="descripe">
               提交成功后，可以使用这个手机号登录查看房源动态
             </span>
           </h2>
-          <div styleName="input-group">
+          <div styleName="input-group" style={{display: isLogin ? 'none' : 'block'}}>
             <FormItem label="姓名" isErr={isErr.linkName}>
               <Input
                 must
@@ -351,7 +354,12 @@ class Entrust extends Component {
         </Form>
         
         <InputList 
-          close={showModle}
+          close={() => {
+            showModle()
+            this.setState({ 
+              isErr: { ...isErr, communityName: !!form.communityName }
+            })
+          }}
           communityList={communityList}
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}
@@ -370,7 +378,7 @@ export default connect(
     isShow: state.modal.isShow,
     communityList: state.entrust.communityList,
     communityKey: state.entrust.communityKey,
-    varityCold: state.entrust.varityCold
+    varityCold: state.entrust.varityCold,
   }),
   {
     ...bindActions,
