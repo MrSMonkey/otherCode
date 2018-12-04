@@ -102,18 +102,6 @@ class InputList extends PureComponent {
   }
 }
 
-/** */
-@CSSModules(styles)
-class TipsModal extends PureComponent {
-  render() {
-    const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList } = this.props;
-    return (
-      <Modal>
-      </Modal>
-    )
-  }
-}
 
 /**获取验证码按钮 */
 @CSSModules(styles)
@@ -393,7 +381,6 @@ class Entrust extends Component {
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}
         />
-
       </div>
     )
   }
