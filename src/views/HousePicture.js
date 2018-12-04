@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { PhotoSwipeGallery } from 'react-photoswipe'
 import { actions as housePicture } from '../reducers/housePicture'
-import { actions as houseListActions } from '../reducers/houseList'
+import { push } from 'connected-react-router'
 import ReactLoading from 'react-loading'
-import ViewTitle from '../components/ViewTitle'
 import Tabs from '../components/Tabs'
 import { SectionTitle } from '../components/InfoSection'
 
@@ -38,6 +37,9 @@ const CumstomPhotoSwipeGallery = props => {
 }
 
 class HousePicture extends Component {
+  state = {
+    tabsData: []
+  }
   formDate(val) {
     if (val) {
       return val.slice(1, 10)
@@ -46,12 +48,31 @@ class HousePicture extends Component {
     }
   }
   componentDidMount() {
-    const params = this.props.match.params
-    this.props.getHouseList(params.houseId)
-    this.props.getHousePicture(params)
+    const id = this.props.match.params.id
+    this.props.getHousePicture(id)
+    this.setState({
+      tabsData: [
+        {
+          name: 'houseInfo',
+          text: '房源信息',
+          href: `/houses/${id}`,
+          active: false
+        }, {
+          name: 'roomInfo',
+          text: '房间信息',
+          href: `/rooms/${id}`,
+          active: false
+        }, {
+          name: 'photo',
+          text: '房源照片',
+          href: `/house-pic/${id}`,
+          active: true
+        }
+      ]
+    })
   }
   render() {
-    const { pictures, indexHouse, picturesLoading, tabsData } = this.props
+    const { pictures, picturesLoading, redirect } = this.props
     if (picturesLoading) {
       return (
         <div className="infinte-loader">
@@ -65,18 +86,15 @@ class HousePicture extends Component {
     }
     return (
       <React.Fragment>
-        <Tabs data={tabsData} 
+        <Tabs data={this.state.tabsData} 
           onClick={(data) => {
-            console.log('~~~~~~~',data)
             if (data.href) { redirect(data.href) }
           }} 
         />
-        <SectionTitle>房源照片（装配前）</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.BeforImg} />
-        <SectionTitle>房源照片（装配后）</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.AfterImg} />
-        <SectionTitle>房东合同照片</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.ContactImg} />
+        <SectionTitle>房间</SectionTitle>
+        <CumstomPhotoSwipeGallery data={pictures.imageRoomDTOS} />
+        <SectionTitle>公区照片</SectionTitle>
+        <CumstomPhotoSwipeGallery data={pictures.imageHouseDTOS} />
       </React.Fragment>
     )
   }
@@ -91,6 +109,6 @@ export default connect(
   }),
   {
     ...housePicture,
-    ...houseListActions
+    redirect: url => push(url)
   }
 )(HousePicture)

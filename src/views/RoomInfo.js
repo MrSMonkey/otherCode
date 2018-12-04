@@ -36,38 +36,58 @@ const StyleRoomList = CSSModules(RoomList, styles)
 @CSSModules(styles)
 class RoomInfo extends Component {
   state = {
+    tabsData: []
   }
   componentDidMount() {
     const { match, getRoomList} = this.props
     const id = match.params.id
     getRoomList(id)
+    this.setState({
+      tabsData: [
+        {
+          name: 'houseInfo',
+          text: '房源信息',
+          href: `/houses/${id}`,
+          active: false
+        }, {
+          name: 'roomInfo',
+          text: '房间信息',
+          href: `/rooms/${id}`,
+          active: true
+        }, {
+          name: 'photo',
+          text: '房源照片',
+          href: `/house-pic/${id}`,
+          active: false
+        }
+      ]
+    })
   }
   render() {
     const {
-      tabsData,
+      roomList,
       redirect,
-      indexHouse
+      roomListLoading
     } = this.props
-    const { timeLines } = this.state
+    const { tabsData } = this.state
     return (
       <div>
         <Tabs data={tabsData} 
-          houseInfo={indexHouse} 
           onClick={(data) => {
             if (data.href) { redirect(data.href) }
           }} 
         />
-        {indexHouse.id ? (
-          <div className="infinte-loader">
-            <ReactLoading
+        {
+          roomListLoading
+            ? <div className="infinte-loader">
+              <ReactLoading
               type="bubbles"
               className="inline-block"
               color="#474747"
-            />
-          </div>
-        ) : (
-          <StyleRoomList/>
-        )}
+              />
+            </div>
+            : <StyleRoomList data={roomList}/>
+        }
       </div>
     )
   }

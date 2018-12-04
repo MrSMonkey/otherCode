@@ -1,7 +1,7 @@
 const initialState = {
   houseInfo: {},
   roomList: [],
-  houseTimeLine: [],
+  timeLines: [],
   houseIncome: { TotalAmount: 0 },
   income: { TotalAmount: 0 },
   roomListLoading: false,
@@ -119,7 +119,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.HOUSE_TIMELINE:
       return {
         ...state,
-        houseTimeLine: action.payload
+        timeLines: action.payload
       }
     default:
       return state

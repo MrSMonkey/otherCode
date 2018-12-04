@@ -15,8 +15,8 @@ const Index = ({ data = [] }) => {
         return(
           <li key={index}>
             <div styleName="dot"></div>
-            <p>{item.text}</p>
-            <span>{item.time}</span>
+            <p>{item.content}</p>
+            <span>{item.createTime}</span>
           </li>
         )
       })

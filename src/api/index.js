@@ -87,13 +87,18 @@ const api = {
   },
   /**房源动态 */
   getHouseTimeLine(id) {
-    return request.get(`/owner/processes/${id}`)
+    return request.get(`/owner/processes/${id}`, {params: {houseId : id}})
   },  
   /* 获取房间信息 */
   getRoomList(id) {
     return request.get(`/house/room/list/${id}`)
   },
+  /* 根据合同id获取图片信息 */
+  getPictureList(houseId) {
+    return request.get(`/house/images/${houseId}`)
+  },
 
+  
   /* 检查手机号是否存在 */
   checkPhoneAccountExist(phone) {
     return request.get('/login/check', {
@@ -136,12 +141,7 @@ const api = {
     return request.get(`/LandlordHouse/landlordcontract/${contractId}`)
   },
 
-  /* 根据合同id获取图片信息 */
-  getPictureListByContractId({ contractId, houseId }) {
-    return request.get(
-      `/LandlordHouse/landlordcontract/${contractId}/${houseId}`
-    )
-  },
+
   /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
   getWechatConfig() {
     return request.get('login/getconfig')

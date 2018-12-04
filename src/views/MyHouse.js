@@ -83,16 +83,6 @@ const StyleHouseStatus = CSSModules(HouseStatus, styles)
 @CSSModules(styles)
 class MyHouses extends Component {
   state = {
-    timeLines: [{
-      text: '完成带看一次，客户未签约',
-      time: '2019-04-19 17:01:38'
-    }, {
-      text: '上架推广',
-      time: '2019-01-19 17:01:38'
-    }, {
-      text: '提交意向房源',
-      time: '2019-01-19 17:01:38'
-    }],
     tabsData: [{
       name: 'houseInfo',
       text: '房源信息',
@@ -137,8 +127,8 @@ class MyHouses extends Component {
     })
   }
   render() {
-    const { redirect, houseInfo } = this.props
-    const { timeLines, tabsData } = this.state
+    const { redirect, houseInfo, timeLines } = this.props
+    const { tabsData } = this.state
     return (
       <div>
         <Tabs data={tabsData} 
@@ -148,7 +138,7 @@ class MyHouses extends Component {
           }} 
         />
         {
-          houseInfo.id 
+          !houseInfo.id 
           ? <div>
             <StyleBsaeInfo data={houseInfo}/>
             <StyleHouseStatus data={timeLines}/>
@@ -171,7 +161,7 @@ export default connect(
     houseInfo: state.myHouse.houseInfo,
     roomList: state.myHouse.roomList,
     isHouseListLoading: state.houseList.isHouseListLoading,
-    tabsData: state.myHouse.tabsData
+    timeLines: state.myHouse.timeLines
   }),
   {
     ...myHouseActions,

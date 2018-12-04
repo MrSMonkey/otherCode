@@ -9,10 +9,10 @@ export const actionTypes = {
 }
 
 export const actions = {
-  getHousePicture(parmas) {
+  getHousePicture(id) {
     return {
       type: actionTypes.GET_HOUSE_PICTURE,
-      parmas
+      id
     }
   }
 }

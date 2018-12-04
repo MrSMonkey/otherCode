@@ -64,7 +64,7 @@ const routes = [
     title: '星级房屋托管计划'
   },
   {
-    path: '/house-pic/:houseId/:contractId',
+    path: '/house-pic/:id',
     component: views.HousePicture,
     needBind: true,
     title: '房源照片'
