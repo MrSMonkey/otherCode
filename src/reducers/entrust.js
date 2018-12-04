@@ -69,6 +69,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         communityList: action.payload
       }
+    case actionTypes.SUBLIMT_FORM_SUCCESS:
+      return {
+        ...state,
+        form: {
+          cityId: '510100',
+          cityName: '成都',
+          communityId: '',
+          communityName: '',
+          linkName: '',
+          linkPhone: '',
+          name: '',
+          phone: action.payload,
+          varityCold: '',
+        }
+      }
     default:
       return state
   }

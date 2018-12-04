@@ -31,7 +31,7 @@ function* bindUser(form) {
       scope: 'server',
       verificationCode: form.varityCold
     })
-    if (data.code) {
+    if (data.code === '000') {
       /**设置token有效期为6天 */
       const date = new Date()
       const time = date.getTime()
@@ -40,19 +40,13 @@ function* bindUser(form) {
       localStore.set('userId', data.data.userId)
       localStore.set('tokenTime', time + 30 * 60 * 1000)
       localStore.set('time', time + (6 * 24* 60 * 60 * 1000))
-      yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
-      yield put({ type: bindActionType.BIND_SUCCESS })
       return true
     }
 
     yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg })
     return false
   } catch (e) {
-    yield put({ type: bindActionType.BIND_FAIL })
-    yield put({
-      type: appActionType.APP_ERROR_MSG,
-      payload: e.message
-    })
+    yield put({type: appActionType.APP_ERROR_MSG,payload: e.message})
   }
 }
 
@@ -62,14 +56,16 @@ function* sublimtEntrustFlow() {
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: true })
     const form = yield select(state => state.entrust.form)
     let isBind = false
-    if (isLogin) { 
-      isBind = yield call(bindUser) 
+    if (!isLogin) { 
+      isBind = yield call(bindUser, form) 
     }
+    console.log(isBind)
     if (isBind) {
       const isSuccess = yield call(sublimtEntrust, form)
       if (isSuccess) {
-        yield put({type:appActionType.APP_SUCCESS_MSG,payload:'提交成功!'})
-        yield put(push('/houses'))
+        yield put({type:appActionType.APP_SUCCESS_MSG, payload:'提交成功!'})
+        // yield put(push('/houses'))
+        yield put({ type: appActionType.SUBLIMT_FORM_SUCCESS, payload: form.phone})
       }
     }
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: false })

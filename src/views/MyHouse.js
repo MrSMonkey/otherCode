@@ -127,7 +127,7 @@ class MyHouses extends Component {
     })
   }
   render() {
-    const { redirect, houseInfo, timeLines } = this.props
+    const { redirect, houseInfo, timeLines, isHouseListLoading } = this.props
     const { tabsData } = this.state
     return (
       <div>
@@ -138,18 +138,18 @@ class MyHouses extends Component {
           }} 
         />
         {
-          !houseInfo.id 
-          ? <div>
-            <StyleBsaeInfo data={houseInfo}/>
-            <StyleHouseStatus data={timeLines}/>
+          isHouseListLoading
+            ? <div className="infinte-loader">
+              <ReactLoading
+                type="bubbles"
+                className="inline-block"
+                color="#474747"
+              />
           </div>
-          : <div className="infinte-loader">
-            <ReactLoading
-              type="bubbles"
-              className="inline-block"
-              color="#474747"
-            />
-        </div>
+            : <div>
+              <StyleBsaeInfo data={houseInfo}/>
+              <StyleHouseStatus data={timeLines}/>
+            </div>
         }
       </div>
     )

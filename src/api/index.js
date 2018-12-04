@@ -87,7 +87,7 @@ const api = {
   },
   /**房源动态 */
   getHouseTimeLine(id) {
-    return request.get(`/owner/processes/${id}`, {params: {houseId : id}})
+    return request.get(`/owner/processes/${id}`)
   },  
   /* 获取房间信息 */
   getRoomList(id) {
