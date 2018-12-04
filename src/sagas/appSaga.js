@@ -73,7 +73,7 @@ function* appStateInit() {
   })
 
   if (data) {
-    yield call(getUserInfo)
+    // yield call(getUserInfo)
   }
 
   return data
@@ -82,28 +82,19 @@ function* appStateInit() {
 /* 获取用户信息 */
 function* getUserInfo() {
   try {
-    const landlordInfo = yield select(state => state.app.landlordInfo)
-    const wx = yield select(state => state.app.wx)
-
-    if (landlordInfo.Id) {
-      return landlordInfo
+    let userInfo = yield select(state => state.app.userInfo)
+    
+    if (!userInfo.Id) {
+      const data = yield call(api.getUserInfo)
+      userInfo = data
+      console.log(data)
     }
-
-    const { data } = yield call(api.getUserInfo, wx.openid, wx.access_token)
-
-    if (!data) {
-      throw new Error('获取用户信息失败!')
-    }
-
+    console.log(userInfo.Id)
+    yield put({ type: actionTypes.USER_INFO, payload: userInfo})
     yield put({ type: actionTypes.GET_USER_SUCCESS, payload: data })
-    return data
   } catch (e) {
-    yield put({
-      type: actionTypes.APP_ERROR_MSG,
-      payload: e.message
-    })
+    yield put({ type: actionTypes.APP_ERROR_MSG, payload: e.message })
     yield put({ type: actionTypes.GET_USER_FAIL })
-    throw e
   }
 }
 
@@ -172,10 +163,15 @@ function* showErrorMessage() {
   yield put({ type: actionTypes.HIDE_ERROR_MEG })
 }
 
+function* webAuth() {
+
+}
+
 function* appInit() {
   yield takeLatest(actionTypes.WX_AUTH, wechatOAuth)
   yield takeEvery(actionTypes.GET_USER_INFO, getUserInfo)
   yield takeEvery(actionTypes.GET_JS_SDK_CONFIG,getJsSDKConfig)
+  yield takeLatest(actionTypes.WEB_AUTH, webAuth)
   yield takeLatest(
     [actionTypes.APP_ERROR_MSG, actionTypes.APP_SUCCESS_MSG],
     showErrorMessage

@@ -3,10 +3,15 @@ import api from '../api'
 import { actionTypes } from '../reducers/houseList'
 import { actionTypes as appActionTypes } from '../reducers/app'
 
-function* getHouseList(id) {
+function* getHouseList() {
   try {
-    const { data } = yield call(api.getLandlordHouseList, id)
-    return data
+    const { data } = yield call(api.getLandlordHouseList)
+    if (data.code === '000') {
+      return data.data
+    }
+    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg })
+    yield put({ type: actionTypes.GET_HOUSE_LIST_FAIL })
+    return []
   } catch (err) {
     yield put({ type: actionTypes.GET_HOUSE_LIST_FAIL })
     yield put({
@@ -18,33 +23,13 @@ function* getHouseList(id) {
 
 function* getHouseListFlow() {
   while (true) {
-    const actionData = yield take(actionTypes.GET_HOUSE_LIST)
-    let houseData = yield select(state => state.houseList.data)
-    // console.log(houseData)
-    if (houseData.length === 0) {
-      const id = yield select(state => state.app.landlordInfo.Id)
-      houseData = yield call(getHouseList, id)
-      if (houseData) {
-        yield put({
-          type: actionTypes.GET_HOUSE_LIST_SUCCESS,
-          payload: houseData
-        })
-      }
+    yield take(actionTypes.GET_HOUSE_LIST)
+    const houseData = yield call(getHouseList)
+    console.log(houseData);
+    if (houseData) {
+      yield put({ type: actionTypes.GET_HOUSE_LIST_SUCCESS, payload: houseData })
     }
-
-    let indexHouse = {}
-    houseData && houseData.some(house => {
-      if (house.HouseId === actionData.indexHouseId) {
-        indexHouse = house
-        return true
-      }
-      return false
-    })
-    yield put({ type: actionTypes.INDEX_HOUSE_INFO, payload: indexHouse })
-    yield put({
-      type: actionTypes.CHANGE_HOUSE_LIST_LOADING,
-      payload: indexHouse
-    })
+    yield put({ type: actionTypes.CHANGE_HOUSE_LIST_LOADING, payload: false})
   }
 }
 

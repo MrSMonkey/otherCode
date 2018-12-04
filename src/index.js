@@ -7,6 +7,20 @@ import './styles/react-photoswipe/react-photoswipe.global.px.css'
 import './styles/app.global.css'
 import store from './Store'
 import { actions as appActions } from './reducers/app'
+import { localStore } from './utils'
+
+const date = new Date()
+const time = date.getTime()
+const indate = localStore.get('time')
+if (indate && indate !== 'undefined') {
+  // console.log('有效期:',indate, '; 当前时间',time, '; 是否过期', time > indate)
+  if (time > indate) {
+    localStore.remove('access_token')
+    localStore.remove('refresh_token')
+    localStore.remove('userId')
+    localStore.remove('time')
+  }
+}
 
 const appRender = () =>
   render(

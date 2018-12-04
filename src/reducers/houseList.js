@@ -1,5 +1,5 @@
 const initialState = {
-  data: [{CommunityName: '天香 2栋3单元33楼3301号', isRegister: true, HouseId: 1}, {HouseId: 2, CommunityName: '天香 2栋3单元33楼3301号', isRegister: false}],
+  data: [],
   indexHouse: {},
   indexHouseId: '',
   isHouseListLoading: false
@@ -15,10 +15,10 @@ export const actionTypes = {
 }
 
 export const actions = {
-  getHouseList(indexHouseId) {
+  getHouseList(accessToken) {
     return {
       type: actionTypes.GET_HOUSE_LIST,
-      indexHouseId
+      accessToken
     }
   }
 }

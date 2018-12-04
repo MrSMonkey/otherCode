@@ -3,12 +3,11 @@ import store from '../Store'
 import { actions as appActions } from '../reducers/app'
 import { populateUrl } from '@/utils'
 import appConfig from '@/appConfig'
+import { localStore } from '@/utils'
 
 const host = appConfig.host
 axios.defaults.withCredentials = true
 
-/**临时登录授权 */
-axios.defaults.headers.common['Authorization'] = 'Basic b3duZXI6MTIzNDU2';
 
 const request = axios.create({
   baseURL: host.api.replace(/\/+$/, ''),
@@ -19,13 +18,26 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
+    const date = new Date()
+    const time = date.getTime()
+    const indate = localStore.get('time')
+
+    // 判断是否存在 token，如果存在的话，则每个http header都加上token
+    if (indate && indate !== 'undefined' && time < indate) {  
+      const accessToken = localStore.get('access_token')
+      // const refreshToken = localStore.get('refresh_token')
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      /**临时登录授权 */
+      config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2'
+    }
     config.url = populateUrl(config.url, config.urlKey)
     return config
   },
   err => {
     const status = err.response.status
-    if (status === 401 || status === 404) {
-      return store.dispatch(appActions.doWechatAuth())
+    if (status === 401) {
+      // return store.dispatch(appActions.refreshToken())
     }
     return Promise.reject(err)
   }
@@ -34,6 +46,39 @@ request.interceptors.request.use(
 const api = {
   getHouseList(cityId) {
     return request.get(`/room/recommand/${cityId}/1`)
+  },
+  /* 获取用户信息 */
+  getUserInfo() {
+    return request.get('/user')
+  },
+  /**城市信息 */
+  getCitys() {
+    return request.get('/common/city')
+    // return request({
+    //   method: 'get',
+    //   url: '/common/city',
+    //   "proxy": {
+    //     "host": "http://192.168.200.126",
+    //     "port": 9003,
+    //     "auth":{
+    //       "username": "owner",
+    //       "password": "123456"
+    //     }
+    //   },
+    // })
+  },
+  //根据当前城市和关键字查询小区
+  getCommunityList(cityId, key){
+    // console.log('发起请求: ', key)
+    return request.get(`/common/communitys/${cityId}/${key}`)
+  },
+  /* 生成验证码 */
+  genValidateCode(mobile) {
+    return request.post(`/user/verification_code/${mobile}`)
+  },
+  /**提交委托 */
+  postEntrust(form) {
+    return request.post('/owner/entrust', form)
   },
 
   /* 检查手机号是否存在 */
@@ -63,9 +108,9 @@ const api = {
     return request.get(`/landlordBill/myList/${phone}/${page}/${pageSize}`)
   },
 
-  /* 根据房东id获取房源列表 */
-  getLandlordHouseList(landlordId) {
-    return request.get(`/LandlordHouse/gethouses/${landlordId}`)
+  /* 根据获取房源列表 */
+  getLandlordHouseList() {
+    return request.get(`/owner/entrust/list`)
   },
 
   /* 获取房间信息 */
@@ -117,15 +162,7 @@ const api = {
       }
     })
   },
-  /* 获取用户信息 */
-  getUserInfo(openId, accessToken) {
-    return request.get('/login/getuserinfo', {
-      params: {
-        openId,
-        accessToken
-      }
-    })
-  },
+
   /* 
   data :
     {
@@ -137,18 +174,6 @@ const api = {
  */
   bindUser(data) {
     return request.post('/user/mobile/login', data)
-  },
-  /**城市信息 */
-  getCitys() {
-    return request.get('/common/city')
-  },
-  /* 生成验证码 */
-  genValidateCode(mobile) {
-    return request.post(`/user/verification_code/${mobile}`)
-  },
-  /**提交委托 */
-  postEntrust(form) {
-    return request.post('/owner/entrust', form)
   },
   /* 获取单个房源的收入 */
   getHouseIncomeById(houseId) {
@@ -200,18 +225,11 @@ const api = {
       params: params
     })
   },
-
   // 获取钱包状态【是否激活，激活才能提现】
   getwalletstate(params){
     return request.get(`/wallet/getwalletstate`, {
       params: params
     })
-  },
-
-  //根据当前城市和关键字查询小区
-  getCommunityList(cityId, key){
-    // console.log('发起请求: ', key)
-    return request.get(`/common/communitys/${cityId}/${key}`)
   },
 }
 

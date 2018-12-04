@@ -45,7 +45,8 @@ export const actionTypes = {
   HIDE_ERROR_MEG: 'HIDE_ERROR_MEG',
   GET_JS_SDK_CONFIG:'GET_JS_SDK_CONFIG',
   SAVE_JS_SDK_CONFIG:'SAVE_JS_SDK_CONFIG',
-  USER_INFO: 'USER_INFO'
+  USER_INFO: 'USER_INFO',
+  WEB_AUTH: 'WEB_AUTH',  //更新 token
 }
 
 export const actions = {
@@ -87,7 +88,12 @@ export const actions = {
       type: actionTypes.APP_SUCCESS_MSG,
       payload: msg
     }
-  }
+  },
+  refreshToken() {
+    return {
+      type: actionTypes.WEB_AUTH
+    }
+  },
 }
 
 const reducer = (state = initialState, action) => {

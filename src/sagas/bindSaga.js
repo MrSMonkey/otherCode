@@ -21,13 +21,13 @@ function* bindUser() {
     }
     /**设置token有效期为6天 */
     const date = new Date()
-    const time = date.getTime() + (6 * 24* 60 * 60 * 1000)
+    const time = date.getTime()
     localStore.set('access_token', data.data.access_token)
     localStore.set('refresh_token', data.data.refresh_token)
     localStore.set('userId', data.data.userId)
-    localStore.set('time', time)
+    localStore.set('tokenTime', time + 30 * 60 * 1000)
+    localStore.set('time', time + (6 * 24* 60 * 60 * 1000))
     yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
-    yield put({ type: appActionType.USER_INFO, payload: data.data || {} })
     yield put({ type: bindActionType.BIND_SUCCESS })
   } catch (e) {
     yield put({ type: bindActionType.BIND_FAIL })

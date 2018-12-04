@@ -11,18 +11,6 @@ import needAuth from './components/hoc/needAuth'
 import createToast from './components/NotifyToast'
 import { localStore } from './utils'
 
-const date = new Date()
-const time = date.getTime()
-const indate = localStore.get('time')
-if (indate && indate !== 'undefined') {
-  console.log('有效期:',indate, '; 当前时间',time, '; 是否过期', time > indate)
-  if (time > indate) {
-    localStore.remove('access_token')
-    localStore.remove('refresh_token')
-    localStore.remove('userId')
-    localStore.remove('time')
-  }
-}
 
 const ViewMeta = props => (
   <Helmet>
@@ -59,6 +47,7 @@ const AppInstance = ({ isInitiating, showNotice, noticeType, noticeMsg }) => {
                 key={i}
                 path={route.path}
                 render={props => {
+                  const indate = localStore.get('time')
                   if (route.needBind && !indate) {
                     return <AuthedView routeConfig={route} {...props} />
                   }

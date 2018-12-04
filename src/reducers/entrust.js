@@ -1,7 +1,7 @@
 const initialState = {
   form: {
     cityId: '510100',
-    cityName: '',
+    cityName: '成都',
     communityId: '',
     communityName: '',
     linkName: '',

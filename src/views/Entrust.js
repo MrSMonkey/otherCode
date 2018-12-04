@@ -182,8 +182,8 @@ class Entrust extends Component {
   state = {
     isErr: {
       communityName: false,
-      linkName: false,
-      linkPhone: false,
+      name: false,
+      phone: false,
       varityCold: false
     },
     isErrAddPhone: false
@@ -191,7 +191,7 @@ class Entrust extends Component {
 
   /** 提交*/
   sublimt = () => {
-    const { form, isLogin } = this.props
+    const { form, changeForm } = this.props
     const { isErr, isErrAddPhone } = this.state
 
     for (let i in form) {
@@ -201,6 +201,7 @@ class Entrust extends Component {
       // 登录状态下不必验证联系人验证码
       if (isLogin) {
         delete isErr.varityCold
+        delete isErr.phone
       }
       /* 验证必填项目 || 验证是否正确 */
       if (hasOwn) {
@@ -217,21 +218,28 @@ class Entrust extends Component {
     for (let i in isErr) {
       const val = isErr[i]
       if (val || isErrAddPhone) {
-        // console.log("hasErr", i, val)
         hasErr = true
         break
       }
     }
-
+    
+    console.log("hasErr", hasErr)
     if (hasErr) {
       this.setState({ ...isErr })
       return
     }
+
+    /**test */
+    changeForm(13568888932, 'phone')
+
     this.props.sublimtEntrust()
   }
   
   componentDidMount() {
     this.props.getCitys()
+    if (isLogin) {
+      this.props.getUserInfo()
+    }
   }
   
   render() {
@@ -250,7 +258,11 @@ class Entrust extends Component {
                 data={citys}
                 value={form.cityId}
                 placeholder="请选择您爱屋所在的城市"
-                onChange={val => changeForm(val, 'cityId')}
+                onChange={val => {
+                  const city = citys.filter(i => val == i.id)
+                  changeForm(val, 'cityId')
+                  changeForm(city[0].cityName, 'cityName')
+                }}
                 option={{value: 'id', text: 'cityName'}}
               />
             </FormItem>
@@ -268,54 +280,59 @@ class Entrust extends Component {
             </FormItem>
           </div>
 
-          <h2 styleName="title" style={{display: isLogin ? 'none' : 'block'}}>
+          <h2 styleName="title">
             留下联系方式
-            <span styleName="descripe">
+            <span styleName="descripe" style={{display: isLogin ? 'none' : 'block'}}>
               提交成功后，可以使用这个手机号登录查看房源动态
             </span>
           </h2>
-          <div styleName="input-group" style={{display: isLogin ? 'none' : 'block'}}>
-            <FormItem label="姓名" isErr={isErr.linkName}>
+          <div styleName="input-group">
+            <FormItem label="姓名" isErr={isErr.name}>
               <Input
                 must
-                value={form.linkName}
+                value={form.name}
                 maxLength={30}
                 placeholder="请输入您的称呼"
-                onChange={val => changeForm(val, 'linkName')}
+                onChange={val => changeForm(val, 'name')}
                 verify={{
-                  cb: val => this.setState({ isErr: { ...isErr, linkName: !val } })
+                  cb: val => this.setState({ isErr: { ...isErr, name: !val } })
                 }}
               />
             </FormItem>
-            <FormItem label="手机号" isErr={isErr.linkPhone}>
-              <Input
-                value={form.linkPhone}
-                placeholder="请输入您的手机号码"
-                onChange={val => changeForm(val, 'linkPhone')}
-                verify={{
-                  type: 'phone',
-                  cb: val => {
-                    // console.log('linkPhone ERR', !val)
-                    this.setState({ isErr: { ...isErr, linkPhone: !val } })
-                  }
-                }}
-              />
-            </FormItem>
-            <FormItem label="验证码" isErr={isErr.varityCold}>
-              <Input
-                value={form.varityCold}
-                placeholder="请输入验证码"
-                onChange={val => changeForm(val, 'varityCold')}
-                style={{width: '100px'}}
-                verify={{
-                  cb: val => this.setState({ isErr: { ...isErr, varityCold: !val } })
-                }}
-              />
-              <ValidationCodeButton
-                isDisabled={this.state.isErr.linkPhone || !form.linkPhone}
-                onClick={genCode}
-              />
-            </FormItem>
+            {
+              isLogin ? null 
+                : <div>
+                  <FormItem label="手机号" isErr={isErr.phone}>
+                    <Input
+                      value={form.phone}
+                      placeholder="请输入您的手机号码"
+                      onChange={val => changeForm(val, 'phone')}
+                      verify={{
+                        type: 'phone',
+                        cb: val => {
+                          // console.log('phone ERR', !val)
+                          this.setState({ isErr: { ...isErr, phone: !val } })
+                        }
+                      }}
+                    />
+                  </FormItem>
+                  <FormItem label="验证码" isErr={isErr.varityCold} style={{display: isLogin ? 'none' : 'block'}}>
+                    <Input
+                      value={form.varityCold}
+                      placeholder="请输入验证码"
+                      onChange={val => changeForm(val, 'varityCold')}
+                      style={{width: '100px'}}
+                      verify={{
+                        cb: val => this.setState({ isErr: { ...isErr, varityCold: !val } })
+                      }}
+                    />
+                    <ValidationCodeButton
+                      isDisabled={this.state.isErr.linkPhone || !form.linkPhone}
+                      onClick={genCode}
+                    />
+                  </FormItem>
+                </div>
+            }
           </div>
 
           <h2 styleName="title">添加其他信息</h2>
@@ -323,17 +340,17 @@ class Entrust extends Component {
             <FormItem label="姓名">
               <Input
                 must
-                value={form.name}
+                value={form.linkName}
                 maxLength={30}
                 placeholder="请输入您的称呼"
-                onChange={val => changeForm(val, 'name')}
+                onChange={val => changeForm(val, 'linkName')}
               />
             </FormItem>
             <FormItem label="手机号" isErr={isErrAddPhone}>
               <Input
-                value={form.phone}
+                value={form.linkPhone}
                 placeholder="请输入您的手机号码"
-                onChange={val => changeForm(val, 'phone')}
+                onChange={val => changeForm(val, 'linkPhone')}
                 verify={{
                   type: 'phone',
                   cb: val => {
