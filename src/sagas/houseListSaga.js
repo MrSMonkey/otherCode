@@ -5,7 +5,7 @@ import { actionTypes as appActionTypes } from '../reducers/app'
 
 function* getHouseList() {
   try {
-    const { data } = yield call(api.getLandlordHouseList)
+    const { data } = yield call(api.getHouseList)
     if (data.code === '000') {
       return data.data
     }

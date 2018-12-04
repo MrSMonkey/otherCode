@@ -7,7 +7,7 @@
 
 .item-tit {
   line-height: 1;
-  padding: 40px 30px;
+  padding: 40px 10px 40px 30px;
   font-size: 18px; /* no */
   border-bottom: 1px solid $bg-color-default; /* no */
 }
@@ -16,4 +16,18 @@
   padding: 30px 30px;
   font-size: 12px; /* no */
   color: $font-color-light;
+}
+
+.background-tips {
+  position: relative;
+  top: 168px;
+  text-align: center;
+  font-size: 15px; /* no */
+  img {
+    width: 166px;
+    height: auto;
+  }
+  span {
+    color: $color-golden
+  }
 }

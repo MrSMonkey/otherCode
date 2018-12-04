@@ -327,7 +327,7 @@ class Entrust extends Component {
                       }}
                     />
                     <ValidationCodeButton
-                      isDisabled={this.state.isErr.linkPhone || !form.linkPhone}
+                      isDisabled={this.state.isErr.phone || !form.phone}
                       onClick={genCode}
                     />
                   </FormItem>

@@ -3,6 +3,9 @@ import api from '../api'
 import { push } from 'connected-react-router'
 import { actionTypes as appActionType } from '../reducers/app'
 import { actionTypes as entrustActionType } from '../reducers/entrust'
+import { localStore } from '../utils'
+
+const isLogin = !!localStore.get('userId')
 
 /**提交委托表单 */
 function* sublimtEntrust(form) {
@@ -18,15 +21,56 @@ function* sublimtEntrust(form) {
   }
 }
 
+/**登录绑定 */
+function* bindUser(form) {
+  try {
+    const { data } = yield call(api.bindUser, {
+      mobile: form.phone,
+      grantType: 'mobile',
+      registerSource: 1,
+      scope: 'server',
+      verificationCode: form.varityCold
+    })
+    if (data.code) {
+      /**设置token有效期为6天 */
+      const date = new Date()
+      const time = date.getTime()
+      localStore.set('access_token', data.data.access_token)
+      localStore.set('refresh_token', data.data.refresh_token)
+      localStore.set('userId', data.data.userId)
+      localStore.set('tokenTime', time + 30 * 60 * 1000)
+      localStore.set('time', time + (6 * 24* 60 * 60 * 1000))
+      yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
+      yield put({ type: bindActionType.BIND_SUCCESS })
+      return true
+    }
+
+    yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg })
+    return false
+  } catch (e) {
+    yield put({ type: bindActionType.BIND_FAIL })
+    yield put({
+      type: appActionType.APP_ERROR_MSG,
+      payload: e.message
+    })
+  }
+}
+
 function* sublimtEntrustFlow() {
   while (true) {
     yield take(entrustActionType.SUBLIMT_FORM)
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: true })
     const form = yield select(state => state.entrust.form)
-    const isSuccess = yield call(sublimtEntrust, form)
-    if (isSuccess) {
-      yield put({type:appActionType.APP_SUCCESS_MSG,payload:'提交成功!'})
-      yield put(push('/houses'))
+    let isBind = false
+    if (isLogin) { 
+      isBind = yield call(bindUser) 
+    }
+    if (isBind) {
+      const isSuccess = yield call(sublimtEntrust, form)
+      if (isSuccess) {
+        yield put({type:appActionType.APP_SUCCESS_MSG,payload:'提交成功!'})
+        yield put(push('/houses'))
+      }
     }
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: false })
   }

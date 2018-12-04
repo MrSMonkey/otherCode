@@ -44,8 +44,8 @@ request.interceptors.request.use(
 )
 
 const api = {
-  getHouseList(cityId) {
-    return request.get(`/room/recommand/${cityId}/1`)
+  getHouseList() {
+    return request.get(`/owner/entrust/list`)    
   },
   /* 获取用户信息 */
   getUserInfo() {

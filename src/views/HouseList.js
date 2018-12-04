@@ -7,26 +7,44 @@ import { actions as houseListActions } from '../reducers/houseList'
 import styles from './HouseList.css'
 import { localStore } from '@/utils'
 
+const imgs = {
+  noHouse: require('../assets/imgs/illustration_blank.png')
+}
+
 const HouseItem = ({ data, redirect }) => {
   const formartDate = val => {
     return val ? val.slice(0, 10) : ''
   }
-  const rentType = () => {
-    switch (data.rentType) {
-      case 1:
-        return '直租';
-      case 1:
-        return '直管加盟';
-      case 1:
-        return '纯托管';
-      case 1:
-        return '未知';
-      default:
-        return '';
-    }
+  /**托管类型 */
+  let rentType = ''
+  switch (data.rentType) {
+    case 1:
+      rentType = '直租';
+      break;
+    case 2:
+      rentType = '直管加盟';
+      break;
+    case 3:
+      rentType = '纯托管';
+      break;
+    case 4:
+      rentType = '未知';
+      break;
+    default:
+      rentType = '';
+      break;
+  }
+  /**租赁类型 */
+  let rentWay = ''
+  switch(data.rentWay) {
+    case 1:
+      rentWay = '整租';
+    case 2:
+      rentWay = '合租';
+    default:
+      rentWay = '';
   }
 
-  const rentWay = data.rentWay === 1 ? '整租' : '合租'
   return (
     <div
       styleName="house-item"
@@ -36,13 +54,13 @@ const HouseItem = ({ data, redirect }) => {
       <h2 styleName="item-tit">
         {data.communityName}
         &nbsp;
-        {data.houseId ? `${data.building}栋${data.houseId}单元${floorNum}楼${number}号` : ''}
+        {data.houseId ? `${data.building || ''}栋${data.unit || ' '}单元${data.floorNum || ' '}楼${data.number || ' '}号` : ''}
       </h2>
       <p styleName="item-desc">
       {
         data.houseId
           ? `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
-          : '提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：18301347349 进行咨询'
+          : `提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：${data.contact} 进行咨询`
       }
       </p>
     </div>
@@ -72,7 +90,13 @@ class HouseList extends Component {
       )
     }
     return houseList.length === 0 ? (
-      <div className="background-tips">暂无房源数据</div>
+      <div styleName="background-tips">
+        <img src={imgs.noHouse}/>
+        <p>
+          您尚未提交意向资源，您可以
+          <span onClick={() => redirect(`/entrust`)}>立即增加</span>
+        </p>
+      </div>
     ) : (
       houseList.map((h, index) => (
         <StyledHouseItem key={index} redirect={redirect} data={h} />
