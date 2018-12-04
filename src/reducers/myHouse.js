@@ -1,6 +1,7 @@
 const initialState = {
   houseInfo: {},
   roomList: [],
+  houseTimeLine: [],
   houseIncome: { TotalAmount: 0 },
   income: { TotalAmount: 0 },
   roomListLoading: false,
@@ -9,12 +10,12 @@ const initialState = {
     {
       name: 'houseInfo',
       text: '房源信息',
-      href: '/houses',
+      href: '/houses/',
       active: true
     }, {
       name: 'roomInfo',
       text: '房间信息',
-      href: '/rooms/:id',
+      href: '/rooms/',
       active: false
     }, {
       name: 'photo',
@@ -32,16 +33,16 @@ export const actionTypes = {
   GET_LANDLORD_INCOME_SUCCESS: 'GET_LANDLORD_INCOME_SUCCESS',
   GET_HOUSE_INCOME: 'GET_HOUSE_INCOME',
   GET_HOUSE_INCOME_SUCCESS: 'GET_HOUSE_INCOME_SUCCESS',
-  TABS_DATA: 'TABS_DATA'
+  TABS_DATA: 'TABS_DATA',
+  GET_HOUSE_INFO: 'GET_HOUSE_INFO',
+  HOUSE_INFO: 'HOUSE_INFO',
+  GET_HOUSE_TIMELINE: 'GET_HOUSE_TIMELINE',
+  HOUSE_TIMELINE: 'HOUSE_TIMELINE',
+  GET_ROOM_LIST: 'GET_ROOM_LIST',
+  ROOM_LIST: 'ROOM_LIST',
 }
 
 export const actions = {
-  getRoomList(houseId) {
-    return {
-      type: actionTypes.GET_LANDLORD_ROOM,
-      houseId
-    }
-  },
   getIncome() {
     return {
       type: actionTypes.GET_LANDLORD_INCOME
@@ -52,17 +53,35 @@ export const actions = {
       type: actionTypes.GET_HOUSE_INCOME,
       houseId
     }
+  },
+  getHouseInfo(id) {
+    return {
+      type: actionTypes.GET_HOUSE_INFO,
+      id
+    }
+  },
+  gethouseTimeLine(id) {
+    return {
+      type: actionTypes.GET_HOUSE_TIMELINE,
+      id
+    }
+  },
+  getRoomList(id) {
+    return {
+      type: actionTypes.GET_ROOM_LIST,
+      id
+    }
   }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.GET_LANDLORD_ROOM:
+    case actionTypes.GET_ROOM_LIST:
       return {
         ...state,
         roomListLoading: true
       }
-    case actionTypes.GET_LANDLORD_ROOM_SUCCESS:
+    case actionTypes.ROOM_LIST:
       return {
         ...state,
         roomListLoading: false,
@@ -91,6 +110,16 @@ const reducer = (state = initialState, action) => {
         houseIncome: {
           ...action.payload
         }
+      }
+    case actionTypes.HOUSE_INFO:
+      return {
+        ...state,
+        houseInfo: action.payload
+      }
+    case actionTypes.HOUSE_TIMELINE:
+      return {
+        ...state,
+        houseTimeLine: action.payload
       }
     default:
       return state

@@ -38,11 +38,9 @@ class RoomInfo extends Component {
   state = {
   }
   componentDidMount() {
-    const { match, getHouseList, getRoomList, getHouseIncome } = this.props
+    const { match, getRoomList} = this.props
     const id = match.params.id
-    getHouseList(id)
     getRoomList(id)
-    getHouseIncome(id)
   }
   render() {
     const {
@@ -56,7 +54,6 @@ class RoomInfo extends Component {
         <Tabs data={tabsData} 
           houseInfo={indexHouse} 
           onClick={(data) => {
-            console.log('~~~~~~~',data)
             if (data.href) { redirect(data.href) }
           }} 
         />
@@ -89,7 +86,6 @@ export default connect(
   }),
   {
     ...myHouseActions,
-    ...houseListActions,
     redirect: url => push(url)
   }
 )(RoomInfo)

@@ -44,9 +44,6 @@ request.interceptors.request.use(
 )
 
 const api = {
-  getHouseList() {
-    return request.get(`/owner/entrust/list`)    
-  },
   /* 获取用户信息 */
   getUserInfo() {
     return request.get('/user')
@@ -80,6 +77,22 @@ const api = {
   postEntrust(form) {
     return request.post('/owner/entrust', form)
   },
+  /**房源列表 */
+  getHouseList() {
+    return request.get(`/owner/entrust/list`)    
+  },
+  /**房源信息 */
+  getHouseInfo(id) {
+    return request.get(`/house/info/base/${id}`)
+  },
+  /**房源动态 */
+  getHouseTimeLine(id) {
+    return request.get(`/owner/processes/${id}`)
+  },  
+  /* 获取房间信息 */
+  getRoomList(id) {
+    return request.get(`/house/room/list/${id}`)
+  },
 
   /* 检查手机号是否存在 */
   checkPhoneAccountExist(phone) {
@@ -111,11 +124,6 @@ const api = {
   /* 根据获取房源列表 */
   getLandlordHouseList() {
     return request.get(`/owner/entrust/list`)
-  },
-
-  /* 获取房间信息 */
-  getHouseInfoByHouseId(houseId) {
-    return request.get(`/LandlordHouse/roomdetail/${houseId}`)
   },
 
   /* 根据合同id获取房屋信息 */

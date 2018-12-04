@@ -3,7 +3,6 @@ import CSSModules from 'react-css-modules'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 import { actions as myHouseActions } from '../reducers/myHouse'
-import { actions as houseListActions } from '../reducers/houseList'
 import ReactLoading from 'react-loading'
 import Tabs from '../components/Tabs'
 import TimeLine from '../components/TimeLine'
@@ -16,50 +15,50 @@ const BsaeInfo = ({data = {}}) => {
       <div styleName="base-info">
         <div styleName="block">
           <span>门牌号</span>
-          <p>21栋1单元1101室</p>
+          <p>{data.building || ' '}栋{data.unit || ' '}单元{data.number || ' '}室</p>
         </div>
         <div styleName="block">
           <span>运营类型</span>
-          <p>直租</p>
+          <p>{data.consociationTypeName}</p>
         </div>
       </div>
 
       <div styleName="detail-info">
         <div styleName="block">
           <label>小区名称：</label>
-          <span>中粮香颂丽都</span>
+          <span>{data.communityName}</span>
         </div>
         <div styleName="block-secondary">
           <label>楼<span styleName="space-2"/>层：</label>
-          <span>5/24层</span>
+          <span>{data.floorNum}/{data.floorTotality}层</span>
         </div>
         <div styleName="block">
           <label>原始户型：</label>
-          <span>3室2厅2卫</span>
+          <span>{data.initRoomNum}室{data.initHallNum}厅{data.initToiletNum}卫</span>
         </div>
         <div styleName="block-secondary">
           <label>朝<span styleName="space-2"/>向：</label>
-          <span>东南</span>
+          <span>{data.towardName}</span>
         </div>
         <div styleName="block">
           <label>面<span styleName="space-2"/>积：</label>
-          <span>180.66㎡</span>
+          <span>{data.buildAcreage}㎡</span>
         </div>
         <div styleName="block-secondary">
           <label>改造户型：</label>
-          <span>㎡</span>
+          <span>{data.roomNum}室{data.hallNum}厅{data.toiletNum}卫</span>
         </div>
         <div>
           <label>房东姓名：</label>
-          <span>王大锤</span>
+          <span>{data.ownerName}</span>
         </div>
         <div>
           <label>房东电话：</label>
-          <span>17745454545</span>
+          <span>{data.ownerPhone}</span>
         </div>
         <div>
           <label>备<span styleName="space-2"/>注：</label>
-          <span>备注备注备注备注文案占位用生命占位备注备注备注备注文案占位用生命占位备注备注备注备注文案占位用生命占位备注备注备注备注文案占位用生命占位</span>
+          <span>{data.remark}</span>
         </div>
       </div>
     </div>
@@ -93,45 +92,75 @@ class MyHouses extends Component {
     }, {
       text: '提交意向房源',
       time: '2019-01-19 17:01:38'
+    }],
+    tabsData: [{
+      name: 'houseInfo',
+      text: '房源信息',
+      href: `/houses/`,
+      active: true
+    }, {
+      name: 'roomInfo',
+      text: '房间信息',
+      href: `/rooms/`,
+      active: false
+    }, {
+      name: 'photo',
+      text: '房源照片',
+      href: `/house-pic/`,
+      active: false
     }]
   }
   componentDidMount() {
-    const { match, getHouseList, getRoomList, getHouseIncome } = this.props
+    const { match, getHouseInfo, gethouseTimeLine } = this.props
     const id = match.params.id
-    getHouseList(id)
-    getRoomList(id)
-    getHouseIncome(id)
+    getHouseInfo(id)
+    gethouseTimeLine(id)
+    this.setState({
+      tabsData: [
+        {
+          name: 'houseInfo',
+          text: '房源信息',
+          href: `/houses/${id}`,
+          active: true
+        }, {
+          name: 'roomInfo',
+          text: '房间信息',
+          href: `/rooms/${id}`,
+          active: false
+        }, {
+          name: 'photo',
+          text: '房源照片',
+          href: `/house-pic/${id}`,
+          active: false
+        }
+      ]
+    })
   }
   render() {
-    const {
-      tabsData,
-      redirect,
-      indexHouse
-    } = this.props
-    const { timeLines } = this.state
+    const { redirect, houseInfo } = this.props
+    const { timeLines, tabsData } = this.state
     return (
       <div>
         <Tabs data={tabsData} 
-          houseInfo={indexHouse} 
+          houseInfo={houseInfo} 
           onClick={(data) => {
-            console.log('~~~~~~~',data)
             if (data.href) { redirect(data.href) }
           }} 
         />
-        {indexHouse.id ? (
-          <div className="infinte-loader">
+        {
+          houseInfo.id 
+          ? <div>
+            <StyleBsaeInfo data={houseInfo}/>
+            <StyleHouseStatus data={timeLines}/>
+          </div>
+          : <div className="infinte-loader">
             <ReactLoading
               type="bubbles"
               className="inline-block"
               color="#474747"
             />
-          </div>
-        ) : (
-          <div>
-            <StyleBsaeInfo data={indexHouse}/>
-            <StyleHouseStatus data={timeLines}/>
-          </div>
-        )}
+        </div>
+        }
       </div>
     )
   }
@@ -139,18 +168,13 @@ class MyHouses extends Component {
 
 export default connect(
   state => ({
-    landlordId: state.myHouse.landlordId,
-    indexHouse: state.houseList.indexHouse,
+    houseInfo: state.myHouse.houseInfo,
     roomList: state.myHouse.roomList,
-    roomListLoading: state.myHouse.roomListLoading,
-    income: state.myHouse.houseIncome,
-    incomeLoading: state.myHouse.incomeLoading,
     isHouseListLoading: state.houseList.isHouseListLoading,
     tabsData: state.myHouse.tabsData
   }),
   {
     ...myHouseActions,
-    ...houseListActions,
     redirect: url => push(url)
   }
 )(MyHouses)

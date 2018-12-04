@@ -19,6 +19,8 @@ import watchAdd from './addCard'
 import watchA from './openWallet'
 import isShowModelFlow from './modal'
 import sreachCommunityFlow from './sreachCommunity'
+import houseInfoFlow from './houseInfo'
+import getHouseTimeLineFlow from './houseTimeLine'
 
 export default function* rootSaga() {
   yield fork(getHouseListFlow)
@@ -43,4 +45,6 @@ export default function* rootSaga() {
   yield fork(watchA)
   yield fork(isShowModelFlow)
   yield fork(sreachCommunityFlow)
+  yield fork(houseInfoFlow)
+  yield fork(getHouseTimeLineFlow)
 }
