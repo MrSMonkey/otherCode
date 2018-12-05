@@ -36,25 +36,22 @@ class InputList extends PureComponent {
     const { changeForm } = this.props;
     changeForm(this.state.keyValue, 'communityName')
     changeForm(this.state.activeId, 'communityId')
-    this.cancel()
+    this.cancelChooes()
   }
   
-  cancel = () => {
+  cancelChooes = () => {
     const { close } = this.props;
-    this.setState({
-      // keyValue: '',
-      activeId: ''
-    }, close)
+    close()
   }
 
   render() {
     const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList, modalContent } = this.props;
+    const { sreachCommunity, communityList } = this.props;
     return (
       <Modal>
         <div styleName="modal">
           <header styleName="header">
-            <div styleName="text-button" onClick={this.cancel}>取消</div>
+            <div styleName="text-button" onClick={this.cancelChooes}>取消</div>
             <div styleName="header-title">请输入小区名称</div>
             <div styleName="text-button" onClick={this.confirmeKey}>确认</div>
           </header>
@@ -271,22 +268,12 @@ class Entrust extends Component {
                 option={{value: 'id', text: 'cityName'}}
               />
             </FormItem>
-            <FormItem label="小区名称" isErr={isErr.communityName} 
-              onClick={() => {
-                // this.setState({
-                //   modalContent: 'alert'
-                // },)
-                showModle()
-              }}>
+            <FormItem label="小区名称" isErr={isErr.communityName} onClick={showModle}>
               <Input
                 value={form.communityName}
                 maxLength={16}
                 placeholder="请输入您爱屋所在的小区"
                 disabled={true}
-                verify={{
-                  cb: val =>
-                    this.setState({ isErr: { ...isErr, communityName: !val } })
-                }}
               />
             </FormItem>
           </div>
@@ -389,9 +376,10 @@ class Entrust extends Component {
           close={() => {
             showModle()
             this.setState({ 
-              isErr: { ...isErr, communityName: !!form.communityName }
+              isErr: { ...isErr, communityName: !form.communityName }
             })
           }}
+          form={form}
           communityList={communityList}
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}
