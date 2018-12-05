@@ -27,8 +27,10 @@ request.interceptors.request.use(
       const accessToken = localStore.get('access_token')
       // const refreshToken = localStore.get('refresh_token')
       config.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-      /**临时登录授权 */
+    }
+
+    if (config.url === '/login/web/mobile') {
+      /**登录授权 */
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2'
     }
     config.url = populateUrl(config.url, config.urlKey)
