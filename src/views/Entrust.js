@@ -36,7 +36,9 @@ class InputList extends PureComponent {
     const { changeForm } = this.props;
     changeForm(this.state.keyValue, 'communityName')
     changeForm(this.state.activeId, 'communityId')
-    this.cancelChooes()
+    setTimeout(()=> {
+      this.cancelChooes()
+    }, 0)
   }
   
   cancelChooes = () => {
