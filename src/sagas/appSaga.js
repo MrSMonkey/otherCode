@@ -3,7 +3,7 @@ import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects'
 import { actionTypes } from '../reducers/app'
 import api from '../api'
 import { APP_TYPE } from '../utils/const'
-import { parseQuery } from '../utils'
+import { parseQuery, localStore } from '../utils'
 
 /* 获取微信配置(appid,scope,跳转地址等) */
 function* getWechatConfig() {
@@ -164,7 +164,9 @@ function* showErrorMessage() {
 }
 
 function* webAuth() {
-
+  const refreshToken = localStore.get('refresh_token')
+  const accessToken = yield call(aip.getToken, refreshToken)
+  localStore.set('access_token', accessToken)
 }
 
 function* appInit() {

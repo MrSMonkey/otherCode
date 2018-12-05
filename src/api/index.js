@@ -36,7 +36,9 @@ request.interceptors.request.use(
   },
   err => {
     const status = err.response.status
+    // const originalRequest = error.config
     if (status === 401) {
+      // originalRequest._retry = true
       // return store.dispatch(appActions.refreshToken())
     }
     return Promise.reject(err)
@@ -44,6 +46,10 @@ request.interceptors.request.use(
 )
 
 const api = {
+  /**刷新 token */
+  getToken(refreshToken) {
+    return request.get(`token/refresh_token/${refreshToken}`)
+  },
   /* 获取用户信息 */
   getUserInfo() {
     return request.get('/user')
@@ -51,18 +57,6 @@ const api = {
   /**城市信息 */
   getCitys() {
     return request.get('/common/city')
-    // return request({
-    //   method: 'get',
-    //   url: '/common/city',
-    //   "proxy": {
-    //     "host": "http://192.168.200.126",
-    //     "port": 9003,
-    //     "auth":{
-    //       "username": "owner",
-    //       "password": "123456"
-    //     }
-    //   },
-    // })
   },
   //根据当前城市和关键字查询小区
   getCommunityList(cityId, key){
@@ -71,7 +65,7 @@ const api = {
   },  
   /**绑定用户 */
   bindUser(data) {
-    return request.post('/user/mobile/login', data)
+    return request.post('/login/web/mobile', data)
   },
   /* 生成验证码 */
   genValidateCode(mobile) {

@@ -11,9 +11,7 @@ function* bindUser() {
   try {
     const { data } = yield call(api.bindUser, {
       mobile: phone,
-      grantType: 'mobile',
       registerSource: 1,
-      scope: 'server',
       verificationCode: identifyingCode
     })
     if (data.code === '000') {

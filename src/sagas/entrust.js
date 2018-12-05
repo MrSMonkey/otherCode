@@ -26,9 +26,7 @@ function* bindUser(form) {
   try {
     const { data } = yield call(api.bindUser, {
       mobile: form.phone,
-      grantType: 'mobile',
       registerSource: 1,
-      scope: 'server',
       verificationCode: form.varityCold
     })
     if (data.code === '000') {
