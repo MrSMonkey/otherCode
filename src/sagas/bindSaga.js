@@ -14,7 +14,7 @@ function* bindUser() {
       registerSource: 1,
       verificationCode: identifyingCode
     })
-    if (data.code === '000') {
+    if (data.code !== '000') {
       /**设置token有效期为6天 */
       const date = new Date()
       const time = date.getTime()
@@ -23,14 +23,17 @@ function* bindUser() {
       localStore.set('userId', data.data.userId)
       localStore.set('tokenTime', time + 30 * 60 * 1000)
       localStore.set('time', time + (6 * 24* 60 * 60 * 1000))
+      yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
+      yield put({ type: bindActionType.BIND_SUCCESS })
+    } else {
+      yield put({ type: bindActionType.BIND_FAIL })
+      yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg })
     }
-    yield put({ type: appActionType.SET_USER_BIND_STATE, payload: true })
-    yield put({ type: bindActionType.BIND_SUCCESS })
   } catch (e) {
     yield put({ type: bindActionType.BIND_FAIL })
     yield put({
       type: appActionType.APP_ERROR_MSG,
-      payload: e.message
+      payload: '登陆用户失败'
     })
   }
 }

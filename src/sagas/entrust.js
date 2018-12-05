@@ -55,7 +55,8 @@ function* sublimtEntrustFlow() {
     const form = yield select(state => state.entrust.form)
     let isBind = true
     if (!isLogin) { 
-      isBind = yield call(bindUser, form) 
+      const data = yield call(bindUser, form)
+      isBind = !!data
     }
     if (isBind) {
       const isSuccess = yield call(sublimtEntrust, form)

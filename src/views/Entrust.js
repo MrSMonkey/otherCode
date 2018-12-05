@@ -233,7 +233,9 @@ class Entrust extends Component {
     }
 
     /**test */
-    changeForm(userInfo.username, 'phone')
+    if (isLogin) {
+      changeForm(userInfo.username, 'phone')
+    }
 
     this.props.sublimtEntrust()
   }
@@ -247,7 +249,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
-    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips, redirect} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips, redirect, updatePhone} = this.props
     return (
       <div>
         <Form data={form}>
@@ -315,7 +317,10 @@ class Entrust extends Component {
                     <Input
                       value={form.phone}
                       placeholder="请输入您的手机号码"
-                      onChange={val => changeForm(val, 'phone')}
+                      onChange={val => {
+                        changeForm(val, 'phone')
+                        updatePhone(val)
+                      }}
                       verify={{
                         type: 'phone',
                         cb: val => {
@@ -337,7 +342,9 @@ class Entrust extends Component {
                     />
                     <ValidationCodeButton
                       isDisabled={this.state.isErr.phone || !form.phone}
-                      onClick={genCode}
+                      onClick={() => {
+                        genCode(form.phone)
+                      }}
                     />
                   </FormItem>
                 </div>

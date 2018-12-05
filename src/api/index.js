@@ -25,11 +25,10 @@ request.interceptors.request.use(
     // 判断是否存在 token，如果存在的话，则每个http header都加上token
     if (indate && indate !== 'undefined' && time < indate) {  
       const accessToken = localStore.get('access_token')
-      // const refreshToken = localStore.get('refresh_token')
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
-
-    if (config.url === '/login/web/mobile') {
+    
+    if (config.url === '/login/web/mobile' || config.url === '/verification_code/') {
       /**登录授权 */
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2'
     }
@@ -38,10 +37,32 @@ request.interceptors.request.use(
   },
   err => {
     const status = err.response.status
-    // const originalRequest = error.config
     if (status === 401) {
-      // originalRequest._retry = true
       // return store.dispatch(appActions.refreshToken())
+    }
+    return Promise.reject(err)
+  }
+)
+
+request.interceptors.response.use(
+  response => {
+    return response
+  },
+  err => {
+    const config = err.config
+    const status = err.response.status
+    if (status === 401 && !config._retry) {
+      const refreshToken = localStore.get('refresh_token')
+      config._retry = true
+      return axios.post(`token/refresh_token/${refreshToken}`)
+      .then(({ data }) => {
+        localStorage.set('access_token', data.access_token)
+        localStorage.set('refresh_token', data.refresh_token)
+
+        config.headers.Authorization = `Bearer ${data.refresh_token}`
+        console.log(config)
+        return axios(config)
+      })
     }
     return Promise.reject(err)
   }
@@ -71,7 +92,7 @@ const api = {
   },
   /* 生成验证码 */
   genValidateCode(mobile) {
-    return request.post(`/user/verification_code/${mobile}`)
+    return request.post(`/verification_code/${mobile}`)
   },
   /**提交委托 */
   postEntrust(form) {
