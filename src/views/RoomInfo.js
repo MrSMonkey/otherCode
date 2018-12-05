@@ -11,19 +11,85 @@ import styles from './RoomInfo.css'
 
 /**房间列表 */
 const RoomList = ({ data = {} }) => {
+  let toward = '';
+  switch (data.toward) {
+    case 1:
+      toward = '东';
+      break;
+    case 2:
+      toward = '南';
+      break;
+    case 3:
+      toward = '西';
+      break;
+    case 4:
+      toward = '北';
+      break;
+    case 5:
+      toward = '东南';
+      break;
+    case 6:
+      toward = '西北';
+      break;
+    case 7:
+      toward = '东北';
+      break;
+    case 8:
+      toward = '西北';
+      break;
+    case 9:
+      toward = '南北';
+      break;
+    case 10:
+      toward = '东西';
+      break;
+    case 11:
+      toward = '暂无朝向';
+      break;
+    default:
+      break;
+  }
+
+  let rentStatus = ''
+  switch (data.rentStatus) {
+    case 1:
+      rentStatus = '待租中';
+      break;
+    case 2:
+      rentStatus = '已出租';
+      break;
+    case 3:
+      rentStatus = '已预订';
+      break;
+    default:
+      break;
+  }
+
+  let onOff = '';
+  switch (data.onOff) {
+    case 1:
+      onOff = '已上架';
+      break;
+    case 2:
+      onOff = '已下架';
+      break;
+    default:
+      break;
+  }
+
   return(
     <div>
       <div styleName="room-item">
         <div styleName="item-tit">
-          <h2>房间A</h2>
-          <i>待租中</i>
-          <i>已上架</i>
+          <h2>{data.isFull ? '' : '房间'}{data.roomName || ''}</h2>
+          {rentStatus ? <i>{rentStatus}</i> : ''}
+          {rentStatus ? <i>{onOff}</i> : ''}
         </div>
         <p styleName="item-desc">
-          ？元/月 <i>|</i> ？㎡ <i>|</i> 南
+          {data.rent || '？'}元/月 <i>|</i> {data.area || '？'}㎡ <i>|</i> {toward}
         </p>
         <p styleName="item-desc">
-          房间配置：3 <i>|</i> 公区配置：7
+          房间配置：{data.roomConfigNum || ''} <i></i> {data.publicAreaConfigNum ? `| 公区配置：${data.publicAreaConfigNum}` : ''}
         </p>
       </div>
     </div>
@@ -86,7 +152,7 @@ class RoomInfo extends Component {
               color="#474747"
               />
             </div>
-            : <StyleRoomList data={roomList}/>
+            : roomList && roomList.map((i, index) => <StyleRoomList data={i} key={index}/>)
         }
       </div>
     )

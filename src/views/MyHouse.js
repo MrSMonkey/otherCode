@@ -46,7 +46,7 @@ const BsaeInfo = ({data = {}}) => {
         </div>
         <div styleName="block-secondary">
           <label>改造户型：</label>
-          <span>{data.roomNum}室{data.hallNum}厅{data.toiletNum}卫</span>
+          <span>{data.roomNum}间</span>
         </div>
         <div>
           <label>房东姓名：</label>

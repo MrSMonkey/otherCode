@@ -55,7 +55,7 @@ function* sublimtEntrustFlow() {
     yield take(entrustActionType.SUBLIMT_FORM)
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: true })
     const form = yield select(state => state.entrust.form)
-    let isBind = false
+    let isBind = true
     if (!isLogin) { 
       isBind = yield call(bindUser, form) 
     }

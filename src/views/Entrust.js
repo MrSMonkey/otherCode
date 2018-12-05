@@ -230,7 +230,7 @@ class Entrust extends Component {
     }
 
     /**test */
-    changeForm(13568888932, 'phone')
+    changeForm(13333333333, 'phone')
 
     this.props.sublimtEntrust()
   }
