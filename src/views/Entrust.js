@@ -2,12 +2,14 @@ import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import CSSModules from 'react-css-modules'
 import PropTypes from 'prop-types'
+import { push } from 'connected-react-router'
 import { actions as bindActions } from '../reducers/bind'
 import { actions as entrustAction } from '../reducers/entrust'
 import { actions as appAction } from '../reducers/app'
 import { actions as modalAction } from '../reducers/modal'
 import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
 import Modal from '../components/Modal'
+import Alert from '../components/Alert'
 import Button from '../components/Button'
 import styles from './Entrust.css'
 import throttle from '../utils/throttle'
@@ -102,19 +104,6 @@ class InputList extends PureComponent {
   }
 }
 
-// @CSSModules(styles)
-// class Alert extends PureComponent {
-//   render() {
-//     return (
-//       <Modal type="center">
-//         <div styleName="alert">
-          
-//         </div>
-//       </Modal>
-//     )
-//   }
-// }
-
 
 /**获取验证码按钮 */
 @CSSModules(styles)
@@ -205,7 +194,7 @@ class Entrust extends Component {
 
   /** 提交*/
   sublimt = () => {
-    const { form, changeForm } = this.props
+    const { form, changeForm, userInfo } = this.props
     const { isErr, isErrAddPhone } = this.state
 
     for (let i in form) {
@@ -244,10 +233,7 @@ class Entrust extends Component {
     }
 
     /**test */
-    // changeForm(13333333333, 'phone')
-    // this.setState({
-    //   modalContent: 'tips'
-    // })
+    changeForm(userInfo.phone, 'phone')
 
     this.props.sublimtEntrust()
   }
@@ -261,7 +247,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
-    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips} = this.props
     return (
       <div>
         <Form data={form}>
@@ -404,6 +390,14 @@ class Entrust extends Component {
           sreachCommunity={sreachCommunity}
           modalContent={modalContent}
         />
+        
+        <Alert 
+          open={isTips}
+          title="提示" 
+          content="提交成功！资产管家会尽快与您取得联系，您可以在【我的房源】中查看动态。"
+          cancelText="我知道了"
+          confirmText="立即查看"
+          confirm={() => redirect(`/houses`)}/>
       </div>
     )
   }
@@ -414,16 +408,19 @@ export default connect(
     form: state.entrust.form,
     isModle: state.entrust.isModle,
     isLoading: state.entrust.isLoading,
+    isTips: state.entrust.isTips,
     citys: state.app.citys,
     isShow: state.modal.isShow,
     communityList: state.entrust.communityList,
     communityKey: state.entrust.communityKey,
     varityCold: state.entrust.varityCold,
+    userInfo: state.app.userInfo
   }),
   {
     ...bindActions,
     ...entrustAction,
     ...appAction,
-    ...modalAction
+    ...modalAction,
+    redirect: url => push(url)
   }
 )(Entrust)

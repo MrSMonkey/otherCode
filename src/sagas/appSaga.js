@@ -87,7 +87,7 @@ function* getUserInfo() {
     if (!userInfo.Id) {
       const data = yield call(api.getUserInfo)
       userInfo = data
-      console.log(data)
+      // console.log(data)
     }
     console.log(userInfo.Id)
     yield put({ type: actionTypes.USER_INFO, payload: userInfo})

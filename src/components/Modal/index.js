@@ -12,30 +12,17 @@ import style from './Modal.css'
 @CSSModules(style)
 class Index extends Component {
   render() {
-    const { isModle, isShow, showModle, isCloseByLayout, type } = this.props
-    let style = '';
-    switch (type) {
-      case 'top':
-        style = 'plan-top';
-        break;
-      case 'center':
-        style = 'plan-center';
-        break;
-      case 'bottom':
-        style = 'plan-bottom';
-      default:
-        style = 'plan-bottom';
-    }
+    const { isModle, isShow, showModle, isCloseByLayout } = this.props
     return (
       <Layout>
         <div styleName="plan-box" style={{display: isShow ? 'block' : 'none'}}>
           <div styleName="layout" 
             style={{opacity: isModle ? '0.7' : '0'}} 
             onTouchEnd={() =>{
-            isCloseByLayout && showModle()
+              isCloseByLayout && showModle()
             }}>
           </div>
-          <div styleName={style} style={{height: isModle ? '50%' : '0'}}>
+          <div styleName="plan-bottom" style={{height: isModle ? '50%' : '0'}}>
             {this.props.children}
           </div>
         </div>

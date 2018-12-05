@@ -12,7 +12,8 @@ const initialState = {
   },
   isLoading: false,
   communityList: [],
-  communityKey: ''
+  communityKey: '',
+  isTips: false
 }
 
 export const actionTypes = {
@@ -72,6 +73,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SUBLIMT_FORM_SUCCESS:
       return {
         ...state,
+        isTips: true,
         form: {
           cityId: '510100',
           cityName: '成都',
