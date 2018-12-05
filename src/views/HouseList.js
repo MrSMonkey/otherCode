@@ -17,7 +17,7 @@ const HouseItem = ({ data, redirect }) => {
   }
   /**托管类型 */
   let rentType = ''
-  switch (data.rentType) {
+  switch (data.consociationType) {
     case 1:
       rentType = '直租';
       break;
@@ -39,29 +39,36 @@ const HouseItem = ({ data, redirect }) => {
   switch(data.rentWay) {
     case 1:
       rentWay = '整租';
+      break;
     case 2:
       rentWay = '合租';
+      break;
     default:
       rentWay = '';
+      break;
   }
 
   return (
-    <div
-      styleName="house-item"
+    <div styleName="house-item"
       onClick={() => {
-        if (data.houseId) { redirect(`/houses/${data.houseId}`) }
+        if (data.handleStatus === 1) { return }
+        redirect(`/houses/${data.houseId}`)
       }}>
       <h2 styleName="item-tit">
         {data.communityName}
         &nbsp;
-        {data.handleStatus ? `${data.building || ''}栋${data.unit || ' '}单元${data.floorNum || ' '}楼${data.number || ' '}号` : ''}
+        {
+          data.handleStatus === 1 
+            ? ''
+            : `${data.building || ''}栋${data.unit || ' '}单元${data.floorNum || ' '}楼${data.number || ' '}号` 
+        }
       </h2>
       <p styleName="item-desc">
-      {
-        data.handleStatus === 1
-          ? `提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：${data.contact} 进行咨询`
-          : `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
-      }
+        {
+          data.handleStatus === 1
+            ? `提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：${data.contact} 进行咨询`
+            : `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
+        }
       </p>
     </div>
   )

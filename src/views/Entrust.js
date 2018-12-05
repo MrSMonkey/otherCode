@@ -47,7 +47,7 @@ class InputList extends PureComponent {
 
   render() {
     const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList } = this.props;
+    const { sreachCommunity, communityList, modalContent } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -101,6 +101,19 @@ class InputList extends PureComponent {
     )
   }
 }
+
+// @CSSModules(styles)
+// class Alert extends PureComponent {
+//   render() {
+//     return (
+//       <Modal type="center">
+//         <div styleName="alert">
+          
+//         </div>
+//       </Modal>
+//     )
+//   }
+// }
 
 
 /**获取验证码按钮 */
@@ -186,7 +199,8 @@ class Entrust extends Component {
       phone: false,
       varityCold: false
     },
-    isErrAddPhone: false
+    isErrAddPhone: false,
+    modalContent: 'formList'
   }
 
   /** 提交*/
@@ -230,7 +244,10 @@ class Entrust extends Component {
     }
 
     /**test */
-    changeForm(13333333333, 'phone')
+    // changeForm(13333333333, 'phone')
+    // this.setState({
+    //   modalContent: 'tips'
+    // })
 
     this.props.sublimtEntrust()
   }
@@ -243,7 +260,7 @@ class Entrust extends Component {
   }
   
   render() {
-    const { isErr, isErrAddPhone } = this.state
+    const { isErr, isErrAddPhone, modalContent } = this.state
     const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity} = this.props
     return (
       <div>
@@ -266,7 +283,13 @@ class Entrust extends Component {
                 option={{value: 'id', text: 'cityName'}}
               />
             </FormItem>
-            <FormItem label="小区名称" isErr={isErr.communityName} onClick={showModle}>
+            <FormItem label="小区名称" isErr={isErr.communityName} 
+              onClick={() => {
+                // this.setState({
+                //   modalContent: 'alert'
+                // },)
+                showModle()
+              }}>
               <Input
                 value={form.communityName}
                 maxLength={16}
@@ -369,7 +392,6 @@ class Entrust extends Component {
             </Button>
           </footer>
         </Form>
-        
         <InputList 
           close={() => {
             showModle()
@@ -380,6 +402,7 @@ class Entrust extends Component {
           communityList={communityList}
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}
+          modalContent={modalContent}
         />
       </div>
     )

@@ -16,6 +16,9 @@
   padding: 30px 30px;
   font-size: 12px; /* no */
   color: $font-color-light;
+  a {
+    color: $font-color-light;
+  }
 }
 
 .background-tips {

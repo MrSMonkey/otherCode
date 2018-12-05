@@ -59,12 +59,10 @@ function* sublimtEntrustFlow() {
     if (!isLogin) { 
       isBind = yield call(bindUser, form) 
     }
-    console.log(isBind)
     if (isBind) {
       const isSuccess = yield call(sublimtEntrust, form)
       if (isSuccess) {
         yield put({type:appActionType.APP_SUCCESS_MSG, payload:'提交成功!'})
-        // yield put(push('/houses'))
         yield put({ type: appActionType.SUBLIMT_FORM_SUCCESS, payload: form.phone})
       }
     }

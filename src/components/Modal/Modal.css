@@ -23,4 +23,14 @@
     background-color: #fff;
     transition: height 0.4s ease-in-out;
   }
+  .plan-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 540px;
+    height: 344px;
+    background-color: #fff;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+  }
 }

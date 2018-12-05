@@ -68,6 +68,10 @@ const api = {
   getCommunityList(cityId, key){
     // console.log('发起请求: ', key)
     return request.get(`/common/communitys/${cityId}/${key}`)
+  },  
+  /**绑定用户 */
+  bindUser(data) {
+    return request.post('/user/mobile/login', data)
   },
   /* 生成验证码 */
   genValidateCode(mobile) {
@@ -180,9 +184,7 @@ const api = {
       access_token
     }
  */
-  bindUser(data) {
-    return request.post('/user/mobile/login', data)
-  },
+
   /* 获取单个房源的收入 */
   getHouseIncomeById(houseId) {
     return request.get(`/landlordBill/houseTotalAmount/${houseId}`)
