@@ -130,5 +130,5 @@
     "postcss-simple-vars": "^4.1.0",
     "redux-devtools-extension": "^2.13.5"
   },
-  "homepage": "/spa/dist/landlordService"
+  "homepage": "/dist"
 }
