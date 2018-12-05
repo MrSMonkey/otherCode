@@ -7,6 +7,10 @@ import ReactLoading from 'react-loading'
 import Tabs from '../components/Tabs'
 import { SectionTitle } from '../components/InfoSection'
 
+const imgs = {
+  imgBg: require('../assets/imgs/icon_img.png')
+}
+
 const options = {
   history: false,
   shareEl: false
@@ -30,7 +34,14 @@ const CumstomPhotoSwipeGallery = props => {
       options={options}
       isOpen={false}
       thumbnailContent={item => {
-        return <img src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/140`} />
+        return <img 
+          src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/140`} 
+          onError={(e) => {
+            var event = e.target
+            event.onerror = null
+            event.src = imgs.imgBg
+          }}
+        />
       }}
     />
   )
