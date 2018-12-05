@@ -86,12 +86,13 @@ function* getUserInfo() {
     
     if (!userInfo.Id) {
       const data = yield call(api.getUserInfo)
-      userInfo = data
-      // console.log(data)
+      if (data.code !== '000') {
+        return yield put({ type: actionTypes.APP_ERROR_MSG, payload: data.msg })      
+      }
+      userInfo = data.data || {}
+      yield put({ type: actionTypes.USER_INFO, payload: userInfo})
+      yield put({ type: actionTypes.GET_USER_SUCCESS, payload: data })
     }
-    console.log(userInfo.Id)
-    yield put({ type: actionTypes.USER_INFO, payload: userInfo})
-    yield put({ type: actionTypes.GET_USER_SUCCESS, payload: data })
   } catch (e) {
     yield put({ type: actionTypes.APP_ERROR_MSG, payload: e.message })
     yield put({ type: actionTypes.GET_USER_FAIL })
