@@ -54,13 +54,13 @@ const HouseItem = ({ data, redirect }) => {
       <h2 styleName="item-tit">
         {data.communityName}
         &nbsp;
-        {data.houseId ? `${data.building || ''}栋${data.unit || ' '}单元${data.floorNum || ' '}楼${data.number || ' '}号` : ''}
+        {data.handleStatus ? `${data.building || ''}栋${data.unit || ' '}单元${data.floorNum || ' '}楼${data.number || ' '}号` : ''}
       </h2>
       <p styleName="item-desc">
       {
-        data.houseId
-          ? `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
-          : `提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：${data.contact} 进行咨询`
+        data.handleStatus === 1
+          ? `提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：${data.contact} 进行咨询`
+          : `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
       }
       </p>
     </div>
