@@ -233,7 +233,7 @@ class Entrust extends Component {
     }
 
     /**test */
-    changeForm(userInfo.phone, 'phone')
+    changeForm(13333333333, 'phone')
 
     this.props.sublimtEntrust()
   }
@@ -247,7 +247,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
-    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips, redirect} = this.props
     return (
       <div>
         <Form data={form}>
