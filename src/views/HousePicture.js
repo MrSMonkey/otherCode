@@ -17,7 +17,7 @@ const CumstomPhotoSwipeGallery = props => {
   if (props.data) {
     data = props.data.map(item => {
       return {
-        src: item,
+        src: item.imageUrl,
         w: 210,
         h: 210
       }
@@ -29,9 +29,9 @@ const CumstomPhotoSwipeGallery = props => {
       items={data}
       options={options}
       isOpen={false}
-      thumbnailContent={item => (
-        <img alt={item.title} src={item.thumbnail || item.src} />
-      )}
+      thumbnailContent={item => {
+        return <img src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/140`} />
+      }}
     />
   )
 }
@@ -91,10 +91,18 @@ class HousePicture extends Component {
             if (data.href) { redirect(data.href) }
           }} 
         />
-        <SectionTitle>房间</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.imageRoomDTOS} />
+        {
+          pictures.imageRoomDTOS && pictures.imageRoomDTOS.map((i, index) => {
+            return (
+              <div key={index}>
+                <SectionTitle>房间{i.roomName}</SectionTitle>
+                <CumstomPhotoSwipeGallery data={i.imageDTOS} />
+              </div>
+            )
+          })
+        }
         <SectionTitle>公区照片</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.imageHouseDTOS} />
+        <CumstomPhotoSwipeGallery data={pictures.imageHouseDTOS && pictures.imageHouseDTOS.imageDTOS} />
       </React.Fragment>
     )
   }

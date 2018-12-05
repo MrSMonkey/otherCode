@@ -6,7 +6,11 @@ import { actionTypes as appActionTypes } from '../reducers/app'
 function* getHousePicture(houseId) {
   try {
     const { data } = yield call(api.getPictureList, houseId)
-    return data
+    if (data.code === '000') {
+      return data.data
+    }
+    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg })
+    return []
   } catch (err) {
     yield put({ type: appActionTypes.APP_ERROR_MSG, payload: '获取房源图片错误！请重试' })
   }
