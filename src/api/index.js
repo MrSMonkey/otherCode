@@ -51,8 +51,8 @@ request.interceptors.response.use(
   err => {
     const config = err.config
     const status = err.response.status
-    if (status === 401 && !config._retry) {
-      const refreshToken = localStore.get('refresh_token')
+    const refreshToken = localStore.get('refresh_token')
+    if (status === 401 && !config._retry && refreshToken) {
       config._retry = true
       return axios.post(`token/refresh_token/${refreshToken}`)
       .then(({ data }) => {

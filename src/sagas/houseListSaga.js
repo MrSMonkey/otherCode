@@ -25,7 +25,6 @@ function* getHouseListFlow() {
   while (true) {
     yield take(actionTypes.GET_HOUSE_LIST)
     const houseData = yield call(getHouseList)
-    console.log(houseData);
     if (houseData) {
       yield put({ type: actionTypes.GET_HOUSE_LIST_SUCCESS, payload: houseData })
     }
