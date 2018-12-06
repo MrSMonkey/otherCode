@@ -347,14 +347,14 @@ class Entrust extends Component {
                 must
                 value={form.linkName}
                 maxLength={30}
-                placeholder="请输入您的称呼"
+                placeholder="请输入其他联系人的称呼"
                 onChange={val => changeForm(val, 'linkName')}
               />
             </FormItem>
             <FormItem label="手机号" isErr={isErrAddPhone}>
               <Input
                 value={form.linkPhone}
-                placeholder="请输入您的手机号码"
+                placeholder="请输入其他联系人的手机号码"
                 onChange={val => changeForm(val, 'linkPhone')}
                 verify={{
                   type: 'phone',
