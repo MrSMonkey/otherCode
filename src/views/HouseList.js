@@ -52,7 +52,7 @@ const HouseItem = ({ data, redirect }) => {
     <div styleName="house-item"
       onClick={() => {
         if (data.handleStatus === 1) { return }
-        redirect(`/houses/${data.houseId}`)
+        redirect(`/parthner/houses/${data.houseId}`)
       }}>
       <h2 styleName="item-tit">
         {data.communityName}
@@ -101,7 +101,7 @@ class HouseList extends Component {
         <img src={imgs.noHouse}/>
         <p>
           您尚未提交意向资源，您可以
-          <span onClick={() => redirect(`/entrust`)}>立即增加</span>
+          <span onClick={() => redirect(`/parthner/entrust`)}>立即增加</span>
         </p>
       </div>
     ) : (

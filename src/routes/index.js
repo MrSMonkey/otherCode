@@ -2,7 +2,7 @@ import views from '../views'
 /* react router 4 不建议做中心化配置，只配置一级菜单 */
 const routes = [
   {
-    path: '/',
+    path: '/parthner',
     component: views.Home,
     exact: true,
     title: '星空业主服务号',
@@ -14,23 +14,44 @@ const routes = [
     ]
   },
   {
-    path: '/houses',
+    path: '/auth',
+    component: views.Bind,
+    title: '登录'
+  },
+  {
+    path: '/parthner/houses',
     component: views.HouseList,
     exact: true,
     needBind: true,
     title: '我的房源列表'
   },
   {
-    path: '/houses/:id',
+    path: '/parthner/houses/:id',
     component: views.MyHouse,
     needBind: true,
     title: '房源详情'
   },
   {
-    path: '/rooms/:id',
+    path: '/parthner/rooms/:id',
     component: views.RoomInfo,
     needBind: true,
     title: '房源详情'
+  },
+  {
+    path: '/parthner/house-pic/:id',
+    component: views.HousePicture,
+    needBind: true,
+    title: '房源照片'
+  },
+  {
+    path: '/parthner/entrustplan',
+    component: views.EntrustPlan,
+    title: '星级房屋托管计划'
+  },
+  {
+    path: '/parthner/entrust',
+    component: views.Entrust,
+    title: '在线委托'
   },
   {
     path: '/bills',
@@ -57,22 +78,6 @@ const routes = [
     component: views.BillDetail,
     needBind: true,
     title: '账单详情'
-  },
-  {
-    path: '/entrustplan',
-    component: views.EntrustPlan,
-    title: '星级房屋托管计划'
-  },
-  {
-    path: '/house-pic/:id',
-    component: views.HousePicture,
-    needBind: true,
-    title: '房源照片'
-  },
-  {
-    path: '/entrust',
-    component: views.Entrust,
-    title: '在线委托'
   },
   {
     path: '/user/qr',
@@ -103,11 +108,6 @@ const routes = [
     component: views.FortuneLaw,
     exact: true,
     title: '4321定律'
-  },
-  {
-    path: '/bind',
-    component: views.Bind,
-    title: '登录'
   },
   {
     path: '/wallet/openWallet',
