@@ -28,7 +28,7 @@ request.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     
-    if (config.url === '/login/web/mobile' || config.url === '/verification_code/') {
+    if (config.url === '/login/web/mobile' || config.url.indexOf('/verification_code') > -1) {
       /**登录授权 */
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2'
     }
