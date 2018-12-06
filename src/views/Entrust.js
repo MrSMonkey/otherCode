@@ -196,6 +196,25 @@ class Entrust extends Component {
     const { form, changeForm, userInfo } = this.props
     const { isErr, isErrAddPhone } = this.state
 
+    const hasErr = this.hasErrItem()
+    
+    if (hasErr) {
+      this.setState({ ...isErr })
+      return
+    }
+
+    /**test */
+    if (isLogin) {
+      changeForm(userInfo.username, 'phone')
+    }
+
+    this.props.sublimtEntrust()
+  }
+
+  hasErrItem = () => {
+    const { form, changeForm, userInfo } = this.props
+    const { isErr, isErrAddPhone } = this.state
+
     for (let i in form) {
       const val = form[i]
       const hasOwn = isErr.hasOwnProperty(i)
@@ -224,19 +243,7 @@ class Entrust extends Component {
         break
       }
     }
-    
-    console.log("hasErr", hasErr)
-    if (hasErr) {
-      this.setState({ ...isErr })
-      return
-    }
-
-    /**test */
-    if (isLogin) {
-      changeForm(userInfo.username, 'phone')
-    }
-
-    this.props.sublimtEntrust()
+    return hasErr
   }
   
   componentDidMount() {
@@ -249,6 +256,26 @@ class Entrust extends Component {
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
     const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips, redirect, updatePhone} = this.props
+    
+    let isErrItem = false
+
+    for (let i in form) {
+      const val = form[i]
+      const hasOwn = isErr.hasOwnProperty(i)
+      
+      // 登录状态下不必验证联系人验证码
+      if (isLogin) {
+        delete isErr.varityCold
+        delete isErr.phone
+      }
+      /* 验证必填项目*/
+      if (hasOwn) {
+        if (val === '') {
+          isErrItem = true
+        }
+      }
+    }
+
     return (
       <div>
         <Form data={form}>
@@ -340,21 +367,26 @@ class Entrust extends Component {
             }
           </div>
 
-          <h2 styleName="title">添加其他信息</h2>
+          <h2 styleName="title">
+            其他联系方式（选填）
+            <span styleName="descripe">
+              可以让资产管家更容易与您取得联系
+            </span>
+          </h2>
           <div styleName="input-group">
             <FormItem label="姓名">
               <Input
                 must
                 value={form.linkName}
                 maxLength={30}
-                placeholder="请输入其他联系人的称呼"
+                placeholder="请输入称呼"
                 onChange={val => changeForm(val, 'linkName')}
               />
             </FormItem>
             <FormItem label="手机号" isErr={isErrAddPhone}>
               <Input
                 value={form.linkPhone}
-                placeholder="请输入其他联系人的手机号码"
+                placeholder="请输入手机号码"
                 onChange={val => changeForm(val, 'linkPhone')}
                 verify={{
                   type: 'phone',
@@ -368,7 +400,7 @@ class Entrust extends Component {
             </FormItem>
           </div>
           <footer styleName="form-footer">
-            <Button type="Primary" onClick={this.sublimt} disabled={isLoading}>
+            <Button type="Primary" onClick={this.sublimt} disabled={isLoading || isErrItem}>
               提交
               {isLoading ? '中...' : ''}
             </Button>

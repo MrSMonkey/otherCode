@@ -107,7 +107,7 @@ const routes = [
   {
     path: '/bind',
     component: views.Bind,
-    title: '绑定'
+    title: '登录'
   },
   {
     path: '/wallet/openWallet',

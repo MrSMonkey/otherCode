@@ -219,7 +219,7 @@ class Bind extends PureComponent {
     const { success } = verify.phone(phone)
 
     this.setState({
-      phoneError: success ? '' : '请填写正确的电话号码',
+      phoneError: success ? '' : '请输入正确的手机号码',
       isPhoneError: !success
     })
     return success
@@ -281,7 +281,7 @@ class Bind extends PureComponent {
         <div styleName="main">
           <div styleName="section">
             <div styleName="section-tit">
-              手机号 (<span>*已签约用户请输入签约手机号</span>)
+              手机号 (<span>*新用户初次登录将自动注册</span>)
             </div>
             <InputField
               placeholder="请输入手机号码"
