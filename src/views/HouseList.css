@@ -35,6 +35,6 @@
     height: auto;
   }
   span {
-    color: $color-golden
+    color: $color-golden;
   }
 }

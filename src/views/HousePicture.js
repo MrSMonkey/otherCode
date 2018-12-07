@@ -66,17 +66,17 @@ class HousePicture extends Component {
         {
           name: 'houseInfo',
           text: '房源信息',
-          href: `/parthner/houses/${id}`,
+          href: `/houses/${id}`,
           active: false
         }, {
           name: 'roomInfo',
           text: '房间信息',
-          href: `/parthner/rooms/${id}`,
+          href: `/rooms/${id}`,
           active: false
         }, {
           name: 'photo',
           text: '房源照片',
-          href: `/parthner/house-pic/${id}`,
+          href: `/house-pic/${id}`,
           active: true
         }
       ]

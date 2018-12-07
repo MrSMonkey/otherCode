@@ -86,17 +86,17 @@ class MyHouses extends Component {
     tabsData: [{
       name: 'houseInfo',
       text: '房源信息',
-      href: `/parthner/houses/`,
+      href: `/houses/`,
       active: true
     }, {
       name: 'roomInfo',
       text: '房间信息',
-      href: `/parthner/rooms/`,
+      href: `/rooms/`,
       active: false
     }, {
       name: 'photo',
       text: '房源照片',
-      href: `/parthner/house-pic/`,
+      href: `/house-pic/`,
       active: false
     }]
   }
@@ -110,17 +110,17 @@ class MyHouses extends Component {
         {
           name: 'houseInfo',
           text: '房源信息',
-          href: `/parthner/houses/${id}`,
+          href: `/houses/${id}`,
           active: true
         }, {
           name: 'roomInfo',
           text: '房间信息',
-          href: `/parthner/rooms/${id}`,
+          href: `/rooms/${id}`,
           active: false
         }, {
           name: 'photo',
           text: '房源照片',
-          href: `/parthner/house-pic/${id}`,
+          href: `/house-pic/${id}`,
           active: false
         }
       ]
