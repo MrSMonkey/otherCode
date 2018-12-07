@@ -55,8 +55,11 @@ request.interceptors.response.use(
     const refreshToken = localStore.get('refresh_token')
     if (status === 401 && !config._retry && refreshToken) {
       config._retry = true
-      return axios.post(`/auth/token/refresh_token/${refreshToken}`)
-      .then(({ data }) => {
+      return axios({
+        baseURL: 'http://172.16.10.119:7070',
+        url: `/auth/token/refresh_token/${refreshToken}`,
+        method: 'post'
+      }).then(({ data }) => {
         localStorage.set('access_token', data.access_token)
         localStorage.set('refresh_token', data.refresh_token)
 
