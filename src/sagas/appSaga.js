@@ -85,11 +85,12 @@ function* getUserInfo() {
     let userInfo = yield select(state => state.app.userInfo)
     
     if (!userInfo.Id) {
-      const data = yield call(api.getUserInfo)
+      const { data } = yield call(api.getUserInfo)
       if (data.code !== '000') {
         return yield put({ type: actionTypes.APP_ERROR_MSG, payload: data.msg })      
       }
       userInfo = data.data || {}
+      console.log(userInfo);
       yield put({ type: actionTypes.USER_INFO, payload: userInfo})
       yield put({ type: actionTypes.GET_USER_SUCCESS, payload: data })
     }

@@ -168,6 +168,7 @@ const reducer = (state = initialState, action) => {
         }
       }
     case actionTypes.USER_INFO: 
+    console.log(action.payload)
       return {
         ...state,
         userInfo: action.payload

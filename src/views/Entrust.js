@@ -203,15 +203,15 @@ class Entrust extends Component {
       this.setState({ ...isErr })
       return
     }
-    console.log(isLogin);
+    console.log(isLogin, userInfo.username);
     /**test */
     if (isLogin) {
-      setTimeout(()=> {
-        changeForm(userInfo.username, 'phone')
-      }, 0)
+      changeForm(userInfo.username, 'phone')
     }
-
-    this.props.sublimtEntrust()
+    
+    setTimeout(()=> {
+      this.props.sublimtEntrust()
+    }, 0)
   }
 
   hasErrItem = () => {
@@ -259,7 +259,7 @@ class Entrust extends Component {
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
     const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips, redirect, updatePhone} = this.props
-    
+
     let isErrItem = false
 
     for (let i in form) {
