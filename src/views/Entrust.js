@@ -426,7 +426,7 @@ class Entrust extends Component {
           content="提交成功！资产管家会尽快与您取得联系，您可以在【我的房源】中查看动态。"
           cancelText="我知道了"
           confirmText="立即查看"
-          confirm={() => redirect(`/parthner/houses`)}/>
+          confirm={() => redirect(`/houses`)}/>
       </div>
     )
   }
