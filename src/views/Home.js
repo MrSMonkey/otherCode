@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import CSSModules from 'react-css-modules'
-import { actions as myHouseActions } from '../reducers/myHouse'
 import styles from './Home.css'
 import HeaderBanner from '../components/HeaderBanner'
 import HrTitle from '../components/HrTitle'
@@ -19,9 +17,9 @@ const imgs = {
   yezhu: require('../assets/imgs/starhome_yezhu.png')
 }
 
-/**头图 */
+/**头图 */  
 
-const Banner = ({ data, loading, user }) => {
+const Banner = () => {
   return (
     <HeaderBanner img={imgs.homeBg}>
       <header styleName="banner">
@@ -32,7 +30,7 @@ const Banner = ({ data, loading, user }) => {
 const StyleBanner = CSSModules(Banner, styles)
 
 /**品牌群 */
-const Products = props => {
+const Products = () => {
   const starHomesImg = [
     {
       alt: '星空',
@@ -67,8 +65,7 @@ const SmartLock = () => {
     <div
       styleName="smart-lock"
       className="bg-img-full"
-      style={{ backgroundImage: `url(${imgs.lock})` }}
-    >
+      style={{ backgroundImage: `url(${imgs.lock})` }}>
       <h3>UOKO | 智能门锁</h3>
       <p styleName="lock-dec">
         星空业主尊享
@@ -94,12 +91,10 @@ const StyleSmartLock = CSSModules(SmartLock, styles)
 @CSSModules(styles)
 class Home extends Component {
   render() {
-    const { income, incomeLoading, user } = this.props
     return (
       <div>
-        <StyleBanner user={user} data={income} loading={incomeLoading} />
         <div styleName="hr-title">
-          <HrTitle title="uoko星空产品服务群" data={income} />
+          <HrTitle title="uoko星空产品服务群" />
         </div>
         <StyleProducts />
         <div styleName="hr-title">
@@ -122,11 +117,4 @@ class Home extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    income: state.myHouse.income,
-    incomeLoading: state.myHouse.incomeLoading,
-    user: state.app.landlordInfo
-  }),
-  myHouseActions
-)(Home)
+export default Home

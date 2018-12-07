@@ -14,7 +14,7 @@ function* bindUser() {
       registerSource: 1,
       verificationCode: identifyingCode
     })
-    if (data.code !== '000') {
+    if (data.code === '000') {
       /**设置token有效期为6天 */
       const date = new Date()
       const time = date.getTime()

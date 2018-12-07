@@ -7,10 +7,11 @@ import { localStore } from '@/utils'
 
 const host = appConfig.host
 axios.defaults.withCredentials = true
-
+console.log(host.api)
 
 const request = axios.create({
-  baseURL: host.api.replace(/\/+$/, ''),
+  // baseURL: host.api.replace(/\/+$/, ''),
+  baseURL: 'http://172.16.10.119:7070/',
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   }
@@ -28,7 +29,7 @@ request.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     
-    if (config.url === '/login/web/mobile' || config.url.indexOf('/verification_code') > -1) {
+    if (config.url.indexOf('/auth/login/web/mobile') > -1 || config.url.indexOf('/verification_code') > -1) {
       /**登录授权 */
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2'
     }
