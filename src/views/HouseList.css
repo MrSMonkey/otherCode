@@ -19,6 +19,10 @@
   a {
     color: $font-color-light;
   }
+  i {
+    color: $color-golden;
+    font-style: normal;
+  }
 }
 
 .background-tips {

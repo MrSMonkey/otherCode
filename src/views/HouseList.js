@@ -66,7 +66,11 @@ const HouseItem = ({ data, redirect }) => {
       <p styleName="item-desc">
         {
           data.handleStatus === 1
-            ? `提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：${data.contact} 进行咨询`
+            ? <a href={`tel:${data.contact}`}>
+                提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话：
+                <i>{data.contact} </i>
+                进行咨询
+              </a>
             : `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
         }
       </p>
@@ -101,7 +105,7 @@ class HouseList extends Component {
         <img src={imgs.noHouse}/>
         <p>
           您尚未提交意向资源，您可以
-          <span onClick={() => redirect(`/parthner/entrust`)}>立即增加</span>
+          <span onClick={() => redirect(`/entrust`)}>立即增加</span>
         </p>
       </div>
     ) : (
