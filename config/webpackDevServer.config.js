@@ -81,23 +81,7 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
     },
     public: allowedHost,
-    proxy: Object.assign(proxy, {
-      '/user': {
-        target: 'http://192.168.200.126:9003',
-        secure: false,
-        changeOrigin: true
-      },
-      '/login/web/mobile': {
-        target: 'http://192.168.200.126:9003',
-        secure: false,
-        changeOrigin: true
-      },
-      '/user/verification_code/': {
-        target: 'http://192.168.200.126:9003',
-        secure: false,
-        changeOrigin: true
-      }
-    }),
+    proxy,
     before(app) {
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());

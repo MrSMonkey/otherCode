@@ -2,7 +2,7 @@ import views from '../views'
 /* react router 4 不建议做中心化配置，只配置一级菜单 */
 const routes = [
   {
-    path: '/parthner',
+    path: '/',
     component: views.Home,
     exact: true,
     title: '星空业主服务号',
@@ -14,42 +14,42 @@ const routes = [
     ]
   },
   {
-    path: '/auth',
+    path: '/bind',
     component: views.Bind,
     title: '登录'
   },
   {
-    path: '/parthner/houses',
+    path: '/houses',
     component: views.HouseList,
     exact: true,
     needBind: true,
     title: '我的房源列表'
   },
   {
-    path: '/parthner/houses/:id',
+    path: '/houses/:id',
     component: views.MyHouse,
     needBind: true,
     title: '房源详情'
   },
   {
-    path: '/parthner/rooms/:id',
+    path: '/rooms/:id',
     component: views.RoomInfo,
     needBind: true,
     title: '房源详情'
   },
   {
-    path: '/parthner/house-pic/:id',
+    path: '/house-pic/:id',
     component: views.HousePicture,
     needBind: true,
     title: '房源照片'
   },
   {
-    path: '/parthner/entrustplan',
+    path: '/entrustplan',
     component: views.EntrustPlan,
     title: '星级房屋托管计划'
   },
   {
-    path: '/parthner/entrust',
+    path: '/entrust',
     component: views.Entrust,
     title: '在线委托'
   },

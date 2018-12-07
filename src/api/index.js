@@ -54,7 +54,7 @@ request.interceptors.response.use(
     const refreshToken = localStore.get('refresh_token')
     if (status === 401 && !config._retry && refreshToken) {
       config._retry = true
-      return axios.post(`token/refresh_token/${refreshToken}`)
+      return axios.post(`/auth/token/refresh_token/${refreshToken}`)
       .then(({ data }) => {
         localStorage.set('access_token', data.access_token)
         localStorage.set('refresh_token', data.refresh_token)
@@ -71,52 +71,52 @@ request.interceptors.response.use(
 const api = {
   /**刷新 token */
   getToken(refreshToken) {
-    return request.get(`token/refresh_token/${refreshToken}`)
+    return request.get(`/auth/token/refresh_token/${refreshToken}`)
   },
   /* 获取用户信息 */
   getUserInfo() {
-    return request.get('/user')
+    return request.get('/auth/user')
   },
   /**城市信息 */
   getCitys() {
-    return request.get('/common/city')
+    return request.get('/partner/common/city')
   },
   //根据当前城市和关键字查询小区
   getCommunityList(cityId, key){
     // console.log('发起请求: ', key)
-    return request.get(`/common/communitys/${cityId}/${key}`)
+    return request.get(`/partner/common/communitys/${cityId}/${key}`)
   },  
   /**绑定用户 */
   bindUser(data) {
-    return request.post('/login/web/mobile', data)
+    return request.post('/auth/login/web/mobile', data)
   },
   /* 生成验证码 */
   genValidateCode(mobile) {
-    return request.post(`/verification_code/${mobile}`)
+    return request.post(`/auth/verification_code/${mobile}`)
   },
   /**提交委托 */
   postEntrust(form) {
-    return request.post('/owner/entrust', form)
+    return request.post('/partner/owner/entrust', form)
   },
   /**房源列表 */
   getHouseList() {
-    return request.get(`/owner/entrust/list`)    
+    return request.get(`/partner/owner/entrust/list`)    
   },
   /**房源信息 */
   getHouseInfo(id) {
-    return request.get(`/house/info/base/${id}`)
+    return request.get(`/partner/house/info/base/${id}`)
   },
   /**房源动态 */
   getHouseTimeLine(id) {
-    return request.get(`/owner/processes/${id}`)
+    return request.get(`/partner/owner/processes/${id}`)
   },  
   /* 获取房间信息 */
   getRoomList(id) {
-    return request.get(`/house/room/list/${id}`)
+    return request.get(`/partner/house/room/list/${id}`)
   },
   /* 根据合同id获取图片信息 */
   getPictureList(houseId) {
-    return request.get(`/house/images/${houseId}`)
+    return request.get(`/partner/house/images/${houseId}`)
   },
 
   
