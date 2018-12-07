@@ -34,6 +34,7 @@ class InputList extends PureComponent {
 
   confirmeKey = () => {
     const { changeForm } = this.props;
+
     changeForm(this.state.keyValue, 'communityName')
     changeForm(this.state.activeId, 'communityId')
     setTimeout(()=> {
@@ -202,10 +203,12 @@ class Entrust extends Component {
       this.setState({ ...isErr })
       return
     }
-
+    console.log(isLogin);
     /**test */
     if (isLogin) {
-      changeForm(userInfo.username, 'phone')
+      setTimeout(()=> {
+        changeForm(userInfo.username, 'phone')
+      }, 0)
     }
 
     this.props.sublimtEntrust()
