@@ -12,6 +12,7 @@ import Modal from '../components/Modal'
 import Alert from '../components/Alert'
 import Button from '../components/Button'
 import styles from './Entrust.css'
+import debounce from '../utils/debounce'
 import throttle from '../utils/throttle'
 import { localStore } from '../utils'
 
@@ -46,6 +47,19 @@ class InputList extends PureComponent {
     const { close } = this.props;
     close()
   }
+  /**检索小区 */
+  searchKey = (val) => {
+    this.setState({
+      keyValue: val,
+      activeId: ''
+    }, this.search)
+  }
+  
+  search = () => {
+    console.log(this.state.keyValue)
+    debounce(this.props.sreachCommunity, 3000, false)(this.state.keyValue)
+    // this.props.sreachCommunity(this.state.keyValue)
+  }
 
   render() {
     const { keyValue, activeId } = this.state;
@@ -63,15 +77,7 @@ class InputList extends PureComponent {
               value={keyValue}
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
-              onChange={val => {
-                console.log('~~~~')
-                this.setState({
-                  keyValue: val,
-                  activeId: ''
-                })
-                // sreachCommunity(val)
-                throttle(sreachCommunity, 500)(val)
-              }}
+              onChange={this.searchKey}
             />
             <i className="slef-icon-close" 
               onClick={() => {
@@ -216,7 +222,7 @@ class Entrust extends Component {
   }
 
   hasErrItem = () => {
-    const { form, changeForm, userInfo } = this.props
+    const { form } = this.props
     const { isErr, isErrAddPhone } = this.state
 
     for (let i in form) {
@@ -455,7 +461,6 @@ export default connect(
     citys: state.app.citys,
     isShow: state.modal.isShow,
     communityList: state.entrust.communityList,
-    communityKey: state.entrust.communityKey,
     varityCold: state.entrust.varityCold,
     userInfo: state.app.userInfo
   }),

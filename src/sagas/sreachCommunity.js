@@ -9,9 +9,12 @@ import { actionTypes as entrustActionType } from '../reducers/entrust'
  */
 function* sreachCommunity(cityId, key) {
   try {
-    const res = yield call(api.getCommunityList, cityId, key)
-    // yield put({ type: appActionType.APP_ERROR_MSG, payload: data.message })      
-    return res.data.data || []
+    const { data } = yield call(api.getCommunityList, cityId, key)
+    if (data.code === '000') {
+      return data.data || []
+    }     
+    yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg }) 
+    return []
   } catch (err) {
     // yield put({ type: appActionType.APP_ERROR_MSG, payload: '获取提交委托错误！请重试' })
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: false })
@@ -20,12 +23,11 @@ function* sreachCommunity(cityId, key) {
 
 function* sreachCommunityFlow() {
   while (true) {
-    yield take(entrustActionType.COMMUNITYKEY)
-    const key = yield select(state => state.entrust.communityKey)
+    const { val } = yield take(entrustActionType.COMMUNITYKEY)
     const cityId = yield select(state => state.entrust.form.cityId)
-    // console.log('key~~~~~~~~', key);
-    if (key) {
-      const list = yield call(sreachCommunity, cityId, key)
+    console.log('val~~~~~~~~', val);
+    if (val) {
+      const list = yield call(sreachCommunity, cityId, val)
       // const data = yield throttle(3000, entrustActionType.COMMUNITYKEY, sreachCommunity, cityId, key)
       if (list) {
         yield put({ type: entrustActionType.COMMUNITYLIST, payload: list })

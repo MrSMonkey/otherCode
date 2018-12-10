@@ -26,7 +26,7 @@ export default function throttle(func, wait, options) {
   
   function nowTime() {
     var d = new Date();
-    return d.getMilliseconds()
+    return d.getTime()
   }
 
   return function() {

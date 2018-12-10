@@ -12,7 +12,6 @@ const initialState = {
   },
   isLoading: false,
   communityList: [],
-  communityKey: '',
   isTips: false
 }
 
@@ -38,9 +37,10 @@ export const actions = {
     }
   },
   sreachCommunity(val) {
+    console.log('!!!!!!!', val);
     return {
       type: actionTypes.COMMUNITYKEY,
-      text: val
+      val
     }
   }
 }
@@ -59,11 +59,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload
-      }
-    case actionTypes.COMMUNITYKEY:
-    return {
-        ...state,
-        communityKey: action.text
       }
     case actionTypes.COMMUNITYLIST:
       return {
