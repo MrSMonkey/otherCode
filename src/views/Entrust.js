@@ -30,12 +30,15 @@ class InputList extends PureComponent {
 
   confirmeKey = () => {
     const { changeForm } = this.props;
-
-    changeForm(this.state.keyValue, 'communityName')
-    changeForm(this.state.activeId, 'communityId')
-    setTimeout(()=> {
+    this.setState({
+      activeId: '',
+    })
+    const change = async function () {
+      await changeForm(this.state.keyValue, 'communityName')
+      changeForm(this.state.activeId, 'communityId')
       this.cancelChooes()
-    }, 0)
+    }
+    change()
   }
   
   cancelChooes = () => {
