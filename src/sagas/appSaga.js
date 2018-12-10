@@ -114,8 +114,8 @@ function* wechatOAuth() {
   const { openid, access_token } = yield select(state => state.app.wx)
   const code = parseQuery(window.location.search).code
   /* 如果不是微信环境 */
+  return
   if (runtime.appType !== APP_TYPE.wechat) {
-    return
   }
 
   yield put({ type: actionTypes.SET_APP_STATUS, payload: true })
@@ -172,7 +172,7 @@ function* webAuth() {
 }
 
 function* appInit() {
-  yield takeLatest(actionTypes.WX_AUTH, wechatOAuth)
+  // yield takeLatest(actionTypes.WX_AUTH, wechatOAuth)
   yield takeEvery(actionTypes.GET_USER_INFO, getUserInfo)
   yield takeEvery(actionTypes.GET_JS_SDK_CONFIG,getJsSDKConfig)
   yield takeLatest(actionTypes.WEB_AUTH, webAuth)
