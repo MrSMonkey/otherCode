@@ -62,7 +62,7 @@ class InputList extends PureComponent {
 
   render() {
     const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList, communityKey, changeCommuntiyKey } = this.props;
+    const { sreachCommunity, communityList, communityKey, changeCommuntiyKey, sreachCommunity } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -79,8 +79,8 @@ class InputList extends PureComponent {
               onChange={(event) => {
                 const val = event.target.value
                 changeCommuntiyKey(val)
+                sreachCommunity(val)
               }}
-              onKeyPress={debounce(this.props.sreachCommunity, 3000)}
             />
             <i className="slef-icon-close" 
               onClick={() => {
