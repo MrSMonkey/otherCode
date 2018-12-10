@@ -73,7 +73,6 @@ const reducer = (state = initialState, action) => {
         isLoading: action.payload
       }
     case actionTypes.COMMUNITYKEY:
-    console.log(action.text)
       return {
         ...state,
         communityKey: action.text

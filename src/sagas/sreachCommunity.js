@@ -23,6 +23,7 @@ function* sreachCommunityFlow() {
     const cityId = yield select(state => state.entrust.form.cityId)
     const val = yield select(state => state.entrust.communityKey)
     if (val) {
+      console.log(val)
       const list = yield call(sreachCommunity, cityId, val)
       // const data = yield throttle(3000, entrustActionType.COMMUNITYKEY, sreachCommunity, cityId, key)
       if (list) {
