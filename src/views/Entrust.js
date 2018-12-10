@@ -46,9 +46,15 @@ class InputList extends PureComponent {
   /**检索小区 */
   searchKey = (event) => {
     const { sreachCommunity, changeCommuntiyKey } = this.props;
-    const val = event.target.value
-    changeCommuntiyKey(val)
-    sreachCommunity();
+    const val = event.target.value;
+    // changeCommuntiyKey(val);
+    // sreachCommunity();
+    changeCommuntiyKey(val);
+    //防抖处理
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      sreachCommunity();
+    }, 1000);
   }
   
   render() {
