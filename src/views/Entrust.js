@@ -29,7 +29,7 @@ class InputList extends PureComponent {
   }
   state = {
     itemList: [],
-    keyValue: '',
+    // keyValue: '',
     activeId: ''
   }
 
@@ -48,21 +48,21 @@ class InputList extends PureComponent {
     close()
   }
   /**检索小区 */
-  searchKey = (val) => {
-    this.setState({
-      keyValue: val,
-      activeId: ''
-    }, this.search)
-  }
+  // searchKey = (val) => {
+  //   this.setState({
+  //     keyValue: val,
+  //     activeId: ''
+  //   }, this.search)
+  // }
   
-  search = () => {
-    console.log(this.state.keyValue)
-    debounce(this.props.sreachCommunity(this.state.keyValue), 3000)
-  }
+  // search = () => {
+  //   console.log(this.state.keyValue)
+  //   debounce(this.props.sreachCommunity(this.state.keyValue), 3000)
+  // }
 
   render() {
     const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList } = this.props;
+    const { sreachCommunity, communityList, communityKey, changeCommuntiyKey } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -72,19 +72,25 @@ class InputList extends PureComponent {
             <div styleName="text-button" onClick={this.confirmeKey}>确认</div>
           </header>
           <FormItem>
-            <Input 
-              value={keyValue}
+            <input
+              value={communityKey}
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
-              onChange={this.searchKey}
+              onChange={(event) => {
+                const val = event.target.value
+                changeCommuntiyKey(val)
+              }}
+              onKeyPress={debounce(this.props.sreachCommunity, 3000)}
             />
             <i className="slef-icon-close" 
               onClick={() => {
                 this.setState({
-                  keyValue: '',
                   activeId: '',
                 })
-                sreachCommunity('')
+                changeCommuntiyKey('')
+                setTimeout(()=> {
+                  sreachCommunity()
+                }, 0)
               }}></i>
           </FormItem>
           <ul styleName="list">
@@ -264,7 +270,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
-    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, sreachCommunity, isTips, redirect, updatePhone} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communitykey, changeCommuntiyKey, sreachCommunity, isTips, redirect, updatePhone} = this.props
 
     let isErrItem = false
 
@@ -423,6 +429,8 @@ class Entrust extends Component {
           }}
           form={form}
           communityList={communityList}
+          communitykey={communitykey}
+          changeCommuntiyKey={changeCommuntiyKey}
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}
           modalContent={modalContent}
@@ -460,6 +468,7 @@ export default connect(
     citys: state.app.citys,
     isShow: state.modal.isShow,
     communityList: state.entrust.communityList,
+    communitykey: state.entrust.communitykey,
     varityCold: state.entrust.varityCold,
     userInfo: state.app.userInfo
   }),

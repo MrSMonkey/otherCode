@@ -116,6 +116,7 @@ function* wechatOAuth() {
   /* 如果不是微信环境 */
   return
   if (runtime.appType !== APP_TYPE.wechat) {
+    return
   }
 
   yield put({ type: actionTypes.SET_APP_STATUS, payload: true })

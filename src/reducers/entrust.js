@@ -12,6 +12,7 @@ const initialState = {
   },
   isLoading: false,
   communityList: [],
+  communitykey: '',
   isTips: false
 }
 
@@ -21,7 +22,8 @@ export const actionTypes = {
   SUBLIMT_FORM_SUCCESS: 'SUBLIMT_FORM_SUCCESS',
   CHANGE_ENTRUS_SUBLIMT_LODING: 'CHANGE_ENTRUS_SUBLIMT_LODING',
   COMMUNITYLIST: 'COMMUNITYLIST',
-  COMMUNITYKEY: 'COMMUNITYKEY'
+  COMMUNITYKEY: 'COMMUNITYKEY',
+  SEARCHCOMMUNITY: 'SEARCHCOMMUNITY'
 }
 
 export const actions = {
@@ -36,10 +38,15 @@ export const actions = {
       type: actionTypes.SUBLIMT_FORM
     }
   },
-  sreachCommunity(val) {
+  changeCommuntiyKey(val) {
     return {
       type: actionTypes.COMMUNITYKEY,
-      val
+      text: val
+    }
+  },
+  sreachCommunity() {
+    return {
+      type: actionTypes.SEARCHCOMMUNITY
     }
   }
 }
@@ -58,6 +65,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload
+      }
+    case actionTypes.COMMUNITYKEY:
+      return {
+        ...state,
+        communitykey: action.text
       }
     case actionTypes.COMMUNITYLIST:
       return {
