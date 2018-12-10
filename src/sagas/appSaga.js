@@ -87,7 +87,7 @@ function* getUserInfo() {
     if (!userInfo.Id) {
       const { data } = yield call(api.getUserInfo)
       if (data.code !== '000') {
-        return yield put({ type: actionTypes.APP_ERROR_MSG, payload: data.msg })      
+        return yield put({ type: actionTypes.APP_ERROR_MSG, payload:  data.msg || data.message })      
       }
       userInfo = data.data || {}
       console.log(userInfo);

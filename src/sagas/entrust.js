@@ -12,7 +12,7 @@ function* sublimtEntrust(form) {
   try {
     const { data } = yield call(api.postEntrust, form)
     if (data.code !== '000') {
-      yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg })
+      yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg || data.message })
     }
     return data.code === '000'
   } catch (err) {
@@ -41,7 +41,7 @@ function* bindUser(form) {
       return true
     }
 
-    yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg })
+    yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg || data.message })
     return false
   } catch (e) {
     yield put({type: appActionType.APP_ERROR_MSG,payload: e.message})

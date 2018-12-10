@@ -9,7 +9,7 @@ function* getHouseList() {
     if (data.code === '000') {
       return data.data
     }
-    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg })
+    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg || data.message })
     yield put({ type: actionTypes.GET_HOUSE_LIST_FAIL })
     return []
   } catch (err) {

@@ -9,7 +9,7 @@ function* getRoomList(houseId) {
     if (data.code === '000') {
       return data.data
     }
-    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: '获取房间信息错误！请重试' })
+    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg || data.message })
     return []
   } catch (err) {
     yield put({ type: appActionTypes.APP_ERROR_MSG, payload: '获取房间信息错误！请重试' })

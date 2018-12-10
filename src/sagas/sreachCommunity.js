@@ -13,7 +13,7 @@ function* sreachCommunity(cityId, key) {
     if (data.code === '000') {
       return data.data || []
     }     
-    yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg }) 
+    yield put({ type: appActionType.APP_ERROR_MSG, payload: data.msg || data.message }) 
     return []
   } catch (err) {
     // yield put({ type: appActionType.APP_ERROR_MSG, payload: '获取提交委托错误！请重试' })

@@ -9,7 +9,7 @@ function* getHouseTimeLine(id) {
     if (data.code === '000') {
       return data.data
     }
-    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg })
+    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg || data.message })
     return []
   } catch (err) {
     yield put({  type: appActionTypes.APP_ERROR_MSG, payload: '获取房源动态错误！请重试' })
