@@ -33,18 +33,11 @@ class InputList extends PureComponent {
     this.setState({
       activeId: '',
     })
-    const change = async function () {
-      await changeForm(this.state.keyValue, 'communityName')
-      changeForm(this.state.activeId, 'communityId')
-      this.cancelChooes()
-    }
-    change()
+    changeForm(this.state.keyValue, 'communityName')
+    changeForm(this.state.activeId, 'communityId')
+    setTimeout(this.props.close, 0)
   }
   
-  cancelChooes = () => {
-    const { close } = this.props;
-    close()
-  }
   /**检索小区 */
   searchKey = (val) => {
     const { sreachCommunity, changeCommuntiyKey } = this.props;
@@ -58,12 +51,12 @@ class InputList extends PureComponent {
   
   render() {
     const { activeId } = this.state;
-    const { communityList, communityKey, sreachCommunity, changeCommuntiyKey } = this.props;
+    const { communityList, communityKey, sreachCommunity, changeCommuntiyKey, close } = this.props;
     return (
       <Modal>
         <div styleName="modal">
           <header styleName="header">
-            <div styleName="text-button" onClick={this.cancelChooes}>取消</div>
+            <div styleName="text-button" onClick={close}>取消</div>
             <div styleName="header-title">请输入小区名称</div>
             <div styleName="text-button" onClick={this.confirmeKey}>确认</div>
           </header>
