@@ -83,7 +83,7 @@ const RoomList = ({ data = {} }) => {
         <div styleName="item-tit">
           <h2>{data.isFull ? '' : '房间'}{data.roomName || ''}</h2>
           {rentStatus ? <i>{rentStatus}</i> : ''}
-          {rentStatus ? <i>{onOff}</i> : ''}
+          {rentStatus && onOff ? <i>{onOff}</i> : ''}
         </div>
         <p styleName="item-desc">
           {data.rent || '？'}元/月 <i>|</i> {data.area || '？'}㎡ <i>|</i> {toward}

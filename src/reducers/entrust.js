@@ -37,7 +37,6 @@ export const actions = {
     }
   },
   sreachCommunity(val) {
-    console.log('!!!!!!!', val);
     return {
       type: actionTypes.COMMUNITYKEY,
       val

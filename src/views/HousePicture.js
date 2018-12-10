@@ -23,7 +23,7 @@ const CumstomPhotoSwipeGallery = props => {
       return {
         src: item.imageUrl,
         w: 210,
-        h: 210
+        h: 140
       }
     })
   }
@@ -36,11 +36,11 @@ const CumstomPhotoSwipeGallery = props => {
       thumbnailContent={item => {
         return <img 
           src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/140`} 
-          onError={(e) => {
-            var event = e.target
-            event.onerror = null
-            event.src = imgs.imgBg
-          }}
+          // onError={(e) => {
+          //   var event = e.target
+          //   event.onerror = null
+          //   event.src = imgs.imgBg
+          // }}
         />
       }}
     />
