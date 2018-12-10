@@ -200,7 +200,7 @@ class Entrust extends Component {
 
     const hasErr = this.hasErrItem()
     
-    if (hasErr) {
+    if (hasErr || isErrAddPhone) {
       this.setState({ ...isErr })
       return
     }
@@ -394,7 +394,6 @@ class Entrust extends Component {
                 verify={{
                   type: 'phone',
                   cb: val => {
-                    console.log(!val)
                     this.setState({ 
                       isErrAddPhone: form.linkPhone === '' ? false : !val
                     })
