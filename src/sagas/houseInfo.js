@@ -10,7 +10,7 @@ function* houseInfo(id) {
       return data.data
     }
     yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg || data.message })
-    return []
+    return {}
   } catch (err) {
     yield put({  type: appActionTypes.APP_ERROR_MSG, payload: '获取房源详情错误！请重试' })
   }
@@ -20,7 +20,7 @@ function* houseInfoFlow() {
   while (true) {
     const param = yield take(actionTypes.GET_HOUSE_INFO)
     const houseData = yield call(houseInfo, param.id)
-    if (houseData.id) {
+    if (houseData && houseData.id) {
       yield put({ type: actionTypes.HOUSE_INFO, payload: houseData })
     }
   }
