@@ -12,7 +12,6 @@ import Modal from '../components/Modal'
 import Alert from '../components/Alert'
 import Button from '../components/Button'
 import styles from './Entrust.css'
-import { debounce } from 'lodash'
 import { localStore } from '../utils'
 
 /**检索小区 */
@@ -44,9 +43,8 @@ class InputList extends PureComponent {
     close()
   }
   /**检索小区 */
-  searchKey = (event) => {
+  searchKey = (val) => {
     const { sreachCommunity, changeCommuntiyKey } = this.props;
-    const val = event.target.value;
     changeCommuntiyKey(val);
     //防抖处理
     clearTimeout(this.timer);
@@ -67,7 +65,7 @@ class InputList extends PureComponent {
             <div styleName="text-button" onClick={this.confirmeKey}>确认</div>
           </header>
           <FormItem>
-            <input
+            <Input
               value={communityKey}
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
