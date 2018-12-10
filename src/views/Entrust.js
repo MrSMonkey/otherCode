@@ -206,7 +206,7 @@ class Entrust extends Component {
   sublimt = () => {
     const isLogin = !!localStore.get('userId')
     const { changeForm, userInfo } = this.props
-    const { isErr } = this.state
+    const { isErr, isErrAddPhone } = this.state
 
     const hasErr = this.hasErrItem()
     
@@ -455,8 +455,12 @@ class Entrust extends Component {
               },
               isErrAddPhone: false
             })
+            this.props.closeTips()
           }}
-          confirm={() => redirect(`/houses`)}/>
+          confirm={() => {
+            this.props.closeTips()
+            redirect(`/houses`)
+          }}/>
       </div>
     )
   }

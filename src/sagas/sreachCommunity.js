@@ -26,7 +26,7 @@ function* sreachCommunityFlow() {
     yield take(entrustActionType.SEARCHCOMMUNITY)
     const cityId = yield select(state => state.entrust.form.cityId)
     const val = yield select(state => state.entrust.communitykey)
-    console.log('val~~~~~~~~', val);
+    console.log('search~~~~~~~~', val);
     if (val) {
       const list = yield call(sreachCommunity, cityId, val)
       // const data = yield throttle(3000, entrustActionType.COMMUNITYKEY, sreachCommunity, cityId, key)

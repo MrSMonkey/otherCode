@@ -23,7 +23,8 @@ export const actionTypes = {
   CHANGE_ENTRUS_SUBLIMT_LODING: 'CHANGE_ENTRUS_SUBLIMT_LODING',
   COMMUNITYLIST: 'COMMUNITYLIST',
   COMMUNITYKEY: 'COMMUNITYKEY',
-  SEARCHCOMMUNITY: 'SEARCHCOMMUNITY'
+  SEARCHCOMMUNITY: 'SEARCHCOMMUNITY',
+  TIPS: 'TIPS'
 }
 
 export const actions = {
@@ -48,6 +49,11 @@ export const actions = {
     return {
       type: actionTypes.SEARCHCOMMUNITY
     }
+  },
+  closeTips() {
+    return {
+      type: actionTypes.TIPS
+    } 
   }
 }
 
@@ -91,6 +97,11 @@ const reducer = (state = initialState, action) => {
           phone: action.payload,
           varityCold: '',
         }
+      }
+    case actionTypes.TIPS:
+      return {
+        ...state,
+        isTips: false
       }
     default:
       return state

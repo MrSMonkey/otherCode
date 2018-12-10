@@ -18,7 +18,7 @@ class Alert extends PureComponent {
     const {title, content, confirm, cancel, confirmText, cancelText,open} = this.props
     const { isShow} = this.state
     return (
-      <div styleName="alert" style={{display: isShow && open ? 'block' : 'none'}}>
+      <div styleName="alert" style={{display: open ? 'block' : 'none'}}>
         <div styleName="layout"></div>
         <div styleName="dialog">
           <div styleName="content">
@@ -27,14 +27,14 @@ class Alert extends PureComponent {
           </div>
           <div styleName="footer">
               <div onClick={() => {
-                  this.closeAlert();
+                  // this.closeAlert();
                   cancel && cancel();
                 }}>
                 {cancelText}
               </div>
               <div styleName="sublime" 
                 onClick={()=> {
-                  this.closeAlert();
+                  // this.closeAlert();
                   confirm && confirm();
                 }}>
                 {confirmText}
