@@ -13,6 +13,7 @@ import Alert from '../components/Alert'
 import Button from '../components/Button'
 import styles from './Entrust.css'
 import { localStore } from '../utils'
+import { addClass, hasClass, removeClass } from '../utils'
 
 /**检索小区 */
 @CSSModules(styles)
@@ -259,6 +260,18 @@ class Entrust extends Component {
       this.props.getUserInfo()
     }
   }
+
+  turnPopLayer = () => {
+    // console.log(hasClass(document.documentElement, 'poplayer-show'))
+    const val = hasClass(document.documentElement, 'poplayer-show');
+    const { showModle } = this.props;
+    if(val) {
+      removeClass(document.documentElement, 'poplayer-show');
+    } else {
+      addClass(document.documentElement, 'poplayer-show');
+    }
+    showModle();
+  }
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
@@ -305,7 +318,7 @@ class Entrust extends Component {
                 option={{value: 'id', text: 'cityName'}}
               />
             </FormItem>
-            <FormItem label="小区名称" isErr={isErr.communityName} onClick={showModle}>
+            <FormItem label="小区名称" isErr={isErr.communityName} onClick={this.turnPopLayer}>
               <Input
                 value={form.communityName}
                 maxLength={16}
@@ -416,7 +429,7 @@ class Entrust extends Component {
         </Form>
         <InputList 
           close={() => {
-            showModle()
+            this.turnPopLayer()
             this.setState({ 
               isErr: { ...isErr, communityName: !form.communityName }
             })

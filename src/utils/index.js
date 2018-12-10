@@ -166,3 +166,23 @@ export const localStore = (function() {
     }
   }
 })()
+export function trim(str) {
+  return str.replace(/^\s+|\s+$/g, '');
+}
+export function hasClass(el, cls) {
+  return el.className.split(' ').indexOf(cls) !== -1;
+}
+export function addClass(el, cls) {
+  if (hasClass(el, cls)) {
+    return;
+  }
+  el.className = trim(el.className + ' ' + cls);
+  return el;
+}
+export function removeClass(el, cls) {
+  if (!hasClass(el, cls)) {
+    return;
+  }
+  el.className = trim(el.className.replace(cls, ''));
+  return el;
+}
