@@ -13,7 +13,6 @@ import Alert from '../components/Alert'
 import Button from '../components/Button'
 import styles from './Entrust.css'
 import debounce from '../utils/debounce'
-import throttle from '../utils/throttle'
 import { localStore } from '../utils'
 
 /**检索小区 */
@@ -27,7 +26,6 @@ class InputList extends PureComponent {
   }
   state = {
     itemList: [],
-    // keyValue: '',
     activeId: ''
   }
 
@@ -46,21 +44,16 @@ class InputList extends PureComponent {
     close()
   }
   /**检索小区 */
-  // searchKey = (val) => {
-  //   this.setState({
-  //     keyValue: val,
-  //     activeId: ''
-  //   }, this.search)
-  // }
+  searchKey = (event) => {
+    const { sreachCommunity, changeCommuntiyKey } = this.props;
+    const val = event.target.value
+    changeCommuntiyKey(val)
+    sreachCommunity();
+  }
   
-  // search = () => {
-  //   console.log(this.state.keyValue)
-  //   debounce(this.props.sreachCommunity(this.state.keyValue), 3000)
-  // }
-
   render() {
-    const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList, communityKey, changeCommuntiyKey } = this.props;
+    const { activeId } = this.state;
+    const { communityList, communityKey } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -74,11 +67,7 @@ class InputList extends PureComponent {
               value={communityKey}
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
-              onChange={(event) => {
-                const val = event.target.value
-                changeCommuntiyKey(val)
-                sreachCommunity(val)
-              }}
+              onChange={this.searchKey}
             />
             <i className="slef-icon-close" 
               onClick={() => {
@@ -271,7 +260,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
-    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communitykey, changeCommuntiyKey, sreachCommunity, isTips, redirect, updatePhone} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communityKey, changeCommuntiyKey, sreachCommunity, isTips, redirect, updatePhone} = this.props
     const isLogin = !!localStore.get('userId')
 
     let isErrItem = false
@@ -432,7 +421,7 @@ class Entrust extends Component {
           }}
           form={form}
           communityList={communityList}
-          communitykey={communitykey}
+          communityKey={communityKey}
           changeCommuntiyKey={changeCommuntiyKey}
           changeForm={changeForm}
           sreachCommunity={sreachCommunity}
@@ -475,7 +464,7 @@ export default connect(
     citys: state.app.citys,
     isShow: state.modal.isShow,
     communityList: state.entrust.communityList,
-    communitykey: state.entrust.communitykey,
+    communityKey: state.entrust.communityKey,
     varityCold: state.entrust.varityCold,
     userInfo: state.app.userInfo
   }),

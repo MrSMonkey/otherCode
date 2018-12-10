@@ -12,7 +12,7 @@ const initialState = {
   },
   isLoading: false,
   communityList: [],
-  communitykey: '',
+  communityKey: '',
   isTips: false
 }
 
@@ -73,9 +73,10 @@ const reducer = (state = initialState, action) => {
         isLoading: action.payload
       }
     case actionTypes.COMMUNITYKEY:
+    console.log(action.text)
       return {
         ...state,
-        communitykey: action.text
+        communityKey: action.text
       }
     case actionTypes.COMMUNITYLIST:
       return {
