@@ -29,15 +29,17 @@ class InputList extends PureComponent {
   }
 
   confirmeKey = () => {
-    const { changeForm } = this.props;
+    const { changeForm, communityKey } = this.props;
     this.setState({
       activeId: '',
     })
-    changeForm(this.state.keyValue, 'communityName')
+    changeForm(communityKey, 'communityName')
     changeForm(this.state.activeId, 'communityId')
-    setTimeout(this.props.close, 0)
+    setTimeout(() => {
+      this.props.close()
+    }, 0)
   }
-  
+
   /**检索小区 */
   searchKey = (val) => {
     const { sreachCommunity, changeCommuntiyKey } = this.props;
@@ -51,7 +53,7 @@ class InputList extends PureComponent {
   
   render() {
     const { activeId } = this.state;
-    const { communityList, communityKey, sreachCommunity, changeCommuntiyKey, close } = this.props;
+    const { communityList, communityKey, changeCommuntiyKey, close } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -73,9 +75,6 @@ class InputList extends PureComponent {
                   activeId: '',
                 })
                 changeCommuntiyKey('')
-                setTimeout(()=> {
-                  sreachCommunity()
-                }, 0)
               }}></i>
           </FormItem>
           <ul styleName="list">
@@ -86,8 +85,8 @@ class InputList extends PureComponent {
                     onClick={() => {
                       this.setState({
                         activeId: item.id,
-                        keyValue: item.communityName
                       })
+                      changeCommuntiyKey(item.communityName)
                     }}>
                     {item.communityName}（{item.address}）
                   </li>
