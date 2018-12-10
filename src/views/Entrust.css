@@ -57,6 +57,9 @@
       background-color: #fff;
       border-bottom: 1px solid #eee;
       font-size: 14px; /* no */
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .active-item {
       background-color: $bg-color-light;

@@ -12,7 +12,7 @@ import Modal from '../components/Modal'
 import Alert from '../components/Alert'
 import Button from '../components/Button'
 import styles from './Entrust.css'
-import debounce from '../utils/debounce'
+import { debounce } from 'lodash'
 import { localStore } from '../utils'
 
 /**检索小区 */
@@ -59,7 +59,7 @@ class InputList extends PureComponent {
   
   render() {
     const { activeId } = this.state;
-    const { communityList, communityKey } = this.props;
+    const { communityList, communityKey, sreachCommunity } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -97,7 +97,7 @@ class InputList extends PureComponent {
                         keyValue: item.communityName
                       })
                     }}>
-                    {item.communityName}
+                    {item.communityName}（{item.address}）
                   </li>
                 )
               })
