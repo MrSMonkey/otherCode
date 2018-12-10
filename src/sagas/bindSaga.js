@@ -23,7 +23,6 @@ function* bindUser() {
       localStore.set('userId', data.data.userId)
       localStore.set('tokenTime', time + 30 * 60 * 1000)
       localStore.set('time', time + (6 * 24* 60 * 60 * 1000))
-      yield put({ type: appActionType.SET_USER_BIND_TSATE, payload: true })
       yield put({ type: bindActionType.BIND_SUCCESS })
     } else {
       yield put({ type: bindActionType.BIND_FAIL })

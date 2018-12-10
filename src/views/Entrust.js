@@ -16,8 +16,6 @@ import debounce from '../utils/debounce'
 import throttle from '../utils/throttle'
 import { localStore } from '../utils'
 
-const isLogin = !!localStore.get('userId')
-
 /**检索小区 */
 @CSSModules(styles)
 class InputList extends PureComponent {  
@@ -62,7 +60,7 @@ class InputList extends PureComponent {
 
   render() {
     const { keyValue, activeId } = this.state;
-    const { sreachCommunity, communityList, communityKey, changeCommuntiyKey, sreachCommunity } = this.props;
+    const { sreachCommunity, communityList, communityKey, changeCommuntiyKey } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -206,6 +204,7 @@ class Entrust extends Component {
 
   /** 提交*/
   sublimt = () => {
+    const isLogin = !!localStore.get('userId')
     const { changeForm, userInfo } = this.props
     const { isErr } = this.state
 
@@ -227,6 +226,7 @@ class Entrust extends Component {
   }
 
   hasErrItem = () => {
+    const isLogin = !!localStore.get('userId')
     const { form } = this.props
     const { isErr, isErrAddPhone } = this.state
 
@@ -262,6 +262,7 @@ class Entrust extends Component {
   }
   
   componentDidMount() {
+    const isLogin = !!localStore.get('userId')
     this.props.getCitys()
     if (isLogin) {
       this.props.getUserInfo()
@@ -271,8 +272,10 @@ class Entrust extends Component {
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
     const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communitykey, changeCommuntiyKey, sreachCommunity, isTips, redirect, updatePhone} = this.props
+    const isLogin = !!localStore.get('userId')
 
     let isErrItem = false
+
 
     for (let i in form) {
       const val = form[i]
