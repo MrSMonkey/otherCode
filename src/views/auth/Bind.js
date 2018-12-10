@@ -273,7 +273,7 @@ class Bind extends PureComponent {
       identifyingCode
     } = this.props
     const { phoneError, codeError, isPhoneError, isCodeError } = this.state
-    const redirectUrl = parseQuery(router.location.search).redirect || '/parthner/houses'
+    const redirectUrl = parseQuery(router.location.search).redirect || '/houses'
 
     return (
       <div styleName="view">

@@ -64,12 +64,13 @@ class InputList extends PureComponent {
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
               onChange={val => {
+                console.log('~~~~')
                 this.setState({
                   keyValue: val,
                   activeId: ''
                 })
                 // sreachCommunity(val)
-                throttle(sreachCommunity, 1000)(val)
+                throttle(sreachCommunity, 500)(val)
               }}
             />
             <i className="slef-icon-close" 
@@ -194,8 +195,8 @@ class Entrust extends Component {
 
   /** 提交*/
   sublimt = () => {
-    const { form, changeForm, userInfo } = this.props
-    const { isErr, isErrAddPhone } = this.state
+    const { changeForm, userInfo } = this.props
+    const { isErr } = this.state
 
     const hasErr = this.hasErrItem()
     
@@ -278,7 +279,6 @@ class Entrust extends Component {
         }
       }
     }
-
     return (
       <div>
         <Form data={form}>
@@ -394,8 +394,9 @@ class Entrust extends Component {
                 verify={{
                   type: 'phone',
                   cb: val => {
+                    console.log(!val)
                     this.setState({ 
-                      isErrAddPhone: form.phone === '' ? false : !val
+                      isErrAddPhone: form.linkPhone === '' ? false : !val
                     })
                   }
                 }}
@@ -429,6 +430,17 @@ class Entrust extends Component {
           content="提交成功！资产管家会尽快与您取得联系，您可以在【我的房源】中查看动态。"
           cancelText="我知道了"
           confirmText="立即查看"
+          cancel={() => {
+            this.setState({
+              isErr: {
+                communityName: false,
+                name: false,
+                phone: false,
+                varityCold: false
+              },
+              isErrAddPhone: false
+            })
+          }}
           confirm={() => redirect(`/houses`)}/>
       </div>
     )

@@ -19,12 +19,12 @@ class Input extends PureComponent {
         disabled={disabled || false}
         onBlur={event => {
           const val = event.target.value
-          onBlur && onBlur(val)
           if (verify) {
             const isSuccess = verify && verify.type ? hasVerify[verify.type](val).success : true
             const empty = verify ? val === '' : false
             verify.cb(isSuccess && !empty)
           }
+          onBlur && onBlur(val)
         }}
         onChange={event => {
           const val = event.target.value
