@@ -71,7 +71,7 @@ const HouseItem = ({ data, redirect }) => {
                 <i>{data.contact} </i>
                 进行咨询
               </a>
-            : `${rentType} | ${rentWay} | ${data.rentRoom ? '待租中' : `${data.roomTotal}个房间 ${data.rentRoom}个已出租`}`
+            : `${rentType} | ${rentWay} | ${data.rentRoom ? `${data.roomTotal}个房间 ${data.rentRoom}个已出租` : '待租中'}`
         }
       </p>
     </div>
