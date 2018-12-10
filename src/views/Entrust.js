@@ -47,8 +47,6 @@ class InputList extends PureComponent {
   searchKey = (event) => {
     const { sreachCommunity, changeCommuntiyKey } = this.props;
     const val = event.target.value;
-    // changeCommuntiyKey(val);
-    // sreachCommunity();
     changeCommuntiyKey(val);
     //防抖处理
     clearTimeout(this.timer);
@@ -59,7 +57,7 @@ class InputList extends PureComponent {
   
   render() {
     const { activeId } = this.state;
-    const { communityList, communityKey, sreachCommunity } = this.props;
+    const { communityList, communityKey, sreachCommunity, changeCommuntiyKey } = this.props;
     return (
       <Modal>
         <div styleName="modal">
