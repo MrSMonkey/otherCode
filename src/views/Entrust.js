@@ -57,7 +57,7 @@ class InputList extends PureComponent {
   
   search = () => {
     console.log(this.state.keyValue)
-    debounce(this.props.sreachCommunity, 3000, false)(this.state.keyValue)
+    debounce(this.props.sreachCommunity(this.state.keyValue), 3000)
   }
 
   render() {

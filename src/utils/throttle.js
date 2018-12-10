@@ -34,6 +34,7 @@ export default function throttle(func, wait, options) {
     if (!previous && options.leading === false) previous = now;
     // 计算剩余时间
     var remaining = wait - (now - previous);
+    console.log(remaining)
     context = this;
     args = arguments;
     // 当到达wait指定的时间间隔，则调用func函数
