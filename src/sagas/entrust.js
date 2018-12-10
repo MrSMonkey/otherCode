@@ -5,7 +5,6 @@ import { actionTypes as appActionType } from '../reducers/app'
 import { actionTypes as entrustActionType } from '../reducers/entrust'
 import { localStore } from '../utils'
 
-const isLogin = !!localStore.get('userId')
 
 /**提交委托表单 */
 function* sublimtEntrust(form) {
@@ -54,7 +53,8 @@ function* sublimtEntrustFlow() {
     yield put({ type: entrustActionType.CHANGE_ENTRUS_SUBLIMT_LODING, payload: true })
     const form = yield select(state => state.entrust.form)
     let isBind = true
-    if (!isLogin) { 
+    const noLogin = !localStore.get('userId')
+    if (noLogin) { 
       const data = yield call(bindUser, form)
       isBind = !!data
     }
