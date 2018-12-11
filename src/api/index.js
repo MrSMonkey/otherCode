@@ -56,7 +56,7 @@ request.interceptors.response.use(
     if (status === 401 && !config._retry && refreshToken) {
       config._retry = true
       return axios({
-        baseURL: 'http://172.16.10.119:7070',
+        baseURL: 'http://www.34.testuoko.com',
         url: `/auth/token/refresh_token/${refreshToken}`,
         method: 'post'
       }).then(({ data }) => {
