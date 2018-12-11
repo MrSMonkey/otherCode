@@ -30,10 +30,7 @@ function* bindUser() {
     }
   } catch (e) {
     yield put({ type: bindActionType.BIND_FAIL })
-    yield put({
-      type: appActionType.APP_ERROR_MSG,
-      payload: '登陆用户失败'
-    })
+    yield put({ type: appActionType.APP_ERROR_MSG, payload: '用户登录失败' })
   }
 }
 

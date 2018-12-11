@@ -34,7 +34,7 @@ const CumstomPhotoSwipeGallery = props => {
       options={options}
       isOpen={false}
       thumbnailContent={item => {
-        return <img 
+        return <img className="img-bg"
           src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/140`} 
           // onError={(e) => {
           //   var event = e.target
