@@ -22,8 +22,8 @@ const CumstomPhotoSwipeGallery = props => {
     data = props.data.map(item => {
       return {
         src: item.imageUrl,
-        w: 210,
-        h: 140
+        w: 300,
+        h: 210
       }
     })
   }
@@ -35,7 +35,8 @@ const CumstomPhotoSwipeGallery = props => {
       isOpen={false}
       thumbnailContent={item => {
         return <img className="img-bg"
-          src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/140`} 
+          key={item}
+          src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/160`} 
           onError={(e) => {
             var event = e.target
             event.onerror = null

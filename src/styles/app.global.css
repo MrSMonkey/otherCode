@@ -100,7 +100,7 @@ body {
   .pswp-thumbnail {
     float: left;
     width: 210px;
-    height: 210px;
+    height: 160px;
     margin-right: 30px;
     margin-bottom: 30px;
     &:nth-of-type(3n) {
@@ -180,4 +180,3 @@ body {
   background-position: center;
   background-size: contain;
 }
-
