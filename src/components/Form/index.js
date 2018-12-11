@@ -8,7 +8,7 @@ import hasVerify from '../../utils/verify.js'
 @CSSModules(styles)
 class Input extends PureComponent {
   render() {
-    const { value, maxLength, verify, placeholder, onChange, onBlur, className, style, disabled } = this.props
+    const { value, maxLength, verify, placeholder, onChange, onBlur, className, style, disabled, onFocus } = this.props
     return (
       <input
         value={value}
@@ -17,6 +17,9 @@ class Input extends PureComponent {
         className={className || ''}
         style={style || {}}
         disabled={disabled || false}
+        onFocus={event => {
+          onFocus && onFocus()
+        }}
         onBlur={event => {
           const val = event.target.value
           if (verify) {

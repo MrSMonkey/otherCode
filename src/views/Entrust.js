@@ -68,6 +68,10 @@ class InputList extends PureComponent {
               maxLength={16} 
               placeholder="请输入您爱屋所在的小区"
               onChange={this.searchKey}
+              onBlur={event => {
+                 //页面移动到顶部，解决 ios 键盘关闭后页面上移的问题
+                document.documentElement.scrollTop = document.body.scrollTop = 0;
+              }}
             />
             <i className="slef-icon-close" 
               onClick={() => {
