@@ -184,7 +184,7 @@ class ValidationCodeButton extends PureComponent {
     })
   }
   onCodeButtonClick = () => {
-    if (this.state.isCounting || this.state.isDisabled) { return }
+    if (this.state.isCounting || this.props.isDisabled) { return }
 
     this.countStart()
     this.props.onClick()
@@ -266,7 +266,6 @@ class Bind extends PureComponent {
       updateCode,
       genCode,
       isCheckingPhone,
-      router,
       bindSuccess,
       phone,
       bindLoading,
