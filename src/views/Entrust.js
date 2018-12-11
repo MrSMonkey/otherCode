@@ -53,7 +53,7 @@ class InputList extends PureComponent {
   
   render() {
     const { activeId } = this.state;
-    const { communityList, communityKey, changeCommuntiyKey, close } = this.props;
+    const { communityList, communityKey, changeCommuntiyKey, close, clearCommunityList } = this.props;
     return (
       <Modal>
         <div styleName="modal">
@@ -75,6 +75,7 @@ class InputList extends PureComponent {
                   activeId: '',
                 })
                 changeCommuntiyKey('')
+                clearCommunityList()
               }}></i>
           </FormItem>
           <ul styleName="list">
@@ -257,7 +258,7 @@ class Entrust extends Component {
   
   render() {
     const { isErr, isErrAddPhone, modalContent } = this.state
-    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communityKey, changeCommuntiyKey, sreachCommunity, isTips, redirect, updatePhone} = this.props
+    const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communityKey, changeCommuntiyKey, clearCommunityList, sreachCommunity, isTips, redirect, updatePhone} = this.props
     const isLogin = !!localStore.get('userId')
 
     let isErrItem = false
@@ -280,7 +281,7 @@ class Entrust extends Component {
       }
     }
     return (
-      <div>
+      <div styleName="main">
         <Form data={form}>
           <h2 styleName="title">
             添加房屋信息
@@ -418,6 +419,7 @@ class Entrust extends Component {
           }}
           form={form}
           communityList={communityList}
+          clearCommunityList={clearCommunityList}
           communityKey={communityKey}
           changeCommuntiyKey={changeCommuntiyKey}
           changeForm={changeForm}

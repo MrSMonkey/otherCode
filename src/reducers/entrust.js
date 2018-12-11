@@ -54,6 +54,12 @@ export const actions = {
     return {
       type: actionTypes.TIPS
     } 
+  },
+  clearCommunityList() {
+    return {
+      type: actionTypes.COMMUNITYLIST,
+      payload: []
+    }
   }
 }
 

@@ -1,5 +1,10 @@
 @import '../styles/variables.global.css';
 
+
+.main {
+  -webkit-overflow-scrolling: touch;
+}
+
 .title {
   margin-top: 54px;
   font-size: 18px; /* no */
