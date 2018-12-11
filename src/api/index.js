@@ -64,8 +64,15 @@ request.interceptors.response.use(
         localStorage.set('refresh_token', data.refresh_token)
 
         config.headers.Authorization = `Bearer ${data.refresh_token}`
-        console.log(config)
         return axios(config)
+      }).catch((err) => {
+        console.log(err.response.status)
+        if (err.response.status === 401) {
+          localStore.remove('access_token')
+          localStore.remove('refresh_token')
+          localStore.remove('userId')
+          localStore.remove('time')
+        }
       })
     }
     return Promise.reject(err)
