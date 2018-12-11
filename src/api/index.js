@@ -9,9 +9,11 @@ const host = appConfig.host
 axios.defaults.withCredentials = true
 console.log(host.api)
 
+const baseUrl = 'http://www.34.testuoko.com'
+
 const request = axios.create({
   // baseURL: host.api.replace(/\/+$/, ''),
-  baseURL: 'http://172.16.10.119:7070/',
+  baseURL: baseUrl,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   }
@@ -56,7 +58,7 @@ request.interceptors.response.use(
     if (status === 401 && !config._retry && refreshToken) {
       config._retry = true
       return axios({
-        baseURL: 'http://www.34.testuoko.com',
+        baseURL: baseUrl,
         url: `/auth/token/refresh_token/${refreshToken}`,
         method: 'post'
       }).then(({ data }) => {
