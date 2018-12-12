@@ -18,20 +18,23 @@ const HouseItem = ({ data, redirect }) => {
   /**托管类型 */
   let rentType = ''
   switch (data.consociationType) {
-    case 1:
-      rentType = '直租';
-      break;
-    case 2:
-      rentType = '直管加盟';
-      break;
-    case 3:
-      rentType = '纯托管';
-      break;
-    case 4:
+    case 0:
       rentType = '未知';
       break;
+    case 1:
+      rentType = '星空家盟直租';
+      break;
+    case 2:
+      rentType = '优客逸家加盟';
+      break;
+    case 3:
+      rentType = '星空家盟加盟';
+      break;
+    case 4:
+      rentType = '优客逸家自营';
+      break;
     default:
-      rentType = '';
+      rentType = '未知';
       break;
   }
   /**租赁类型 */
@@ -44,7 +47,7 @@ const HouseItem = ({ data, redirect }) => {
       rentWay = '合租';
       break;
     default:
-      rentWay = '';
+      rentWay = '未知';
       break;
   }
 
