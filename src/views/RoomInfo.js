@@ -89,7 +89,7 @@ const RoomList = ({ data = {} }) => {
           {data.rent || '？'}元/月 <i>|</i> {data.area || '？'}㎡ <i>|</i> {toward}
         </p>
         <p styleName="item-desc">
-          房间配置：{data.roomConfigNum || ''} <i></i> {data.publicAreaConfigNum ? `| 公区配置：${data.publicAreaConfigNum}` : ''}
+          房间配置：{data.roomConfigNum || 0} <i></i> {data.publicAreaConfigNum ? `| 公区配置：${data.publicAreaConfigNum}` : ''}
         </p>
       </div>
     </div>
