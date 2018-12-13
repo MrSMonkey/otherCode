@@ -10,7 +10,7 @@ import styles from './RoomInfo.css'
 
 
 /**房间列表 */
-const RoomList = ({ data = {} }) => {
+const RoomList = ({ data = {}, isFull = fasle }) => {
   let toward = '';
   switch (data.toward) {
     case 1:
@@ -86,7 +86,8 @@ const RoomList = ({ data = {} }) => {
           {rentStatus && onOff ? <i>{onOff}</i> : ''}
         </div>
         <p styleName="item-desc">
-          {data.rent || '？'}元/月 <i>|</i> {data.area || '？'}㎡ <i>|</i> {toward}
+          {isFull && data.isFull === 0 ? '' : <span>{data.rent || '？'}元/月<i> | </i></span>}
+          {data.area || '？'}㎡<i> | </i>{toward}
         </p>
         <p styleName="item-desc">
           房间配置：{data.roomConfigNum || 0} <i></i> {data.publicAreaConfigNum ? `| 公区配置：${data.publicAreaConfigNum}` : ''}
@@ -136,6 +137,11 @@ class RoomInfo extends Component {
       roomListLoading
     } = this.props
     const { tabsData } = this.state
+
+    const isFull = roomList.filter((item) => {
+      return item.isFull === 1
+    });
+
     return (
       <div>
         <Tabs data={tabsData} 
@@ -152,7 +158,7 @@ class RoomInfo extends Component {
               color="#474747"
               />
             </div>
-            : roomList && roomList.map((i, index) => <StyleRoomList data={i} key={index}/>)
+            : roomList && roomList.map((i, index) => <StyleRoomList data={i} key={index} isFull={isFull.length > 0}/>)
         }
       </div>
     )
