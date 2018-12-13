@@ -108,6 +108,7 @@ class RoomInfo extends Component {
   componentDidMount() {
     const { match, getRoomList} = this.props
     const id = match.params.id
+    document.documentElement.scrollTop = document.body.scrollTop = 0;
     getRoomList(id)
     this.setState({
       tabsData: [

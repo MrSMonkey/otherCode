@@ -103,6 +103,7 @@ class MyHouses extends Component {
   componentDidMount() {
     const { match, getHouseInfo, gethouseTimeLine } = this.props
     const id = match.params.id
+    document.documentElement.scrollTop = document.body.scrollTop = 0;
     getHouseInfo(id)
     gethouseTimeLine(id)
     this.setState({
