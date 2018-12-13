@@ -19,12 +19,14 @@ const options = {
 const CumstomPhotoSwipeGallery = props => {
   let data = []
   if (props.data) {
-    data = props.data.map(item => {
-      return {
-        src: item.imageUrl,
-        w: 300,
-        h: 210
-      }
+    props.data.forEach(item => {
+      const img = new Image()
+      img.src = `${item.imageUrl}?imageView2/2/w/300`
+      data.push({
+        src: `${item.imageUrl}?imageView2/2/w/300`,
+        w: img.width,
+        h: img.height
+      })
     })
   }
   return (
@@ -36,7 +38,7 @@ const CumstomPhotoSwipeGallery = props => {
       thumbnailContent={item => {
         return <img className="img-bg"
           key={item}
-          src={item.thumbnail || `${item.src}?imageView2/1/w/200/h/160`} 
+          src={item.thumbnail || item.src} 
           onError={(e) => {
             var event = e.target
             event.onerror = null
