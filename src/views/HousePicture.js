@@ -61,7 +61,6 @@ class HousePicture extends Component {
   }
   componentDidMount() {
     const id = this.props.match.params.id
-    document.documentElement.scrollTop = document.body.scrollTop = 0;
     this.props.getHousePicture(id)
     this.setState({
       tabsData: [
