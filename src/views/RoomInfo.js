@@ -138,7 +138,7 @@ class RoomInfo extends Component {
     } = this.props
     const { tabsData } = this.state
 
-    const isFull = roomList.filter((item) => {
+    const isFull = roomList && roomList.filter((item) => {
       return item.isFull === 1
     });
 

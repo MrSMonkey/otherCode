@@ -8,12 +8,11 @@ import { localStore } from '@/utils'
 
 const host = appConfig.host
 axios.defaults.withCredentials = true
-console.log(host.api)
 
 const baseUrl = 'http://www.34.testuoko.com'
+// const baseUrl = host.api.replace(/\/+$/, '')
 
 const request = axios.create({
-  // baseURL: host.api.replace(/\/+$/, ''),
   baseURL: baseUrl,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
@@ -32,10 +31,11 @@ request.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     
+    /**登录授权, 登录接口修改 Authorization */
     if (config.url.indexOf('/auth/login/web/mobile') > -1 || config.url.indexOf('/verification_code') > -1) {
-      /**登录授权 */
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2'
     }
+
     config.url = populateUrl(config.url, config.urlKey)
     return config
   },
@@ -56,6 +56,7 @@ request.interceptors.response.use(
     const config = err.config
     const status = err.response.status
     const refreshToken = localStore.get('refresh_token')
+    console.log(err);
     if (status === 401 && !config._retry && refreshToken) {
       config._retry = true
       return axios({
@@ -69,7 +70,6 @@ request.interceptors.response.use(
         config.headers.Authorization = `Bearer ${data.refresh_token}`
         return axios(config)
       }).catch((err) => {
-        console.log(err.response.status)
         if (err.response.status === 401) {
           localStore.remove('access_token')
           localStore.remove('refresh_token')

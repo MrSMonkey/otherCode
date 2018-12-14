@@ -16,38 +16,75 @@ const options = {
   shareEl: false
 }
 
-const CumstomPhotoSwipeGallery = props => {
-  let data = []
-  if (props.data) {
-    props.data.forEach(item => {
-      const img = new Image()
-      img.src = `${item.imageUrl}?imageView2/2/w/300`
-      data.push({
-        src: `${item.imageUrl}?imageView2/2/w/300`,
-        w: img.width,
-        h: img.height
-      })
-    })
+// const CumstomPhotoSwipeGallery = (props) => {
+  // let data = []
+  
+  // if (props.data) {
+  //   props.data.forEach(item => {
+  //     loadImg(item)
+  //   })
+  // }
+  
+  // const loadImg = (item) => {
+  //   const img = new Image()
+  //   img.src = `${item.imageUrl}?imageView2/2/w/300`
+  //   img.onload = () => {
+  //     return {
+  //       src: `${item.imageUrl}?imageView2/2/w/300`,
+  //       w: img.width,
+  //       h: img.height
+  //     }
+  //   };
+  // }
+class CumstomPhotoSwipeGallery extends Component {
+  state = {
+    data: []
   }
-  return (
-    <PhotoSwipeGallery
-      className="house-pic-gallery"
-      items={data}
-      options={options}
-      isOpen={false}
-      thumbnailContent={item => {
-        return <img className="img-bg"
-          key={item}
-          src={item.thumbnail || item.src} 
-          onError={(e) => {
-            var event = e.target
-            event.onerror = null
-            event.src = imgs.imgBg
-          }}
-        />
-      }}
-    />
-  )
+
+  componentDidMount() {
+    var arr = []
+    if (this.props.data) {
+      this.props.data.forEach(item => {
+        const img = new Image()
+        img.src = `${item.imageUrl}?imageView2/2/w/320`
+        img.onload = () => {
+          arr.push({
+            thumbnails: imgs.imgBg,
+            src: `${item.imageUrl}?imageView2/2/w/320`,
+            w: img.width,
+            h: img.height
+          })
+
+          this.setState({
+            data: arr
+          })
+        }
+      })
+    }
+  }
+
+  render() {
+    const { data } = this.state
+    return (
+      <PhotoSwipeGallery
+        className="house-pic-gallery"
+        items={data}
+        options={options}
+        isOpen={false}
+        thumbnailContent={item => {
+          return <img className="img-bg"
+            key={item}
+            src={item.src} 
+            onError={(e) => {
+              var event = e.target
+              event.onerror = null
+              event.src = imgs.imgBg
+            }}
+          />
+        }}
+      />
+    )
+  }
 }
 
 class HousePicture extends Component {
@@ -85,6 +122,7 @@ class HousePicture extends Component {
       ]
     })
   }
+  
   render() {
     const { pictures, picturesLoading, redirect } = this.props
     if (picturesLoading) {
@@ -110,13 +148,13 @@ class HousePicture extends Component {
             return (
               <div key={index}>
                 <SectionTitle>房间{i.roomName}</SectionTitle>
-                <CumstomPhotoSwipeGallery data={i.imageDTOS} />
+                <CumstomPhotoSwipeGallery data={i.imageDTOS} key={index}/>
               </div>
             )
           })
         }
         <SectionTitle>公区照片</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.imageHouseDTOS && pictures.imageHouseDTOS.imageDTOS} />
+        <CumstomPhotoSwipeGallery data={pictures.imageHouseDTOS && pictures.imageHouseDTOS.imageDTOS} key="gonqu"/>
       </React.Fragment>
     )
   }
