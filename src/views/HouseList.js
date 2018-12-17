@@ -28,10 +28,10 @@ const HouseItem = ({ data, redirect }) => {
       rentType = '优客逸家加盟';
       break;
     case 3:
-      rentType = '星空家盟加盟';
+      rentType = '优客逸家自营';
       break;
     case 4:
-      rentType = '优客逸家自营';
+      rentType = '星空家盟加盟';
       break;
     default:
       rentType = '未知';
