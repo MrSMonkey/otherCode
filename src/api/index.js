@@ -10,7 +10,8 @@ const host = appConfig.host
 axios.defaults.withCredentials = true
 
 // const baseUrl = 'http://www.34.testuoko.com'
-const baseUrl = host.api.replace(/\/+$/, '')
+// const baseUrl = host.api.replace(/\/+$/, '')
+const baseUrl = 'http://api-gateway.uoko.com/'
 
 const request = axios.create({
   baseURL: baseUrl,
