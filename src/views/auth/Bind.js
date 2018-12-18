@@ -224,8 +224,8 @@ class Bind extends PureComponent {
     })
     return success
   }
-  onPhoneBlur = () => {
-    const { phone } = this.props
+  onPhoneBlur = (phone) => {
+    // const { phone } = this.props
     const check = this.validatePhone(phone)
 
     if (!check) {
@@ -242,15 +242,15 @@ class Bind extends PureComponent {
     identifyingCode = _.trim(identifyingCode)
     this.setState({
       codeError: identifyingCode ? '' : '请输入验证码',
-      isCodeError: !identifyingCode
+      isCodeError: identifyingCode.length < 6
     })
 
     return identifyingCode
   }
-  onCodeBlur = () => {
-    const { identifyingCode } = this.props
-    this.validateCode(identifyingCode)
-  }
+  // onCodeBlur = () => {
+  //   const { identifyingCode } = this.props
+  //   this.validateCode(identifyingCode)
+  // }
 
   onBindClick = () => {
     // const pv = this.validatePhoneField()
@@ -285,9 +285,11 @@ class Bind extends PureComponent {
             </div>
             <InputField
               placeholder="请输入手机号码"
-              onBlur={this.onPhoneBlur}
               value={phone}
-              onInput={e => updatePhone(e.target.value)}
+              onInput={e => {
+                updatePhone(e.target.value)
+                this.onPhoneBlur(e.target.value)
+              }}
               onReset={e => updatePhone('')}
               isLoading={isCheckingPhone}
               error={phoneError}
@@ -300,9 +302,11 @@ class Bind extends PureComponent {
               <div styleName="field-wrap">
                 <InputField
                   value={identifyingCode}
-                  onBlur={this.onCodeBlur}
                   error={codeError}
-                  onInput={e => updateCode(e.target.value)}
+                  onInput={e => {
+                    updateCode(e.target.value)
+                    this.validateCode(e.target.value)
+                  }}
                   onReset={e => updateCode('')}
                   placeholder="请输入验证码"
                 />
