@@ -9,8 +9,8 @@ import { localStore } from '@/utils'
 const host = appConfig.host
 axios.defaults.withCredentials = true
 
-const baseUrl = 'http://www.34.testuoko.com'
-// const baseUrl = host.api.replace(/\/+$/, '')
+// const baseUrl = 'http://www.34.testuoko.com'
+const baseUrl = host.api.replace(/\/+$/, '')
 
 const request = axios.create({
   baseURL: baseUrl,
