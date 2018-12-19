@@ -263,7 +263,7 @@ class Entrust extends Component {
       this.setState({ ...isErr })
       return
     }
-    console.log(isLogin, userInfo.username);
+    // console.log(isLogin, userInfo.username);
     /**test */
     if (isLogin) {
       changeForm(userInfo.username, 'phone')
@@ -368,18 +368,7 @@ class Entrust extends Component {
                   isCityOption: true
                 }, this.turnPopLayer)
               }}>
-              <Select
-                data={citys}
-                value={form.cityId}
-                placeholder="请选择您爱屋所在的城市"
-                disabled={true}
-                onChange={val => {
-                  const city = citys.filter(i => val == i.id)
-                  changeForm(val, 'cityId')
-                  changeForm(city[0].cityName, 'cityName')
-                }}
-                option={{value: 'id', text: 'cityName'}}
-              />
+              <p styleName="form-val">{form.cityName}</p>
             </FormItem>
             <FormItem label="小区名称" isErr={isErr.communityName} 
               onClick={() => {
