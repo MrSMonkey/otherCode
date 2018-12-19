@@ -1,7 +1,6 @@
 @import '../styles/variables.global.css';
 
 .main {
-  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
 .title {

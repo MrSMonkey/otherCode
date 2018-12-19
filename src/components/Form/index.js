@@ -22,6 +22,7 @@ class Input extends PureComponent {
         }}
         onBlur={event => {
           const val = event.target.value
+          document.documentElement.scrollTop = document.body.scrollTop = 0;
           if (verify) {
             const isSuccess = verify && verify.type ? hasVerify[verify.type](val).success : true
             const empty = verify ? val === '' : false
@@ -107,6 +108,9 @@ class Textarea extends PureComponent {
         disabled={disabled || false}
         maxLength={maxLength}
         placeholder={placeholder || ''}
+        onBlur={() => {
+          document.documentElement.scrollTop = document.body.scrollTop = 0;
+        }}
         onChange={(event) => {
           const val = event.target.value
           onChange(val);
