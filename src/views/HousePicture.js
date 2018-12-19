@@ -57,15 +57,15 @@ class CumstomPhotoSwipeGallery extends Component {
         options={this.options}
         isOpen={false}
         thumbnailContent={item => {
-          return <img className="img-bg"
-            key={item}
-            src={item.src} 
-            onError={(e) => {
-              var event = e.target
-              event.onerror = null
-              event.src = imgs.imgBg
-            }}
-          />
+          return <img
+              key={item}
+              src={item.src} 
+              onError={(e) => {
+                var event = e.target
+                event.onerror = null
+                event.src = imgs.imgBg
+              }}
+            />
         }}
       />
     )
