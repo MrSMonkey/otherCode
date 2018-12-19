@@ -56,56 +56,112 @@ class InputList extends PureComponent {
     const { activeId } = this.state;
     const { communityList, communityKey, changeCommuntiyKey, close, clearCommunityList } = this.props;
     return (
-      <Modal>
-        <div styleName="modal">
-          <header styleName="header">
-            <div styleName="text-button" onClick={close}>取消</div>
-            <div styleName="header-title">请输入小区名称</div>
-            <div styleName="text-button" onClick={this.confirmeKey}>确认</div>
-          </header>
-          <FormItem>
-            <Input
-              value={communityKey}
-              maxLength={16} 
-              placeholder="请输入您爱屋所在的小区"
-              onChange={this.searchKey}
-              onBlur={event => {
-                 //页面移动到顶部，解决 ios 键盘关闭后页面上移的问题
-                document.documentElement.scrollTop = document.body.scrollTop = 0;
-              }}
-            />
-            <i className="slef-icon-close" 
-              onClick={() => {
-                this.setState({
-                  activeId: '',
-                })
-                changeCommuntiyKey('')
-                clearCommunityList()
-              }}></i>
-          </FormItem>
-          <ul styleName="list">
-            {
-              communityList.map(item => {
-                return (
-                  <li key={item.id} styleName={activeId === item.id ? 'active-item' : ''}
-                    onClick={() => {
-                      this.setState({
-                        activeId: item.id,
-                      })
-                      changeCommuntiyKey(item.communityName)
-                    }}>
-                    {item.communityName}（{item.address}）
-                  </li>
-                )
+      <div styleName="modal">
+        <header styleName="header">
+          <div styleName="text-button" onClick={close}>取消</div>
+          <div styleName="header-title">请输入小区名称</div>
+          <div styleName="text-button-primary" onClick={this.confirmeKey}>确认</div>
+        </header>
+        <FormItem>
+          <Input
+            value={communityKey}
+            maxLength={16} 
+            placeholder="请输入您爱屋所在的小区"
+            onChange={this.searchKey}
+            onBlur={event => {
+                //页面移动到顶部，解决 ios 键盘关闭后页面上移的问题
+              document.documentElement.scrollTop = document.body.scrollTop = 0;
+            }}
+          />
+          <i className="slef-icon-close" 
+            onClick={() => {
+              this.setState({
+                activeId: '',
               })
-            }
-          </ul>
-        </div>
-      </Modal>
+              changeCommuntiyKey('')
+              clearCommunityList()
+            }}></i>
+        </FormItem>
+        <ul styleName="list">
+          {
+            communityList.map(item => {
+              return (
+                <li key={item.id} styleName={activeId === item.id ? 'active-item' : ''}
+                  onClick={() => {
+                    this.setState({
+                      activeId: item.id,
+                    })
+                    changeCommuntiyKey(item.communityName)
+                  }}>
+                  {item.communityName}（{item.address}）
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
     )
   }
 }
 
+/**选择城市 */
+@CSSModules(styles)
+class OptionCity extends PureComponent {  
+  static propTypes = {
+    changeForm: PropTypes.func
+  }
+  static defaultProps = {
+    changeForm: () => null
+  }
+  state = {
+    activeId: ''
+  }
+
+  confirmeKey = () => {
+    var val = this.state.activeId
+    this.props.close(val)
+    this.setState({
+      activeId: '',
+    })
+  }
+  
+  cancelOption = () => {
+    this.props.close()
+    this.setState({
+      activeId: '',
+    })
+  }
+  
+  render() {
+    const { activeId } = this.state;
+    const { citys } = this.props;
+    return (
+      <div styleName="modal">
+        <header styleName="header">
+          <div styleName="text-button" onClick={this.cancelOption}>取消</div>
+          <div styleName="header-title">请选择城市名称</div>
+          <div styleName="text-button-primary" onClick={this.confirmeKey}>确认</div>
+        </header>
+        <ul styleName="option-list">
+          {
+            citys.map(item => {
+              return (
+                <li key={item.id} styleName={activeId === item.id ? 'active-item' : ''}
+                  onClick={() => {
+                    this.setState({
+                      activeId: item.id,
+                    })
+                  }}>
+                  {item.cityName}
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+    )
+  }
+}
 
 /**获取验证码按钮 */
 @CSSModules(styles)
@@ -191,7 +247,8 @@ class Entrust extends Component {
       varityCold: false
     },
     isErrAddPhone: false,
-    modalContent: 'formList'
+    modalContent: 'formList',
+    isCityOption: false
   }
 
   /** 提交*/
@@ -274,7 +331,7 @@ class Entrust extends Component {
   }
   
   render() {
-    const { isErr, isErrAddPhone, modalContent } = this.state
+    const { isErr, isErrAddPhone, modalContent, isCityOption } = this.state
     const { form, citys, genCode, changeForm, isLoading, showModle, communityList, communityKey, changeCommuntiyKey, clearCommunityList, sreachCommunity, isTips, redirect, updatePhone} = this.props
     const isLogin = !!localStore.get('userId')
 
@@ -305,11 +362,17 @@ class Entrust extends Component {
             <span styleName="descripe">添加爱屋信息，更好地对房屋实施评估</span>
           </h2>
           <div styleName="input-group">
-            <FormItem label="城市">
+            <FormItem label="城市"
+              onClick={() => {
+                this.setState({
+                  isCityOption: true
+                }, this.turnPopLayer)
+              }}>
               <Select
                 data={citys}
                 value={form.cityId}
                 placeholder="请选择您爱屋所在的城市"
+                disabled={true}
                 onChange={val => {
                   const city = citys.filter(i => val == i.id)
                   changeForm(val, 'cityId')
@@ -318,13 +381,13 @@ class Entrust extends Component {
                 option={{value: 'id', text: 'cityName'}}
               />
             </FormItem>
-            <FormItem label="小区名称" isErr={isErr.communityName} onClick={this.turnPopLayer}>
-              <Input
-                value={form.communityName}
-                maxLength={16}
-                placeholder="请输入您爱屋所在的小区"
-                disabled={true}
-              />
+            <FormItem label="小区名称" isErr={isErr.communityName} 
+              onClick={() => {
+                this.setState({
+                  isCityOption: false
+                }, this.turnPopLayer)
+              }}>
+              <p styleName={form.communityName ? 'form-val' : 'form-val-pl'}>{form.communityName || '请输入您爱屋所在的小区'}</p>
             </FormItem>
           </div>
 
@@ -427,22 +490,41 @@ class Entrust extends Component {
             </Button>
           </footer>
         </Form>
-        <InputList 
-          close={() => {
-            this.turnPopLayer()
-            this.setState({ 
-              isErr: { ...isErr, communityName: !form.communityName }
-            })
-          }}
-          form={form}
-          communityList={communityList}
-          clearCommunityList={clearCommunityList}
-          communityKey={communityKey}
-          changeCommuntiyKey={changeCommuntiyKey}
-          changeForm={changeForm}
-          sreachCommunity={sreachCommunity}
-          modalContent={modalContent}
-        />
+        
+        <Modal>
+          {
+            isCityOption ?
+              <OptionCity 
+                citys={citys}
+                close={(val) => {
+                  if (val) {
+                    const city = citys.filter(i => val == i.id)
+                    changeForm(val, 'cityId')
+                    changeForm(city[0].cityName, 'cityName')
+                  }
+                  this.turnPopLayer()
+                }}
+              /> :
+              <InputList 
+                close={(val) => {
+
+                  this.turnPopLayer()
+                  this.setState({ 
+                    isErr: { ...isErr, communityName: !form.communityName }
+                  })
+                }}
+                form={form}
+                communityList={communityList}
+                clearCommunityList={clearCommunityList}
+                communityKey={communityKey}
+                changeCommuntiyKey={changeCommuntiyKey}
+                changeForm={changeForm}
+                sreachCommunity={sreachCommunity}
+                modalContent={modalContent}
+              />
+          }
+  
+        </Modal>
         
         <Alert 
           open={isTips}
@@ -465,7 +547,8 @@ class Entrust extends Component {
           confirm={() => {
             this.props.closeTips()
             redirect(`/houses`)
-          }}/>
+          }}
+        />
       </div>
     )
   }

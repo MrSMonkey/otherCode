@@ -46,10 +46,27 @@ class Input extends PureComponent {
  * disabled: boolean
  * option = {value: 'value', text: 'text'}
  */
+/*
+ *
+      <div styleName="select-group">
+        <p>{value}</p>
+        <div styleName="option-layout">
+          
+          <ul styleName="option-list">
+            {data.map(item => (
+              <li value={item[option.value]} key={item[option.value]}>
+                {item[option.text]}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+ */
 @CSSModules(styles)
 class Select extends PureComponent {
   render() {
     const { data, value, verify, placeholder, disabled, onChange, option = {value: 'value', text: 'text'} } = this.props
+
     return (
       <select
         value={value}

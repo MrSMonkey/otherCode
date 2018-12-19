@@ -12,7 +12,7 @@ import style from './Modal.css'
 @CSSModules(style)
 class Index extends Component {
   render() {
-    const { isModle, isShow, showModle, isCloseByLayout } = this.props
+    const { isModle, isShow, showModle, isCloseByLayout} = this.props
     return (
       <Layout>
         <div styleName="plan-box" style={{display: isShow ? 'block' : 'none'}}>
