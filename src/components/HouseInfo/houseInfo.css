@@ -1,0 +1,35 @@
+@import '../../styles/variables.global.css';
+
+.house-info {
+  height: 200px;
+  padding-top: 20px;
+}
+.house-head {
+  width: 90%;
+  margin: 0px auto;
+  height: 88px;
+  background: #eee;
+  border-radius: 44px;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+}
+
+.house-head span {
+  width: 50%;
+  font-family: PingFangSC-Regular;
+  display: inline-block;
+  height: 68px;
+  line-height: 68px;
+  /* background-color: #fff; */
+  border-radius: 34px;
+  margin-top: 10px;
+  text-align: center;
+  margin-left: 10px;
+}
+.house-head span:last-child{ 
+  margin-right: 10px;
+}
+.active {
+  background: #fff;
+  color: $color-golden;
+}

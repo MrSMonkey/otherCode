@@ -57,6 +57,8 @@ function* sublimtEntrustFlow() {
     if (noLogin) { 
       const data = yield call(bindUser, form)
       isBind = !!data
+    } else {
+      form.ownerUserId = localStore.get('userId')
     }
     if (isBind) {
       const isSuccess = yield call(sublimtEntrust, form)

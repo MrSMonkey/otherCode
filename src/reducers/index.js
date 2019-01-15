@@ -15,6 +15,8 @@ import myWallet from './myWallet'
 import apply from './apply'
 import balance from './balance'
 import openWallet from './openWallet'
+import serviceOrder from './serviceOrder'
+import serviceType from './serviceType'
 import modal from './modal'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
@@ -36,6 +38,7 @@ const reducers = combineReducers({
   balance,
   openWallet,
   modal,
+  serviceOrder,
   loadingBar: loadingBarReducer
 })
 

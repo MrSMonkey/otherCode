@@ -1,7 +1,7 @@
 :root {
   /* 与文件名对应，添加新图标后需添加对应变量 */
   --icons: boy, girl, empty, arrow, big_tick, bill, call, check, consult,
-    contract, edit, icon_point, yes, money, no, photo, clear_x, caret, icon_add;
+    contract, edit, icon_point, yes, money, no, photo, clear_x, caret, icon_add, icon_detail, icon_arrow, icon_order;
 }
 
 @define-mixin icon $name {

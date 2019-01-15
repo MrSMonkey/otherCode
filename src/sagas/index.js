@@ -21,6 +21,7 @@ import isShowModelFlow from './modal'
 import sreachCommunityFlow from './sreachCommunity'
 import houseInfoFlow from './houseInfo'
 import getHouseTimeLineFlow from './houseTimeLine'
+import getServiceList from './serviceOrder'
 
 export default function* rootSaga() {
   yield fork(getHouseListFlow)
@@ -47,4 +48,6 @@ export default function* rootSaga() {
   yield fork(sreachCommunityFlow)
   yield fork(houseInfoFlow)
   yield fork(getHouseTimeLineFlow)
+  yield fork(getServiceList)
+  
 }

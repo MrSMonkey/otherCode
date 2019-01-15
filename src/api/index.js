@@ -6,9 +6,11 @@ import { localStore } from '@/utils'
 const host = appConfig.host
 axios.defaults.withCredentials = true
 
+
+const ENV = process.env.NODE_ENV; // 环境变量
 // const baseUrl = 'http://www.34.testuoko.com'
 // const baseUrl = host.api.replace(/\/+$/, '')
-const baseUrl = 'http://api-gateway.uoko.com/'
+const baseUrl = ENV === 'development' ? 'http://172.16.10.119:7070/' : 'http://api-gateway.uoko.com/';
 
 const request = axios.create({
   baseURL: baseUrl,
@@ -129,9 +131,13 @@ const api = {
   },
   /* 根据合同id获取图片信息 */
   getPictureList(houseId) {
-    return request.get(`/partner/house/images/${houseId}`)
+    return request.get(`/partner/owner/entrust/rent_info/${houseId}`)
   },
 
+  /* 获取订单列表 */
+  getServiceList() {
+    return request.get(`/owner/service_orders`)
+  },
   
   /* 检查手机号是否存在 */
   checkPhoneAccountExist(phone) {

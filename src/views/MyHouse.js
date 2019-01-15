@@ -6,6 +6,8 @@ import { actions as myHouseActions } from '../reducers/myHouse'
 import ReactLoading from 'react-loading'
 import Tabs from '../components/Tabs'
 import TimeLine from '../components/TimeLine'
+import Button from '@/components/Button'
+import Icon from '../components/Icon'
 import styles from './MyHouse.css'
 
 /**房源基本信息 */
@@ -66,6 +68,7 @@ const BsaeInfo = ({data = {}}) => {
 }
 const StyleBsaeInfo = CSSModules(BsaeInfo, styles)
 
+
 /**房源动态 */
 const HouseStatus = ({data}) => {
   return(
@@ -78,8 +81,30 @@ const HouseStatus = ({data}) => {
   )
 }
 const StyleHouseStatus = CSSModules(HouseStatus, styles)
-
-
+/**房源底部 */
+const Footer = ({redirect}) => {
+  return(
+    <div styleName="house-footer-content">
+      <div  onClick={()=> {
+        redirect(`/serviceOrder`)
+      }}>
+        <Icon name="icon_detail" width={32} height={32}/>
+        <span>服务账单</span>
+      </div>
+      <div>
+      <Button onClick={()=> {
+        redirect('/purchase')
+      }}>购买服务</Button>
+      </div>
+      <div>
+      <Button onClick={()=> {
+        redirect('/serviceType')
+      }}>发起服务</Button>
+      </div>
+    </div>
+  )
+}
+const HouserFooter = CSSModules(Footer, styles)
 @CSSModules(styles)
 class MyHouses extends Component {
   state = {
@@ -128,8 +153,8 @@ class MyHouses extends Component {
     })
   }
   render() {
-    const { redirect, houseInfo, timeLines, isHouseListLoading } = this.props
-    const { tabsData } = this.state
+    const { redirect, houseInfo, timeLines, isHouseListLoading, } = this.props
+    const { tabsData} = this.state
     return (
       <div>
         <Tabs data={tabsData} 
@@ -150,6 +175,9 @@ class MyHouses extends Component {
             : <div>
               <StyleBsaeInfo data={houseInfo}/>
               <StyleHouseStatus data={timeLines}/>
+              <div styleName="house-footer">
+                <HouserFooter redirect={redirect}/>
+              </div>
             </div>
         }
       </div>

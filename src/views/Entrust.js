@@ -8,6 +8,8 @@ import { actions as entrustAction } from '../reducers/entrust'
 import { actions as appAction } from '../reducers/app'
 import { actions as modalAction } from '../reducers/modal'
 import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
+import Toast from 'antd-mobile/lib/toast';  // 加载 JS
+import 'antd-mobile/lib/toast/style/css';        // 加载 CS
 import Modal from '../components/Modal'
 import Alert from '../components/Alert'
 import Button from '../components/Button'
@@ -30,7 +32,14 @@ class InputList extends PureComponent {
   }
 
   confirmeKey = () => {
-    const { changeForm, communityKey } = this.props;
+    const { changeForm, communityKey, communityList } = this.props;
+    console.log(communityKey)
+    if (communityList.length > 0) {
+      if (this.state.activeId == '') {
+        Toast.info('请选择小区', 3);
+        return false
+      }
+    }
     this.setState({
       activeId: '',
     })
@@ -242,8 +251,8 @@ class Entrust extends Component {
   state = {
     isErr: {
       communityName: false,
-      name: false,
-      phone: false,
+      ownerName: false,
+      ownerPhone: false,
       varityCold: false
     },
     isErrAddPhone: false,
@@ -266,7 +275,7 @@ class Entrust extends Component {
     // console.log(isLogin, userInfo.username);
     /**test */
     if (isLogin) {
-      changeForm(userInfo.username, 'phone')
+      changeForm(userInfo.username, 'ownerPhone')
     }
     
     setTimeout(()=> {
@@ -286,7 +295,7 @@ class Entrust extends Component {
       // 登录状态下不必验证联系人验证码
       if (isLogin) {
         delete isErr.varityCold
-        delete isErr.phone
+        delete isErr.ownerPhone
       }
       /* 验证必填项目 || 验证是否正确 */
       if (hasOwn) {
@@ -345,7 +354,7 @@ class Entrust extends Component {
       // 登录状态下不必验证联系人验证码
       if (isLogin) {
         delete isErr.varityCold
-        delete isErr.phone
+        delete isErr.ownerPhone
       }
       /* 验证必填项目*/
       if (hasOwn) {
@@ -387,34 +396,34 @@ class Entrust extends Component {
             </span>
           </h2>
           <div styleName="input-group">
-            <FormItem label="姓名" isErr={isErr.name}>
+            <FormItem label="姓名" isErr={isErr.ownerName}>
               <Input
                 must
-                value={form.name}
+                value={form.ownerName}
                 maxLength={30}
                 placeholder="请输入您的称呼"
-                onChange={val => changeForm(val, 'name')}
+                onChange={val => changeForm(val, 'ownerName')}
                 verify={{
-                  cb: val => this.setState({ isErr: { ...isErr, name: !val } })
+                  cb: val => this.setState({ isErr: { ...isErr, ownerName: !val } })
                 }}
               />
             </FormItem>
             {
               isLogin ? null 
                 : <div>
-                  <FormItem label="手机号" isErr={isErr.phone}>
+                  <FormItem label="手机号" isErr={isErr.ownerPhone}>
                     <Input
-                      value={form.phone}
+                      value={form.ownerPhone}
                       placeholder="请输入您的手机号码"
                       onChange={val => {
-                        changeForm(val, 'phone')
+                        changeForm(val, 'ownerPhone')
                         updatePhone(val)
                       }}
                       verify={{
-                        type: 'phone',
+                        type: 'ownerPhone',
                         cb: val => {
                           // console.log('phone ERR', !val)
-                          this.setState({ isErr: { ...isErr, phone: !val } })
+                          this.setState({ isErr: { ...isErr, ownerPhone: !val } })
                         }
                       }}
                     />
@@ -525,8 +534,8 @@ class Entrust extends Component {
             this.setState({
               isErr: {
                 communityName: false,
-                name: false,
-                phone: false,
+                ownerName: false,
+                ownerPhone: false,
                 varityCold: false
               },
               isErrAddPhone: false

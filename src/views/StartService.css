@@ -1,0 +1,84 @@
+.StartService {
+  background: #fff;
+  margin-bottom: 20px;
+}
+.message {
+  margin-left:30px;
+  border-bottom: 1px solid #f5f6f7;
+  padding: 24px 0;
+}
+.name {
+  font-family: PingFang-SC-Medium;
+  font-size: 30px;
+  color: #474747;
+  letter-spacing: 0;
+}
+.message input {
+  float: right;
+  height: 40px;
+  border: 0;
+  outline: 0;
+  font-family: PingFang-SC-Medium;
+  font-size: 30px;
+  color: #474747;
+  letter-spacing: 0;
+  text-align: right;
+  margin-right: 30px;
+}
+.message {
+  .time {
+    float: right;
+    height: 40px;
+    border: 0;
+    outline: 0;
+    font-family: PingFang-SC-Medium;
+    color: #B8B8B8;
+    text-align: right;
+    margin-right: 30px;
+    font-size: 30px;
+  }
+  .haveTime {
+    float: right;
+    height: 40px;
+    border: 0;
+    outline: 0;
+    font-family: PingFang-SC-Medium;
+    font-size: 30px;
+    color: #474747;
+    text-align: right;
+    margin-right: 30px;
+    font-size: 30px;
+  }
+}
+.message textarea {
+  width: 100%;
+  background: #FAFAFA;
+  border: 0;
+  padding: 20px; 
+  margin: 20px 30px 0 0;
+}
+.message input::-webkit-input-placeholder {
+  font-family: PingFang-SC-Medium;
+  font-size: 32px;
+  color: #B8B8B8;
+  letter-spacing: 0;
+}
+.btn {
+  margin: 20px 30px;
+}
+.btn button {
+  border-radius: 8px !important;
+}
+.cardNo {
+  width: 85%;
+}
+
+.service-footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  button {
+    width: 100%;
+  }
+}

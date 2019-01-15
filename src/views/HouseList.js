@@ -90,7 +90,7 @@ class HouseList extends Component {
     document.documentElement.scrollTop = document.body.scrollTop = 0;
   }
   render() {
-    const { houseList, styles, redirect, isHouseListLoading } = this.props
+    const {  houseList, styles, redirect, isHouseListLoading } = this.props;
     const StyledHouseItem = CSSModules(HouseItem, styles)
     if (isHouseListLoading) {
       return (
