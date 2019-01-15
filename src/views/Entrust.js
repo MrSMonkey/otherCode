@@ -8,6 +8,8 @@ import { actions as entrustAction } from '../reducers/entrust'
 import { actions as appAction } from '../reducers/app'
 import { actions as modalAction } from '../reducers/modal'
 import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
+import Toast from 'antd-mobile/lib/toast';  // 加载 JS
+import 'antd-mobile/lib/toast/style/css';        // 加载 CSS
 import Modal from '../components/Modal'
 import Alert from '../components/Alert'
 import Button from '../components/Button'
@@ -30,7 +32,13 @@ class InputList extends PureComponent {
   }
 
   confirmeKey = () => {
-    const { changeForm, communityKey } = this.props;
+    const { changeForm, communityKey, communityList} = this.props;
+    if (communityList.length > 0) {
+      if (this.state.activeId === '') {
+        Toast.info('请选择小区', 3);
+        return false
+      }
+    }
     this.setState({
       activeId: '',
     })
