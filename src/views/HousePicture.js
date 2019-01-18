@@ -42,7 +42,35 @@ class CumstomPhotoSwipeGallery extends Component {
       })
     }
   }
-
+  componentWillReceiveProps (nextProps) {
+    //console.log(nextProps)
+    nextProps.data !== this.props.data && this.setState({
+      data: nextProps.data
+    }, ()=> {
+      var arr = []
+      if (this.props.data) {
+        this.props.data.forEach(item => {
+          const img = new Image()
+          img.src = `${item.imageUrl}?imageView2/2/w/320`
+          img.onload = () => {
+            arr.push({
+              thumbnails: imgs.imgBg,
+              src: `${item.imageUrl}?imageView2/2/w/320`,
+              w: img.width,
+              h: img.height
+            })
+  
+            this.setState({
+              data: arr
+            })
+          }
+        })
+      }
+    })
+  }
+  // shouldComponentUpdate(nextProps,nextState) {
+  //   console.log(nextProps,nextState)
+  // }
   options = {
     index: this.props.index,
     history: false,
@@ -51,6 +79,7 @@ class CumstomPhotoSwipeGallery extends Component {
 
   render() {
     const { data } = this.state
+    
     return (
       <PhotoSwipeGallery
         className="house-pic-gallery"
@@ -73,33 +102,30 @@ class CumstomPhotoSwipeGallery extends Component {
   }
 }
 
+const rentStatus = ['', '待租中', '已出租', '已预订'];
 /**租赁信息(资产管家) */
 const AssetManager = ({data}) => {
   return (
     <div styleName="detail-info">
       <div styleName="block">
         <label>出租方式：</label>
-        <span>合租</span>
+        <span>{data && data.rentType === 1 && '整租'}{data && data.rentType === 2 && '合租'}</span>
       </div>
-      <div styleName="block">
-        <label>房间A：</label>
-        <span>1000.00元/月 | 待租 | 不展示</span>
-      </div>
-      <div styleName="block">
-        <label>房间B：</label>
-        <span>1000.00元/月 | 待租 | 不展示</span>
-      </div>
-      <div styleName="block">
-        <label>房间C：</label>
-        <span>1000.00元/月 | 待租 | 不展示</span>
-      </div>
+      {data && data.houseRentRoomDTO && data.houseRentRoomDTO.map((item, index) =>{
+        return (
+          <div styleName="block" key={index}>
+            <label>房间{item.roomName}：</label>
+            <span>{item.rent && item.rent || '0.00'}元/月 | {rentStatus[item.rentStatus || 1]}</span>
+          </div>
+        )
+      })}
       <div styleName="block">
         <label>标题：</label>
-        <span>这里是标题标题标题占位占位占位吧啦啦啦啦啦</span>
+        <span>{data && data.title || '无'}</span>
       </div>
       <div styleName="block">
         <label>描述：</label>
-        <span>这里是描述描述描述占位占位占位吧啦啦啦啦啦</span>
+        <span>{data && data.desc || '无'}</span>
       </div>
     </div>
   )
@@ -109,7 +135,7 @@ const Asset = CSSModules(AssetManager, styles)
 @CSSModules(styles)
 class HousePicture extends Component {
   state = {
-    tabsData: []
+    tabsData: [],
   }
   formDate(val) {
     if (val) {
@@ -135,44 +161,24 @@ class HousePicture extends Component {
           active: false
         }, {
           name: 'photo',
-          text: '房源照片',
+          text: '租赁信息',
           href: `/house-pic/${id}`,
           active: true
         }
       ],
-      data: [
-        {
-          name: '资产管家',
-          id: 1
-        },
-        {
-          name: '服务商1',
-          id: 2
-        },
-        {
-          name: '服务商2',
-          id: 3
-        },
-        {
-          name: '服务商3',
-          id: 4
-        },
-        {
-          name: '服务商3',
-          id: 5
-        }
-      ],
-      active: 1,
+      active: 0,
     })
   }
-  handleClick(item) {
+  handleClick(idx, item) {
+    this.props.getSelectData(item.houseRoomCommonDTO)
     this.setState({
-      active: item.id
+      active: idx
     })
+    
   }
   render() {
-    const { pictures, picturesLoading, redirect } = this.props
-    const {data, active} = this.state;
+    const { pictures, picturesLoading, redirect, selectData } = this.props
+    const {active} = this.state;
     if (picturesLoading) {
       return (
         <div className="infinte-loader">
@@ -192,32 +198,37 @@ class HousePicture extends Component {
             if (data.href) { redirect(data.href) }
           }} 
         />
-        <div styleName="pic-info">
-          <div styleName="pic-title">
-            {data && data.map((item, idx) => {
+        
+          {pictures && pictures.length > 0 ?<div>
+          <div styleName="pic-info">
+            <div styleName="pic-title">
+              {pictures && pictures.map((item, idx) => {
+                return (
+                  <span key={idx} styleName={active === idx ? 'active': ''} onClick={()=>this.handleClick(idx, item)}>
+                    {item.source === 'ZC' && '资产管家'}
+                    {item.source === 'FW' && `服务商${idx}`}
+                  </span>
+                )
+              })}
+            </div>
+            <div>
+              <Asset data={selectData}/>
+            </div>
+          </div>
+          {
+            selectData && selectData.houseRentRoomDTO && selectData.houseRentRoomDTO.map((i, index) => {
               return (
-                <span key={idx} styleName={active === item.id ? 'active': ''} onClick={()=>this.handleClick(item)}>
-                  {item.name}
-                </span>
+                <div key={index}>
+                  <SectionTitle>房间{i.roomName}</SectionTitle>
+                  <CumstomPhotoSwipeGallery data={i.roomImages} index={index}/>
+                </div>
               )
-            })}
-          </div>
-          <div>
-            <Asset />
-          </div>
-        </div>
-        {
-          pictures.imageRoomDTOS && pictures.imageRoomDTOS.map((i, index) => {
-            return (
-              <div key={index}>
-                <SectionTitle>房间{i.roomName}</SectionTitle>
-                <CumstomPhotoSwipeGallery data={i.imageDTOS} index={index}/>
-              </div>
-            )
-          })
-        }
-        <SectionTitle>公区照片</SectionTitle>
-        <CumstomPhotoSwipeGallery data={pictures.imageHouseDTOS && pictures.imageHouseDTOS.imageDTOS} index="-1"/>
+            })
+          }
+          <SectionTitle>公区照片</SectionTitle>
+          <CumstomPhotoSwipeGallery data={selectData && selectData.housePublicImages && selectData.housePublicImages} index="-1"/>
+        </div>: null
+          }
       </React.Fragment>
     )
   }
@@ -226,6 +237,7 @@ class HousePicture extends Component {
 export default connect(
   state => ({
     pictures: state.housePicture.pictures,
+    selectData: state.housePicture.selectData,
     indexHouse: state.houseList.indexHouse,
     picturesLoading: state.housePicture.picturesLoading,
     tabsData: state.myHouse.tabsData

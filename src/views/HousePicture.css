@@ -38,7 +38,7 @@
   font-size: 14px; /* no */
   .block {
     /* width: 55%; */
-    display: inline-block;
+    /* display: inline-block; */
     /* white-space:nowrap;
     text-overflow: ellipsis; */
   }

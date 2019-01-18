@@ -3,11 +3,13 @@ import CSSModules from 'react-css-modules'
 import PropTypes from 'prop-types'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
-import { actions as myHouseActions } from '../reducers/myHouse'
+import { actions as serviceTypeActions } from '../reducers/serviceType'
 import Modal from 'antd-mobile/lib/modal';
 import 'antd-mobile/lib/modal/style/css';
 import PickerView from 'antd-mobile/lib/picker-view';
 import 'antd-mobile/lib/picker-view/style/css'; 
+import Toast from 'antd-mobile/lib/toast';  // 加载 JS
+import 'antd-mobile/lib/toast/style/css';        // 加载 CS
 import ReactLoading from 'react-loading'
 import styles from './ServiceType.css'
 import Button from '@/components/Button'
@@ -42,52 +44,69 @@ class ServiceInfo extends Component {
     tabsData: [{
       id: '1',
       name: 'houseInfo',
-      text: '带看签约服务',
+      serviceTypeName: '带看签约服务',
       href: `/houses/`,
-      active: true
+      active: true,
+      ownerServiceTypes: [{
+        label: '龟速出租带看半年周期',
+        value: '1',
+      },]
     }, {
       name: 'roomInfo',
-      text: '装修服务',
+      serviceTypeName: '装修服务',
       href: `/rooms/`,
-      active: false
+      active: false,
+      ownerServiceTypes: []
     }, {
       name: 'roomInfo',
-      text: '保洁服务',
+      serviceTypeName: '保洁服务',
       href: `/rooms/`,
-      active: false
+      active: false,
+      ownerServiceTypes: []
     }, {
       name: 'photo',
-      text: '维修服务',
+      serviceTypeName: '维修服务',
       href: `/house-pic/`,
-      active: false
+      active: false,
+      ownerServiceTypes: []
     },
     {
       name: 'photo',
-      text: '房屋写真服务',
+      serviceTypeName: '房屋写真服务',
       href: `/house-pic/`,
-      active: false
+      active: false,
+      ownerServiceTypes: []
     },
     {
       name: 'photo',
-      text: '租住服务',
+      serviceTypeName: '租住服务',
       href: `/house-pic/`,
-      active: false
+      active: false,
+      ownerServiceTypes: []
     }],
     isShow: false,
     visible: false,
     value: null,
+    activeType: []
   }
   componentDidMount() {
-    // const { match, getHouseInfo, gethouseTimeLine } = this.props
-    // const id = match.params.id
-    // document.documentElement.scrollTop = document.body.scrollTop = 0;
-    // getHouseInfo(id)
+    const { match, getServiceTypeList } = this.props
+    const id = match.params.id
+    document.documentElement.scrollTop = document.body.scrollTop = 0;
+    getServiceTypeList(id)
     // gethouseTimeLine(id)
   }
-  showModal = key => (e) => {
+  showModal = (key, item) => (e) => {
     e.preventDefault(); // 修复 Android 上点击穿透
+    if (item.ownerServiceTypes && item.ownerServiceTypes.length === 0) {
+      // 没有服务产品
+      Toast.info('未找到有效订单，请先购买服务后发起', 3);
+      return false;
+    }
     this.setState({
       [key]: true,
+      activeType: item.ownerServiceTypes,
+      value: [item.ownerServiceTypes[0].value]
     });
   }
   onClose = key => () => {
@@ -96,29 +115,42 @@ class ServiceInfo extends Component {
     });
   }
   handleChange = (value) =>{
-   
-    console.log(this.state.value)
   }
   onScrollChange= (value) =>{
     this.setState({
       value: value
     });
-    console.log(value)
+    
+  }
+  onOk = () => {
+    this.setState({
+      visible: false
+    })
+    const { match } = this.props
+    const houserId = match.params.id
+    this.props.redirect(`/startService/${this.state.value}/${houserId}`)
   }
   render() {
-    // const { redirect, houseInfo, timeLines, isHouseListLoading, } = this.props
-    const {tabsData } = this.state
+    const { redirect, data, loading } = this.props
+    const { activeType } = this.state
     return (
       <div >
-        {tabsData && tabsData.map((item, index) => {
-          return (
-            <div styleName="serviceType" key={index}>
-              <h2>{item.text}</h2>
-              <div styleName="serviceType-right"  onClick={this.showModal('visible')}><Icon name="icon_arrow"/></div>
-            </div>
-          )
-        })}
-        
+        {loading ? <div className="infinte-loader">
+            <ReactLoading
+              type="bubbles"
+              className="inline-block"
+              color="#474747"
+            />
+          </div>: <div>
+            {data && data.map((item, index) => {
+            return (
+              <div styleName="serviceType" key={index}>
+                <h2>{item.serviceTypeName}</h2>
+                <div styleName="serviceType-right"  onClick={this.showModal('visible', item)}><Icon name="icon_arrow"/></div>
+              </div>
+            )
+          })}
+          </div>}
         <Modal
           popup
           visible={this.state.visible}
@@ -129,10 +161,10 @@ class ServiceInfo extends Component {
         <div styleName="modal-title">
           <span onClick={this.onClose('visible')}>取消</span>
           <span>选择使用服务产品</span>
-          <span>确认</span>
+          <span onClick={this.onOk}>确认</span>
         </div>
           <PickerView
-            data={season}
+            data={activeType}
             onChange={this.handleChange}
             value={this.state.value}
             onScrollChange={this.onScrollChange}
@@ -146,13 +178,11 @@ class ServiceInfo extends Component {
 
 export default connect(
   state => ({
-    houseInfo: state.myHouse.houseInfo,
-    roomList: state.myHouse.roomList,
-    isHouseListLoading: state.houseList.isHouseListLoading,
-    timeLines: state.myHouse.timeLines
+    data: state.serviceType.serviceTypeList,
+    loading: state.serviceType.loading,
   }),
   {
-    ...myHouseActions,
+    ...serviceTypeActions,
     redirect: url => push(url)
   }
 )(ServiceInfo)

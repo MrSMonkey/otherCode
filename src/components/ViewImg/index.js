@@ -131,7 +131,7 @@ class ImgSlidePlay extends React.Component{
 
 	render() {
 		const { itemImages, showImg } = this.props
-
+    
 		return (
 		  	<div styleName="Img">
           <p>{this.state.imgIndex}/{itemImages.length}</p>

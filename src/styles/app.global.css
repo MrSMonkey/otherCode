@@ -187,7 +187,9 @@ body {
 .am-picker-popup-item {
   color: $color-golden !important;
 }
-
+.am-modal-content {
+  text-align: left !important;
+}
 /* .am-picker-col {
   height: 400px !important;
 }

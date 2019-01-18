@@ -1,3 +1,4 @@
+@import '../styles/variables.global.css';
 .StartService {
   background: #fff;
   margin-bottom: 20px;
@@ -81,4 +82,32 @@
   button {
     width: 100%;
   }
+}
+
+
+.modal-title {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding: 0px 30px;
+  height: 98px;
+  line-height: 98px;
+  border-bottom: 1px solid #f5f6f7;
+  span {
+    display: inline-block;
+  }
+}
+.modal-title span:nth-child(1) {
+  color: #B8B8B8;
+  font-size: 28px;
+}
+.modal-title span:nth-child(2) {
+  font-size: 34px;
+  color: #474747;
+}
+.modal-title span:nth-child(3) {
+  color: $color-golden;
+  font-size: 28px;
 }

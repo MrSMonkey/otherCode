@@ -3,12 +3,18 @@ import CSSModules from 'react-css-modules'
 import PropTypes from 'prop-types'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
-import { actions as myHouseActions } from '../reducers/myHouse'
-import { actions as modalAction } from '../reducers/modal'
+import { actions as serviceHouseActions } from '../reducers/serviceHouse'
+import { actions as pushServiceActions } from '../reducers/pushService'
 import DatePicker from 'antd-mobile/lib/date-picker';  // 加载 JS
 import 'antd-mobile/lib/date-picker/style/css';        // 加载 CSS
 import Picker from 'antd-mobile/lib/picker';
 import 'antd-mobile/lib/picker/style/css';        // 加载 CSS
+import Toast from 'antd-mobile/lib/toast';  // 加载 JS
+import 'antd-mobile/lib/toast/style/css';        // 加载 CS
+import Modal from 'antd-mobile/lib/modal';
+import 'antd-mobile/lib/modal/style/css';
+import PickerView from 'antd-mobile/lib/picker-view';
+import 'antd-mobile/lib/picker-view/style/css'; 
 import ReactLoading from 'react-loading'
 import styles from './StartService.css'
 import Button from '@/components/Button'
@@ -33,75 +39,187 @@ function formatDate(date) {
 @CSSModules(styles)
 class StartService extends Component {
   state = {
-    dpValue: null,
+    subscribeTime: null,
     visible: false,
     visibleRoom: false,
     pickerValue: [],
-    room: ''
+    room: '',
+    remark: '',
+    ownerName: '',
+    ownerPhone: '',
+    value: ''
   }
-  getSel() {
+  getSel = () => {
     const value = this.state.pickerValue;
     if (!value) {
       return '';
     }
-    const treeChildren = arrayTreeFilter(district, (c, level) => c.value === value[level]);
+    const treeChildren = arrayTreeFilter(this.props.rooms, (c, level) => c.value === value[level]);
     return treeChildren.map(v => v.label).join(',');
   }
+  componentDidMount() {
+    const { match, getHouseData } = this.props
+    const id = match.params.id
+    const houserId = match.params.houserId
+    getHouseData(houserId)
+    document.documentElement.scrollTop = document.body.scrollTop = 0;
+  }
+  remakChange = (value) => {
+    this.setState({
+      remark: value
+    })
+  }
+  submitService = () => {
+    if (this.state.pickerValue.length ===0) {
+      Toast.info('请选择房间', 2);
+      return false
+    }
+    if (!this.state.subscribeTime) {
+      Toast.info('请选择预约时间', 2);
+      return false
+    }
+    if (this.state.ownerName === '' && this.props.data.assetName == null) {
+      Toast.info('请输入联系人姓名', 2);
+      return false
+    }
+    if (this.state.ownerPhone === '' && this.props.data.assetPhone == null) {
+      Toast.info('请输入联系人电话', 2);
+      return false
+    }
+    const data = {
+      entrustId: this.props.data.entrustId,
+      orderId: this.props.match.params.id,
+      ownerName: this.props.data.assetName !== null ? this.props.data.assetName : this.state.ownerName,
+      remark: this.state.remark,
+      roomId: this.state.pickerValue[0],
+      roomName: this.getSel(),
+      subscribeTime: formatDate(this.state.subscribeTime),
+      ownerPhone: this.props.data.assetPhone !== null ? this.props.data.assetPhone : this.state.ownerPhone,
+    }
+    const {submitData} = this.props;
+    submitData(data); // 提交
+  }
+  ownerNameChange = (value) => {
+    this.props.data.assetName = null
+    this.setState({
+      ownerName: value
+    })
+  }
+  ownerPhoneChange = (value) => {
+    this.props.data.assetPhone = null
+    this.setState({
+      ownerPhone: value || ''
+    })
+  }
+  showModal = (key, item) => (e) => {
+    e.preventDefault(); // 修复 Android 上点击穿透
+    this.setState({
+      [key]: true,
+      value: [item.value]
+    });
+  }
+  onClose = key => () => {
+    this.setState({
+      [key]: false,
+
+    });
+  }
+  handleChange = (value) =>{
+  }
+  onScrollChange= (value) =>{
+    this.setState({
+      value: value
+    });
+    
+  }
+  onOk = () => {
+    this.setState({
+      visibleRoom: false,
+      pickerValue: this.state.value
+    })
+
+    // const { match } = this.props
+    // const houserId = match.params.id
+    // this.props.redirect(`/startService/${this.state.value.value}/${houserId}`)
+  }
   render() {
-    // const { redirect, houseInfo, timeLines, isHouseListLoading, } = this.props
-     const { pickerValue } = this.state
+    const { redirect, data, rooms, comfrimLoading} = this.props
+    const { pickerValue,subscribeTime, ownerName, ownerPhone} = this.state
     return (
       <div>
         <div styleName="StartService">
           <div styleName="message">
             <span styleName="name">服务房源</span>
-            <span styleName="time"> 中粮香颂丽都11栋1单元1201号 </span>
+            <span styleName="time"> {data && data.houseName || '无'} </span>
           </div>
-          <Picker 
-            data={district} cols={1} 
+         
+          {/* <Picker 
+            data={rooms} cols={1} 
             visible={this.state.visibleRoom}
             value={this.state.pickerValue}
             onChange={v => this.setState({ pickerValue: v })}
             onOk={() => this.setState({ visibleRoom: false })}
             onDismiss={() => this.setState({ visibleRoom: false })}
             >
-            <div styleName="message">
+            
+          </Picker> */}
+          <div styleName="message">
               <span styleName="name">服务房间*</span>
               
-              {pickerValue && pickerValue.length <= 0 ? <span styleName="time" onClick={() => this.setState({ visibleRoom: true })}>选择房间></span> : 
+              {pickerValue && pickerValue.length <= 0 ? <span styleName="time" onClick={this.showModal('visibleRoom', rooms && rooms[0])}>选择房间></span> : 
               <span styleName="haveTime" onClick={() => this.setState({ visibleRoom: true })}>房间：{this.getSel()}</span>}
             </div>
-          </Picker>
           <div styleName="message">
             <span styleName="name">预约服务时间*</span>
-            <span styleName={this.state.dpValue !== null ? 'haveTime': 'time'} onClick={() => this.setState({ visible: true })} >{this.state.dpValue !== null ? formatDate(this.state.dpValue) : '选择服务时间>'}</span> 
+            <span styleName={this.state.subscribeTime !== null ? 'haveTime': 'time'} onClick={() => this.setState({ visible: true })} >{this.state.subscribeTime !== null ? formatDate(this.state.subscribeTime) : '选择服务时间>'}</span> 
             <DatePicker
               visible={this.state.visible}
-              value={this.state.dpValue}
-              onOk={date => this.setState({ dpValue: date, visible: false })}
+              value={this.state.subscribeTime}
+              onOk={date => this.setState({ subscribeTime: date, visible: false })}
               onDismiss={() => this.setState({ visible: false })}
             />
           </div>
           <div styleName="message">
             <span styleName="name">备注</span>
             <div style={{marginRight: 20}}>
-              <Textarea placeholder="请输入50字以内的备注"  rows={6}/>
+              <Textarea placeholder="请输入50字以内的备注"  rows={6} onChange={this.remakChange} maxLength={50}/>
             </div>
           </div>
         </div>
         <div styleName="StartService">
           <div styleName="message">
             <span styleName="name">联系人*</span>
-            <Input placeholder="请输入联系人姓名" />
+            <Input placeholder="请输入联系人姓名" onChange={this.ownerNameChange} value={ data && data.assetName || ownerName} />
           </div>
           <div styleName="message">
             <span styleName="name">联系电话*</span>
-            <input placeholder="请输入联系人电话" type="tel" />
+            <Input placeholder="请输入联系人电话" onChange={this.ownerPhoneChange} value={ data && data.assetPhone || ownerPhone} />
           </div>
           <div styleName="service-footer">
-            <Button >发起</Button>
+            {comfrimLoading ? <Button disabled ={true}>发起中</Button>:
+              <Button onClick={this.submitService} disabled ={!subscribeTime || pickerValue.length === 0 || (!data.assetName && !ownerName) || (!data.assetPhone && !ownerPhone)}>发起</Button>}
           </div>
         </div>
+        <Modal
+          popup
+          visible={this.state.visibleRoom}
+          onClose={this.onClose('visibleRoom')}
+          animationType="slide-up"
+          afterClose={() => { }}
+        >
+        <div styleName="modal-title">
+          <span onClick={this.onClose('visibleRoom')}>取消</span>
+          <span>选择房间</span>
+          <span onClick={this.onOk}>确认</span>
+        </div>
+          <PickerView
+            data={rooms}
+            onChange={this.handleChange}
+            value={this.state.value}
+            onScrollChange={this.onScrollChange}
+            cascade={false}
+          />
+        </Modal>
       </div>
     )
   }
@@ -109,14 +227,13 @@ class StartService extends Component {
 
 export default connect(
   state => ({
-    houseInfo: state.myHouse.houseInfo,
-    roomList: state.myHouse.roomList,
-    isHouseListLoading: state.houseList.isHouseListLoading,
-    timeLines: state.myHouse.timeLines
+    data: state.serviceHouse.data,
+    rooms: state.serviceHouse.rooms,
+    comfrimLoading: state.pushService.comfrimLoading,
   }),
   {
-    ...myHouseActions,
-    ...modalAction,
+    ...serviceHouseActions,
+    ...pushServiceActions,
     redirect: url => push(url)
   }
 )(StartService)

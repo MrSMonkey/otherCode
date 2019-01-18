@@ -55,7 +55,7 @@ const HouseItem = ({ data, redirect }) => {
     <div styleName="house-item"
       onClick={() => {
         if (data.handleStatus === 1) { return }
-        redirect(`/houses/${data.houseId}`)
+        redirect(`/houses/${data.entrustId}`)
       }}>
       <h2 styleName="item-tit">
         {data.communityName}

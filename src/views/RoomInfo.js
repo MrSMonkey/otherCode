@@ -122,7 +122,7 @@ class RoomInfo extends Component {
           active: true
         }, {
           name: 'photo',
-          text: '房源照片',
+          text: '租赁信息',
           href: `/house-pic/${id}`,
           active: false
         }

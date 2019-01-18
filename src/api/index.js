@@ -119,7 +119,7 @@ const api = {
   },
   /**房源信息 */
   getHouseInfo(id) {
-    return request.get(`/partner/house/info/base/${id}`)
+    return request.get(`/partner/owner/entrust/${id}`)
   },
   /**房源动态 */
   getHouseTimeLine(id) {
@@ -127,18 +127,44 @@ const api = {
   },  
   /* 获取房间信息 */
   getRoomList(id) {
-    return request.get(`/partner/house/room/list/${id}`)
+    return request.get(`/partner/owner/entrust/room/${id}`)
   },
   /* 根据合同id获取图片信息 */
   getPictureList(houseId) {
     return request.get(`/partner/owner/entrust/rent_info/${houseId}`)
   },
-
+  /* 选购服务包 */
+  getServices(cityId) {
+    return request.get(`/partner/owner/services/${cityId}`)
+  },
+  /* 服务包详情 */
+  getServiceInfo(servicePackageId) {
+    return request.get(`/partner/owner/services_details/${servicePackageId}`)
+  },
+  /* 服务包类型 */
+  getServiceTypeList(entrustId) {
+    return request.get(`/partner/owner/service_types/${entrustId}`)
+  },
+  /* 服务包购买 */
+  buyService(data) {
+    return request.post(`/partner/owner/buy_service`, data)
+  },
+  /* 发起服务 */
+  pushService(data) {
+    return request.post(`/partner/owner/service_push`, data)
+  },
+  /* 获取服务信息 */
+  getPushService(houseId) {
+    return request.get(`/partner/owner/push_service_get_house/${houseId}`)
+  },
   /* 获取订单列表 */
   getServiceList() {
-    return request.get(`/owner/service_orders`)
+    return request.get(`/partner/owner/service_orders`)
   },
-  
+  /* 获取订单详情 */
+  getServiceOrderDetile(serviceOrderId) {
+    return request.get(`/partner/owner/service_order_details/${serviceOrderId}`)
+  },
   /* 检查手机号是否存在 */
   checkPhoneAccountExist(phone) {
     return request.get('/login/check', {

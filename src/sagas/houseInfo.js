@@ -20,7 +20,7 @@ function* houseInfoFlow() {
   while (true) {
     const param = yield take(actionTypes.GET_HOUSE_INFO)
     const houseData = yield call(houseInfo, param.id)
-    if (houseData && houseData.id) {
+    if (houseData && houseData.entrustId) {
       yield put({ type: actionTypes.HOUSE_INFO, payload: houseData })
     }
   }

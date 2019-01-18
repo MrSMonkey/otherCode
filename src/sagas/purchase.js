@@ -1,27 +1,27 @@
 import { call, put, take } from 'redux-saga/effects'
 import api from '../api'
-import { actionTypes } from '../reducers/serviceOrder'
+import { actionTypes } from '../reducers/purchase'
 import { actionTypes as appActionTypes } from '../reducers/app'
 
-function* getServiceList(id) {
+function* getServiceList(cityId) {
   try {
-    const { data } = yield call(api.getServiceList)
+    const { data } = yield call(api.getServices, cityId)
     if (data.code === '000') {
       return data.data
     }
     yield put({ type: appActionTypes.APP_ERROR_MSG, payload: data.msg || data.message })
     return []
   } catch (err) {
-    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: '获取服务订单列表失败！请重试' })
+    yield put({ type: appActionTypes.APP_ERROR_MSG, payload: '获取服务包失败！请重试' })
   }
 }
 
 function* getServiceListFlow() {
   while (true) {
-    const id = yield take(actionTypes.GET_LANDLORD_LIST)
-    const data = yield call(getServiceList)
+    const idType = yield take(actionTypes.GET_SERVICES_LIST)
+    const data = yield call(getServiceList, idType.id)
     if (data) {
-      yield put({ type: actionTypes.GET_SERVICEORDER_LIST_SUCCESS, payload: data })
+      yield put({ type: actionTypes.GET_SERVICE_LIST_SUCCESS, payload: data })
     }
   }
 }

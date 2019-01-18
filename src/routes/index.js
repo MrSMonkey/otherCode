@@ -44,19 +44,19 @@ const routes = [
     title: '房源照片'
   },
   {
-    path: '/purchase',
+    path: '/purchase/:cityId/:entrustId',
     component: views.PurchaseService,
     needBind: true,
     title: '购买服务'
   },
   {
-    path: '/serviceInfo/:id',
+    path: '/serviceInfo/:id/:entrustId',
     component: views.ServiceInfo,
     needBind: true,
     title: '服务包详情'
   },
   {
-    path: '/serviceType',
+    path: '/serviceType/:id',
     component: views.ServiceType,
     needBind: true,
     title: '选择服务类型'
@@ -74,7 +74,7 @@ const routes = [
     title: '订单详情'
   },
   {
-    path: '/startService',
+    path: '/startService/:id/:houserId',
     component: views.StartService,
     needBind: true,
     title: '发起服务'

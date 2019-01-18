@@ -33,7 +33,6 @@ class InputList extends PureComponent {
 
   confirmeKey = () => {
     const { changeForm, communityKey, communityList } = this.props;
-    console.log(communityKey)
     if (communityList.length > 0) {
       if (this.state.activeId == '') {
         Toast.info('请选择小区', 3);

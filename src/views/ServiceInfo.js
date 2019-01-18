@@ -3,15 +3,16 @@ import CSSModules from 'react-css-modules'
 import PropTypes from 'prop-types'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
-import { actions as myHouseActions } from '../reducers/myHouse'
-import { actions as modalAction } from '../reducers/modal'
+import { actions as serviceInfoActions } from '../reducers/serviceInfo'
+import { actions as appAction } from '../reducers/app'
+import Modal from 'antd-mobile/lib/modal';
+import 'antd-mobile/lib/modal/style/css';
 import ReactLoading from 'react-loading'
 import styles from './ServiceInfo.css'
 import Button from '@/components/Button'
-import Modal from '../components/Modal'
 import StyledViewImg from '@/components/ViewImg';
 import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
-import { addClass, hasClass, removeClass } from '../utils'
+import { localStore } from '../utils'
 
 const imgs = {
   noHouse: require('../assets/imgs/banner.jpg')
@@ -19,24 +20,11 @@ const imgs = {
 
 
 let imgArray = [
-	'http://i3.17173cdn.com/2fhnvk/YWxqaGBf/cms3/tUcIQCbjFFjdgfr.jpg',
-	'http://i3.17173cdn.com/2fhnvk/YWxqaGBf/cms3/tUcIQCbjFFjdgfr.jpg',
-	'http://i3.17173cdn.com/2fhnvk/YWxqaGBf/cms3/tUcIQCbjFFjdgfr.jpg',
-	'http://n.sinaimg.cn/games/transform/20160722/6sHg-fxuhukz0771063.jpg',
-  'http://n.sinaimg.cn/games/transform/20160722/6sHg-fxuhukz0771063.jpg',
-  'http://n.sinaimg.cn/games/transform/20160722/6sHg-fxuhukz0771063.jpg',
-  'http://n.sinaimg.cn/games/transform/20160722/6sHg-fxuhukz0771063.jpg',
+  require('../assets/imgs/noimg.png'),
+  require('../assets/imgs/noimg.png'),
+  require('../assets/imgs/noimg.png'),
+  require('../assets/imgs/noimg.png')
 ]
-/**基本信息 */
-const BsaeInfo = ({data = [], redirect}) => {
-  console.log(data)
-  return (
-    <div>
-      
-    </div>
-  )
-}
-const StyleBsaeInfo = CSSModules(BsaeInfo, styles)
 
 @CSSModules(styles)
 class PurchaseModal extends PureComponent {  
@@ -101,81 +89,138 @@ class ServiceInfo extends Component {
       active: false
     }],
     isShow: false,
+    visible: false,
+    remark: '',
+    ownerName: '',
+    ownerPhone: ''
   }
   componentDidMount() {
-    const { match, getHouseInfo, gethouseTimeLine } = this.props
+    const { match, getServiceInfo } = this.props
     const id = match.params.id
     document.documentElement.scrollTop = document.body.scrollTop = 0;
-    getHouseInfo(id)
-    gethouseTimeLine(id)
+    getServiceInfo(id)
+
+    const isLogin = !!localStore.get('userId')
+    if (isLogin) {
+      this.props.getUserInfo()
+    }
+  }
+  onClose = key => () => {
     this.setState({
-      data: [
-        {
-          price: '1000',
-          title: '英明房东都会选择的服务包如果呀字太多请换行哈哈哈哈',
-          img: imgs.noHouse,
-        }, {
-          price: '1200',
-          title: '英明房东都会选择的服务包如果呀字太多请换行哈哈哈哈',
-          img: imgs.noHouse,
-        }, {
-          price: '800',
-          title: '英明房东都会选择的服务包如果呀字太多请换行哈哈哈哈',
-          img: imgs.noHouse,
-        }
-      ]
+      [key]: false,
+    });
+  }
+  showModal = (key, item) => (e) => {
+    e.preventDefault(); // 修复 Android 上点击穿透
+    this.setState({
+      [key]: true,
+    });
+  }
+  textAreaChange = (value) => {
+    this.setState({
+      remark: value
     })
   }
-  turnPopLayer = () => {
-    // console.log(hasClass(document.documentElement, 'poplayer-show'))
-    const val = hasClass(document.documentElement, 'poplayer-show');
-    const { showModle } = this.props;
-    if(val) {
-      removeClass(document.documentElement, 'poplayer-show');
-    } else {
-      addClass(document.documentElement, 'poplayer-show');
+  ownerNameChange = (value) => {
+    this.props.userInfo.nickName = null
+    this.setState({
+      ownerName: value
+    })
+  }
+  ownerPhoneChange = (value) => {
+    this.props.userInfo.username = null
+    this.setState({
+      ownerPhone: value || ''
+    })
+  }
+  submitForm = () => {
+    const data = {
+      "entrustId": this.props.match.params.entrustId || '',
+      "ownerName": this.props.userInfo.nickName !== null ? this.props.userInfo.nickName : this.state.ownerName,
+      "ownerPhone": this.props.userInfo.username !== null ? this.props.userInfo.username : this.state.ownerPhone,
+      "productId": this.props.match.params.id || '',
+      "remark": this.state.remark
     }
-    showModle();
+    this.props.submitForm(data); // 提交
   }
   render() {
-    // const { redirect, houseInfo, timeLines, isHouseListLoading, } = this.props
-    const { isShow, titleArr, activeStatus } = this.state
+    const { redirect, data, loading, userInfo, comfirmLoading} = this.props
+    const imgs = data && data.imgUrls
     return (
       <div >
-        <div styleName="serviceinfo">
-          <h2 styleName="serviceinfo-title">英明房东都会选择的服务包</h2>
-          <div styleName="block">
-            <span>产品单价：</span>
-            <p>999.00元</p>
+        {loading? <div className="infinte-loader">
+              <ReactLoading
+                type="bubbles"
+                className="inline-block"
+                color="#474747"
+              />
+          </div>: <div>
+          <div styleName="serviceinfo">
+            <h2 styleName="serviceinfo-title">{data && data.serviceName || '无'}</h2>
+            <div styleName="block">
+              <span>产品单价：</span>
+              <p>{data && parseFloat(data.price).toFixed(2) || '0.00'}元</p>
+            </div>
+            <div styleName="block">
+              <span>服务产品：</span>
+              {data && data.productInfosBeans ? data.productInfosBeans.map((ctx, idx) => {
+                return (
+                  <p key={idx}>{ctx.childProductName || '无'}</p>
+                )
+              }): <p>无</p>}
+            </div>
+            <div styleName="block">
+              <span>产品描述：</span>
+              <p>{data && data.desc || '无'}</p>
+            </div>
+            <div styleName="block">
+              <span>产品图片：</span>
+              <p>&emsp;</p>
+            </div>
+            <div styleName="block">
+              
+            </div>
           </div>
-          <div styleName="block">
-            <span>服务产品：</span>
-            <p>带看/光速出租</p>
-            <p>保洁/开荒保洁100平以上</p>
-            <p>装修/龙鼎装饰优客标准装100平</p>
+          <StyledViewImg images={imgs ? imgs : imgArray}/>
+          <div styleName="service-footer">
+            <Button onClick={this.showModal('visible')}>立即购买</Button>
           </div>
-          <div styleName="block">
-            <span>产品描述：</span>
-            <p>坑你没商量，买带看送保洁装修坑你没商量，买带看送保洁装修</p>
+            </div>}
+        <Modal
+           popup
+           visible={this.state.visible}
+           onClose={this.onClose('visible')}
+           animationType="slide-up"
+           afterClose={() => { }}
+           styleName="modal-box"
+        >
+          <div styleName="modal-title">
+            <span onClick={this.onClose('visible')}>取消</span>
+            <span>购买信息</span>
+            <span >&emsp;</span>
           </div>
-          <div styleName="block">
-            <span>产品图片：</span>
-            <p>&emsp;</p>
+          <div styleName="modal">
+            <div styleName="purchase-modal">
+              <div styleName="message">
+                <span styleName="name">联系人*</span>
+                <Input placeholder="请输入联系人姓名" value ={ userInfo && userInfo.nickName || this.state.ownerName} onChange={this.ownerNameChange}/>
+              </div>
+              <div styleName="message">
+                <span styleName="name">联系电话*</span>
+                <Input placeholder="请输入联系人电话" onChange={this.ownerPhoneChange} value={ userInfo && userInfo.username || this.state.ownerPhone} />
+              </div>
+              <div styleName="message">
+                <span styleName="name">备注</span>
+                <div style={{marginRight: 20}}>
+                  <Textarea placeholder="请输入20字以内的备注"  rows={4} onChange={this.textAreaChange} maxLength={20}/>
+                </div>
+              </div>
+              <div styleName="btn">
+                {comfirmLoading ? <Button children="购买中" disabled/>:
+                <Button children="购买" onClick={this.submitForm} disabled ={(!userInfo.nickName && !this.state.ownerName) || (!userInfo.username && !this.state.ownerPhone)}/>}
+              </div>
+            </div>
           </div>
-          <div styleName="block">
-            
-          </div>
-        </div>
-        <StyledViewImg images={imgArray}/>
-        <div styleName="service-footer">
-          <Button onClick={this.turnPopLayer}>立即购买</Button>
-        </div>
-        <Modal>
-        <PurchaseModal 
-          close={(val) => {
-          this.turnPopLayer()
-          }}
-        />
         </Modal>
       </div>
     )
@@ -184,14 +229,14 @@ class ServiceInfo extends Component {
 
 export default connect(
   state => ({
-    houseInfo: state.myHouse.houseInfo,
-    roomList: state.myHouse.roomList,
-    isHouseListLoading: state.houseList.isHouseListLoading,
-    timeLines: state.myHouse.timeLines
+    data: state.serviceInfo.serviceInfoData,
+    loading: state.serviceInfo.loading,
+    userInfo: state.app.userInfo,
+    comfirmLoading: state.serviceInfo.comfirmLoading,
   }),
   {
-    ...myHouseActions,
-    ...modalAction,
+    ...serviceInfoActions,
+    ...appAction,
     redirect: url => push(url)
   }
 )(ServiceInfo)
