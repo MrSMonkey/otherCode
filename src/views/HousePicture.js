@@ -111,7 +111,8 @@ const AssetManager = ({data}) => {
         <label>出租方式：</label>
         <span>{data && data.rentType === 1 && '整租'}{data && data.rentType === 2 && '合租'}</span>
       </div>
-      {data && data.houseRentRoomDTO && data.houseRentRoomDTO.map((item, index) =>{
+      {/* 合租 */}
+      {data && data.houseRentRoomDTO && data.rentType === 2 &&data.houseRentRoomDTO.map((item, index) =>{
         return (
           <div styleName="block" key={index}>
             <label>房间{item.roomName}：</label>
@@ -119,6 +120,13 @@ const AssetManager = ({data}) => {
           </div>
         )
       })}
+      {/* 整租 */}
+      {data && data.houseRentRoomDTO && data.rentType === 1 &&
+        <div styleName="block" >
+        <label>出租价格：</label>
+        <span>{data.houseRentRoomDTO[0].rent && data.houseRentRoomDTO[0].rent || '0.00'}元/月 | {rentStatus[data.houseRentRoomDTO[0].rentrentStatus || 1]}</span>
+      </div>
+      }
       <div styleName="block">
         <label>标题：</label>
         <span>{data && data.title || '无'}</span>

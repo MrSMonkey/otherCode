@@ -5,8 +5,12 @@ import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 import { actions as serviceHouseActions } from '../reducers/serviceHouse'
 import { actions as pushServiceActions } from '../reducers/pushService'
-import DatePicker from 'antd-mobile/lib/date-picker';  // 加载 JS
-import 'antd-mobile/lib/date-picker/style/css';        // 加载 CSS
+// import DatePicker from 'antd-mobile/lib/date-picker';  // 加载 JS
+// import 'antd-mobile/lib/date-picker/style/css';        // 加载 CSS
+
+import DatePickerView  from 'antd-mobile/lib/date-picker-view';  // 加载 JS
+import 'antd-mobile/lib/date-picker-view/style/css';        // 加载 CSS
+
 import Picker from 'antd-mobile/lib/picker';
 import 'antd-mobile/lib/picker/style/css';        // 加载 CSS
 import Toast from 'antd-mobile/lib/toast';  // 加载 JS
@@ -20,14 +24,11 @@ import styles from './StartService.css'
 import Button from '@/components/Button'
 import arrayTreeFilter from 'array-tree-filter';
 import { Input, Textarea } from '../components/Form'
-const district = [{
-  label: 'A',
-  value: 'A',
-},{
-  label: 'B',
-  value: 'B',
-},]
 
+
+const nowTimeStamp = Date.now();
+const now = new Date(nowTimeStamp);
+let minDate = new Date(nowTimeStamp);
 function formatDate(date) {
   /* eslint no-confusing-arrow: 0 */
   const pad = n => n < 10 ? `0${n}` : n;
@@ -47,7 +48,9 @@ class StartService extends Component {
     remark: '',
     ownerName: '',
     ownerPhone: '',
-    value: ''
+    value: '',
+    timeVisible: false,
+    currentTime: null
   }
   getSel = () => {
     const value = this.state.pickerValue;
@@ -92,7 +95,7 @@ class StartService extends Component {
       ownerName: this.props.data.assetName !== null ? this.props.data.assetName : this.state.ownerName,
       remark: this.state.remark,
       roomId: this.state.pickerValue[0],
-      roomName: this.getSel(),
+      roomName: this.props.data.houseType === 0 ? this.getSel() : '整租',
       subscribeTime: formatDate(this.state.subscribeTime),
       ownerPhone: this.props.data.assetPhone !== null ? this.props.data.assetPhone : this.state.ownerPhone,
     }
@@ -142,8 +145,19 @@ class StartService extends Component {
     // const houserId = match.params.id
     // this.props.redirect(`/startService/${this.state.value.value}/${houserId}`)
   }
+  timeChange = (date) => {
+    this.setState({
+      currentTime: date
+    })
+  }
+  onTimeOk = () => {
+    this.setState({
+      timeVisible: false,
+      subscribeTime: this.state.currentTime
+    })
+  }
   render() {
-    const { redirect, data, rooms, comfrimLoading} = this.props
+    const { data, rooms, comfrimLoading} = this.props
     const { pickerValue,subscribeTime, ownerName, ownerPhone} = this.state
     return (
       <div>
@@ -152,32 +166,16 @@ class StartService extends Component {
             <span styleName="name">服务房源</span>
             <span styleName="time"> {data && data.houseName || '无'} </span>
           </div>
-         
-          {/* <Picker 
-            data={rooms} cols={1} 
-            visible={this.state.visibleRoom}
-            value={this.state.pickerValue}
-            onChange={v => this.setState({ pickerValue: v })}
-            onOk={() => this.setState({ visibleRoom: false })}
-            onDismiss={() => this.setState({ visibleRoom: false })}
-            >
-            
-          </Picker> */}
           <div styleName="message">
               <span styleName="name">服务房间*</span>
-              
+              {data && data.houseType === 0 ? <span>
               {pickerValue && pickerValue.length <= 0 ? <span styleName="time" onClick={this.showModal('visibleRoom', rooms && rooms[0])}>选择房间></span> : 
               <span styleName="haveTime" onClick={() => this.setState({ visibleRoom: true })}>房间：{this.getSel()}</span>}
+              </span>: <span styleName="time" >整套</span>}
             </div>
           <div styleName="message">
             <span styleName="name">预约服务时间*</span>
-            <span styleName={this.state.subscribeTime !== null ? 'haveTime': 'time'} onClick={() => this.setState({ visible: true })} >{this.state.subscribeTime !== null ? formatDate(this.state.subscribeTime) : '选择服务时间>'}</span> 
-            <DatePicker
-              visible={this.state.visible}
-              value={this.state.subscribeTime}
-              onOk={date => this.setState({ subscribeTime: date, visible: false })}
-              onDismiss={() => this.setState({ visible: false })}
-            />
+            <span styleName={this.state.subscribeTime !== null ? 'haveTime': 'time'} onClick={() => this.setState({ timeVisible: true })} >{this.state.subscribeTime !== null ? formatDate(this.state.subscribeTime) : '选择服务时间>'}</span> 
           </div>
           <div styleName="message">
             <span styleName="name">备注</span>
@@ -200,6 +198,7 @@ class StartService extends Component {
               <Button onClick={this.submitService} disabled ={!subscribeTime || pickerValue.length === 0 || (!data.assetName && !ownerName) || (!data.assetPhone && !ownerPhone)}>发起</Button>}
           </div>
         </div>
+        {/* 房间选择 */}
         <Modal
           popup
           visible={this.state.visibleRoom}
@@ -219,6 +218,25 @@ class StartService extends Component {
             onScrollChange={this.onScrollChange}
             cascade={false}
           />
+        </Modal>
+        {/* 时间选择 */}
+        <Modal
+          popup
+          visible={this.state.timeVisible}
+          onClose={this.onClose('timeVisible')}
+          animationType="slide-up"
+          afterClose={() => { }}
+        >
+        <div styleName="modal-title">
+          <span onClick={this.onClose('timeVisible')}>取消</span>
+          <span>选择时间</span>
+          <span onClick={this.onTimeOk}>确认</span>
+        </div>
+        <DatePickerView
+          value={this.state.currentTime}
+          minDate={minDate}
+          onChange={this.timeChange}
+        />      
         </Modal>
       </div>
     )

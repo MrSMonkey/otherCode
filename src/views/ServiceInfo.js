@@ -95,14 +95,13 @@ class ServiceInfo extends Component {
     ownerPhone: ''
   }
   componentDidMount() {
-    const { match, getServiceInfo } = this.props
+    const { match } = this.props
     const id = match.params.id
     document.documentElement.scrollTop = document.body.scrollTop = 0;
-    getServiceInfo(id)
-
     const isLogin = !!localStore.get('userId')
     if (isLogin) {
       this.props.getUserInfo()
+      this.props.getServiceInfo(id)
     }
   }
   onClose = key => () => {

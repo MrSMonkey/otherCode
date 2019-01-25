@@ -8,6 +8,7 @@ import ReactLoading from 'react-loading'
 import styles from './ServiceOrder.css'
 import Icon from '../components/Icon'
 
+const noSearch = require('../assets/imgs/no_search.png');
 
 /**基本信息 */
 const BsaeInfo = ({data, redirect}) => {
@@ -25,14 +26,14 @@ const BsaeInfo = ({data, redirect}) => {
                 <div onClick={()=>{redirect(`serviceDetile/${item.servicePackageId}`)}}><Icon name="icon_arrow"/></div>
               </div>
               <div styleName='serviceName'>
-                <span>服务包名称：{item && item.name}</span>
+                <span>服务包名称：{item && item.servicePackageName}</span>
               </div>
             </div>
             <div styleName="serviceOrder-main">
               {item && item.serviceItems && item.serviceItems.length >0 && item.serviceItems.map((ctx, idx) => {
                 return (
                   <div styleName='serviceOrder-item' key={idx}>
-                    <span>产品名称：{ctx.serviceTypeName}</span>
+                    <span>产品名称：{ctx.serviceName}</span>
                     <div styleName={ctx.status === '7' ? 'serviceOrder-item-close': 'serviceOrder-item-type'}>
                     {statusName[ctx.status]}
                     </div>
@@ -46,14 +47,23 @@ const BsaeInfo = ({data, redirect}) => {
             </div>
           </div>
         )
-      }): <div>1111</div>}
+      }): <div></div>}
     </div>
   )
 }
 const StyleBsaeInfo = CSSModules(BsaeInfo, styles)
 
-
-
+const NoOrderList = () => {
+  return (
+    <div styleName="background-tips">
+      <img src={noSearch}/>
+      <p>
+        未找到订单
+      </p>
+    </div>
+  )
+}
+const StylesNoOrderList = CSSModules(NoOrderList, styles)
 @CSSModules(styles)
 class ServiceOrder extends Component {
   state = {
@@ -62,66 +72,20 @@ class ServiceOrder extends Component {
   componentDidMount() {
     this.props.getServiceOrderList()
     document.documentElement.scrollTop = document.body.scrollTop = 0;
-    this.setState({
-      data: [
-        {
-          id: '111111111',
-          time: '2018-12-14 18:56:31',
-          price: '1024',
-          orderNo: 'SN1804193709900001',
-          product: [
-            {
-              name: '英明商家都会买的服务包',
-              type: '1',
-              typeName: '待服务'
-            },
-            {
-              name: '英明商家都会买的服务包',
-              type: '2',
-              typeName: '服务中'
-            },
-            {
-              name: '英明商家都会买的服务包',
-              type: '3',
-              typeName: '已关闭'
-            }
-          ],
-          title: '中粮香榭丽都-1栋1单元201号',
-          name: '英明商家都会买的服务包',
-        }, {
-          id: '2222222',
-          time: '2018-12-14 18:56:31',
-          price: '1024',
-          orderNo: 'SN1804193709900001',
-          product: [
-            {
-              name: '英明商家都会买的服务包',
-              type: '1',
-              typeName: '待服务'
-            },
-            {
-              name: '英明商家都会买的服务包',
-              type: '2',
-              typeName: '服务中'
-            },
-            {
-              name: '英明商家都会买的服务包',
-              type: '3',
-              typeName: '已关闭'
-            }
-          ],
-          title: '中粮香榭丽都-1栋1单元201号',
-          name: '英明商家都会买的服务包',
-        }
-      ]
-    })
   }
   render() {
-    const { redirect, serviceList } = this.props
+    const { redirect, serviceList, loading } = this.props
     return (
       <div >
-        {serviceList && serviceList.length > 0 ? <StyleBsaeInfo data={serviceList && serviceList || []} redirect={redirect}/> : null}
-        
+        {loading ? <div className="infinte-loader">
+              <ReactLoading
+              type="bubbles"
+              className="inline-block"
+              color="#474747"
+              />
+            </div>:<div>
+            {serviceList && serviceList.length > 0 ? <StyleBsaeInfo data={serviceList && serviceList || []} redirect={redirect}/> : <StylesNoOrderList />}
+              </div>}
       </div>
     )
   }
@@ -130,6 +94,7 @@ class ServiceOrder extends Component {
 export default connect(
   state => ({
     serviceList: state.serviceOrder.serviceList || [],
+    loading: state.serviceOrder.loading
   }),
   {
     ...serviceOrderActions,

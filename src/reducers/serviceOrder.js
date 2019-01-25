@@ -33,9 +33,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        serviceList: {
-          ...action.payload
-        }
+        serviceList: action.payload
       }
    
     default:

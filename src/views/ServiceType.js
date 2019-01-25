@@ -12,13 +12,8 @@ import Toast from 'antd-mobile/lib/toast';  // 加载 JS
 import 'antd-mobile/lib/toast/style/css';        // 加载 CS
 import ReactLoading from 'react-loading'
 import styles from './ServiceType.css'
-import Button from '@/components/Button'
 import Icon from '../components/Icon'
-import Form, { FormItem, Input, Select, Textarea } from '../components/Form'
-import { addClass, hasClass, removeClass } from '../utils'
-const imgs = {
-  noHouse: require('../assets/imgs/banner.jpg')
-}
+const noSearch = require('../assets/imgs/no_search.png');
 
 const season = [
   {
@@ -38,6 +33,19 @@ const season = [
     value: '4',
   },
 ];
+
+const NoOrderList = () => {
+  return (
+    <div styleName="background-tips">
+      <img src={noSearch}/>
+      <p>
+        未找到服务类型
+      </p>
+    </div>
+  )
+}
+const StylesNoOrderList = CSSModules(NoOrderList, styles)
+
 @CSSModules(styles)
 class ServiceInfo extends Component {
   state = {
@@ -142,14 +150,14 @@ class ServiceInfo extends Component {
               color="#474747"
             />
           </div>: <div>
-            {data && data.map((item, index) => {
+            {data && data.length> 0 ?data.map((item, index) => {
             return (
-              <div styleName="serviceType" key={index}>
+              <div styleName="serviceType" key={index} onClick={this.showModal('visible', item)}>
                 <h2>{item.serviceTypeName}</h2>
-                <div styleName="serviceType-right"  onClick={this.showModal('visible', item)}><Icon name="icon_arrow"/></div>
+                <div styleName="serviceType-right"><Icon name="icon_arrow"/></div>
               </div>
             )
-          })}
+          }): <StylesNoOrderList />}
           </div>}
         <Modal
           popup

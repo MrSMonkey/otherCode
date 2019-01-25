@@ -202,3 +202,18 @@ body {
 .am-picker-col-indicator  {
   top: 132px !important;
 } */
+
+.am-modal-mask {
+  position: absolute !important;
+  -webkit-overflow-scrolling: touch;   /*这句是为了滑动更顺畅*/
+}
+.am-modal-wrap {
+  position: absolute !important;
+  bottom: 0 !important;
+  -webkit-overflow-scrolling: touch;   /*这句是为了滑动更顺畅*/
+}
+.am-modal-popup {
+  position: absolute !important;
+  bottom: 0 !important;
+  -webkit-overflow-scrolling: touch;   /*这句是为了滑动更顺畅*/
+}

@@ -10,8 +10,8 @@ axios.defaults.withCredentials = true
 const ENV = process.env.NODE_ENV; // 环境变量
 // const baseUrl = 'http://www.34.testuoko.com'
 // const baseUrl = host.api.replace(/\/+$/, '')
-const baseUrl = ENV === 'development' ? 'http://172.16.10.119:7070/' : 'http://api-gateway.uoko.com/';
-
+// const baseUrl = ENV === 'development' ? ' http://192.168.200.120:7070/' : 'http://api-gateway.uoko.com/';
+const baseUrl = ENV === 'development' ? 'http://192.168.200.120:7070/' : 'http://192.168.200.120:7070/';
 const request = axios.create({
   baseURL: baseUrl,
   headers: {
@@ -42,7 +42,7 @@ request.interceptors.request.use(
   err => {
     const status = err.response.status
     if (status === 401) {
-      // return store.dispatch(appActions.refreshToken())
+      // return store.dispatch(appActions.refreshToken()) 
     }
     return Promise.reject(err)
   }

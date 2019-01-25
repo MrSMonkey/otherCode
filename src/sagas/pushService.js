@@ -10,7 +10,7 @@ function* pushService(params) {
     const { data } = yield call(api.pushService, params)
     if (data.code === '000') {
       Toast.success('发起成功', 2, () => {
-        widow.loaction.href= `/serviceOrder`
+        window.location.href= `/serviceOrder`
       });
       return data.data
     }

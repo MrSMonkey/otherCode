@@ -55,10 +55,10 @@ class ServiceOrderDetile extends Component {
                 <div styleName="ServiceOrderType" key={idx}>
                   <div styleName='serviceOrder-item'>
                     <span>订单号：{item.orderNo || '无'}</span>
-                    <div styleName='serviceOrder-item-type'>待服务</div>
+                    <div styleName='serviceOrder-item-type'>{statusName[item.status]}</div>
                   </div>
                   <div styleName='serviceOrder-item'>
-                    <span>产品类型：{item.serviceTypeName || '无'}</span>
+                    <span>产品类型：{item.serviceType || '无'}</span>
                   </div>
                   <div styleName='serviceOrder-item'>
                     <span>产品名称：{item.serviceName || '无'}</span>

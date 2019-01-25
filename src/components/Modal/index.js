@@ -22,8 +22,7 @@ class Index extends Component {
               isCloseByLayout && showModle()
             }}>
           </div>
-          {/* <div styleName="plan-bottom" style={{height: isModle ? '50%' : '0'}}> */}
-          <div styleName="plan-bottom">
+          <div styleName="plan-bottom" style={{height: isModle ? '50%' : '0'}}>
             {this.props.children}
           </div>
         </div>

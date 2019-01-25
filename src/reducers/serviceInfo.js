@@ -38,7 +38,6 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_SERVICES_INFO:
       return {
-        ...state,
         loading: true
       }
     case actionTypes.LOADING_SUCCESS:

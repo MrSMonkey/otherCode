@@ -6,7 +6,6 @@ import ReactLoading from 'react-loading'
 import { actions as houseListActions } from '../reducers/houseList'
 import styles from './HouseList.css'
 import { localStore } from '@/utils'
-
 const imgs = {
   noHouse: require('../assets/imgs/illustration_blank.png')
 }
@@ -69,9 +68,9 @@ const HouseItem = ({ data, redirect }) => {
       <p styleName="item-desc">
         {
           data.handleStatus === 1
-            ? <a href={`tel:${data.contact}`}>
+            ? <a href={`tel:${data.assetContact}`}>
                 提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话咨询：
-                <i styleName="call-icon"></i><i>{data.contact}</i>
+                <i styleName="call-icon"></i><i>{data.assetContact}</i>
               </a>
             : `${rentType} | ${rentWay} | ${data.rentRoom ? `${data.roomTotal}个房间 ${data.rentRoom}个已出租` : '待租中'}`
         }

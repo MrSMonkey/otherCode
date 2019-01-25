@@ -28,6 +28,7 @@ import getServiceTypeListFlow from './serviceType'
 import getServiceDetileFlow from './serviceOrderDetile'
 import getServiceHouseFlow from './serviceHouse'
 import pushServiceFlow from './pushService'
+import submitForm from './bugService'
 
 export default function* rootSaga() {
   yield fork(getHouseListFlow)
@@ -61,4 +62,5 @@ export default function* rootSaga() {
   yield fork(getServiceTypeListFlow)
   yield fork(getServiceHouseFlow)
   yield fork(pushServiceFlow)
+  yield fork(submitForm)
 }

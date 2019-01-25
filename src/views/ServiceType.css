@@ -53,3 +53,17 @@
   color: $color-golden;
   font-size: 28px;
 }
+
+.background-tips {
+  position: relative;
+  top: 168px;
+  text-align: center;
+  font-size: 15px; /* no */
+  img {
+    width: 400px;
+    height: auto;
+  }
+  span {
+    color: $color-golden;
+  }
+}
