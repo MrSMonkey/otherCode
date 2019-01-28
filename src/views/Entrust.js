@@ -419,7 +419,7 @@ class Entrust extends Component {
                         updatePhone(val)
                       }}
                       verify={{
-                        type: 'ownerPhone',
+                        type: 'phone',
                         cb: val => {
                           // console.log('phone ERR', !val)
                           this.setState({ isErr: { ...isErr, ownerPhone: !val } })
@@ -438,9 +438,9 @@ class Entrust extends Component {
                       }}
                     />
                     <ValidationCodeButton
-                      isDisabled={this.state.isErr.phone || !form.phone}
+                      isDisabled={this.state.isErr.ownerPhone || !form.ownerPhone}
                       onClick={() => {
-                        genCode(form.phone)
+                        genCode(form.ownerPhone)
                       }}
                     />
                   </FormItem>
