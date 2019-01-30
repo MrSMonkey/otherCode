@@ -41,7 +41,7 @@ const routes = [
     path: '/house-pic/:id',
     component: views.HousePicture,
     needBind: true,
-    title: '房源照片'
+    title: '租赁信息'
   },
   {
     path: '/purchase/:cityId/:entrustId',
@@ -62,7 +62,7 @@ const routes = [
     title: '选择服务类型'
   },
   {
-    path: '/serviceOrder',
+    path: '/serviceOrder/:id',
     component: views.ServiceOrder,
     needBind: true,
     title: '服务订单'

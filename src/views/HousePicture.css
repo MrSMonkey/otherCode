@@ -66,3 +66,22 @@
     display: inline-block;
   }
 }
+
+.ItemImg {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: flex-start;
+  /* margin: 50% auto; */
+  padding: 20px 30px 0;
+  li {
+    padding-right: 2px;
+    flex-shrink: 0;
+    list-style: none;
+    margin-right: 17px;
+  }
+  img {
+    display: inline-block;
+    width: 160px;
+    height: 160px;
+  }
+}

@@ -19,11 +19,11 @@ const BsaeInfo = ({data, redirect}) => {
       {arr && arr.length> 0 ? arr.map((item, index) => {
         return (
           <div styleName="serviceOrder" key={index}>
-            <div styleName="serviceOrder-title-box">
+            <div styleName="serviceOrder-title-box" onClick={()=>{redirect(`serviceDetile/${item.servicePackageId}`)}}>
               <div styleName='serviceOrder-title'><Icon name="icon_order" /><span>{item && item.houseName}</span></div>
               <div styleName='serviceOrder-no'>
                 <span>服务包订单号：{item && item.servicePackageOrderNo}</span>
-                <div onClick={()=>{redirect(`serviceDetile/${item.servicePackageId}`)}}><Icon name="icon_arrow"/></div>
+                <div><Icon name="icon_arrow"/></div>
               </div>
               <div styleName='serviceName'>
                 <span>服务包名称：{item && item.servicePackageName}</span>
@@ -70,7 +70,9 @@ class ServiceOrder extends Component {
     
   }
   componentDidMount() {
-    this.props.getServiceOrderList()
+    const { match, getServiceOrderList } = this.props
+    const id = match.params.id
+    getServiceOrderList(id)
     document.documentElement.scrollTop = document.body.scrollTop = 0;
   }
   render() {

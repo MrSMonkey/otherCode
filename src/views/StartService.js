@@ -73,7 +73,7 @@ class StartService extends Component {
     })
   }
   submitService = () => {
-    if (this.state.pickerValue.length ===0) {
+    if (this.props.data.houseType === 0 && this.state.pickerValue.length ===0) {
       Toast.info('请选择房间', 2);
       return false
     }
@@ -94,7 +94,7 @@ class StartService extends Component {
       orderId: this.props.match.params.id,
       ownerName: this.props.data.assetName !== null ? this.props.data.assetName : this.state.ownerName,
       remark: this.state.remark,
-      roomId: this.state.pickerValue[0],
+      roomId: this.props.data.houseType === 0 ? this.state.pickerValue[0] : '',
       roomName: this.props.data.houseType === 0 ? this.getSel() : '整租',
       subscribeTime: formatDate(this.state.subscribeTime),
       ownerPhone: this.props.data.assetPhone !== null ? this.props.data.assetPhone : this.state.ownerPhone,
@@ -153,7 +153,7 @@ class StartService extends Component {
   onTimeOk = () => {
     this.setState({
       timeVisible: false,
-      subscribeTime: this.state.currentTime
+      subscribeTime: this.state.currentTime || now
     })
   }
   render() {
@@ -195,7 +195,7 @@ class StartService extends Component {
           </div>
           <div styleName="service-footer">
             {comfrimLoading ? <Button disabled ={true}>发起中</Button>:
-              <Button onClick={this.submitService} disabled ={!subscribeTime || pickerValue.length === 0 || (!data.assetName && !ownerName) || (!data.assetPhone && !ownerPhone)}>发起</Button>}
+              <Button onClick={this.submitService} disabled ={!subscribeTime || (data && data.houseType === 0 && pickerValue.length === 0) || (!data.assetName && !ownerName) || (!data.assetPhone && !ownerPhone)}>发起</Button>}
           </div>
         </div>
         {/* 房间选择 */}

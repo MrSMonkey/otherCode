@@ -7,6 +7,7 @@ import { push } from 'connected-react-router'
 import ReactLoading from 'react-loading'
 import Tabs from '../components/Tabs'
 import { SectionTitle } from '../components/InfoSection'
+import ImgSlidePlay from '../components/ViewImg/components/Picture';
 import styles from './HousePicture.css'
 const imgs = {
   imgBg: require('../assets/imgs/icon_img.png')
@@ -16,31 +17,55 @@ const imgs = {
 //   history: false,
 //   shareEl: false,
 // }
+@CSSModules(styles)
 class CumstomPhotoSwipeGallery extends Component {
   state = {
     data: []
   }
+  render() {
+    const { data, showImg } = this.props
+    return (
+      <div>
+        <ul styleName="ItemImg">
+          {
+            data && data.map((item, index) => {
+              return (
+                <li key={index} onClick={showImg.bind(null, index)}>
+                  <img src={item} />
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+    )
+  }
+}
 
+
+
+@CSSModules(styles)
+class ParentPhotoSwipeGallery extends React.Component{
+
+	constructor(...args) {
+		super(...args)
+		this.state = {
+			isImgShow: false,
+      imgIndex: 1,
+      data: []
+		}
+	}
   componentDidMount() {
-    var arr = []
+    let arr = []
     if (this.props.data) {
-      this.props.data.forEach(item => {
-        const img = new Image()
-        img.src = `${item.imageUrl}?imageView2/2/w/320`
-        img.onload = () => {
-          arr.push({
-            thumbnails: imgs.imgBg,
-            src: `${item.imageUrl}?imageView2/2/w/320`,
-            w: img.width,
-            h: img.height
-          })
-
-          this.setState({
-            data: arr
-          })
-        }
+      arr = this.props.data.map((item, index) => {
+        return item.imageUrl
+      })
+      this.setState({
+        data: arr
       })
     }
+    
   }
   componentWillReceiveProps (nextProps) {
     //console.log(nextProps)
@@ -49,58 +74,35 @@ class CumstomPhotoSwipeGallery extends Component {
     }, ()=> {
       var arr = []
       if (this.props.data) {
-        this.props.data.forEach(item => {
-          const img = new Image()
-          img.src = `${item.imageUrl}?imageView2/2/w/320`
-          img.onload = () => {
-            arr.push({
-              thumbnails: imgs.imgBg,
-              src: `${item.imageUrl}?imageView2/2/w/320`,
-              w: img.width,
-              h: img.height
-            })
-  
-            this.setState({
-              data: arr
-            })
-          }
+        arr = this.props.data.map((item, index) => {
+          return item.imageUrl
+        })
+        this.setState({
+          data: arr
         })
       }
     })
   }
-  // shouldComponentUpdate(nextProps,nextState) {
-  //   console.log(nextProps,nextState)
-  // }
-  options = {
-    index: this.props.index,
-    history: false,
-    shareEl: false,
-  }
+	showImg(imgIndex = 0) {
+		this.setState({
+			isImgShow: !this.state.isImgShow,
+			imgIndex: imgIndex + 1
+		})
+	}
 
-  render() {
+	render() {
     const { data } = this.state
-    
-    return (
-      <PhotoSwipeGallery
-        className="house-pic-gallery"
-        items={data}
-        options={this.options}
-        isOpen={false}
-        thumbnailContent={item => {
-          return <img
-              key={item}
-              src={item.src} 
-              onError={(e) => {
-                var event = e.target
-                event.onerror = null
-                event.src = imgs.imgBg
-              }}
-            />
-        }}
-      />
-    )
-  }
+		return (
+			<div>
+				<CumstomPhotoSwipeGallery data={data} showImg={this.showImg.bind(this)} />
+				{
+					this.state.isImgShow && <ImgSlidePlay itemImages={data} showImg={this.showImg.bind(this)} imgIndex={this.state.imgIndex}/>
+				}  			
+	  		</div>	
+		)
+	}
 }
+
 
 const rentStatus = ['', '待租中', '已出租', '已预订'];
 /**租赁信息(资产管家) */
@@ -210,7 +212,7 @@ class HousePicture extends Component {
           {pictures && pictures.length > 0 ?<div>
           <div styleName="pic-info">
             <div styleName="pic-title">
-              {pictures && pictures.map((item, idx) => {
+              {pictures && pictures.length > 1 && pictures.map((item, idx) => {
                 return (
                   <span key={idx} styleName={active === idx ? 'active': ''} onClick={()=>this.handleClick(idx, item)}>
                     {item.source === 'ZC' && '资产管家'}
@@ -228,13 +230,13 @@ class HousePicture extends Component {
               return (
                 <div key={index}>
                   <SectionTitle>房间{i.roomName}</SectionTitle>
-                  <CumstomPhotoSwipeGallery data={i.roomImages} index={index}/>
+                  <ParentPhotoSwipeGallery data={i.roomImages} index={index}/>
                 </div>
               )
             })
           }
           <SectionTitle>公区照片</SectionTitle>
-          <CumstomPhotoSwipeGallery data={selectData && selectData.housePublicImages && selectData.housePublicImages} index="-1"/>
+          <ParentPhotoSwipeGallery data={selectData && selectData.housePublicImages && selectData.housePublicImages} index="-1"/>
         </div>: null
           }
       </React.Fragment>

@@ -5,7 +5,7 @@ import { actionTypes as appActionTypes } from '../reducers/app'
 
 function* getServiceList(id) {
   try {
-    const { data } = yield call(api.getServiceList)
+    const { data } = yield call(api.getServiceList, id)
     if (data.code === '000') {
       return data.data
     }
@@ -18,8 +18,8 @@ function* getServiceList(id) {
 
 function* getServiceListFlow() {
   while (true) {
-    const id = yield take(actionTypes.GET_LANDLORD_LIST)
-    const data = yield call(getServiceList)
+    const idType = yield take(actionTypes.GET_LANDLORD_LIST)
+    const data = yield call(getServiceList,idType.id)
     if (data) {
       yield put({ type: actionTypes.GET_SERVICEORDER_LIST_SUCCESS, payload: data })
     }

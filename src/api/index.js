@@ -158,8 +158,8 @@ const api = {
     return request.get(`/partner/owner/push_service_get_house/${houseId}`)
   },
   /* 获取订单列表 */
-  getServiceList() {
-    return request.get(`/partner/owner/service_orders`)
+  getServiceList(entrustId) {
+    return request.get(`/partner/owner/service_orders/${entrustId}`)
   },
   /* 获取订单详情 */
   getServiceOrderDetile(serviceOrderId) {

@@ -24,7 +24,7 @@ function* sublimtEntrust(form) {
 function* bindUser(form) {
   try {
     const { data } = yield call(api.bindUser, {
-      mobile: form.phone,
+      mobile: form.ownerPhone,
       registerSource: 1,
       verificationCode: form.varityCold
     })

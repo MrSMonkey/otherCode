@@ -16,9 +16,10 @@ export const actionTypes = {
 }
 
 export const actions = {
-  getServiceOrderList() {
+  getServiceOrderList(id) {
     return {
       type: actionTypes.GET_LANDLORD_LIST,
+      id
     }
   }
 }

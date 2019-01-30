@@ -37,7 +37,7 @@ const BsaeInfo = ({data = {}}) => {
         </div>
         <div styleName="block">
           <label>原始户型：</label>
-          <span>{data.initRoomNum}室{data.initHallNum}厅{data.initToiletNum}卫</span>
+          <span>{data.roomNum}室{data.hallNum}厅{data.toiletNum}卫</span>
         </div>
         <div styleName="block-secondary">
           <label>朝<span styleName="space-2"/>向：</label>
@@ -87,10 +87,10 @@ const Footer = ({redirect, houseInfo}) => {
   return(
     <div styleName="house-footer-content">
       <div  onClick={()=> {
-        redirect(`/serviceOrder`)
+        redirect(`/serviceOrder/${houseInfo.entrustId}`)
       }}>
         <Icon name="icon_detail" width={32} height={32}/>
-        <span>服务账单</span>
+        <span>服务订单</span>
       </div>
       <div>
       <Button onClick={()=> {
@@ -121,7 +121,7 @@ class MyHouses extends Component {
       active: false
     }, {
       name: 'photo',
-      text: '房源照片',
+      text: '租赁信息',
       href: `/house-pic/`,
       active: false
     }]
