@@ -11,7 +11,7 @@ const ENV = process.env.NODE_ENV; // 环境变量
 // const baseUrl = 'http://www.34.testuoko.com'
 // const baseUrl = host.api.replace(/\/+$/, '')
 // const baseUrl = ENV === 'development' ? ' http://192.168.200.120:7070/' : 'http://api-gateway.uoko.com/';
-const baseUrl = ENV === 'development' || 'test' ? 'http://192.168.200.120:7070/' : 'http://api-gateway.uoko.com/';
+const baseUrl = 'http://api-gateway.uoko.com/';
 const request = axios.create({
   baseURL: baseUrl,
   headers: {
