@@ -13,13 +13,12 @@ const noSearch = require('../assets/imgs/no_search.png');
 /**基本信息 */
 const BsaeInfo = ({data, redirect}) => {
   const statusName = ['', '待付款', '待服务' , '服务中', ' 待验收', '待评价', '已评价', '已关闭', ' 待处理', '验收不通过']
-  const arr = [data && data[0], data && data[1], data && data[2], data && data[3], data && data[4]]
   return (
     <div>
-      {arr && arr.length> 0 ? arr.map((item, index) => {
+      {data && data.length> 0 ? data.map((item, index) => {
         return (
           <div styleName="serviceOrder" key={index}>
-            <div styleName="serviceOrder-title-box" onClick={()=>{redirect(`serviceDetile/${item.servicePackageId}`)}}>
+            <div styleName="serviceOrder-title-box" onClick={()=>{redirect(`/serviceDetile/${item.servicePackageId}`)}}>
               <div styleName='serviceOrder-title'><Icon name="icon_order" /><span>{item && item.houseName}</span></div>
               <div styleName='serviceOrder-no'>
                 <span>服务包订单号：{item && item.servicePackageOrderNo}</span>

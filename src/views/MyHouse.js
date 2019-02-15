@@ -59,10 +59,10 @@ const BsaeInfo = ({data = {}}) => {
           <label>房东电话：</label>
           <span>{data.assetPhone}</span>
         </div> */}
-        <div>
+        {/* <div>
           <label>备<span styleName="space-2"/>注：</label>
           <span>{data.remark}</span>
-        </div>
+        </div> */}
       </div>
     </div>
   )

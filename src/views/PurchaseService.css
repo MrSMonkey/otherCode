@@ -43,7 +43,7 @@
   left: 30px;
   img{
     width: 220px;
-    height: 180px;
+    /* height: 180px; */
     border-radius: 2px;
   }
 }

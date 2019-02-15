@@ -12,7 +12,8 @@ class ImgSlidePlay extends React.Component{
 		this.screenWidth = document.body.clientWidth //屏幕宽度
         this.state = {
             imgIndex: this.props.imgIndex,
-            hasMoveStyle: true
+            hasMoveStyle: true,
+            data: []
         }
     }
 
@@ -24,9 +25,51 @@ class ImgSlidePlay extends React.Component{
             carouselImg.style.webkitTransform = 'translate3d(' + index * (-this.screenWidth) + 'px, 0, 0)'
             this.count = index
         }
-        console.log(this.props.itemImages)
+        var arr = []
+        if (this.props.itemImages) {
+          this.props.itemImages.forEach(item => {
+            const img = new Image()
+            img.src = `${item}`
+            img.onload = () => {
+              arr.push({
+                src: `${item}`,
+                w: img.width,
+                h: img.height
+              })
+    
+              this.setState({
+                data: arr
+              })
+            }
+          })
+        }
     }
-
+    
+    // componentWillReceiveProps (nextProps) {
+    //   //console.log(nextProps)
+    //   nextProps.itemImages !== this.props.itemImages && this.setState({
+    //     data: nextProps.itemImages
+    //   }, ()=> {
+    //     var arr = []
+    //     if (this.props.itemImages) {
+    //       this.props.itemImages.forEach(item => {
+    //         const img = new Image()
+    //         img.src = `${item}`
+    //         img.onload = () => {
+    //           arr.push({
+    //             src: `${item}`,
+    //             w: img.width,
+    //             h: img.height
+    //           })
+    
+    //           this.setState({
+    //             data: arr
+    //           })
+    //         }
+    //       })
+    //     }
+    //   })
+    // }
     startMoveImg(e) {
         this.setState({
         	hasMoveStyle: false
@@ -74,25 +117,42 @@ class ImgSlidePlay extends React.Component{
 
         this.refs.carouselImg.style.webkitTransform = 'translate3d(' + this.count * (-this.screenWidth) + 'px, 0, 0)'
     }
-
+  showImgBox = (imgs) => {
+    const img = new Image();
+    let w = ""; //图片宽度
+    let h = ""; //图片高度
+    img.src = `${imgs}`
+    w = img.width
+    h = img.height
+    if (w < h) {
+      return <img src={imgs} alt="" styleName="imgsAbl"/>
+    } else {
+      return <img src={imgs} alt="" styleName="imgsAle"/>
+    }
+    
+   
+  }
 	render() {
 		const { itemImages, showImg } = this.props
-    
+    const { data } = this.state;
 		return (
 		  	<div styleName="Img">
           <p>{this.state.imgIndex}/{itemImages.length}</p>
           <span onClick={showImg.bind(null)}>×</span>
           <ul styleName={this.state.hasMoveStyle ? `translate` : `full-height`} ref="carouselImg">
               {
-                itemImages.map((item, index) => (
-                  <li styleName="flex-columns"
-                      onTouchStart={this.startMoveImg.bind(this)}
-                      onTouchMove={this.movingImg.bind(this, itemImages.length)}
-                      onTouchEnd={this.endMoveImg.bind(this, itemImages.length, itemImages)}
-                      key={index}>
-                      <img src={item} onClick={showImg.bind(null)}/>
-                  </li>
-                ))
+                itemImages && itemImages.map((item, index) => {
+                  return (
+                    <li styleName="flex-columns"
+                        onTouchStart={this.startMoveImg.bind(this)}
+                        onTouchMove={this.movingImg.bind(this, itemImages.length)}
+                        onTouchEnd={this.endMoveImg.bind(this, itemImages.length, itemImages)}
+                        key={index}
+                        >
+                        {this.showImgBox(item)}
+                    </li>
+                  )
+                })
               }
           </ul>
       </div>

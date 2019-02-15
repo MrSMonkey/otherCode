@@ -9,7 +9,7 @@ import styles from './RoomInfo.css'
 
 
 /**房间列表 */
-const RoomList = ({ data = {}, isFull = fasle }) => {
+const RoomList = ({ data = {}, roomType = fasle }) => {
   let toward = '';
   switch (data.toward) {
     case 1:
@@ -80,16 +80,16 @@ const RoomList = ({ data = {}, isFull = fasle }) => {
     <div>
       <div styleName="room-item">
         <div styleName="item-tit">
-          <h2>{data.isFull ? '' : '房间'}{data.roomName || ''}</h2>
+          <h2>{data.roomType ? '' : '房间'}{data.roomName || ''}</h2>
           {rentStatus ? <i>{rentStatus}</i> : ''}
           {rentStatus && onOff ? <i>{onOff}</i> : ''}
         </div>
         <p styleName="item-desc">
-          {isFull && data.isFull === 0 ? '' : <span>{data.rent || '？'}元/月<i> | </i></span>}
+          {/* {roomType && data.roomType === 0 ? '' : <span>{data.rent || '？'}元/月<i> | </i></span>} */}
           {data.area || '？'}㎡<i> | </i>{toward}
         </p>
         <p styleName="item-desc">
-          房间配置：{data.roomConfigNum || 0} <i></i> {data.publicAreaConfigNum ? `| 公区配置：${data.publicAreaConfigNum}` : ''}
+          房间配置：{data.roomConfigNum || 0} <i></i> {data.houseConfigNum ? `| 公区配置：${data.houseConfigNum}` : ''}
         </p>
       </div>
     </div>
@@ -137,8 +137,8 @@ class RoomInfo extends Component {
     } = this.props
     const { tabsData } = this.state
 
-    const isFull = roomList && roomList.filter((item) => {
-      return item.isFull === 1
+    const roomType = roomList && roomList.filter((item) => {
+      return item.roomType === 1
     });
 
     return (
@@ -157,7 +157,7 @@ class RoomInfo extends Component {
               color="#474747"
               />
             </div>
-            : roomList && roomList.map((i, index) => <StyleRoomList data={i} key={index} isFull={isFull.length > 0}/>)
+            : roomList && roomList.map((i, index) => <StyleRoomList data={i} key={index} roomType={roomType.length > 0}/>)
         }
       </div>
     )

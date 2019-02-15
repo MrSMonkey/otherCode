@@ -25,7 +25,7 @@ function* bugService(params) {
     const { data } = yield call(api.buyService, params)
     if (data.code === '000') {
       Toast.success('购买成功', 2, () => {
-        widow.loaction.href= `/houses/${params.entrustId}`
+        widow.loaction.href= `/serviceOrder/${params.entrustId}`
       });
       return data.data
     }

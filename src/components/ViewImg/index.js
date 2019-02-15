@@ -37,6 +37,19 @@ class Parent extends React.Component{
 // 显示图片组件
 @CSSModules(styles)
 class ShowImg extends React.Component{
+  showImgBox = (imgs) => {
+    const img = new Image();
+    let w = ""; //图片宽度
+    let h = ""; //图片高度
+    img.src = `${imgs}`
+    w = img.width
+    h = img.height
+    if (w < h) {
+      return <img src={imgs} alt="" styleName="imgsW"/>
+    } else {
+      return <img src={imgs} alt="" styleName="imgsh"/>
+    }
+  }
 	render() {
 		const { itemImages, showImg } = this.props
 		return (
@@ -46,7 +59,8 @@ class ShowImg extends React.Component{
             itemImages.map((item, index) => {
               return (
                 <li key={index} onClick={showImg.bind(null, index)}>
-                  <img src={item} />
+                {this.showImgBox(item)}
+                  {/* <img src={item} /> */}
                 </li>
               )
             })

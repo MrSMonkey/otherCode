@@ -33,8 +33,6 @@ class PurchaseModal extends PureComponent {
     itemList: [],
     activeId: ''
   }
-
-  
   render() {
     const {close } = this.props;
     return (
@@ -138,6 +136,8 @@ class ServiceInfo extends Component {
       "ownerName": this.props.userInfo.nickName !== null ? this.props.userInfo.nickName : this.state.ownerName,
       "ownerPhone": this.props.userInfo.username !== null ? this.props.userInfo.username : this.state.ownerPhone,
       "productId": this.props.match.params.id || '',
+      "price": this.props.data.price,
+      "title": this.props.data.serviceName,
       "remark": this.state.remark
     }
     this.props.submitForm(data); // 提交
@@ -180,7 +180,9 @@ class ServiceInfo extends Component {
               
             </div>
           </div>
-          <StyledViewImg images={imgs ? imgs : imgArray}/>
+          <div styleName="imgbox">
+            <StyledViewImg images={imgs ? imgs : imgArray}/>
+          </div>
           <div styleName="service-footer">
             <Button onClick={this.showModal('visible')}>立即购买</Button>
           </div>

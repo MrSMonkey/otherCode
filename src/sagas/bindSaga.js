@@ -36,7 +36,6 @@ function* bindUser() {
 
 function* genCode() {
   const { phone } = yield select(state => state.bind)
-  console.log(phone)
   try {
     yield call(api.genValidateCode, phone)
   } catch (e) {

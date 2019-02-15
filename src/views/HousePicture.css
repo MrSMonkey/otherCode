@@ -1,8 +1,9 @@
 @import '../styles/variables.global.css';
 .pic-info {
   background: #FFF;
-  padding: 30px;
+  padding: 0 30px 30px;
   margin-bottom: 1px;
+  border-top: 1px solid #eaeaea;
   .pic-title {
     width: auto;
     /* display: -webkit-flex;

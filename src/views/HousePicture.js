@@ -6,8 +6,8 @@ import { actions as housePicture } from '../reducers/housePicture'
 import { push } from 'connected-react-router'
 import ReactLoading from 'react-loading'
 import Tabs from '../components/Tabs'
+import StyledViewImg from '@/components/ViewImg';
 import { SectionTitle } from '../components/InfoSection'
-import ImgSlidePlay from '../components/ViewImg/components/Picture';
 import styles from './HousePicture.css'
 const imgs = {
   imgBg: require('../assets/imgs/icon_img.png')
@@ -17,44 +17,11 @@ const imgs = {
 //   history: false,
 //   shareEl: false,
 // }
-@CSSModules(styles)
 class CumstomPhotoSwipeGallery extends Component {
   state = {
     data: []
   }
-  render() {
-    const { data, showImg } = this.props
-    return (
-      <div>
-        <ul styleName="ItemImg">
-          {
-            data && data.map((item, index) => {
-              return (
-                <li key={index} onClick={showImg.bind(null, index)}>
-                  <img src={item} />
-                </li>
-              )
-            })
-          }
-        </ul>
-      </div>
-    )
-  }
-}
 
-
-
-@CSSModules(styles)
-class ParentPhotoSwipeGallery extends React.Component{
-
-	constructor(...args) {
-		super(...args)
-		this.state = {
-			isImgShow: false,
-      imgIndex: 1,
-      data: []
-		}
-	}
   componentDidMount() {
     let arr = []
     if (this.props.data) {
@@ -65,14 +32,13 @@ class ParentPhotoSwipeGallery extends React.Component{
         data: arr
       })
     }
-    
   }
   componentWillReceiveProps (nextProps) {
     //console.log(nextProps)
     nextProps.data !== this.props.data && this.setState({
       data: nextProps.data
     }, ()=> {
-      var arr = []
+      let arr = []
       if (this.props.data) {
         arr = this.props.data.map((item, index) => {
           return item.imageUrl
@@ -83,26 +49,23 @@ class ParentPhotoSwipeGallery extends React.Component{
       }
     })
   }
-	showImg(imgIndex = 0) {
-		this.setState({
-			isImgShow: !this.state.isImgShow,
-			imgIndex: imgIndex + 1
-		})
-	}
+  // shouldComponentUpdate(nextProps,nextState) {
+  //   console.log(nextProps,nextState)
+  // }
+  options = {
+    index: this.props.index,
+    history: false,
+    shareEl: false,
+  }
 
-	render() {
+  render() {
     const { data } = this.state
-		return (
-			<div>
-				<CumstomPhotoSwipeGallery data={data} showImg={this.showImg.bind(this)} />
-				{
-					this.state.isImgShow && <ImgSlidePlay itemImages={data} showImg={this.showImg.bind(this)} imgIndex={this.state.imgIndex}/>
-				}  			
-	  		</div>	
-		)
-	}
+    
+    return (
+      <StyledViewImg images={data ? data : []}/>
+    )
+  }
 }
-
 
 const rentStatus = ['', '待租中', '已出租', '已预订'];
 /**租赁信息(资产管家) */
@@ -230,13 +193,13 @@ class HousePicture extends Component {
               return (
                 <div key={index}>
                   <SectionTitle>房间{i.roomName}</SectionTitle>
-                  <ParentPhotoSwipeGallery data={i.roomImages} index={index}/>
+                  <CumstomPhotoSwipeGallery data={i.roomImages} index={index}/>
                 </div>
               )
             })
           }
           <SectionTitle>公区照片</SectionTitle>
-          <ParentPhotoSwipeGallery data={selectData && selectData.housePublicImages && selectData.housePublicImages} index="-1"/>
+          <CumstomPhotoSwipeGallery data={selectData && selectData.housePublicImages && selectData.housePublicImages} index="-1"/>
         </div>: null
           }
       </React.Fragment>
