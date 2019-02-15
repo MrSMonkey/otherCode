@@ -1,0 +1,95 @@
+@import '../styles/variables.global.css';
+.serviceOrder {
+  background: #fff;
+  margin-bottom: 20px;
+  .serviceOrder-title-box {
+    padding: 30px;
+    border-bottom: 1px solid #f5f6f7;
+  }
+  .serviceOrder-title {
+    span {
+      padding-left: 12px;
+      font-weight: bold;
+      color: #474747;
+    }
+  }
+  .serviceOrder-no {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 26px;
+    color: #B8B8B8;
+    height: 36px;
+    line-height: 36px;
+    span {
+      display: inline-block;
+      padding: 6px 0;
+    }
+  }
+  .serviceName {
+    font-size: 32px;
+    color: #474747;
+  }
+  .serviceOrder-main {
+    padding: 0px 30px;
+    .serviceOrder-item {
+      display: -webkit-flex; /* Safari */
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 30px;
+      color: #474747;
+      padding: 24px 0;
+      border-bottom: 1px solid #f5f6f7;
+      .serviceOrder-item-type {
+        color: $color-golden;
+      }
+      .serviceOrder-item-close {
+        color: #D8D8D8;
+      }
+    }
+  }
+  .serviceOrder-footer {
+    padding:30px;
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    .serviceOrder-footer-time {
+      font-size: 28px;
+      color: #B8B8B8;
+    }
+    .serviceOrder-footer-money {
+      font-size: 28px;
+      color: #474747;
+      span {
+        display: inline-block;
+        padding-right: 10px;
+        font-size: 33px;
+        color: #000000;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.background-tips {
+  position: relative;
+  top: 168px;
+  text-align: center;
+  font-size: 15px; /* no */
+  img {
+    width: 400px;
+    height: auto;
+  }
+  span {
+    color: $color-golden;
+  }
+}

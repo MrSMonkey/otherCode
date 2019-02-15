@@ -21,6 +21,14 @@ import isShowModelFlow from './modal'
 import sreachCommunityFlow from './sreachCommunity'
 import houseInfoFlow from './houseInfo'
 import getHouseTimeLineFlow from './houseTimeLine'
+import getServiceList from './serviceOrder'
+import getServiceListFlow from './purchase'
+import getServiceInfoFlow from './serviceInfo'
+import getServiceTypeListFlow from './serviceType'
+import getServiceDetileFlow from './serviceOrderDetile'
+import getServiceHouseFlow from './serviceHouse'
+import pushServiceFlow from './pushService'
+import submitForm from './bugService'
 
 export default function* rootSaga() {
   yield fork(getHouseListFlow)
@@ -47,4 +55,12 @@ export default function* rootSaga() {
   yield fork(sreachCommunityFlow)
   yield fork(houseInfoFlow)
   yield fork(getHouseTimeLineFlow)
+  yield fork(getServiceList)
+  yield fork(getServiceListFlow)
+  yield fork(getServiceInfoFlow)
+  yield fork(getServiceDetileFlow)
+  yield fork(getServiceTypeListFlow)
+  yield fork(getServiceHouseFlow)
+  yield fork(pushServiceFlow)
+  yield fork(submitForm)
 }

@@ -41,7 +41,43 @@ const routes = [
     path: '/house-pic/:id',
     component: views.HousePicture,
     needBind: true,
-    title: '房源照片'
+    title: '租赁信息'
+  },
+  {
+    path: '/purchase/:cityId/:entrustId',
+    component: views.PurchaseService,
+    needBind: true,
+    title: '购买服务'
+  },
+  {
+    path: '/serviceInfo/:id/:entrustId',
+    component: views.ServiceInfo,
+    needBind: true,
+    title: '服务包详情'
+  },
+  {
+    path: '/serviceType/:id',
+    component: views.ServiceType,
+    needBind: true,
+    title: '选择服务类型'
+  },
+  {
+    path: '/serviceOrder/:id',
+    component: views.ServiceOrder,
+    needBind: true,
+    title: '服务订单'
+  },
+  {
+    path: '/serviceDetile/:id',
+    component: views.ServiceOrderDetile,
+    needBind: true,
+    title: '订单详情'
+  },
+  {
+    path: '/startService/:id/:houserId',
+    component: views.StartService,
+    needBind: true,
+    title: '发起服务'
   },
   {
     path: '/entrustplan',

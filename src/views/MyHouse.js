@@ -6,10 +6,13 @@ import { actions as myHouseActions } from '../reducers/myHouse'
 import ReactLoading from 'react-loading'
 import Tabs from '../components/Tabs'
 import TimeLine from '../components/TimeLine'
+import Button from '@/components/Button'
+import Icon from '../components/Icon'
 import styles from './MyHouse.css'
-
+import { CONSOCIATIONTYPENAME, TOWARDNAME } from '@/utils/const'
 /**房源基本信息 */
 const BsaeInfo = ({data = {}}) => {
+  
   return (
     <div>
       <div styleName="base-info">
@@ -19,7 +22,7 @@ const BsaeInfo = ({data = {}}) => {
         </div>
         <div styleName="block">
           <span>运营类型</span>
-          <p>{data.consociationTypeName}</p>
+          <p>{CONSOCIATIONTYPENAME[data.consociationType]}</p>
         </div>
       </div>
 
@@ -34,11 +37,11 @@ const BsaeInfo = ({data = {}}) => {
         </div>
         <div styleName="block">
           <label>原始户型：</label>
-          <span>{data.initRoomNum}室{data.initHallNum}厅{data.initToiletNum}卫</span>
+          <span>{data.roomNum}室{data.hallNum}厅{data.toiletNum}卫</span>
         </div>
         <div styleName="block-secondary">
           <label>朝<span styleName="space-2"/>向：</label>
-          <span>{data.towardName}</span>
+          <span>{TOWARDNAME[data.toward]}</span>
         </div>
         <div styleName="block">
           <label>面<span styleName="space-2"/>积：</label>
@@ -48,23 +51,24 @@ const BsaeInfo = ({data = {}}) => {
           <label>改造户型：</label>
           <span>{data.roomNum}间</span>
         </div>
-        <div>
+        {/* <div>
           <label>房东姓名：</label>
-          <span>{data.ownerName}</span>
+          <span>{data.assetName}</span>
         </div>
         <div>
           <label>房东电话：</label>
-          <span>{data.ownerPhone}</span>
-        </div>
-        <div>
+          <span>{data.assetPhone}</span>
+        </div> */}
+        {/* <div>
           <label>备<span styleName="space-2"/>注：</label>
           <span>{data.remark}</span>
-        </div>
+        </div> */}
       </div>
     </div>
   )
 }
 const StyleBsaeInfo = CSSModules(BsaeInfo, styles)
+
 
 /**房源动态 */
 const HouseStatus = ({data}) => {
@@ -78,8 +82,30 @@ const HouseStatus = ({data}) => {
   )
 }
 const StyleHouseStatus = CSSModules(HouseStatus, styles)
-
-
+/**房源底部 */
+const Footer = ({redirect, houseInfo}) => {
+  return(
+    <div styleName="house-footer-content">
+      <div  onClick={()=> {
+        redirect(`/serviceOrder/${houseInfo.entrustId}`)
+      }}>
+        <Icon name="icon_detail" width={32} height={32}/>
+        <span>服务订单</span>
+      </div>
+      <div>
+      <Button onClick={()=> {
+        redirect(`/purchase/${houseInfo.cityId}/${houseInfo.entrustId}`)
+      }}>购买服务</Button>
+      </div>
+      <div>
+      <Button onClick={()=> {
+        redirect(`/serviceType/${houseInfo.entrustId}`)
+      }}>发起服务</Button>
+      </div>
+    </div>
+  )
+}
+const HouserFooter = CSSModules(Footer, styles)
 @CSSModules(styles)
 class MyHouses extends Component {
   state = {
@@ -95,7 +121,7 @@ class MyHouses extends Component {
       active: false
     }, {
       name: 'photo',
-      text: '房源照片',
+      text: '租赁信息',
       href: `/house-pic/`,
       active: false
     }]
@@ -120,7 +146,7 @@ class MyHouses extends Component {
           active: false
         }, {
           name: 'photo',
-          text: '房源照片',
+          text: '租赁信息',
           href: `/house-pic/${id}`,
           active: false
         }
@@ -128,8 +154,8 @@ class MyHouses extends Component {
     })
   }
   render() {
-    const { redirect, houseInfo, timeLines, isHouseListLoading } = this.props
-    const { tabsData } = this.state
+    const { redirect, houseInfo, timeLines, isHouseListLoading, } = this.props
+    const { tabsData} = this.state
     return (
       <div>
         <Tabs data={tabsData} 
@@ -150,6 +176,9 @@ class MyHouses extends Component {
             : <div>
               <StyleBsaeInfo data={houseInfo}/>
               <StyleHouseStatus data={timeLines}/>
+              <div styleName="house-footer">
+                <HouserFooter redirect={redirect} houseInfo={houseInfo}/>
+              </div>
             </div>
         }
       </div>

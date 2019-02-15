@@ -70,6 +70,12 @@ import EntrustPlan from './EntrustPlan'
 import Entrust from './Entrust'
 import HousePicture from './HousePicture'
 import Bind from './auth/Bind'
+import PurchaseService from './PurchaseService'
+import ServiceInfo from './ServiceInfo'
+import ServiceType from './ServiceType'
+import ServiceOrder from './ServiceOrder'
+import ServiceOrderDetile from './ServiceOrderDetile'
+import StartService from './StartService'
 
 export default {
   NoMatch,
@@ -81,4 +87,10 @@ export default {
   MyHouse,
   RoomInfo,
   HousePicture,
+  PurchaseService,
+  ServiceInfo,
+  ServiceType,
+  ServiceOrder,
+  ServiceOrderDetile,
+  StartService
 }

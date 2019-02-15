@@ -24,7 +24,7 @@ function* sublimtEntrust(form) {
 function* bindUser(form) {
   try {
     const { data } = yield call(api.bindUser, {
-      mobile: form.phone,
+      mobile: form.ownerPhone,
       registerSource: 1,
       verificationCode: form.varityCold
     })
@@ -57,6 +57,8 @@ function* sublimtEntrustFlow() {
     if (noLogin) { 
       const data = yield call(bindUser, form)
       isBind = !!data
+    } else {
+      form.ownerUserId = localStore.get('userId')
     }
     if (isBind) {
       const isSuccess = yield call(sublimtEntrust, form)

@@ -91,7 +91,7 @@ body {
 }
 
 .house-pic-gallery {
-  padding: 30px;
+  padding: 20px 30px;
   background-color: #fff;
 
   .pswp-thumbnails {
@@ -102,9 +102,9 @@ body {
     width: 160px;
     height: 160px;
     margin-right: 16px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     overflow: hidden;
-    &:nth-of-type(3n) {
+    &:nth-of-type(4n) {
       margin-right: 0;
     }
     img {
@@ -180,4 +180,40 @@ body {
   background: url('../assets/imgs/btn_close.png');
   background-position: center;
   background-size: contain;
+}
+
+
+
+.am-picker-popup-item {
+  color: $color-golden !important;
+}
+.am-modal-content {
+  text-align: left !important;
+}
+/* .am-picker-col {
+  height: 400px !important;
+}
+.am-picker-col-content {
+  padding-top: 135px !important;
+}
+.am-picker-col-mask {
+  background-size: 100% 128px !important;
+}
+.am-picker-col-indicator  {
+  top: 132px !important;
+} */
+
+.am-modal-mask {
+  position: absolute !important;
+  -webkit-overflow-scrolling: touch;   /*这句是为了滑动更顺畅*/
+}
+.am-modal-wrap {
+  position: absolute !important;
+  bottom: 0 !important;
+  -webkit-overflow-scrolling: touch;   /*这句是为了滑动更顺畅*/
+}
+.am-modal-popup {
+  position: absolute !important;
+  bottom: 0 !important;
+  -webkit-overflow-scrolling: touch;   /*这句是为了滑动更顺畅*/
 }

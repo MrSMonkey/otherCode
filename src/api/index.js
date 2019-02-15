@@ -6,10 +6,12 @@ import { localStore } from '@/utils'
 const host = appConfig.host
 axios.defaults.withCredentials = true
 
+
+const ENV = process.env.NODE_ENV; // 环境变量
 // const baseUrl = 'http://www.34.testuoko.com'
 // const baseUrl = host.api.replace(/\/+$/, '')
-const baseUrl = 'http://api-gateway.uoko.com/'
-
+// const baseUrl = ENV === 'development' ? ' http://192.168.200.120:7070/' : 'http://api-gateway.uoko.com/';
+const baseUrl = ENV === 'development' || 'test' ? 'http://192.168.200.120:7070/' : 'http://api-gateway.uoko.com/';
 const request = axios.create({
   baseURL: baseUrl,
   headers: {
@@ -40,7 +42,7 @@ request.interceptors.request.use(
   err => {
     const status = err.response.status
     if (status === 401) {
-      // return store.dispatch(appActions.refreshToken())
+      // return store.dispatch(appActions.refreshToken()) 
     }
     return Promise.reject(err)
   }
@@ -117,7 +119,7 @@ const api = {
   },
   /**房源信息 */
   getHouseInfo(id) {
-    return request.get(`/partner/house/info/base/${id}`)
+    return request.get(`/partner/owner/entrust/${id}`)
   },
   /**房源动态 */
   getHouseTimeLine(id) {
@@ -125,14 +127,44 @@ const api = {
   },  
   /* 获取房间信息 */
   getRoomList(id) {
-    return request.get(`/partner/house/room/list/${id}`)
+    return request.get(`/partner/owner/entrust/room/${id}`)
   },
   /* 根据合同id获取图片信息 */
   getPictureList(houseId) {
-    return request.get(`/partner/house/images/${houseId}`)
+    return request.get(`/partner/owner/entrust/rent_info/${houseId}`)
   },
-
-  
+  /* 选购服务包 */
+  getServices(cityId) {
+    return request.get(`/partner/owner/services/${cityId}`)
+  },
+  /* 服务包详情 */
+  getServiceInfo(servicePackageId) {
+    return request.get(`/partner/owner/services_details/${servicePackageId}`)
+  },
+  /* 服务包类型 */
+  getServiceTypeList(entrustId) {
+    return request.get(`/partner/owner/service_types/${entrustId}`)
+  },
+  /* 服务包购买 */
+  buyService(data) {
+    return request.post(`/partner/owner/buy_service`, data)
+  },
+  /* 发起服务 */
+  pushService(data) {
+    return request.post(`/partner/owner/service_push`, data)
+  },
+  /* 获取服务信息 */
+  getPushService(houseId) {
+    return request.get(`/partner/owner/push_service_get_house/${houseId}`)
+  },
+  /* 获取订单列表 */
+  getServiceList(entrustId) {
+    return request.get(`/partner/owner/service_orders/${entrustId}`)
+  },
+  /* 获取订单详情 */
+  getServiceOrderDetile(serviceOrderId) {
+    return request.get(`/partner/owner/service_order_details/${serviceOrderId}`)
+  },
   /* 检查手机号是否存在 */
   checkPhoneAccountExist(phone) {
     return request.get('/login/check', {

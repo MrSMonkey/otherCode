@@ -1,0 +1,145 @@
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-columns {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Slide {
+  /* width:200px; */
+  background: #fff;
+  width: 100%;
+	/* height: 200px; */
+  float: left;
+  padding-left: 30px;
+  padding-bottom: 40px;
+}
+.ItemImg {
+  display: -webkit-flex;
+  display: flex;
+  /* margin: 50% auto; */
+  padding: 0;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  li {
+    padding-right: 2px;
+    flex-shrink: 0;
+    list-style: none;
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+    text-align: center;
+    line-height: 200px;
+    vertical-align:middle;
+    overflow:hidden ;
+    position: relative;
+  }
+  img {
+    display: inline-block;
+    /* width: 100%; */
+    height: 100%;
+    /* max-width: auto !important; */
+    /* position:absolute;
+    left: 0;
+    top: 0;
+    clip:rect(20px 100px 50px 20px);  */
+  }
+  .imgsW {
+
+  }
+  .imgsh {
+    /* position:absolute;
+    left: 0;
+    top: 0;
+    clip:rect(20px 100px 50px 20px); */
+  }
+}
+
+
+.Img {
+  background: #000;
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  height: 100%;
+  p {
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 10px;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    right: 0;
+  }
+  i {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 10;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid #fff;
+      &:after {
+          color: white;
+          font-weight: bold;
+      }
+  }
+  ul {
+    position: absolute;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    flex-shrink: 0;
+    height: 100%;
+  }
+  img {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    margin-top: 50%;
+  }
+  span {
+      position: absolute;
+      font-size: 25px;
+      color: #fff;
+      right: 20px;
+      top: 10px;
+      z-index: 11;
+  }
+}
+
+
+.translate {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-transition: 0.15s all ease;
+  /* height: 100vh; */
+  overflow-y: auto;
+}
+
+.full-height {
+  display: -webkit-flex;
+  display: flex;
+  /* height: 100vh; */
+  overflow-y: auto;
+}

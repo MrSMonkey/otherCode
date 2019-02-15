@@ -54,4 +54,35 @@ const FORTUNE_SHARE_DATA = {
   imgUrl:'http://ooydngjcf.bkt.clouddn.com/WaterElectricGas.22AF1BA1.wechat_img_left.png'
 }
 
-export { APP_TYPE, APP_DEVICE, APP_ENV, BUSSINESS_CARD_STATIC, SMART_LOCK_LINK ,FORTUNE_SHARE_DATA}
+const CONSOCIATIONTYPENAME = {
+  1: '星空家盟直租',
+  2: '优客逸家加盟',
+  3: '优客逸家自营',
+  4: '星空家盟加盟'
+}
+
+// const
+const TOWARDNAME = {
+  "1": "东",
+  "2": "南",
+  "3": "西",
+  "4": "北",
+  "5": "东南",
+  "6": "西南",
+  "7": "东北",
+  "8": "西北",
+  "9": "南北",
+  "10": "东西"
+}
+
+const HOUSECONFIG = {
+  "1": "床",
+  "2": "衣柜",
+  "3": "书桌",
+  "4": "椅子",
+  "5": "空调",
+  "6": "电视",
+  "7": "阳台",
+  "8": "独卫"
+}
+export { APP_TYPE, APP_DEVICE, APP_ENV, BUSSINESS_CARD_STATIC, SMART_LOCK_LINK ,FORTUNE_SHARE_DATA, CONSOCIATIONTYPENAME, TOWARDNAME, HOUSECONFIG}
