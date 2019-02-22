@@ -175,7 +175,7 @@ class HousePicture extends Component {
           {pictures && pictures.length > 0 ?<div>
           <div styleName="pic-info">
             <div styleName="pic-title">
-              {pictures && pictures.length > 1 && pictures.map((item, idx) => {
+              {pictures && pictures.map((item, idx) => {
                 return (
                   <span key={idx} styleName={active === idx ? 'active': ''} onClick={()=>this.handleClick(idx, item)}>
                     {item.source === 'ZC' && '资产管家'}
