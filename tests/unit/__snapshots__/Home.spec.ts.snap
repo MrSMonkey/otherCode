@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`对Home组件进行的单元测试 create expected html structure 1`] = `
+<section
+  class="home"
+>
+  <header
+    class="header"
+  >
+    <a
+      class="aside-link"
+      href="javascript:;"
+    >
+      <van-icon-stub
+        class="aside-btn"
+        classprefix="van-icon"
+        name="wap-nav"
+      />
+    </a>
+  </header>
+   
+  <section
+    class="home-logo"
+  >
+    <van-row-stub
+      class="logo-wrapper"
+      gutter="0"
+      tag="div"
+    >
+      <van-col-stub
+        class="logo-img"
+        span="9"
+        tag="div"
+      >
+        <img
+          alt=""
+          src="[object Object]"
+        />
+      </van-col-stub>
+       
+      <van-col-stub
+        span="15"
+        tag="div"
+      >
+        UOKO Mobile Web
+      </van-col-stub>
+    </van-row-stub>
+  </section>
+   
+  <main
+    class="home-comp_list"
+  >
+    <router-link-stub
+      event="click"
+      tag="a"
+      to="/businessOpa"
+    >
+      数据平台
+    </router-link-stub>
+  </main>
+</section>
+`;

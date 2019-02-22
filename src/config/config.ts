@@ -1,0 +1,250 @@
+/*
+ * @Description: 全局信息配置文件
+ * @Author: chenmo
+ * @Date: 2019-02-15 10:52:27
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-02-20 13:47:36
+ */
+
+
+ /* 定义首页星空图片 */
+export const START_HOME_IMG: any[] = [
+  {
+    alt: '星空',
+    src: require('../assets/images/starhome01.png')
+  },
+  {
+    alt: '星空家盟',
+    src: require('../assets/images/starhome02.png')
+  },
+  {
+    alt: '星空有客',
+    src: require('../assets/images/starhome03.png')
+  },
+  {
+    alt: '星空业主',
+    src: require('../assets/images/starhome04.png')
+  }
+];
+
+ /* 定义路由 */
+export const componentsList: any[] = [
+  {
+    path: 'home',
+    title: '星空业主服务号'
+  },
+  {
+    path: 'entrustPlan',
+    title: '星级房屋托管计划'
+  },
+  {
+    path: 'bind',
+    title: '登录'
+  },
+  {
+    path: 'entrust',
+    title: '在线委托'
+  },
+  {
+    path: 'houseList',
+    title: '我的房源列表'
+  },
+  {
+    path: 'myHouse',
+    title: '房源详情'
+  },
+  {
+    path: 'serviceOrder',
+    title: '服务订单'
+  },
+  {
+    path: 'serviceDetile',
+    title: '订单详情'
+  },
+  {
+    path: 'purchase',
+    title: '购买服务'
+  },
+  {
+    path: 'serviceInfo',
+    title: '服务包详情'
+  },
+  {
+    path: 'serviceType',
+    title: '选择服务类型'
+  },
+  {
+    path: 'startService',
+    title: '发起服务'
+  },
+  {
+    path: '404',
+    title: '404'
+  }
+];
+
+/* 定义托管类型 */
+export const RENT_TYPE: any = {
+  0: '未知',
+  1: '星空家盟直租',
+  2: '优客逸家加盟',
+  3: '优客逸家自营',
+  4: '星空家盟加盟'
+};
+
+/* 定义租赁类型 */
+export const RENT_WAY: any = {
+  1: '整租',
+  2: '合租',
+};
+
+/* 定义房间朝向 */
+export const TOWARDNAME: any = {
+  1: '东',
+  2: '南',
+  3: '西',
+  4: '北',
+  5: '东南',
+  6: '西南',
+  7: '东北',
+  8: '西北',
+  9: '南北',
+  10: '东西'
+};
+
+/* 定义房间配置 */
+export const HOUSECONFIG: any = {
+  1: '床',
+  2: '衣柜',
+  3: '书桌',
+  4: '椅子',
+  5: '空调',
+  6: '电视',
+  7: '阳台',
+  8: '独卫'
+};
+
+/* 定义租赁信息服务商title */
+export const ZCFU: any = {
+  ZC: '资产管家',
+  FW: '服务商'
+};
+
+/* 定义房间状态 */
+export const RENT_STATUS: any = {
+  1: '待租中',
+  2: '已出租',
+  3: '已预订'
+};
+
+/* 定义服务订单状态 */
+export const STATUS_NAME: string[] = ['', '待付款', '待服务' , '服务中', ' 待验收', '待评价', '已评价', '已关闭', ' 待处理', '验收不通过'];
+
+/*步骤 */
+export const STEP: any[] = [
+  {
+    src: require('../assets/images/icon/consult.png'),
+    text: '咨询'
+  },
+  {
+    src: require('../assets/images/icon/check.png'),
+    text: '实勘'
+  },
+  {
+    src: require('../assets/images/icon/edit.png'),
+    text: '签约'
+  },
+  {
+    src: require('../assets/images/icon/money.png'),
+    text: '收租'
+  }
+];
+
+/* 表格 */
+export const TABLES: any[] = [
+  {
+    title: '租前及租中费用承担表',
+    data: [
+      { name: '装修费用', owner: false, uoko: true },
+      { name: '改造费', owner: false, uoko: true },
+      { name: '家电采购费', owner: false, uoko: true },
+      { name: '软装费', owner: false, uoko: true },
+      { name: '招租带看签约服务', owner: false, uoko: true }
+    ]
+  },
+  {
+    title: '租后费用承担表',
+    data: [
+      { name: '物业费', owner: false, uoko: true },
+      { name: '水电气', owner: false, uoko: true },
+      { name: '保洁', owner: false, uoko: true },
+      { name: '非甲方原因维修', owner: false, uoko: true },
+      { name: '租客服务', owner: false, uoko: true },
+      { name: '招租退租', owner: false, uoko: true }
+    ]
+  }
+];
+
+export const COLUMNS: any[] = [
+  {
+    dataIndex: 'name',
+    title: '',
+  },
+  {
+    dataIndex: 'owner',
+    title: '业主'
+  },
+  {
+    dataIndex: 'uoko',
+    title: '优客逸家'
+  },
+];
+
+
+export const BADGES: any[] = [
+  {
+    img: require('../assets/images/badge_brand.png'),
+    text: '明星企业',
+    dec: '品牌保障'
+  },
+  {
+    img: require('../assets/images/rent.png'),
+    text: '6年经营',
+    dec: '租金保障'
+  },
+  {
+    img: require('../assets/images/baozhang.png'),
+    text: '专业团队',
+    dec: '品质保障'
+  },
+  {
+    img: require('../assets/images/rent_people.png'),
+    text: '三证合一',
+    dec: '租客保障'
+  }
+];
+
+/* 资产列表*/
+export const LIST: any = [
+  {
+    title: '资产管家',
+    text: '为您指派专业资产管家，为您提供专业、专属的托管服务'
+  },
+  {
+    title: '专属方案',
+    text: '为您提供专属、共赢的房屋托管方案'
+  },
+  {
+    title: '设计装修',
+    text: '品质设计、专业装修、美容改造、让您的房屋品相更好、更好出租'
+  },
+  {
+    title: '租客严选',
+    text: '三证合一，京东、芝麻信用严选，让您的爱屋拥有最好的租客'
+  },
+  {
+    title: '保洁维修',
+    text: '专业维修团队、及时响应、为租客提供更好的租住体验，为爱屋保驾护航'
+  }
+];
+

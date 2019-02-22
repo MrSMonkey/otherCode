@@ -1,0 +1,25 @@
+/*
+ * @Description: 菜单列表数据
+ * @Author: LiuZhen
+ * @Date: 2019-01-18 11:20:52
+ * @Last Modified by: LiuZhen
+ * @Last Modified time: 2019-01-18 11:33:15
+ */
+import { SelectList } from '../interface/selectList.interface';
+
+// 声明RouterList接口类型
+
+export const selectList: SelectList[] = [
+  {
+    label: '全部',
+    value: 'all'
+  },
+  {
+    label: '官网',
+    value: 'website'
+  },
+  {
+    label: 'm站',
+    value: 'mobile'
+  },
+];

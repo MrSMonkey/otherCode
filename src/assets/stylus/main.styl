@@ -1,0 +1,237 @@
+/*
+ * @Description 项目自定义主题样式
+ * @Author LiuZhen
+ * @Date 2018-09-17 171112
+ * @Last Modified by LiuZhen
+ * @Last Modified time 2018-09-17 171331
+ */
+@import './index.styl'
+
+*
+  box-sizing border-box
+
+html, body 
+  height 100%
+  margin 0
+  padding 0
+  text-size-adjust 100%
+  -webkit-text-size-adjust 100%
+  background-color $bg-color-default
+
+body 
+  font-family "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
+  position relative
+hr 
+  box-sizing content-box
+  height 0
+  overflow visible
+
+pre 
+  font-size 1em
+
+a 
+  text-decoration none
+  background-color transparent
+  color #333
+  &hover 
+    color #2382EA
+
+abbr[title] 
+  border-bottom none
+  text-decoration underline
+  text-decoration underline dotted
+
+b,
+strong 
+  font-weight bolder
+
+code,
+kbd,
+samp 
+  font-family Consolas, Verdana, Tahoma, Geneva, sans-serif
+  font-size 1em
+
+small 
+  font-size 80%
+
+sub,
+sup 
+  font-size 75%
+  line-height 0
+  position relative
+  vertical-align baseline
+
+sub 
+  bottom -0.25em
+
+sup 
+  top -0.5em
+
+img 
+  border-style none
+
+p 
+  margin 0
+  padding 0
+
+button,
+input 
+  overflow visible
+
+button,
+select 
+  text-transform none
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] 
+  appearance button
+  -webkit-appearance button
+
+button-moz-focus-inner,
+[type="button"]-moz-focus-inner,
+[type="reset"]-moz-focus-inner,
+[type="submit"]-moz-focus-inner 
+  border-style none
+  padding 0
+
+button-moz-focusring,
+[type="button"]-moz-focusring,
+[type="reset"]-moz-focusring,
+[type="submit"]-moz-focusring 
+  outline 1px dotted ButtonText
+
+fieldset 
+  padding 0.35em 0.75em 0.625em
+
+legend 
+  box-sizing border-box
+  color inherit
+  display table
+  max-width 100%
+  padding 0
+  white-space normal
+
+progress 
+  vertical-align baseline
+
+textarea 
+  overflow auto
+
+[type="checkbox"],
+[type="radio"] 
+  box-sizing border-box
+  padding 0
+
+[type="number"]-webkit-inner-spin-button,
+[type="number"]-webkit-outer-spin-button 
+  height auto
+
+[type="search"] 
+  appearance textfield
+  -webkit-appearance textfield
+  outline-offset -2px
+
+[type="search"]-webkit-search-decoration 
+  appearance none
+  -webkit-appearance none
+
+-webkit-file-upload-button 
+  appearance button
+  -webkit-appearance button
+  font inherit
+
+details 
+  display block
+
+summary 
+  display list-item
+
+template 
+  display none
+
+[hidden] 
+  display none
+
+/* custom style */
+ul,
+li 
+  list-style-type none
+  margin 0
+  padding 0
+
+em 
+  font-style normal
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 
+  margin 0
+  padding 0
+
+/********************* 自定义项目样式 *******************/
+.main-wrapper
+  padding 0 vw(20)
+  font-size vw(12)
+  section
+    margin-bottom: vw(20)
+    .van-row
+      margin-bottom: vw(10)
+    h2
+      text-align left
+      font-size vw(16)
+      padding vw(10) 0
+    p
+      text-align left
+      margin-bottom vw(10)
+      line-height 2
+      font-size vw(14)
+      .code
+        margin 2px
+        padding 2px 5px
+        line-height 1.8
+        display inline
+        border-radius 3px
+        word-break break-all
+        white-space pre-wrap
+        color: #455a64
+        background-color #dfdfdf
+        font-family Source Code Pro,Monaco,Inconsolata,monospace
+
+// .van-button--primary
+//   background-color $main-color
+//   border 1px solid $main-color
+
+
+.clearfix
+  &:before,&:after
+    content ''
+    display table
+  &:after
+    clear both
+
+.fl 
+  float left
+
+.fr 
+  float right
+#app
+  height 100%
+  overflow auto
+.van-picker__confirm
+  color $main-color
+.van-picker__cancel
+  color $tip-text-color
+.van-tab
+  color $next-text-color
+.van-tabs__line 
+  background-color $main-color
+.van-tab--active
+  color $main-color
+.van-popup
+  position absolute
+

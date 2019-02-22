@@ -1,0 +1,26 @@
+{
+  "defaultSeverity": "warning",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**"
+    ]
+  },
+  "rules": {
+    "quotemark": [true, "single"],
+    "indent": [true, "spaces", 2],
+    "interface-name": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-consecutive-blank-lines": false,
+    "trailing-comma": false,  // 不强制检查尾逗号
+    "no-console": false,   // 允许使用console
+    "no-string-literal": false,  // 允许使用字符串索引对象中的值
+    "no-shadowed-variable": false,
+    "no-var-requires": false,  // 允许使用 require
+    "prefer-for-of": false,
+    "no-empty-interface": false   // 允许空的接口定义
+  }
+}
