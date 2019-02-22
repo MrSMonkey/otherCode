@@ -37,6 +37,7 @@ const createRouters = (list: any) => {
 };
 
 router = new Router({
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     { path: '/', name: 'index', component: Home, meta: '星空业主服务号' },

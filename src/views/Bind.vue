@@ -10,11 +10,10 @@
     <h1>登录</h1>
     <section class="el-input">
       <p class="tip">手机号<span>(*新用户初次登录将自动注册)</span></p>
-      <div style="marginBottom: 20px">
+      <div style="marginBottom: 20px" class="phone">
         <van-field
           v-model="phone"
           placeholder="请输入手机号"
-          class="phone"
           type="text"
           clearable
         />
@@ -23,20 +22,24 @@
       <p class="tip">验证码</p>
       <section>
         <section class="code-box">
-          <van-field
-            v-model="code"
-            type="number"
-            placeholder="验证码"
-            class="code"
-            clearable
-          />
-          <van-button slot="button" size="normal" type="default" class="btn" v-if="!isphoneErr">获取验证码</van-button>
-          <span v-else>
-            <van-button slot="button" size="normal" type="default" class="btn" v-if="isDisabledVerfiyCodeBtn">重发({{time}})</van-button>
-            <van-button slot="button" size="normal" type="default" class="btn active" v-else @click="getCode">获取验证码</van-button>
-          </span>
+          <div class="code">
+            <van-field
+              v-model="code"
+              type="number"
+              placeholder="验证码"
+              clearable
+            />
+            <p class="error-info" ref="codeErrorInfo"></p>
+          </div>
+          <div>
+            <van-button slot="button" size="normal" type="default" class="btn" v-if="!isphoneErr">获取验证码</van-button>
+            <span v-else>
+              <van-button slot="button" size="normal" type="default" class="btn" v-if="isDisabledVerfiyCodeBtn">重发({{time}})</van-button>
+              <van-button slot="button" size="normal" type="default" class="btn active" v-else @click="getCode">获取验证码</van-button>
+            </span>
+          </div>
         </section>
-        <p class="error-info" ref="codeErrorInfo"></p>
+        
       </section>
       <van-button slot="button" size="large" type="default" class="login-btn" v-if="!isphoneErr || !isCodeErr">登录</van-button>
       <van-button slot="button" size="large" type="default" class="login-btn-active" v-else @click="submitLogin" loading-text="登录中..." :loading="loading">登录</van-button>
@@ -132,7 +135,7 @@ export default class Login extends CommonMixins {
         handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
-        this.$router.push('/houseList'); // 跳转到房源列表
+        this.$router.push('/house'); // 跳转到房源列表
       } else {
         this.$toast.fail(res.msg || '登录失败');
       }
@@ -188,44 +191,47 @@ export default class Login extends CommonMixins {
     .error-info
       color $warning-color
       font-size 12px
+      margin-top vw(6)
     .phone
       flex 1
       -webkit-appearance none
       border none
       outline none
       height 56px
-      line-height 56px
       font-size 14px /* no */
       color #474747
       background #f8f8f8
       border 1px solid #f8f8f8
-      padding 0 24px
+      padding-top vw(5) 
       width 100%
       border-radius 4px
-      &::after
-        border-bottom: 0 !important
+      .van-field 
+        background #f8f8f8
+        &::after
+          border-bottom: 0 !important
     .code-box
       display -webkit-flex
       display flex
       justify-content space-between
-      .code 
-        display inline-block
+      .code
         flex 1
         -webkit-appearance none
         border none
         outline none
         height 56px
-        line-height 56px
         font-size 14px /* no */
         color #474747
         background #f8f8f8
         border 1px solid #f8f8f8
-        padding 0 24px
-        width 50%
+        padding-top vw(5) 
         border-radius 4px
         margin-right vw(20)
-        &::after
-          border-bottom: 0 !important
+        width 50%
+        .van-field 
+          background #f8f8f8
+          display inline-block
+          &::after
+            border-bottom: 0 !important
       .btn 
         height 56px
         line-height 56px

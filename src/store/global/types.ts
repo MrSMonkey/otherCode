@@ -8,5 +8,7 @@
 export interface GlobalState {
   token: string;
   userInfo?: any;
+  communityId?: string;
+  communityName?: string;
 }
 

@@ -7,84 +7,145 @@
  */
 
 <template>
-  <section class="entrust">
-    <section class="title">
-      <h2>添加房屋信息</h2>
-      <p>添加爱屋信息，更好地对房屋实施评估</p>
+  <section>
+    <section class="entrust" v-if="!showPlot">
+      <section class="area">
+        <div class="city">
+          <div class="label">城&emsp;&emsp;市*</div>
+          <div class="village">
+            <van-field
+              v-model="cityName"
+              placeholder="请选择您爱屋所在城市"
+              type="text"
+              right-icon="arrow"
+              readonly
+              @click="cityShow = true"
+              @click-right-icon="cityShow = true"
+            />
+          </div>
+        </div>
+        <div class="city">
+          <div class="label">小&emsp;&emsp;区*</div>
+          <div class="village">
+            <van-field
+              v-model="communityName"
+              placeholder="请选择您爱屋所在的小区"
+              type="text"
+              readonly
+              right-icon="arrow"
+              @click-right-icon="toPlot"
+              @click="toPlot"
+            />
+          </div>
+        </div>
+        <div class="fixture">
+          <div class="label">装修情况*</div>
+          <div class="check">
+            <span v-for="(item, index) in houseSetting" :key="index" :class="item.id === active ? 'active' : ''" @click="selectItem(item.id)"> {{item.name}} </span>
+          </div>
+        </div>
+      </section>
+      <section class="area">
+        <div class="city">
+          <div class="label">您的称呼*</div>
+          <div class="village">
+            <van-field
+              v-model="ownerName"
+              placeholder="如何让称呼您"
+              type="text"
+              clearable
+            />
+          </div>
+        </div>
+        <div class="city">
+          <div class="label">联系方式*</div>
+          <div class="village">
+            <van-field
+              v-model="ownerPhone"
+              placeholder="您的联系电话"
+              type="text"
+              clearable
+            />
+          </div>
+        </div>
+        <div class="city" v-if="!isLogin">
+          <div class="label just">验证码*</div>
+          <div class="village">
+            <van-field
+              v-model="varityCold"
+              placeholder="请输入验证码"
+              type="text"
+              clearable
+            >
+            <van-button slot="button" size="small" type="default" class="code-btn" v-if="!isphoneErr">获取验证码</van-button>
+            <van-button slot="button" size="small" type="default" class="code-btn" v-if="isphoneErr && isDisabledVerfiyCodeBtn">重发({{time}})</van-button>
+            <van-button slot="button" size="small" type="default" class="code-btn btn-active" v-if="isphoneErr && !isDisabledVerfiyCodeBtn" @click="getCode">获取验证码</van-button>
+            </van-field>
+          </div>
+        </div>
+      </section>
+      <section class="step-guide">
+        <HrTitle title="爱屋发布流程"></HrTitle>
+        <div class="step-plant">
+          <div v-for="(item, index) in houstFlow" :key="index" >
+            <div class="icon-box">
+              <img :src="item.img" :alt="item.text"/>
+              <p>{{item.text}}</p>
+            </div>
+            <div class="step-line" v-if="index !== 0"></div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isphoneErr || !ownerName || !isLogin && !isCodeErr">立即提交</van-button>
+        <van-button slot="button" size="large" type="default" class="entrust-btn" v-else @click="getSubmitData" :loading="loading" loading-text="提交中">立即提交</van-button>
+      </section>
+      <!-- 城市弹窗 -->
+      <van-popup v-model="cityShow" position="bottom" :overlay="true">
+        <van-picker
+          show-toolbar
+          :columns="cityList"
+          @confirm="cityConfirm"
+          @cancel="cityShow = false"
+          title="选择城市"
+        />
+      </van-popup>
     </section>
-    <section class="houseInfo">
-      <van-field
-        v-model="city"
-        label="城市"
-        placeholder="请选择城市"
-        @click="cityShow = true"
-      />
-      <van-field
-        v-model="code"
-        label="小区名称"
-        placeholder="请输入您爱屋所在的小区"
-      />
+    <section class="plot" v-else>
+      <section class="search" v-if="showPlot">
+        <van-field
+          v-model="value"
+          placeholder="请输入您爱屋所在的小区" 
+          clearable
+          @change="getPlotList"
+        />
+      </section>
+      <main class="main">
+        <ul class="list">
+          <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
+            <span>{{item.communityName}}</span>
+            <img src="../assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
+          </li>
+        </ul>
+      </main>
+      <section class="plot-footer">
+        <a @click="plotCancel">返回</a>
+        <a @click="onOk">确认</a>
+      </section>
     </section>
-    <section class="title">
-      <h2>留下联系方式</h2>
-      <p>提交成功后，可以使用这个手机号登录查看房源动态</p>
-    </section>
-    <section class="houseInfo">
-      <van-field
-        v-model="city"
-        label="姓名"
-        placeholder="请输入您的称呼"
-      />
-      <!-- <van-field
-        v-model="code"
-        label="手机号"
-        placeholder="请输入您的手机号码"
-      />
-      <van-field
-        v-model="code"
-        label="验证码"
-        placeholder="请输入验证码"
-      >
-      <van-button slot="button" size="small" type="default" class="code-btn">获取验证码</van-button>
-      </van-field> -->
-    </section>
-    <section class="title">
-      <h2>其他联系方式（选填）</h2>
-      <p>可以让资产管家更容易与您取得联系</p>
-    </section>
-    <section class="houseInfo">
-      <van-field
-        v-model="city"
-        label="姓名"
-        placeholder="请输入您的称呼"
-      />
-      <van-field
-        v-model="code"
-        label="手机号"
-        placeholder="请输入您的手机号码"
-      />
-    </section>
-    <section class="submit-btn">
-      <van-button slot="button" size="large" type="default" class="code-btn">提交</van-button>
-    </section>
-    <!-- 城市弹窗 -->
-    <van-popup v-model="cityShow" position="bottom" :overlay="true">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        @confirm="cityConfirm"
-        @cancel="cityShow = false"
-      />
-    </van-popup>
   </section>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Button } from 'vant';
-import {START_HOME_IMG} from '@/config/config';
+import HrTitle from '@/components/HrTitle.vue';
+import {HOUSTFLOW} from '@/config/config';
+import api from '@/api';
+
+const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
@@ -94,23 +155,250 @@ import {START_HOME_IMG} from '@/config/config';
     [Row.name]: Row,
     [Col.name]: Col,
     [Button.name]: Button,
+    HrTitle
   }
 })
 // 类方式声明当前组件
 export default class Entrust extends CommonMixins {
-  private city: string = '';
+  private cityName: string = '成都';
+  private cityId: string = '510100';
   private code: string = '';
   private cityShow: boolean = false;
-  private columns: string[] = ['成都', '杭州', '武汉', '北京'];
+  private cityList: string[] = [];
+  private active: number = 1;
+  private plotAacive: number = -1;
+  private houstFlow: any = HOUSTFLOW;
+  private plot: string = ''; // 选择小区
+  private showPlot: boolean = false;
+  private value: string = '';
+  private loading: boolean = false;
+  private finished: boolean = false;
+  private isLogin: boolean = false;
+  private tableList: any[] = [];
+  private communityId: string = '';
+  private communityName: string = '';
+  private selectData: any = {};
+  private ownerName: string = '';
+  private ownerPhone: string = '';
+  private isphoneErr: boolean = false; // 校验手机号
+  private isDisabledVerfiyCodeBtn: boolean = false; // 验证码是否发送
+  private time: number = 60;
+  private varityCold: string = '';
+  private isCodeErr: boolean = false; // 校验验证码
+  private houseSetting: any[] = [
+    {
+      id: 1,
+      name: '毛坯房',
+    },
+    {
+      id: 2,
+      name: '已装修',
+    }
+  ];
 
+  private mounted() {
+    this.getCitys(); // 获取城市
+    this.isLogin = !!localStorage.getItem('userId');
+    console.log(this.isLogin);
+  }
   /**
    * @description 选择城市确认
    * @returns void
    * @author chenmo
    */
-  private cityConfirm(value: any, index: number) {
-    this.city = value;
+  private cityConfirm(item: any, index: number) {
+    this.cityName = item.text;
+    this.cityId = item.value;
+    this.value = '';
+    this.tableList = [];
+    this.selectData = {};
+    this.communityId = '';
+    this.communityName = '';
     this.cityShow = false;
+  }
+
+  /**
+   * @description 获取城市列表
+   * @returns void
+   * @author chenmo
+   */
+  private selectItem(id: number) {
+    this.active = id;
+  }
+
+  private async getCitys() {
+    try {
+      const res: any = await this.axios.get(api.getCitys);
+      if (res && res.code === '000') {
+        this.cityList = res.data && res.data.map((item: any) => {
+          return {
+            text: item.cityName,
+            value: item.id
+          };
+        });
+      } else {
+        this.$toast.fail(res.msg || '获取城市失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  private toPlot() {
+    // this.$router.push(`/choicePlot?cityId=${this.cityId}`);
+    // this.tableList = []; // 清空
+    // this.value = '';
+    this.showPlot = true;
+  }
+
+  private async getPlotList() {
+    if (this.value === '') {
+      return false;
+    }
+    try {
+      const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.value}`);
+      if (res && res.code === '000') {
+        this.tableList = res.data || [];
+      } else {
+        this.$toast(res.msg);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  /**
+   * @description 确认选中
+   * @returns void
+   * @author chenmo
+   */
+  private onOk() {
+    if (this.value === '') {
+      this.$toast('请输入您爱屋所在的小区');
+    } else {
+      if (this.tableList.length === 0) {
+        // 搜索的小区为[]
+        this.communityId = '';
+        this.communityName = this.value;
+        this.showPlot = false;
+      } else {
+        if (Object.keys(this.selectData).length === 0) {
+          // 未选择
+          this.$toast('请选择您爱屋所在的小区');
+        } else {
+          // 选择
+          this.communityId = this.selectData.id;
+          this.communityName = this.selectData.communityName;
+          this.showPlot = false;
+        }
+      }
+    }
+  }
+
+  /**
+   * @description 选择小区
+   * @returns void
+   * @author chenmo
+   */
+  private selectPlot(item: any) {
+    this.plotAacive = item.id;
+    this.selectData = item;
+  }
+
+  private plotCancel() {
+    this.showPlot = false;
+  }
+
+  /**
+   * @description 获取验证码
+   * @returns void
+   * @author chenmo
+   */
+  private async getCode() {
+    try {
+      const res: any = await this.axios.post(api.getCode + `/${this.ownerPhone}`);
+      if (res && res.code === '000') {
+        this.startCountdown(); // 开始倒计时
+      } else {
+        this.$toast('获取验证码失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  /**
+   * @description // 显示倒计时
+   * @params phone 手机号
+   * @return void
+   * @author chenmo
+   */
+  private startCountdown() {
+    this.isDisabledVerfiyCodeBtn = true;
+    const timer = setInterval(() => {
+      this.time--;
+      if (this.time === 0) {
+        this.isDisabledVerfiyCodeBtn = false;
+        this.time = 60;
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+
+  /**
+   * @description // 立即提交
+   * @return void
+   * @author chenmo
+   */
+  private getSubmitData() {
+    if (!this.communityName) {
+      this.$toast('请选择您爱屋所在的小区');
+      return false;
+    }
+
+    if (!this.ownerName) {
+      this.$toast('请输入您的姓名');
+      return false;
+    }
+
+    if (!this.ownerPhone) {
+      this.$toast('请输入您的手机号');
+      return false;
+    }
+    this.submitData();
+  }
+
+  private async submitData() {
+    this.loading = true;
+    try {
+      const res: any = await this.axios.post(api.getHouseList);
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.loading = false;
+    }
+  }
+  // Watch
+  @Watch('ownerPhone')
+  private handlerPhone(newVal: string) {
+    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
+      // this.$refs.phoneErrorInfo.innerHTML = '';
+      this.isphoneErr = true;
+    } else {
+      this.isphoneErr = false;
+     // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
+    }
+  }
+
+  @Watch('varityCold')
+  private handlerCode(newVal: string) {
+    if (newVal && /^\d{6}$/ .test(newVal)) {
+      // this.$refs.codeErrorInfo.innerHTML = '';
+      this.isCodeErr = true;
+    } else {
+      this.isCodeErr = false;
+      // this.$refs.codeErrorInfo.innerHTML = '请输入6位手机验证码';
+    }
   }
 }
 </script>
@@ -118,45 +406,167 @@ export default class Entrust extends CommonMixins {
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../assets/stylus/main.styl'
 .entrust
-  .title
-    text-align center
-    margin-top vw(27)
-    h2
-      font-size 18px
+  .area
+    margin-bottom vw(10)
+    .label
+      display inline-block
+      width 83px
+      font-size 15px
       color $text-color
-    p
-      color $next-text-color
-      font-size 12px
-      margin-top vw(5)
-      font-weight lighter
-  .houseInfo
-    margin vw(30)
-    .van-field__label
-      color $text-color
-      font-size 14px
-      font-weight bold
+      padding-top vw(18)
       &::after
         content ''
-        width 1px
-        height 20px
-        border-left 1px solid #f0f0f0
-        position absolute
-        top 13px
-        left 88px
-        z-index 1
-        display block
-    .van-field__body
-      input
-        color $text-color
+        display inline-block
+        width 100%
+    .just
+      text-align justify
+    .city
+      background $global-background
+      height vw(55)
+      padding vw(10)
+      border-bottom 1px solid $bg-color-default
+      display -webkit-flex
+      display flex
+      justify-content space-around
+      align-items center
+      .village
+        width 90%
+        .code-btn
+          border 0
+          font-size 15px
+          color $tip-text-color
+        .btn-active
+          color $main-color
+      .van-field
+        // padding: 0 15px;
+        input
+          font-size 15px
+          color $text-color
+          &::-webkit-input-placeholder
+            color $disabled-color
+        .van-field__label
+          text-align justify
+          span 
+            display inline-block
+            width 100%
+            text-align justify
+            color $text-color
+            font-size 15px
+    .fixture
+      background $global-background
+      height vw(55)
+      padding vw(10)
+      border-bottom 1px solid $separate-line-color
+      display -webkit-flex
+      display flex
+      justify-content flex-start
+      align-items center
+      .check
+        border: 1px solid $tip-text-color
+        border-radius 4px
+        margin-left vw(6)
+        span
+          display inline-block
+          width vw(65)
+          height vw(30)
+          line-height vw(30)
+          text-align center
+          font-size 12px
+          color $text-color
+        .active
+          background $main-color
+          color #fff
+  .step-guide
+    margin-top vw(10)
+    padding vw(20) 0
+    background-color $global-background
+    .step-plant
+      position relative
+      margin-top vw(32)
+      display flex
+      justify-content: space-around;
+      .icon-box
+        position relative
+        text-align center
+        img
+          width vw(30)
+        p
+          color $main-color
+          font-size 15px /* no */
+          font-weight bold
+      .step-line
+        position relative
+        right vw(46)
+        bottom vw(30)
+        width vw(30)
+        border-top 1px solid $main-color /* no */
+  .entrust-btn
+    position absolute
+    bottom 0
+    left 0
+    background $main-color
+    color #fff
+  .bg-active
+    background $disabled-color
+    color #fff
+ .plot
+    // height 100%
+    // background $global-background
+    .search
+      height vw(55)
+      background $global-background
+      padding-top vw(5)
+      border-bottom 1px solid #eee
+      position absolute
+      top 0
+      left 0
+      width 100%
+      .van-field
         font-size 14px
-        font-weight lighter
-    .code-btn
-      border 0 !important
-      color $tip-text-color
-      font-weight bold
-      font-size 14px
-  .submit-btn
-    button
-      background $main-color
-      color #fff
+    .main
+      .list
+        li
+          background #fff
+          height vw(45)
+          width 100%
+          line-height vw(45)
+          color $text-color
+          font-size 14px
+          padding 0 vw(15)
+          border-bottom 1px solid #eee
+          display -webkit-flex
+          display flex
+          justify-content space-between
+          align-items center
+          img 
+            display inline-block
+            text-align right
+            width vw(16)
+            vertical-align middle
+        .active
+          // background $bg-color-default
+          color $main-color
+    .plot-footer
+      position absolute
+      bottom 0
+      left 0
+      display -webkit-flex
+      display flex
+      justify-content space-between
+      width 100%
+      height vw(46)
+      align-items center
+      a
+        display inline-block
+        width 100%
+        font-size 14px
+        text-align center
+        height 100%
+        line-height vw(46)
+        &:nth-child(1)
+          background #fff
+          color $mian-color
+        &:nth-child(2)
+          background $main-color
+          color #fff
 </style>

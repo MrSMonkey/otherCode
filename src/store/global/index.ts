@@ -24,6 +24,8 @@ const getTokenFromLocal = () => {
 export const state: GlobalState = {
   token: getTokenFromLocal(),
   userInfo: {},
+  communityId: '',
+  communityName: '',
 };
 
 // getters
@@ -33,6 +35,12 @@ export const getters: GetterTree<GlobalState, RootState> = {
   },
   getUserInfo(state: GlobalState): any {
     return state.userInfo;
+  },
+  getCommunityId(state: GlobalState): any {
+    return state.communityId;
+  },
+  getCommunityName(state: GlobalState): any {
+    return state.communityName;
   },
 };
 
@@ -44,6 +52,12 @@ export const mutations: MutationTree<GlobalState> = {
   },
   updateUserInfo: (state, data: any) => {
     state.userInfo = data;
+  },
+  updateCommunityId: (state, data: string) => {
+    state.communityId = data;
+  },
+  updateCommunityName: (state, data: string) => {
+    state.communityName = data;
   },
 };
 

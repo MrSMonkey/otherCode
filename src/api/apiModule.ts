@@ -17,4 +17,6 @@ export default {
   getServiceType: '/partner/owner/service_types',
   getHouserInfo: '/partner/owner/push_service_get_house',
   pushService: '/partner/owner/service_push',
+  getCommunityList: '/partner/common/communitys',
+  getCitys: '/partner/common/city'
 };

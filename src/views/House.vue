@@ -12,7 +12,7 @@
       <div class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
         <h2>{{house.communityName || ''}}&nbsp;{{house.handleStatus === 1 ? '' : `${house.building || ''}栋${house.unit || ' '}单元${house.floorNum || ' '}楼${house.number || ' '}号` }}</h2>
         <p class="item-desc">
-          <a v-if="house.handleStatus ===1"> 提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话咨询：<i class="call-icon"></i><i class="mobile">{{house.
+          <a :href="'tel:' + house.assetContact" v-if="house.handleStatus ===1"> 提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话咨询：<i class="call-icon"></i><i class="mobile">{{house.
                assetContact}}</i></a>
           <span v-else> {{getRentType(house.consociationType)}} | {{getRentWay(house.rentWay)}} | {{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</span>
         </p>
@@ -35,7 +35,7 @@ import api from '@/api';
 
 // 声明引入的组件
 @Component({
-  name: 'HouseList',
+  name: 'House',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,
@@ -43,7 +43,7 @@ import api from '@/api';
   }
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class House extends CommonMixins {
   private tableData: any[] = []; // 委托房源列表
 
   private mounted() {

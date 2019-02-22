@@ -46,7 +46,7 @@ export const componentsList: any[] = [
     title: '在线委托'
   },
   {
-    path: 'houseList',
+    path: 'house',
     title: '我的房源列表'
   },
   {
@@ -76,6 +76,10 @@ export const componentsList: any[] = [
   {
     path: 'startService',
     title: '发起服务'
+  },
+  {
+    path: 'choicePlot',
+    title: '选择小区'
   },
   {
     path: '404',
@@ -247,4 +251,20 @@ export const LIST: any = [
     text: '专业维修团队、及时响应、为租客提供更好的租住体验，为爱屋保驾护航'
   }
 ];
+
+export const HOUSTFLOW: any = [
+  {
+    img: require('../assets/images/icon_submit.png'),
+    text: '线上提交',
+  },
+  {
+    img: require('../assets/images/icon_tel.png'),
+    text: '电话核检',
+  },
+  {
+    img: require('../assets/images/icon_sale.png'),
+    text: '房源上架'
+  }
+];
+
 
