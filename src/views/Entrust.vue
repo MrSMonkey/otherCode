@@ -100,16 +100,6 @@
         <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isphoneErr || !ownerName || !isLogin && !isCodeErr">立即提交</van-button>
         <van-button slot="button" size="large" type="default" class="entrust-btn" v-else @click="getSubmitData" :loading="loading" loading-text="提交中">立即提交</van-button>
       </section>
-      <!-- 城市弹窗 -->
-      <van-popup v-model="cityShow" position="bottom" :overlay="true">
-        <van-picker
-          show-toolbar
-          :columns="cityList"
-          @confirm="cityConfirm"
-          @cancel="cityShow = false"
-          title="选择城市"
-        />
-      </van-popup>
     </section>
     <section class="plot" v-else>
       <section class="search" v-if="showPlot">
@@ -133,6 +123,16 @@
         <a @click="onOk">确认</a>
       </section>
     </section>
+    <!-- 城市弹窗 -->
+    <van-popup v-model="cityShow" position="bottom" :overlay="true">
+      <van-picker
+        show-toolbar
+        :columns="cityList"
+        @confirm="cityConfirm"
+        @cancel="cityShow = false"
+        title="选择城市"
+      />
+    </van-popup>
   </section>
 </template>
 
@@ -199,7 +199,6 @@ export default class Entrust extends CommonMixins {
   private mounted() {
     this.getCitys(); // 获取城市
     this.isLogin = !!localStorage.getItem('userId');
-    console.log(this.isLogin);
   }
   /**
    * @description 选择城市确认
