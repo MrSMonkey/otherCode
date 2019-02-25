@@ -188,11 +188,11 @@ export default class Entrust extends CommonMixins {
   private houseSetting: any[] = [
     {
       id: 1,
-      name: '毛坯房',
+      name: '已装修',
     },
     {
       id: 2,
-      name: '已装修',
+      name: '毛坯房',
     }
   ];
 
