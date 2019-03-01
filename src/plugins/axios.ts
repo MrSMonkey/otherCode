@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-03-01 14:36:41
+ * @Last Modified time: 2019-03-01 14:51:59
  */
 import axios from 'axios';
 import store from '../store';
@@ -19,6 +19,7 @@ const Axios = axios.create({
 // http request请求拦截器(所有请求发送都要执行的操作)
 Axios.interceptors.request.use(
   (config: any) => {
+    console.log(process.env);
     // 根据环境设置baseURL
     if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
       config.baseURL = 'http://api-gateway.uoko.com/';

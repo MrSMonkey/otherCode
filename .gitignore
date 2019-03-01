@@ -8,7 +8,6 @@ yarn-error.log*
 selenium-debug.log
 .vscode/
 /coverage/
-/dist/
 
 # Editor directories and files
 .idea
