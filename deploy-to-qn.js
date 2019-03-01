@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2019-01-24 17:11:12
  * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-01-25 14:16:39
+ * @Last Modified time: 2019-03-01 15:10:34
  */
 const fs = require('fs');
 const qiniu = require('qiniu');
@@ -19,7 +19,7 @@ const bucket = `cdn-static`;
 const staticPath = `dist/static`;
 
 // 上传之后的文件前缀
-const prefix = `ET-FE/dp/static`;
+const prefix = `ET-FE/yz/static`;
 
 // 创建鉴权对象
 const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
