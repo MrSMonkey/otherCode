@@ -290,10 +290,10 @@ export default class Perfect extends CommonMixins {
       if (res && res.code === '000') {
         this.$toast.success(res.msg);
         setTimeout(() => {
-          window.location.href = '/house';
+          window.location.href = '/#/house';
         }, 2000);
       } else {
-        this.$toast.fail(res.msg);
+        this.$toast(res.msg);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -303,7 +303,7 @@ export default class Perfect extends CommonMixins {
   }
 
   private plotCancel() {
-    window.location.href = '/house';
+    window.location.href = '/#/house';
   }
 }
 </script>

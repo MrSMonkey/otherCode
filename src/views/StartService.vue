@@ -166,7 +166,6 @@ export default class StartService extends CommonMixins {
         this.houseName = res.data.houseName;
         this.ownerName = res.data.assetName;
         this.ownerPhone = res.data.assetPhone;
-        console.log(this.data)
         if (res.data.houseType === 1) {
           this.rooms = '整套';
         } else {

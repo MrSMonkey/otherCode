@@ -601,6 +601,7 @@ export default class Entrust extends CommonMixins {
       top 0
       left 0
       width 100%
+      z-index 100
       .van-field
         font-size 14px
     .main

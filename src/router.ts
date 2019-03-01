@@ -40,7 +40,6 @@ router = new Router({
   base: process.env.BASE_URL,
   routes: [
     { path: '/', name: 'index', component: Home, meta: '星空业主服务号' },
-    { path: '/home', name: 'index', component: Home,  meta: '星空业主服务号' },
     ...createRouters(componentsList)
   ]
 });

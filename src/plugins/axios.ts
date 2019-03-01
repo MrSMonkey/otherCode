@@ -19,7 +19,6 @@ const Axios = axios.create({
 // http request请求拦截器(所有请求发送都要执行的操作)
 Axios.interceptors.request.use(
   (config: any) => {
-    console.log(process.env);
     // 根据环境设置baseURL
     if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
       config.baseURL = 'http://api-gateway.uoko.com/';

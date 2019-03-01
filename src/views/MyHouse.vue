@@ -24,14 +24,19 @@
           <roomInfo :roomInfo="roomInfo"></roomInfo>
         </van-tab>
         <van-tab title="租赁信息">
-          <section class="rent-info">
-            <div class="rent-title">
-              <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
-                {{rent.sourceName}}
-              </span>
-            </div>
+          <section v-if="rentInfo.length > 0">
+            <section class="rent-info">
+              <div class="rent-title">
+                <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
+                  {{rent.sourceName}}
+                </span>
+              </div>
+            </section>
+            <RentInfo :selectData="selectData"></RentInfo>
           </section>
-          <RentInfo :selectData="selectData"></RentInfo>
+          <section v-else>
+            暂无
+          </section>
         </van-tab>
       </van-tabs>
     </section>
@@ -99,7 +104,7 @@ export default class Login extends CommonMixins {
       if (res && res.code === '000') {
         this.houseInfo = res.data || {};
       } else {
-        this.$toast.fail(`获取房源详情失败`);
+        this.$toast(`获取房源详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -121,7 +126,7 @@ export default class Login extends CommonMixins {
       if (res && res.code === '000') {
         this.houseStatus = res.data || {};
       } else {
-        this.$toast.fail(`获取房源动态失败`);
+        this.$toast(`获取房源动态失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -146,7 +151,7 @@ export default class Login extends CommonMixins {
       if (res && res.code === '000') {
         this.roomInfo = res.data || [];
       } else {
-        this.$toast.fail(`获取房间配置信息失败`);
+        this.$toast(res.msg || `获取房间配置信息失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -174,24 +179,12 @@ export default class Login extends CommonMixins {
         this.rentInfo = res.data || [];
         this.selectData = res.data[0].houseRoomCommonDTO; // 默认第一条
       } else {
-        this.$toast.fail(`获取租赁信息失败`);
+        this.$toast(`获取租赁信息失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
       this.$toast.clear();
-    }
-  }
-
-  /**
-   * @description 已上架的房源跳转到我的房源列表
-   * @params house 房源信息
-   * @returns null
-   * @author chenmo
-   */
-  private linkTo(house: any) {
-    if (house.handleStatus !== 1) {
-      this.$router.push('/home');
     }
   }
 

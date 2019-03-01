@@ -13,11 +13,11 @@
         <img  src="../assets/images/advertisement.png" alt="adver"/>
       </div>
       <div class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
-        <h2>{{house.communityName || ''}}&nbsp;{{house.handleStatus === 1 ? '' : `${house.building || ''}栋${house.unit || ' '}单元${house.floorNum || ' '}楼${house.number || ' '}号` }}</h2>
+        <h2><span>{{house.districtName}}</span>●<span>{{house.communityName || ''}}&nbsp;{{house.handleStatus === 1 ? '' : `${house.building || ''}栋${house.unit || ' '}单元${house.floorNum || ' '}楼${house.number || ' '}号` }}</span></h2>
         <div class="item-desc">
           <div v-if="house.handleStatus === 1" class="item-dec-ok">
-            <div>已经成功通知到<span>6</span>个资产管家，请保持手机畅通。</div>
-            <div class="next">您还可以点击此处<a :href="'/perfect?entrustId=' + house.entrustId"><span class="active"><img class="call-icon" alt="waith" src="../assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
+            <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
+            <div class="next">您还可以点击此处<a :href="'/#/perfect?entrustId=' + house.entrustId"><span class="active"><img class="call-icon" alt="waith" src="../assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
           </div>
           <div v-else class="set"> {{getRentType(house.consociationType)}} | {{getRentWay(house.rentWay)}} | {{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</div>
         </div>
@@ -25,7 +25,7 @@
     </section>
     <section class="no-house" v-else>
       <img src="../assets/images/illustration_blank.png" alt="图标"/>
-      <p>您尚未提交意向资源，您可以<a href="/entrust">立即增加</a></p>
+      <p>您尚未提交意向资源，您可以<a href="/#/entrust">立即增加</a></p>
     </section>
   </section>
 </template>
@@ -143,13 +143,24 @@ export default class House extends CommonMixins {
     h2 
       font-size 18px
       border-bottom 1px solid $bg-color-default
-      line-height: 1;
-      padding: 20px 10px 20px 20px;
+      line-height 1
+      padding vw(20) vw(10) vw(20) vw(20)
+      span 
+        display inline-block
+        &:nth-child(1)
+          margin-right vw(8)
+        &:nth-child(2)
+          margin-left vw(8)
     .item-desc
       .item-dec-ok
         font-size 13px
         padding vw(20)
         color $next-text-color
+        .assetNum
+          display inline-block
+          font-size 18px
+          color $main-color
+          margin 0 vw(3)
         .next
           margin-top vw(6)
           .active

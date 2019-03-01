@@ -43,7 +43,7 @@
       </div>
       <div class="block-secondary">
         <label>装修情况：</label>
-        <span>{{houseInfo.buildAcreage}}㎡</span>
+        <span>{{houseInfo.decorationStatus === 0 ? '毛坯房' : '已装修'}}</span>
       </div>
       <div class="block">
         <label>改造后房间数：</label>
