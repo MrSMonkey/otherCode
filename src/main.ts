@@ -9,7 +9,7 @@ import Footer from '@/components/Footer.vue';
 import FastClick from 'fastclick';
 import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
-import {Toast, Picker, Popup, Lazyload, Button, Field, Loading  } from 'vant';
+import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col } from 'vant';
 import 'vant/lib/index.css';
 
 
@@ -20,6 +20,8 @@ Vue.use(Button);
 Vue.use(Lazyload);
 Vue.use(Field);
 Vue.use(Loading);
+Vue.use(Row);
+Vue.use(Col);
 // Intersection Observer polyfill
 require('intersection-observer');
 

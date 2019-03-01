@@ -42,7 +42,11 @@
         <span>{{houseInfo.buildAcreage}}㎡</span>
       </div>
       <div class="block-secondary">
-        <label>改造户型：</label>
+        <label>装修情况：</label>
+        <span>{{houseInfo.buildAcreage}}㎡</span>
+      </div>
+      <div class="block">
+        <label>改造后房间数：</label>
         <span>{{houseInfo.roomNum}}间</span>
       </div>
     </div>
@@ -86,7 +90,7 @@ export default class Login extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" >
 @import '../../../assets/stylus/main.styl'
 .house-info
   .base-info

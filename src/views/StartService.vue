@@ -26,11 +26,11 @@
       placeholder="整套"
       type="text"
       v-if="data.houseType === 1"
+
     />
     <van-field
       v-model="rooms"
       required
-      disabled
       label="服务房间"
       input-align="right"
       placeholder="请选择房间"
@@ -166,6 +166,7 @@ export default class StartService extends CommonMixins {
         this.houseName = res.data.houseName;
         this.ownerName = res.data.assetName;
         this.ownerPhone = res.data.assetPhone;
+        console.log(this.data)
         if (res.data.houseType === 1) {
           this.rooms = '整套';
         } else {

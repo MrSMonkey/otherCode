@@ -85,13 +85,13 @@ export default class ServiceType extends CommonMixins {
       this.$toast('未找到有效订单，请先购买服务后发起');
       return false;
     }
-    const arr: any[] = item.ownerServiceTypes.map((ctx: any) => {
-      return {
-        text: ctx.label,
-        value: ctx.value
-      };
-    });
-    this.columns = arr;
+    // const arr: any[] = item.ownerServiceTypes.map((ctx: any) => {
+    //   return {
+    //     text: ctx.label,
+    //     value: ctx.value
+    //   };
+    // });
+    this.columns = item.ownerServiceTypes;
     this.proShow = true;
   }
 

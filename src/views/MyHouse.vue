@@ -27,7 +27,7 @@
           <section class="rent-info">
             <div class="rent-title">
               <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
-                {{getName(rent.source, index)}}
+                {{rent.sourceName}}
               </span>
             </div>
           </section>
@@ -197,18 +197,18 @@ export default class Login extends CommonMixins {
 
   /**
    * @description tabs切换
-   * @params index 当前tabs的索引值
+   * @params index 当前tabs的索引值 0 房源信息 1 房间信息 2 租赁信息
    * @returns null
    * @author chenmo
    */
   private onClick(index: any) {
-    console.log(index);
     if (index === 0) {
       this.getHouseInfo(this.entrustId);
       this.getHouseStatus(this.entrustId);
     } else if (index === 1) {
       this.getHouseRoom(this.entrustId);
     } else if (index === 2) {
+      this.active = 0;
       this.getRentInfo(this.entrustId);
     }
   }
@@ -278,5 +278,6 @@ export default class Login extends CommonMixins {
         color $next-text-color
       .active
         background $main-color
+        border 1px solid $main-color
         color #fff
 </style>

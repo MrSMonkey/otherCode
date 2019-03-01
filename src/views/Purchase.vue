@@ -8,15 +8,34 @@
 
 <template>
   <section class="purchase">
-      <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-        <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-          <div class="purchase-left">
-            <img :src="item.imgUrls[0]" alt=""/>
-          </div>
-          <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-          <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-        </router-link>
-      </div>
+    <!-- 房源基本信息 -->
+    <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+      <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+        <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+          <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+        </div>
+        <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+        <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+      </router-link>
+    </div>
+    <!-- <van-tabs @click="onClick">
+      
+      <van-tab title="服务包">
+        
+    </van-tab>
+      <van-tab title="服务产品">
+        <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+          <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+            <div class="purchase-left">
+              <img :src="item.imgUrls[0]" alt=""/>
+            </div>
+            <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+            <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+          </router-link>
+        </div>
+      </van-tab>
+    </van-tabs> -->
+      
   </section>
 </template>
 
@@ -25,13 +44,17 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { getQueryString } from '@/utils/utils';
-
+import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
 
 // 声明引入的组件
 @Component({
   name: 'Purchase',
+   components: {
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs
+  }
 })
 // 类方式声明当前组件
 export default class Purchase extends CommonMixins {
@@ -81,6 +104,24 @@ export default class Purchase extends CommonMixins {
   private getOrderStatusName(status: number) {
     return STATUS_NAME[status];
   }
+
+  /**
+   * @description tabs切换
+   * @params index 当前tabs的索引值
+   * @returns null
+   * @author chenmo
+   */
+  private onClick(index: any) {
+    console.log(index);
+    if (index === 0) {
+      // this.getHouseInfo(this.entrustId);
+      // this.getHouseStatus(this.entrustId);
+    } else if (index === 1) {
+      // this.getHouseRoom(this.entrustId);
+    } else if (index === 2) {
+      // this.getRentInfo(this.entrustId);
+    }
+  }
 }
 </script>
 
@@ -110,6 +151,7 @@ export default class Purchase extends CommonMixins {
         padding-top vw(15)
         font-size 12px
         span
+          color $text-color
           font-family PingFangSC-Semibold
           font-size 18px
           font-weight bold
@@ -119,6 +161,12 @@ export default class Purchase extends CommonMixins {
         position absolute
         top vw(15)
         left vw(15)
+        background-repeat no-repeat
+        background-size cover
+        width vw(110)
+        border-radius 2px
+        height vw(90)
+        background-position center center
         img 
           width vw(110)
           border-radius: 2px

@@ -90,7 +90,7 @@ export default class Home extends CommonMixins {
     justify-content space-between
     img 
       margin-bottom 10px
-      width 162px
+      width vw(162)
       height 100px
       vertical-align bottom
   .smart-lock

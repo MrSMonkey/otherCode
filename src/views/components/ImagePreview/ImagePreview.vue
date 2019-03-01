@@ -11,7 +11,7 @@
     <div>
       <div>
         <ul class="viewImg">
-          <li><div class="img-box" v-for="(img, index) in imagesA" :key="index" :style="{backgroundImage: 'url(' + img +')'}" @click="showImagePreview(index)"></div></li>
+          <li><div class="img-box" v-for="(img, index) in imgagesArr" :key="index" :style="{backgroundImage: 'url(' + img +')'}" @click="showImagePreview(index)"></div></li>
         </ul>
       </div>
     </div>
@@ -38,7 +38,7 @@ const images: string[] = [
 export default class Login extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private imgagesArr: any;
-  private imagesA: any[] = images;
+  // private imagesA: any[] = images;
   /**
    * @description 预览图片
    * @params position 位置
@@ -47,7 +47,7 @@ export default class Login extends CommonMixins {
    * @author chenmo
    */
   private showImagePreview(position: any, timer: any): void {
-    // const images: any[] = this.imgagesArr;
+    const images: any[] = this.imgagesArr;
     const instance = ImagePreview({
       images,
       startPosition: typeof position === 'number' ? position : 0

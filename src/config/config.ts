@@ -46,6 +46,10 @@ export const componentsList: any[] = [
     title: '在线委托'
   },
   {
+    path: 'perfect',
+    title: '完善房源信息'
+  },
+  {
     path: 'house',
     title: '我的房源列表'
   },
@@ -252,6 +256,7 @@ export const LIST: any = [
   }
 ];
 
+/* 定义线上提交流程*/
 export const HOUSTFLOW: any = [
   {
     img: require('../assets/images/icon_submit.png'),
@@ -264,6 +269,66 @@ export const HOUSTFLOW: any = [
   {
     img: require('../assets/images/icon_sale.png'),
     text: '房源上架'
+  }
+];
+
+/* 定义线上运营类型*/
+export const TYPELIST: any = [
+  {
+    value: 1,
+    text: '加盟托管',
+  },
+  {
+    value: 2,
+    text: '非加盟托管',
+  },
+  {
+    value: 3,
+    text: '自主管理'
+  }
+];
+
+/* 定义房间朝向枚举 */
+export const TOWARDLIST: any[] = [
+  {
+    text: '东',
+    value: '1'
+  },
+  {
+    text: '南',
+    value: '2'
+  },
+  {
+    text: '西',
+    value: '3'
+  },
+  {
+    text: '北',
+    value: '4'
+  },
+  {
+    text: '东南',
+    value: '5'
+  },
+  {
+    text: '西南',
+    value: '6'
+  },
+  {
+    text: '东北',
+    value: '7'
+  },
+  {
+    text: '西北',
+    value: '8'
+  },
+  {
+    text: '南北',
+    value: '9'
+  },
+  {
+    text: '东西',
+    value: '10'
   }
 ];
 

@@ -42,7 +42,6 @@ router = new Router({
   routes: [
     { path: '/', name: 'index', component: Home, meta: '星空业主服务号' },
     { path: '/home', name: 'index', component: Home,  meta: '星空业主服务号' },
-    { path: '/entrustPlan', name: 'entrustPlan', component: EntrustPlan,  meta: '星级房屋托管计划' },
     ...createRouters(componentsList)
   ]
 });
@@ -65,7 +64,7 @@ router.beforeEach((to: any, from: any, next: any) => {
   const token: any = localStorage.getItem('siteToken');
   if (!token) {
     // 非登陆状态
-    if (to.path !== '/bind' && to.path !== '/entrust' && to.path !== '/entrustPlan') {
+    if (to.path !== '/bind' && to.path !== '/entrust' && to.path !== '/entrustPlan' && to.path !== '/') {
       // 除了登录页 && 在线委托页 && 星级房屋托管计划，其他将跳转到登陆页
       router.push('/bind');
     }

@@ -53,6 +53,6 @@ export default class Header extends Vue {
     }
   .line 
     display  inline-block
-    width 80px
+    width vw(80)
     border-top 1px solid $disabled-color
 </style>

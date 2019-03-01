@@ -51,7 +51,7 @@
           <div class="village">
             <van-field
               v-model="ownerName"
-              placeholder="如何让称呼您"
+              placeholder="如何称呼您"
               type="text"
               clearable
             />
@@ -63,7 +63,7 @@
             <van-field
               v-model="ownerPhone"
               placeholder="您的联系电话"
-              type="text"
+              type="number"
               clearable
             />
           </div>
@@ -74,7 +74,7 @@
             <van-field
               v-model="varityCold"
               placeholder="请输入验证码"
-              type="text"
+              type="number"
               clearable
             >
             <van-button slot="button" size="small" type="default" class="code-btn" v-if="!isphoneErr">获取验证码</van-button>
@@ -97,7 +97,7 @@
         </div>
       </section>
       <section>
-        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isphoneErr || !ownerName || !isLogin && !isCodeErr">立即提交</van-button>
+        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isphoneErr || !ownerName || !isLogin && !isCodeErr || !communityName">立即提交</van-button>
         <van-button slot="button" size="large" type="default" class="entrust-btn" v-else @click="getSubmitData" :loading="loading" loading-text="提交中">立即提交</van-button>
       </section>
     </section>
@@ -118,10 +118,21 @@
           </li>
         </ul>
       </main>
-      <section class="plot-footer">
+      <confirmBtn 
+        loadingText="保存中"
+        cancelText="返回"
+        @confirm="onOk"
+        @plotCancel="plotCancel"
+        :isActive="isGetPlot"
+      >
+        <template slot="confirm">
+          <span>确认</span>
+        </template>
+      </confirmBtn>
+      <!-- <section class="plot-footer">
         <a @click="plotCancel">返回</a>
         <a @click="onOk">确认</a>
-      </section>
+      </section> -->
     </section>
     <!-- 城市弹窗 -->
     <van-popup v-model="cityShow" position="bottom" :overlay="true">
@@ -142,6 +153,8 @@ import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Button } from 'vant';
 import HrTitle from '@/components/HrTitle.vue';
+import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import { handleWebStorage } from '@/utils/utils';
 import {HOUSTFLOW} from '@/config/config';
 import api from '@/api';
 
@@ -155,7 +168,8 @@ const namespace: string = 'global';
     [Row.name]: Row,
     [Col.name]: Col,
     [Button.name]: Button,
-    HrTitle
+    HrTitle,
+    ConfirmBtn
   }
 })
 // 类方式声明当前组件
@@ -185,16 +199,19 @@ export default class Entrust extends CommonMixins {
   private time: number = 60;
   private varityCold: string = '';
   private isCodeErr: boolean = false; // 校验验证码
+  private isGetPlot: boolean = false; // 判断是否请求了小区
   private houseSetting: any[] = [
     {
       id: 1,
       name: '已装修',
     },
     {
-      id: 2,
+      id: 0,
       name: '毛坯房',
     }
   ];
+
+  @Mutation('updateToken', { namespace }) private updateToken: any;
 
   private mounted() {
     this.getCitys(); // 获取城市
@@ -213,6 +230,8 @@ export default class Entrust extends CommonMixins {
     this.selectData = {};
     this.communityId = '';
     this.communityName = '';
+    this.plotAacive = -1;
+    this.isGetPlot = false;
     this.cityShow = false;
   }
 
@@ -225,6 +244,11 @@ export default class Entrust extends CommonMixins {
     this.active = id;
   }
 
+  /**
+   * @description 获取城市列表
+   * @returns void
+   * @author chenmo
+   */
   private async getCitys() {
     try {
       const res: any = await this.axios.get(api.getCitys);
@@ -250,6 +274,11 @@ export default class Entrust extends CommonMixins {
     this.showPlot = true;
   }
 
+  /**
+   * @description 获取小区
+   * @returns void
+   * @author chenmo
+   */
   private async getPlotList() {
     if (this.value === '') {
       return false;
@@ -258,6 +287,7 @@ export default class Entrust extends CommonMixins {
       const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.value}`);
       if (res && res.code === '000') {
         this.tableList = res.data || [];
+        this.isGetPlot = true; // 请求成功
       } else {
         this.$toast(res.msg);
       }
@@ -364,13 +394,63 @@ export default class Entrust extends CommonMixins {
       this.$toast('请输入您的手机号');
       return false;
     }
-    this.submitData();
+    if (this.isLogin) {
+      this.submitData();
+    } else {
+      // 未登录先登录注册
+      this.submitLogin();
+    }
+  }
+
+  /**
+   * @description 登录
+   * @return void
+   * @author chenmo
+   */
+  private async submitLogin() {
+    try {
+      const res: any = await this.axios.post(api.login, {
+        mobile: this.ownerPhone,
+        verificationCode: this.varityCold,
+        registerSource: 1
+      });
+      this.loading = true;
+      if (res && res.code === '000') {
+        handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
+        handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
+        this.updateToken(res.data.access_token);
+        this.submitData(); // 登录后提交房源信息
+      } else {
+        this.$toast.fail(res.msg || '登录失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.loading = false;
+    }
   }
 
   private async submitData() {
     this.loading = true;
+
+    const data: any = {
+      cityId: this.cityId,
+      cityName: this.cityName,
+      communityId: this.communityId,
+      communityName: this.communityName,
+      decorationStatus: this.active,
+      ownerName: this.ownerName,
+      ownerPhone: this.ownerPhone,
+      ownerUserId: localStorage.getItem('userId'),
+      source: 1
+    };
     try {
-      const res: any = await this.axios.post(api.getHouseList);
+      const res: any = await this.axios.post(api.pushEntrust, data);
+      if (res && res.code === '000') {
+        this.$router.push('/house');
+      } else {
+        this.$toast(res.msg);
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
@@ -422,7 +502,7 @@ export default class Entrust extends CommonMixins {
     .city
       background $global-background
       height vw(55)
-      padding vw(10)
+      padding vw(20)
       border-bottom 1px solid $bg-color-default
       display -webkit-flex
       display flex
@@ -436,25 +516,26 @@ export default class Entrust extends CommonMixins {
           color $tip-text-color
         .btn-active
           color $main-color
-      .van-field
-        // padding: 0 15px;
-        input
-          font-size 15px
-          color $text-color
-          &::-webkit-input-placeholder
-            color $disabled-color
-        .van-field__label
-          text-align justify
-          span 
-            display inline-block
-            width 100%
-            text-align justify
-            color $text-color
+        .van-cell
+          // padding: 0 15px;
+          padding vw(10) vw(0) vw(10) vw(10) !important
+          input
             font-size 15px
+            color $text-color
+            &::-webkit-input-placeholder
+              color $disabled-color
+          .van-field__label
+            text-align justify
+            span 
+              display inline-block
+              width 100%
+              text-align justify
+              color $text-color
+              font-size 15px
     .fixture
       background $global-background
       height vw(55)
-      padding vw(10)
+      padding vw(20)
       border-bottom 1px solid $separate-line-color
       display -webkit-flex
       display flex
@@ -523,6 +604,7 @@ export default class Entrust extends CommonMixins {
       .van-field
         font-size 14px
     .main
+      margin-top vw(55)
       .list
         li
           background #fff
@@ -564,7 +646,7 @@ export default class Entrust extends CommonMixins {
         line-height vw(46)
         &:nth-child(1)
           background #fff
-          color $mian-color
+          color $main-color
         &:nth-child(2)
           background $main-color
           color #fff

@@ -9,18 +9,23 @@
 <template>
   <section class="house">
     <section v-if="tableData.length > 0">
+      <div class="adver">
+        <img  src="../assets/images/advertisement.png" alt="adver"/>
+      </div>
       <div class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
         <h2>{{house.communityName || ''}}&nbsp;{{house.handleStatus === 1 ? '' : `${house.building || ''}栋${house.unit || ' '}单元${house.floorNum || ' '}楼${house.number || ' '}号` }}</h2>
-        <p class="item-desc">
-          <a :href="'tel:' + house.assetContact" v-if="house.handleStatus ===1"> 提交成功，请保持手机畅通，资产管家将尽快与您联系，您也可以直接拨打电话咨询：<i class="call-icon"></i><i class="mobile">{{house.
-               assetContact}}</i></a>
-          <span v-else> {{getRentType(house.consociationType)}} | {{getRentWay(house.rentWay)}} | {{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</span>
-        </p>
+        <div class="item-desc">
+          <div v-if="house.handleStatus === 1" class="item-dec-ok">
+            <div>已经成功通知到<span>6</span>个资产管家，请保持手机畅通。</div>
+            <div class="next">您还可以点击此处<a :href="'/perfect?entrustId=' + house.entrustId"><span class="active"><img class="call-icon" alt="waith" src="../assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
+          </div>
+          <div v-else class="set"> {{getRentType(house.consociationType)}} | {{getRentWay(house.rentWay)}} | {{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</div>
+        </div>
       </div>
     </section>
     <section class="no-house" v-else>
       <img src="../assets/images/illustration_blank.png" alt="图标"/>
-      <p>您尚未提交意向资源，您可以<router-link to="/entrust">立即增加</router-link></p>
+      <p>您尚未提交意向资源，您可以<a href="/entrust">立即增加</a></p>
     </section>
   </section>
 </template>
@@ -116,8 +121,8 @@ export default class House extends CommonMixins {
   text-align center
   img 
     display inline-block
-    width 100px
-    margin-top vw(80)
+    width 120px
+    margin-top vw(100)
   p
     margin-top 20px
     font-size 14px
@@ -126,6 +131,11 @@ export default class House extends CommonMixins {
       display inline-block
       color $main-color
 .house
+  .adver
+    img
+      display inline-block
+      width 100%
+      vertical-align: top
   .list
     width 100%
     margin-bottom vw(20)
@@ -136,27 +146,27 @@ export default class House extends CommonMixins {
       line-height: 1;
       padding: 20px 10px 20px 20px;
     .item-desc
-      a
-        display inline-block
-        padding 20px 20px
+      .item-dec-ok
+        font-size 13px
+        padding vw(20)
         color $next-text-color
-        font-size 12px
-        line-height 1.5
-      span
+        .next
+          margin-top vw(6)
+          .active
+            display inline-block
+            color $main-color
+      .set
         display inline-block
-        padding 20px 20px
+        padding vw(20)
         color $next-text-color
-        font-size 12px
+        font-size 13px
         line-height 1.5
       .call-icon
-        width 18px
-        height 18px
-        background-image url('../assets/images/icon/call_2.png')
-        background-repeat no-repeat
-        background-position 0px -2px
-        background-size contain
         display inline-block
-        vertical-align: middle
+        width 18px
+        height 100%
+        margin 0 vw(5) 0
+        vertical-align: bottom
       .mobile
         display inline-block
         line-height 1.5
