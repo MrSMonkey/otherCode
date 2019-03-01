@@ -1,6 +1,7 @@
 const path = require('path');
 // const SkeletonWebpackPlugin = require('../../lib');
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
+const SVG_ICON_PATH = 'src/assets/svg-icons';  // 增加svgIcon图标目录
 const env = process.env.NODE_ENV;
 
 const addrConfig = {
