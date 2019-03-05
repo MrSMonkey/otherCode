@@ -30,10 +30,17 @@
       <van-tab title="服务产品">
         <section class="tree">
           <div class="tree-left">
-            <ul>
-              <li>带看</li>
-              <li>保洁</li>
-            </ul>
+            <div v-for="(item, index) in list" :key="index" class="tree-left-item">
+              <p :class="item.id === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.name}}</p>
+              <transition name="van-slide-left">
+                <section v-if="item.id === isActive">
+                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item">
+                    <p class="active">{{ctx.name}}</p>
+                  </div>
+                </section>
+              </transition>
+              
+            </div>
           </div>
           <div class="tree-right">
           </div>
@@ -81,6 +88,34 @@ export default class Purchase extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private cityId: string = ''; // 城市ID
   private tableData: any[] = []; // 服务包列表
+  private isActive: number = 1; // 默认选择第一项
+  private list: any[] = [{
+    id: 1,
+    name: '带看带看',
+    children: [
+      {
+        gid: '11',
+        name: '龟速带看带看'
+      },
+      {
+        gid: '22',
+        name: '光速带看'
+      }
+    ]
+  }, {
+    id: 2,
+    name: '装修',
+    children: [
+      {
+        gid: '11',
+        name: '龟速带看'
+      },
+      {
+        gid: '22',
+        name: '光速带看'
+      }
+    ]
+  }];
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -141,52 +176,102 @@ export default class Purchase extends CommonMixins {
       // this.getRentInfo(this.entrustId);
     }
   }
+
+  /**
+   * @description 选择tree
+   * @params item 当前选择的item
+   * @returns null
+   * @author chenmo
+   */
+  private checkActive(item: any) {
+    this.isActive = item.id;
+  }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../assets/stylus/main.styl'
-  .purchase
-    .purchase-item
-      background $global-background
-      padding vw(15)
-      border-bottom 1px solid $bg-color-default
-      position relative
-      width 100%
-      top 0px
-      height vw(120)
-      .purchase-title
-        padding-left vw(120)
-        font-size 15px
-        font-weight 500
-        font-family PingFang-SC-Medium
+.purchase
+  .purchase-item
+    background $global-background
+    padding vw(15)
+    border-bottom 1px solid $bg-color-default
+    position relative
+    width 100%
+    top 0px
+    height vw(120)
+    .purchase-title
+      padding-left vw(120)
+      font-size 15px
+      font-weight 500
+      font-family PingFang-SC-Medium
+      color $text-color
+      display -webkit-box
+      -webkit-box-orient vertical
+      -webkit-line-clamp 3
+      overflow hidden
+    .purchase-money
+      text-align right
+      padding-top vw(15)
+      font-size 12px
+      span
         color $text-color
-        display -webkit-box
-        -webkit-box-orient vertical
-        -webkit-line-clamp 3
-        overflow hidden
-      .purchase-money
-        text-align right
-        padding-top vw(15)
-        font-size 12px
-        span
-          color $text-color
-          font-family PingFangSC-Semibold
-          font-size 18px
-          font-weight bold
-          display inline-block
-          padding-right 10px
-      .purchase-left
-        position absolute
-        top vw(15)
-        left vw(15)
-        background-repeat no-repeat
-        background-size cover
+        font-family PingFangSC-Semibold
+        font-size 18px
+        font-weight bold
+        display inline-block
+        padding-right 10px
+    .purchase-left
+      position absolute
+      top vw(15)
+      left vw(15)
+      background-repeat no-repeat
+      background-size cover
+      width vw(110)
+      border-radius 2px
+      height vw(90)
+      background-position center center
+      img 
         width vw(110)
-        border-radius 2px
-        height vw(90)
-        background-position center center
-        img 
-          width vw(110)
-          border-radius: 2px
+        border-radius: 2px
+  .tree
+    .tree-left
+      width vw(80)
+      .tree-left-item
+        color $text-color
+        font-size 14px
+        text-align center
+        position relative
+        .cname
+          color $text-color
+          width vw(30)
+          height vw(60)
+          margin 0 auto
+          display -webkit-flex
+          display flex
+          justify-content center
+          align-items center
+        .cname-active
+          font-weight bold
+          &::before
+            position absolute
+            top 0px
+            left 0px
+            width vw(4)
+            height vw(60)
+            content ""
+            background $main-color
+        .next-item
+          background $global-background
+          p
+            color $text-color
+            width vw(30)
+            height vw(60)
+            margin 0 auto
+            display -webkit-flex
+            display flex
+            justify-content center
+            align-items center
+          .active
+            color $main-color
 </style>
