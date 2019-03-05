@@ -60,7 +60,6 @@
           />
           <van-field
             v-model="introducePhone"
-            required
             clearable
             input-align="right"
             label="推荐人电话"
