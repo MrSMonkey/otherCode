@@ -16,14 +16,14 @@
         <p>{{getRentWay(selectData.rentType) || ''}}</p>
       </div>
       <!-- 合租  -->
-      <section v-if="selectData.rentType === 2">
+      <section v-if="selectData.rentType === 2 && selectData.houseRentRoomDTO.length > 0">
         <div class="block" v-for="(ctx, index) in selectData.houseRentRoomDTO" :key="index" >
           <label>房&nbsp;&nbsp;间&nbsp;&nbsp;&nbsp;{{ctx.roomName}}：</label>
-          <p>{{ ctx.rent || '0.00'}} 元/月 | {{getRentStatus(ctx.rentStatus)}} | 押{{ctx.prepayNumber}}付{{ctx.afterpayNumber}} | 中介费{{ctx.agencyFee}}</p>
+          <p>{{ ctx.rent || '0.00'}} 元/月 | {{getRentStatus(ctx.rentStatus)}} | 押{{ctx.prepayNumber}}付{{ctx.afterpayNumber}} | 中介费{{ctx.agencyFee}}%</p>
         </div>
       </section>
        <!-- 整租  -->
-      <section v-if="selectData.rentType === 1">
+      <section v-if="selectData.rentType === 1 && selectData.houseRentRoomDTO.length > 0">
         <div class="block" >
           <label>出租价格：</label>
           <p>{{selectData.houseRentRoomDTO[0].rent || '0.00' }}元/月 | {{getRentStatus(selectData.houseRentRoomDTO[0].rentStatus)}} | 押{{selectData.houseRentRoomDTO[0].prepayNumber}}付{{selectData.houseRentRoomDTO[0].afterpayNumber}} | 中介费{{selectData.houseRentRoomDTO[0].agencyFee}}</p>
@@ -117,6 +117,7 @@ export default class Login extends CommonMixins {
       display inline-block
       position relative
       padding vw(10) 0 0
+      width 100%
       p
         display inline-block
         margin-left vw(88)

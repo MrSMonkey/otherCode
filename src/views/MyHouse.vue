@@ -16,17 +16,29 @@
          <!-- 房源动态 -->
          <section class="house-status">
           <p class="title">房源动态</p>
-          <houseStatus :data="houseStatus"></houseStatus>
+            <section v-if="houseStatus.length > 0">
+              <houseStatus :data="houseStatus"></houseStatus>
+            </section>
+            <section v-else class="house-status-no">
+              <img src="../assets/images/404.png" alt=""/>
+              <p>暂无房源动态</p>
+            </section>
          </section>
          <BottomBtn :entrustId="entrustId" :cityId="houseInfo.cityId"></BottomBtn>
         </van-tab>
         <van-tab title="房间信息">
-          <roomInfo :roomInfo="roomInfo"></roomInfo>
+          <section v-if="roomInfo.length > 0">
+            <roomInfo :roomInfo="roomInfo"></roomInfo>
+          </section>
+          <section v-else class="list-no">
+            <img src="../assets/images/404.png" alt=""/>
+            <p>暂无房间信息</p>
+          </section>
         </van-tab>
         <van-tab title="租赁信息">
           <section v-if="rentInfo.length > 0">
             <section class="rent-info">
-              <div class="rent-title">
+              <div class="rent-title" v-if="rentInfo.length > 1">
                 <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
                   {{rent.sourceName}}
                 </span>
@@ -34,8 +46,9 @@
             </section>
             <RentInfo :selectData="selectData"></RentInfo>
           </section>
-          <section v-else>
-            暂无
+          <section v-else class="list-no">
+              <img src="../assets/images/404.png" alt=""/>
+              <p>暂无租赁信息</p>
           </section>
         </van-tab>
       </van-tabs>
@@ -177,7 +190,9 @@ export default class Login extends CommonMixins {
       const res: any = await this.axios.get(api.getRentInfo + `/${entrustId}`);
       if (res && res.code === '000') {
         this.rentInfo = res.data || [];
-        this.selectData = res.data[0].houseRoomCommonDTO; // 默认第一条
+        if (res.data.length > 0) {
+          this.selectData = res.data[0].houseRoomCommonDTO; // 默认第一条
+        }
       } else {
         this.$toast(`获取租赁信息失败`);
       }
@@ -273,4 +288,22 @@ export default class Login extends CommonMixins {
         background $main-color
         border 1px solid $main-color
         color #fff
+  .list-no
+    text-align center
+    margin-top vw(100)
+    img
+      display inline-block
+      width vw(120)
+    p
+      color $text-color
+      font-size 14px
+  .house-status-no
+    text-align center
+    padding vw(30) 0
+    img
+      display inline-block
+      width vw(120)
+    p
+      color $text-color
+      font-size 14px
 </style>

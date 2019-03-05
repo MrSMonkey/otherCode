@@ -13,7 +13,7 @@
     <div class="base-info">
       <div class="block">
         <span>门牌号</span>
-        <p>{{`${houseInfo.building || ' '}栋`}}{{`${houseInfo.unit || ' '}单元`}}{{`${houseInfo.number || ' '}室`}}</p>
+        <p>{{`${houseInfo.building || '?'}栋`}}{{`${houseInfo.unit || '?'}单元`}}{{`${houseInfo.roomNum || '?'}室`}}</p>
       </div>
       <div class="block">
         <span>运营类型</span>
@@ -23,23 +23,23 @@
     <div class="detail-info">
       <div class="block">
         <label>小区名称：</label>
-        <span>{{houseInfo.communityName}}</span>
+        <span>{{houseInfo.communityName|| '无'}}</span>
       </div>
       <div class="block-secondary">
         <label>楼<span class="space-2"/>层：</label>
-        <span>{{houseInfo.floorNum}}/{{houseInfo.floorTotality}}层</span>
+        <span>{{houseInfo.floorNum || '?'}}/{{houseInfo.floorTotality || '?'}}层</span>
       </div>
       <div class="block">
         <label>原始户型：</label>
-        <span>{{houseInfo.roomNum}}室{{houseInfo.hallNum}}厅{{houseInfo.toiletNum}}卫</span>
+        <span>{{houseInfo.roomNum || '?'}}室{{houseInfo.hallNum || '?'}}厅{{houseInfo.toiletNum || '?'}}卫</span>
       </div>
       <div class="block-secondary">
         <label>朝<span class="space-2"/>向：</label>
-        <span>{{getToward(houseInfo.toward)}}</span>
+        <span>{{getToward(houseInfo.toward) || '?'}}</span>
       </div>
       <div class="block">
         <label>面<span class="space-2"/>积：</label>
-        <span>{{houseInfo.buildAcreage}}㎡</span>
+        <span>{{houseInfo.buildAcreage || '?'}}㎡</span>
       </div>
       <div class="block-secondary">
         <label>装修情况：</label>
@@ -47,7 +47,7 @@
       </div>
       <div class="block">
         <label>改造后房间数：</label>
-        <span>{{houseInfo.roomNum}}间</span>
+        <span>{{houseInfo.roomNum || '?'}}间</span>
       </div>
     </div>
   </section>

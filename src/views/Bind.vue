@@ -25,7 +25,7 @@
           <div class="code">
             <van-field
               v-model="code"
-              type="number"
+              type="text"
               placeholder="验证码"
               clearable
             />

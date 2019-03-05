@@ -7,33 +7,42 @@
  */
 
 <template>
-  <section class="service-type">
-    <div class="list" v-for="(item, index) in tableData" :key="index" @click="selectPro(item)">
-      <h2>{{item.serviceTypeName}}</h2>
-      <div class="serviceType-right"><img src="../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
-    </div>
-    <!-- 选择产品弹窗 -->
-    <van-popup v-model="proShow" position="bottom" :overlay="true">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        title="选择产品"
-        @confirm="cityConfirm"
-        @cancel="proShow = false"
-      />
-    </van-popup>
+  <section>
+    <section class="service-type" v-if="tableData.length > 0">
+      <div class="list" v-for="(item, index) in tableData" :key="index" @click="selectPro(item)">
+        <h2>{{item.serviceTypeName}}</h2>
+        <div class="serviceType-right"><img src="../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
+      </div>
+      <!-- 选择产品弹窗 -->
+      <van-popup v-model="proShow" position="bottom" :overlay="true">
+        <van-picker
+          show-toolbar
+          :columns="columns"
+          title="选择产品"
+          @confirm="cityConfirm"
+          @cancel="proShow = false"
+        />
+      </van-popup>
+    </section>
+    <section v-else>
+      <NoData tip="暂无服务类型" :url="'/myHouse?entrustId=' + entrustId"/>
+    </section>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
+import NoData from '@/components/NoData.vue';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import api from '@/api';
 
 // 声明引入的组件
 @Component({
   name: 'ServiceType',
+  components: {
+    NoData
+  }
 })
 // 类方式声明当前组件
 export default class ServiceType extends CommonMixins {

@@ -26,11 +26,12 @@ Vue.use(Col);
 require('intersection-observer');
 
 // 解决点击延迟300ms的问题， 兼容 IOS
-if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', () => {
-    (FastClick as any).attach(document.body);
-  }, false);
-}
+// if ('addEventListener' in document) {
+//   document.addEventListener('DOMContentLoaded', () => {
+//     (FastClick as any).attach(document.body);
+//   }, false);
+// }
+(FastClick as any).attach(document.body);
 
 Vue.config.productionTip = false;
 

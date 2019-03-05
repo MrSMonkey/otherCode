@@ -13,7 +13,7 @@
         <img  src="../assets/images/advertisement.png" alt="adver"/>
       </div>
       <div class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
-        <h2><span>{{house.districtName}}</span>●<span>{{house.communityName || ''}}&nbsp;{{house.handleStatus === 1 ? '' : `${house.building || ''}栋${house.unit || ' '}单元${house.floorNum || ' '}楼${house.number || ' '}号` }}</span></h2>
+        <h2><span>{{house.districtName}}</span> {{house.communityName || ''}}&nbsp;{{house.handleStatus === 1 ? '' : `${house.building || '?'}栋${house.unit || '?'}单元${house.floorNum || '?'}楼${house.number || '?'}号` }}</h2>
         <div class="item-desc">
           <div v-if="house.handleStatus === 1" class="item-dec-ok">
             <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
@@ -138,13 +138,13 @@ export default class House extends CommonMixins {
       vertical-align: top
   .list
     width 100%
-    margin-bottom vw(20)
+    margin-bottom vw(15)
     background $global-background
     h2 
-      font-size 18px
+      font-size 16px
       border-bottom 1px solid $bg-color-default
-      line-height 1
-      padding vw(20) vw(10) vw(20) vw(20)
+      line-height 1.5
+      padding vw(15)
       span 
         display inline-block
         &:nth-child(1)
@@ -154,7 +154,7 @@ export default class House extends CommonMixins {
     .item-desc
       .item-dec-ok
         font-size 13px
-        padding vw(20)
+        padding vw(15)
         color $next-text-color
         .assetNum
           display inline-block
@@ -168,7 +168,7 @@ export default class House extends CommonMixins {
             color $main-color
       .set
         display inline-block
-        padding vw(20)
+        padding vw(14)
         color $next-text-color
         font-size 13px
         line-height 1.5

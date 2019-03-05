@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @LastEditors: Please set LastEditors
  * @Date: 2019-02-28 13:56:48
- * @LastEditTime: 2019-03-01 17:42:14
+ * @LastEditTime: 2019-03-04 16:15:02
  -->
 
 <template>
@@ -57,7 +57,6 @@ export default class ConfirmBtn extends Vue {
 
   @Watch('isActive')
   private handlerisActive(newVal: boolean) {
-    console.log('newVal', newVal);
     this.isActiveKey = newVal;
   }
 }
@@ -75,6 +74,7 @@ export default class ConfirmBtn extends Vue {
   width 100%
   height vw(46)
   align-items center
+  z-index 1000
   button
     display inline-block
     width 100%

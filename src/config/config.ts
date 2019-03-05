@@ -27,6 +27,11 @@ export const START_HOME_IMG: any[] = [
   }
 ];
 
+ /* 定义购买链接 */
+export const SMART_LOCK_LINK: string =
+`http://coupon.m.jd.com/coupons/show.action?key=58840135e3f64759b6e648
+ de6c8190d5&roleId=13925125&to=item.jd.com/28149452434.html`;
+
  /* 定义路由 */
 export const componentsList: any[] = [
   {
@@ -101,6 +106,7 @@ export const RENT_TYPE: any = {
 
 /* 定义租赁类型 */
 export const RENT_WAY: any = {
+  0: '未知',
   1: '整租',
   2: '合租',
 };

@@ -57,7 +57,7 @@
             />
           </div>
         </div>
-        <div class="city">
+        <div class="city" v-if="!isLogin">
           <div class="label">联系方式*</div>
           <div class="village">
             <van-field
@@ -97,7 +97,7 @@
         </div>
       </section>
       <section>
-        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isphoneErr || !ownerName || !isLogin && !isCodeErr || !communityName">立即提交</van-button>
+        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isLogin && !isphoneErr || !ownerName || !isLogin && !isCodeErr || !communityName">立即提交</van-button>
         <van-button slot="button" size="large" type="default" class="entrust-btn" v-else @click="getSubmitData" :loading="loading" loading-text="提交中">立即提交</van-button>
       </section>
     </section>
@@ -212,10 +212,17 @@ export default class Entrust extends CommonMixins {
   ];
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
+  @Getter('getUserInfo', { namespace }) private userInfo: any;
+  @Action('getUserInfo', { namespace }) private getUserInfo: any;
 
   private mounted() {
     this.getCitys(); // 获取城市
-    this.isLogin = !!localStorage.getItem('userId');
+    const token: string = String(localStorage.getItem('siteToken'));
+    const userId: string = String(localStorage.getItem('userId'));
+    this.isLogin = !!userId && !!token;
+    if (this.isLogin) {
+      this.getUserInfo();
+    }
   }
   /**
    * @description 选择城市确认
@@ -260,7 +267,7 @@ export default class Entrust extends CommonMixins {
           };
         });
       } else {
-        this.$toast.fail(res.msg || '获取城市失败');
+        this.$toast(res.msg || '获取城市失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -390,10 +397,10 @@ export default class Entrust extends CommonMixins {
       return false;
     }
 
-    if (!this.ownerPhone) {
-      this.$toast('请输入您的手机号');
-      return false;
-    }
+    // if (!this.ownerPhone) {
+    //   this.$toast('请输入您的手机号');
+    //   return false;
+    // }
     if (this.isLogin) {
       this.submitData();
     } else {
@@ -421,7 +428,7 @@ export default class Entrust extends CommonMixins {
         this.updateToken(res.data.access_token);
         this.submitData(); // 登录后提交房源信息
       } else {
-        this.$toast.fail(res.msg || '登录失败');
+        this.$toast(res.msg || '登录失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -440,7 +447,7 @@ export default class Entrust extends CommonMixins {
       communityName: this.communityName,
       decorationStatus: this.active,
       ownerName: this.ownerName,
-      ownerPhone: this.ownerPhone,
+      ownerPhone: this.isLogin ? this.userInfo.phone : this.ownerPhone,
       ownerUserId: localStorage.getItem('userId'),
       source: 1
     };
@@ -477,6 +484,19 @@ export default class Entrust extends CommonMixins {
     } else {
       this.isCodeErr = false;
       // this.$refs.codeErrorInfo.innerHTML = '请输入6位手机验证码';
+    }
+  }
+
+  @Watch('value')
+  private handlerValue(newVal: string) {
+    if (newVal !== '') {
+      // this.$refs.codeErrorInfo.innerHTML = '';
+      // this.isCodeErr = true;
+    } else {
+      this.isCodeErr = false;
+      this.isGetPlot = false;
+      this.tableList = []; // 清空查询
+      this.plotAacive = -1;
     }
   }
 }
@@ -601,12 +621,16 @@ export default class Entrust extends CommonMixins {
       top 0
       left 0
       width 100%
-      z-index 100
+      z-index 1000
       .van-field
         font-size 14px
     .main
-      margin-top vw(55)
+      margin-top vw(75)
+      margin-bottom vw(70)
       .list
+        margin-top vw(20)
+        height vw(520)
+        overflow-y scroll
         li
           background #fff
           height vw(45)

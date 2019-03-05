@@ -9,6 +9,7 @@
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
+    <section v-if="tableData.length > 0">
     <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
       <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
         <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
@@ -18,6 +19,10 @@
         <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
       </router-link>
     </div>
+    </section>
+    <section v-else>
+      <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+    </section>
     <!-- <van-tabs @click="onClick">
       
       <van-tab title="服务包">
@@ -43,6 +48,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import NoData from '@/components/NoData.vue';
 import { getQueryString } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
@@ -53,7 +59,8 @@ import api from '@/api';
   name: 'Purchase',
    components: {
     [Tab.name]: Tab,
-    [Tabs.name]: Tabs
+    [Tabs.name]: Tabs,
+    NoData
   }
 })
 // 类方式声明当前组件

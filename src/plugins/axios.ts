@@ -32,11 +32,11 @@ Axios.interceptors.request.use(
     }
     /*登录授权, 登录接口修改 Authorization */
     if (config.url.indexOf('/auth/asset/register_login/web/mobile') > -1
-    || config.url.indexOf('/verification_code') > -1) {
+      || config.url.indexOf('/verification_code') > -1) {
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2';
     } else {
       const token: string | null = localStorage.getItem('siteToken');
-      config.headers.Authorization = `Bearer ${token !== null ? token : ''}`;
+      config.headers.Authorization = token !== null ? `Bearer ${ token}` : '';
     }
     return config;
   }, (error) => {
