@@ -9,37 +9,46 @@
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
-    <section v-if="tableData.length > 0">
-    <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-      <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-        <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
-          <!-- <img :src="item.imgUrls[0]" alt=""/> -->
-        </div>
-        <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-        <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-      </router-link>
-    </div>
-    </section>
-    <section v-else>
-      <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
-    </section>
-    <!-- <van-tabs @click="onClick">
-      
+    
+    <van-tabs @click="onClick">
       <van-tab title="服务包">
-        
-    </van-tab>
-      <van-tab title="服务产品">
-        <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-          <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-            <div class="purchase-left">
-              <img :src="item.imgUrls[0]" alt=""/>
-            </div>
-            <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-            <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-          </router-link>
-        </div>
+        <section v-if="tableData.length > 0">
+          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+            <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+              <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+                <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+              </div>
+              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+            </router-link>
+          </div>
+        </section>
+        <section v-else>
+          <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section>
       </van-tab>
-    </van-tabs> -->
+      <van-tab title="服务产品">
+        <section>
+          <div class="tree-left">
+          </div>
+          <div class="tree-right">
+          </div>
+        </section>
+        <!-- <section v-if="tableData.length > 0">
+          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+            <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+              <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+              </div>
+              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+            </router-link>
+          </div>
+        </section>
+        <section v-else>
+          <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section> -->
+      </van-tab>
+    </van-tabs>
       
   </section>
 </template>
@@ -119,7 +128,6 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private onClick(index: any) {
-    console.log(index);
     if (index === 0) {
       // this.getHouseInfo(this.entrustId);
       // this.getHouseStatus(this.entrustId);

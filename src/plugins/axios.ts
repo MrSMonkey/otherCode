@@ -26,9 +26,8 @@ Axios.interceptors.request.use(
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TEST) {
       config.baseURL = 'http://192.168.200.120:7070/';
     } else {
-      // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
-      // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
-      config.baseURL = 'http://192.168.200.120:7070/';
+      config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
+      // config.baseURL = 'http://192.168.200.120:7070/';
     }
     /*登录授权, 登录接口修改 Authorization */
     if (config.url.indexOf('/auth/asset/register_login/web/mobile') > -1
