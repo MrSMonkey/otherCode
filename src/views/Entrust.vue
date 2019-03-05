@@ -447,7 +447,7 @@ export default class Entrust extends CommonMixins {
       communityName: this.communityName,
       decorationStatus: this.active,
       ownerName: this.ownerName,
-      ownerPhone: this.isLogin ? this.userInfo.phone : this.ownerPhone,
+      ownerPhone: this.isLogin ? this.userInfo.username : this.ownerPhone,
       ownerUserId: localStorage.getItem('userId'),
       source: typeof(this.sourceId) === undefined ? '' : this.sourceId
     };
