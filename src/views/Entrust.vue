@@ -218,8 +218,7 @@ export default class Entrust extends CommonMixins {
   private mounted() {
     this.getCitys(); // 获取城市
     const token: string = String(localStorage.getItem('siteToken'));
-    const userId: string = String(localStorage.getItem('userId'));
-    this.isLogin = !!userId && !!token;
+    this.isLogin = !!localStorage.getItem('siteToken');
     if (this.isLogin) {
       this.getUserInfo();
     }

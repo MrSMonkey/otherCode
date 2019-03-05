@@ -65,11 +65,11 @@ Axios.interceptors.response.use(
         type: 'fail',
         message: `登录失效`
       });
-      setTimeout(() => {
-        router.push({
-          path: '/bind'
-        });
-      }, 3000);
+      // setTimeout(() => {
+      //   router.push({
+      //     path: '/bind'
+      //   });
+      // }, 3000);
     } else {
       Vue.prototype.$toast({
         duration: 3000,       // 持续展示 toast
