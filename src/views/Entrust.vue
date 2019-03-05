@@ -200,6 +200,7 @@ export default class Entrust extends CommonMixins {
   private varityCold: string = '';
   private isCodeErr: boolean = false; // 校验验证码
   private isGetPlot: boolean = false; // 判断是否请求了小区
+  private sourceId: any = ''; // 来源渠道id
   private houseSetting: any[] = [
     {
       id: 1,
@@ -216,6 +217,7 @@ export default class Entrust extends CommonMixins {
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
 
   private mounted() {
+    this.sourceId = this.$route.query.sourceId;
     this.getCitys(); // 获取城市
     const token: string = String(localStorage.getItem('siteToken'));
     this.isLogin = !!localStorage.getItem('siteToken');
@@ -438,7 +440,6 @@ export default class Entrust extends CommonMixins {
 
   private async submitData() {
     this.loading = true;
-
     const data: any = {
       cityId: this.cityId,
       cityName: this.cityName,
@@ -448,7 +449,7 @@ export default class Entrust extends CommonMixins {
       ownerName: this.ownerName,
       ownerPhone: this.isLogin ? this.userInfo.phone : this.ownerPhone,
       ownerUserId: localStorage.getItem('userId'),
-      source: 1
+      source: typeof(this.sourceId) === undefined ? '' : this.sourceId
     };
     try {
       const res: any = await this.axios.post(api.pushEntrust, data);
