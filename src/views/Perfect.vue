@@ -218,6 +218,7 @@ export default class Perfect extends CommonMixins {
   private cityShow: boolean = false;
   private towardShow: boolean = false;
   private loading: boolean = false;
+  private isFloorErr: boolean = false; // 校验楼层数和楼层
   private typeList: any[] = TYPELIST;
   private entrustId: string = ''; // 委托房源ID
   private twordList: any[] = TOWARDLIST; // 朝向
@@ -240,9 +241,9 @@ export default class Perfect extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return !this.form.buildAcreage && !this.form.building && !this.form.consociationType && !this.form.floorNum &&
+    return (!this.form.buildAcreage && !this.form.building && !this.form.consociationType && !this.form.floorNum &&
     !this.form.floorTotality && !this.form.hallNum && !this.form.kitchenNum && !this.form.number && !this.form.roomNum
-    && !this.form.toiletNum && !this.form.toward  && !this.form.unit;
+    && !this.form.toiletNum && !this.form.toward  && !this.form.unit) || this.isFloorErr;
   }
 
   private mounted() {
@@ -288,7 +289,7 @@ export default class Perfect extends CommonMixins {
     try {
       const res: any = await this.axios.put(api.getHouseInfo, data);
       if (res && res.code === '000') {
-        this.$toast.success(res.msg);
+        this.$toast.success(`保存成功`);
         setTimeout(() => {
           window.location.href = '/#/house';
         }, 2000);
@@ -304,6 +305,31 @@ export default class Perfect extends CommonMixins {
 
   private plotCancel() {
     window.location.href = '/#/house';
+  }
+
+  // Watch
+  @Watch('form.floorNum')
+  private handlerFloorNum(newVal: string) {
+    if (newVal && this.form.floorTotality) {
+      if (parseFloat(newVal) > parseFloat(this.form.floorTotality)) {
+        this.$toast(`楼层数不能大于总楼层数`);
+        this.isFloorErr = true;
+      } else {
+        this.isFloorErr = false;
+      }
+    }
+  }
+
+  @Watch('form.floorTotality')
+  private handlerFloorTotality(newVal: string) {
+    if (newVal && this.form.floorNum) {
+      if (parseFloat(newVal) < parseFloat(this.form.floorNum)) {
+        this.$toast(`楼层数不能大于总楼层数`);
+        this.isFloorErr = true;
+      } else {
+        this.isFloorErr = false;
+      }
+    }
   }
 }
 </script>
