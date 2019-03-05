@@ -137,7 +137,7 @@ export default class Login extends CommonMixins {
         this.updateToken(res.data.access_token);
         this.$router.push('/house'); // 跳转到房源列表
       } else {
-        this.$toast.fail(res.msg || '登录失败');
+        this.$toast(res.msg || '登录失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

@@ -72,7 +72,7 @@ export default class House extends CommonMixins {
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
-        this.$toast.fail(`获取房源失败`);
+        this.$toast(`获取房源失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

@@ -190,7 +190,7 @@ export default class ServiceInfo extends CommonMixins {
       if (res && res.code === '000') {
         this.data = res.data || [];
       } else {
-        this.$toast.fail(`获取服务包详情失败`);
+        this.$toast(`获取服务包详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -284,7 +284,7 @@ export default class ServiceInfo extends CommonMixins {
           this.$router.push(`/myHouse?entrustId=${this.entrustId}`); // 跳转到房源列表
         }, 3000);
       } else {
-        this.$toast.fail('购买失败，请重试');
+        this.$toast('购买失败，请重试');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

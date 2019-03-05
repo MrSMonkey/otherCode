@@ -93,7 +93,7 @@ export default class Purchase extends CommonMixins {
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
-        this.$toast.fail(`获取服务包列表失败`);
+        this.$toast(`获取服务包列表失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
