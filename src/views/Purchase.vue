@@ -28,8 +28,12 @@
         </section>
       </van-tab>
       <van-tab title="服务产品">
-        <section>
+        <section class="tree">
           <div class="tree-left">
+            <ul>
+              <li>带看</li>
+              <li>保洁</li>
+            </ul>
           </div>
           <div class="tree-right">
           </div>
