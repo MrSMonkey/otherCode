@@ -179,7 +179,7 @@ export default class StartService extends CommonMixins {
           this.columns = roomArr;
         }
       } else {
-        this.$toast.fail(`获取服务类型失败`);
+        this.$toast(`获取服务类型失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -284,7 +284,7 @@ export default class StartService extends CommonMixins {
           this.$router.push(`/myHouse?entrustId=${this.entrustId}`); // 跳转到房源列表
         }, 2000);
       } else {
-        this.$toast.fail(res.msg);
+        this.$toast(res.msg);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
