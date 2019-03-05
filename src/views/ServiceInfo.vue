@@ -280,7 +280,7 @@ export default class ServiceInfo extends CommonMixins {
         this.$toast.success('购买成功');
         this.bugVisible = false;
         setTimeout(() => {
-          this.$router.push(`/myHouse?entrustId=${this.entrustId}`); // 跳转到房源列表
+          this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
         }, 3000);
       } else {
         this.$toast('购买失败，请重试');
