@@ -63,7 +63,7 @@ Axios.interceptors.response.use(
       Vue.prototype.$toast({
         duration: 3000,       // 持续展示 toast
         type: 'fail',
-        message: `登陆失效`
+        message: `登录失效`
       });
       setTimeout(() => {
         router.push({
