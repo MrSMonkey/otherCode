@@ -107,13 +107,12 @@
           v-model="value"
           placeholder="请输入您爱屋所在的小区" 
           clearable
-          @change="getPlotList"
         />
       </section>
       <main class="main">
         <ul class="list" v-if="tableList.length > 0">
           <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
-            <span>{{item.communityName}}</span>
+            <span>{{item.communityName}}({{item.address}})</span>
             <img src="../assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
           </li>
         </ul>
@@ -495,11 +494,13 @@ export default class Entrust extends CommonMixins {
     if (newVal !== '') {
       // this.$refs.codeErrorInfo.innerHTML = '';
       // this.isCodeErr = true;
+      this.getPlotList(); // 请求小区数据
     } else {
       this.isCodeErr = false;
       this.isGetPlot = false;
       this.tableList = []; // 清空查询
       this.plotAacive = -1;
+      this.selectData = {};
     }
   }
 }
@@ -647,6 +648,11 @@ export default class Entrust extends CommonMixins {
           display flex
           justify-content space-between
           align-items center
+          span  
+            width vw(320)
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
           img 
             display inline-block
             text-align right
