@@ -285,16 +285,17 @@ export default class Purchase extends CommonMixins {
       .tree-left-item
         color $text-color
         font-size 14px
-        text-align center
+        // text-align center
         position relative
         .cname
           color $text-color
-          width vw(30)
+          // width vw(30)
           height vw(60)
-          margin 0 auto
+          // margin 0 auto
+          margin-left vw(10)
           display -webkit-flex
           display flex
-          justify-content center
+          // justify-content center
           align-items center
         .cname-active
           font-weight bold
@@ -310,12 +311,12 @@ export default class Purchase extends CommonMixins {
           background $global-background
           p
             color $text-color
-            width vw(30)
+            // width vw(30)
             height vw(60)
-            margin 0 auto
+            margin-left vw(10)
             display -webkit-flex
             display flex
-            justify-content center
+            // justify-content center
             align-items center
           .active
             color $main-color
