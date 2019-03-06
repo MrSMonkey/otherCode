@@ -32,18 +32,30 @@
           <div class="tree-left">
             <div v-for="(item, index) in list" :key="index" class="tree-left-item">
               <p :class="item.id === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.name}}</p>
-              <transition name="van-slide-down">
-                <section v-if="item.id === isActive">
+              <transition name="down">
+                <section v-if="item.id === isActive" class="childrenItem">
                   <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(ctx)">
-                    <p :class="ctx.id === isActiveChildrenOne ? 'active' : ''">{{ctx.name}}</p>
+                    <p :class="ctx.gid === isActiveChildrenOne ? 'active' : ''">{{ctx.name}}</p>
                   </div>
                 </section>
               </transition>
-              
             </div>
           </div>
           <div class="tree-right">
-            11
+            <section v-if="tableData.length > 0">
+              <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+                <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+                  <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+                    <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+                  </div>
+                  <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+                  <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+                </router-link>
+              </div>
+            </section>
+            <section v-else>
+              <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+            </section>
           </div>
         </section>
         <!-- <section v-if="tableData.length > 0">
@@ -200,6 +212,7 @@ export default class Purchase extends CommonMixins {
    */
   private checkActive(item: any) {
     this.isActive = item.id;
+    this.isActiveChildrenOne = item.children[0].gid; // 默认第一个
   }
 
   /**
@@ -209,7 +222,7 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private checkChildrenActive(ctx: any) {
-    this.isActiveChildrenOne = ctx.id;
+    this.isActiveChildrenOne = ctx.gid;
   }
 }
 </script>
@@ -265,6 +278,10 @@ export default class Purchase extends CommonMixins {
     justify-content space-between
     .tree-left
       width vw(80)
+      .childrenItem
+        transition: all 0.1s ease
+        &.dowm-enter-active, &.dowm-leave-active
+          transition all 3s ease
       .tree-left-item
         color $text-color
         font-size 14px
