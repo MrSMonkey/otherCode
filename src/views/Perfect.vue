@@ -10,7 +10,7 @@
   <section class="perfect">
     <section class="area mr-b10">
       <div class="perfect-input">
-        <div class="label">运营类型*</div>
+        <div class="label">运营类型</div>
         <div class="village">
           <van-field
             v-model="form.consociationTypeName"
@@ -27,7 +27,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">门牌号码*</div>
+        <div class="label">门牌号码</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
             v-model="form.building"
@@ -57,7 +57,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">楼&emsp;&emsp;层*</div>
+        <div class="label">楼&emsp;&emsp;层</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="6"><van-field
             v-model="form.floorNum"
@@ -78,7 +78,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">原始户型*</div>
+        <div class="label">原始户型</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
             v-model="form.roomNum"
@@ -115,7 +115,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">朝&emsp;&emsp;向*</div>
+        <div class="label">朝&emsp;&emsp;向</div>
         <div class="village">
           <van-field
             v-model="form.towardName"
@@ -132,7 +132,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">面&emsp;&emsp;积*</div>
+        <div class="label">面&emsp;&emsp;积</div>
         <div class="village">
           <van-field
             v-model="form.buildAcreage"
