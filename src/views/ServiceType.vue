@@ -1,5 +1,5 @@
 /*
- * @Description: 选择服务产品类型
+ * @Description: 服务类型
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo

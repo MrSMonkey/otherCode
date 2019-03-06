@@ -27,7 +27,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 
 // 声明引入的组件
-@Component
+@Component({
+  name: 'NoData'
+})
 export default class NoData extends CommonMixins {
   @Prop({ type: String, default: '' })
   private url: string;

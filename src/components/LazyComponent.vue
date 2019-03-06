@@ -26,7 +26,9 @@
 <script lang="ts">
   import { Component, Vue, Prop, Emit, Watch } from 'vue-property-decorator';
   import request from '@/request';
-  @Component
+  @Component({
+    name: 'LazyComponent'
+  })
   export default class LazyComponent extends Vue {
     @Prop({ type: Number, default: 0 })
     private timeout: number;

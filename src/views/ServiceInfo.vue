@@ -1,5 +1,5 @@
 /*
- * @Description: 订单详情
+ * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo

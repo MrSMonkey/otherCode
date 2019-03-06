@@ -30,7 +30,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 
 // 声明引入的组件
 @Component({
-  name: 'Nofond',
+  name: 'Nofond'
 })
 export default class Nofond extends CommonMixins {
 }

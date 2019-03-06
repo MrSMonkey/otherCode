@@ -1,5 +1,5 @@
 /*
- * @Description: 提交房源
+ * @Description: 委托房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -447,7 +447,7 @@ export default class Entrust extends CommonMixins {
       communityName: this.communityName,
       decorationStatus: this.active,
       ownerName: this.ownerName,
-      ownerPhone: this.isLogin ? this.userInfo.username : this.ownerPhone,
+      ownerPhone: this.isLogin ? (this.userInfo && this.userInfo.username) : this.ownerPhone,
       ownerUserId: localStorage.getItem('userId'),
       source: typeof(this.sourceId) === undefined ? '' : this.sourceId
     };

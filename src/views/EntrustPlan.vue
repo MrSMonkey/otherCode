@@ -89,9 +89,18 @@ export default class EntrustPlan extends CommonMixins {
   private columns: any[] = COLUMNS;
   private badges: any[] = BADGES;
   private list: any[] = LIST;
+  private sourceId: any = ''; // 来源渠道id
+
+  private mounted() {
+    this.sourceId = this.$route.query.sourceId;
+  }
 
   private gotoEntrust() {
-    this.$router.push('/entrust'); // 跳转到在线委托页
+    if (typeof(this.sourceId) === 'undefined') {
+      this.$router.push(`/entrust`); // 跳转到在线委托页
+    } else {
+      this.$router.push(`/entrust?sourceId=${this.sourceId}`); // 跳转到在线委托页
+    }
   }
 }
 </script>
