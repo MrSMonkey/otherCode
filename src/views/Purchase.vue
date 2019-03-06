@@ -90,7 +90,7 @@ import api from '@/api';
 // 声明引入的组件
 @Component({
   name: 'Purchase',
-   components: {
+  components: {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     NoData
