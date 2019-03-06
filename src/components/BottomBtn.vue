@@ -22,7 +22,9 @@
 
 <script lang="ts">
   import { Component, Vue, Prop } from 'vue-property-decorator';
-  @Component
+  @Component({
+    name: 'BottomBtn'
+  })
   export default class BottomBtn extends Vue {
     @Prop({ type: String, default: '' })
     private cityId: string;

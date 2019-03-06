@@ -31,7 +31,9 @@
 
 <script lang="ts">
   import { Component, Vue, Prop } from 'vue-property-decorator';
-  @Component
+  @Component({
+    name: 'UokoDetailPlant'
+  })
   export default class UokoDetailPlant extends Vue {
   }
 </script>

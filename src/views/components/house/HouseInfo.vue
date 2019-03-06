@@ -64,7 +64,7 @@ import { RENT_TYPE, TOWARDNAME} from '@/config/config';
   name: 'HouseInfo',
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class HouseInfo extends CommonMixins {
   @Prop({ type: Object, default: {} })
   private houseInfo: any;
 

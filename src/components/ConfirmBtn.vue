@@ -1,7 +1,7 @@
 <!--
  * @Description: 底部确认按钮
  * @Author: chenmo
- * @LastEditors: Please set LastEditors
+ * @LastEditors: chenmo
  * @Date: 2019-02-28 13:56:48
  * @LastEditTime: 2019-03-04 16:15:02
  -->
@@ -19,7 +19,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit, Watch } from 'vue-property-decorator';
 
-@Component
+@Component({
+  name: 'ConfirmBtn'
+})
 export default class ConfirmBtn extends Vue {
   @Prop({type: Boolean, default: false})
   private loading: boolean;

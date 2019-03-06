@@ -26,10 +26,10 @@ import { RENT_TYPE, TOWARDNAME} from '@/config/config';
 
 // 声明引入的组件
 @Component({
-  name: 'time-line',
+  name: 'HouseStatus',
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class HouseStatus extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private data: any;
 
