@@ -30,7 +30,7 @@
         <span>{{houseInfo.floorNum || '?'}}/{{houseInfo.floorTotality || '?'}}层</span>
       </div>
       <div class="block">
-        <label>原始户型：</label>
+        <label>户<span class="space-2"/>型：</label>
         <span>{{houseInfo.roomNum || '?'}}室{{houseInfo.hallNum || '?'}}厅{{houseInfo.kitchenNum || '?'}}厨{{houseInfo.toiletNum || '?'}}卫</span>
       </div>
       <div class="block-secondary">
@@ -45,10 +45,10 @@
         <label>装修情况：</label>
         <span>{{houseInfo.decorationStatus === 0 ? '毛坯房' : '已装修'}}</span>
       </div>
-      <div class="block">
+      <!-- <div class="block">
         <label>改造后房间数：</label>
         <span>{{houseInfo.roomNum || '?'}}间</span>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>
