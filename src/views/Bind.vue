@@ -58,7 +58,7 @@ import api from '@/api';
 const namespace: string = 'global';
 // 声明引入的组件
 @Component({
-  name: 'login',
+  name: 'Login',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,

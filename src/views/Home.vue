@@ -62,6 +62,7 @@ import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
 
 // 声明引入的组件
 @Component({
+  name: 'home',
   components: {
     [Icon.name]: Icon,
     HrTitle,

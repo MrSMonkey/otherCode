@@ -67,7 +67,7 @@ import ImagePreview from '../ImagePreview/ImagePreview.vue';
   }
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class RentInfo extends CommonMixins {
   @Prop({ type: Object, default: {} })
   private selectData: any;
 

@@ -32,10 +32,10 @@
           <div class="tree-left">
             <div v-for="(item, index) in list" :key="index" class="tree-left-item">
               <p :class="item.id === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.name}}</p>
-              <transition name="van-slide-left">
+              <transition name="van-slide-down">
                 <section v-if="item.id === isActive">
-                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item">
-                    <p class="active">{{ctx.name}}</p>
+                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(ctx)">
+                    <p :class="ctx.id === isActiveChildrenOne ? 'active' : ''">{{ctx.name}}</p>
                   </div>
                 </section>
               </transition>
@@ -43,6 +43,7 @@
             </div>
           </div>
           <div class="tree-right">
+            11
           </div>
         </section>
         <!-- <section v-if="tableData.length > 0">
@@ -89,6 +90,7 @@ export default class Purchase extends CommonMixins {
   private cityId: string = ''; // 城市ID
   private tableData: any[] = []; // 服务包列表
   private isActive: number = 1; // 默认选择第一项
+  private isActiveChildrenOne: string = '11'; // 默认选择第一项
   private list: any[] = [{
     id: 1,
     name: '带看带看',
@@ -105,6 +107,19 @@ export default class Purchase extends CommonMixins {
   }, {
     id: 2,
     name: '装修',
+    children: [
+      {
+        gid: '11',
+        name: '龟速带看'
+      },
+      {
+        gid: '22',
+        name: '光速带看'
+      }
+    ]
+  }, {
+    id: 3,
+    name: '保洁',
     children: [
       {
         gid: '11',
@@ -186,6 +201,16 @@ export default class Purchase extends CommonMixins {
   private checkActive(item: any) {
     this.isActive = item.id;
   }
+
+  /**
+   * @description 选择tree子选项
+   * @params ctx 当前选择的item
+   * @returns null
+   * @author chenmo
+   */
+  private checkChildrenActive(ctx: any) {
+    this.isActiveChildrenOne = ctx.id;
+  }
 }
 </script>
 
@@ -235,6 +260,9 @@ export default class Purchase extends CommonMixins {
         width vw(110)
         border-radius: 2px
   .tree
+    display -webkit-flex
+    display flex
+    justify-content space-between
     .tree-left
       width vw(80)
       .tree-left-item
@@ -274,4 +302,7 @@ export default class Purchase extends CommonMixins {
             align-items center
           .active
             color $main-color
+    .tree-right
+      width 100%
+      background #fff
 </style>

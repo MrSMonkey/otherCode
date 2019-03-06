@@ -1,5 +1,5 @@
 /*
- * @Description: 服务订单
+ * @Description: 订单详情
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo

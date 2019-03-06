@@ -162,7 +162,7 @@ const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
-  name: 'entrust',
+  name: 'Entrust',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,

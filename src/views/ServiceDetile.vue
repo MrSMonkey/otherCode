@@ -70,7 +70,7 @@ import api from '@/api';
   name: 'ServiceDetile',
 })
 // 类方式声明当前组件
-export default class ServiceOrder extends CommonMixins {
+export default class ServiceDetile extends CommonMixins {
   private servicePackageId: string = ''; // 订单id
   private orderInfo: any = {}; // 服务订单详情
 

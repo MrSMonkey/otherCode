@@ -74,6 +74,7 @@ import { STEP,  TABLES, COLUMNS, BADGES, LIST} from '@/config/config';
 
 // 声明引入的组件
 @Component({
+  name: 'EntrustPlan',
   components: {
     [Icon.name]: Icon,
     HrTitle,
@@ -82,7 +83,7 @@ import { STEP,  TABLES, COLUMNS, BADGES, LIST} from '@/config/config';
   }
 })
 // 类方式声明当前组件
-export default class Home extends CommonMixins {
+export default class EntrustPlan extends CommonMixins {
   private step: any[] = STEP;
   private tables: any[] = TABLES;
   private columns: any[] = COLUMNS;
