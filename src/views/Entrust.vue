@@ -111,19 +111,22 @@
         />
       </section>
       <main class="main">
-        <ul class="list">
+        <ul class="list" v-if="tableList.length > 0">
           <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
             <span>{{item.communityName}}</span>
             <img src="../assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
           </li>
         </ul>
+        <div v-if="tableList.length === 0 && isGetPlot">
+          暂无搜索结果
+        </div>
       </main>
       <confirmBtn 
         loadingText="保存中"
         cancelText="返回"
         @confirm="onOk"
         @plotCancel="plotCancel"
-        :isActive="isGetPlot"
+        :isActive="tableList.length > 0"
       >
         <template slot="confirm">
           <span>确认</span>
@@ -174,7 +177,7 @@ const namespace: string = 'global';
 })
 // 类方式声明当前组件
 export default class Entrust extends CommonMixins {
-  private cityName: string = '成都';
+  private cityName: string = '成都市';
   private cityId: string = '510100';
   private code: string = '';
   private cityShow: boolean = false;
@@ -313,12 +316,6 @@ export default class Entrust extends CommonMixins {
     if (this.value === '') {
       this.$toast('请输入您爱屋所在的小区');
     } else {
-      if (this.tableList.length === 0) {
-        // 搜索的小区为[]
-        this.communityId = '';
-        this.communityName = this.value;
-        this.showPlot = false;
-      } else {
         if (Object.keys(this.selectData).length === 0) {
           // 未选择
           this.$toast('请选择您爱屋所在的小区');
@@ -328,7 +325,13 @@ export default class Entrust extends CommonMixins {
           this.communityName = this.selectData.communityName;
           this.showPlot = false;
         }
-      }
+      // if (this.tableList.length === 0) {
+      //   // 搜索的小区为[]
+      //   this.communityId = '';
+      //   this.communityName = this.value;
+      //   this.showPlot = false;
+      // } else {
+      // }
     }
   }
 

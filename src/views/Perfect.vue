@@ -62,14 +62,14 @@
           <van-col span="6"><van-field
             v-model="form.floorNum"
             placeholder="第几层"
-            type="text"
+            type="number"
             input-align="center"
           /></van-col>
           <van-col span="6" class="house-info">
             <van-field
               v-model="form.floorTotality"
               placeholder="总楼层"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -78,19 +78,19 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">原始户型</div>
+        <div class="label">户&emsp;&emsp;型</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
             v-model="form.roomNum"
             placeholder="几室"
-            type="text"
+            type="number"
             input-align="center"
           /></van-col>
           <van-col span="4" class="house-info">
             <van-field
               v-model="form.hallNum"
               placeholder="几厅"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -98,7 +98,7 @@
             <van-field
               v-model="form.kitchenNum"
               placeholder="几厨"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -106,7 +106,7 @@
             <van-field
               v-model="form.toiletNum"
               placeholder="几卫"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -137,7 +137,7 @@
           <van-field
             v-model="form.buildAcreage"
             placeholder="请输入产权面积"
-            type="text"
+            type="number"
             input-align="right"
           >
           <span slot="button" >平米</span>
@@ -241,9 +241,9 @@ export default class Perfect extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return (!this.form.buildAcreage && !this.form.building && !this.form.consociationType && !this.form.floorNum &&
+    return !this.form.buildAcreage && !this.form.building && !this.form.consociationType && !this.form.floorNum &&
     !this.form.floorTotality && !this.form.hallNum && !this.form.kitchenNum && !this.form.number && !this.form.roomNum
-    && !this.form.toiletNum && !this.form.toward  && !this.form.unit) || this.isFloorErr;
+    && !this.form.toiletNum && !this.form.toward  && !this.form.unit;
   }
 
   private mounted() {
@@ -285,6 +285,14 @@ export default class Perfect extends CommonMixins {
     Object.assign(data, {
       entrustId: this.entrustId
     });
+    if (!this.form.floorNum && !this.form.floorTotality) {
+      const floorNum: any = this.form.floorNum;
+      const floorTotality: any = this.form.floorTotality;
+      if (parseFloat(floorNum) > parseFloat(floorTotality)) {
+        this.$toast(`楼层数不能大于总楼层数`);
+        return false;
+      }
+    }
     this.loading = true;
     try {
       const res: any = await this.axios.put(api.getHouseInfo, data);
@@ -307,30 +315,30 @@ export default class Perfect extends CommonMixins {
     window.location.href = '/#/house';
   }
 
-  // Watch
-  @Watch('form.floorNum')
-  private handlerFloorNum(newVal: string) {
-    if (newVal && this.form.floorTotality) {
-      if (parseFloat(newVal) > parseFloat(this.form.floorTotality)) {
-        this.$toast(`楼层数不能大于总楼层数`);
-        this.isFloorErr = true;
-      } else {
-        this.isFloorErr = false;
-      }
-    }
-  }
+  // // Watch
+  // @Watch('form.floorNum')
+  // private handlerFloorNum(newVal: string) {
+  //   if (newVal && this.form.floorTotality) {
+  //     if (parseFloat(newVal) > parseFloat(this.form.floorTotality)) {
+  //       this.$toast(`楼层数不能大于总楼层数`);
+  //       this.isFloorErr = true;
+  //     } else {
+  //       this.isFloorErr = false;
+  //     }
+  //   }
+  // }
 
-  @Watch('form.floorTotality')
-  private handlerFloorTotality(newVal: string) {
-    if (newVal && this.form.floorNum) {
-      if (parseFloat(newVal) < parseFloat(this.form.floorNum)) {
-        this.$toast(`楼层数不能大于总楼层数`);
-        this.isFloorErr = true;
-      } else {
-        this.isFloorErr = false;
-      }
-    }
-  }
+  // @Watch('form.floorTotality')
+  // private handlerFloorTotality(newVal: string) {
+  //   if (newVal && this.form.floorNum) {
+  //     if (parseFloat(newVal) < parseFloat(this.form.floorNum)) {
+  //       this.$toast(`楼层数不能大于总楼层数`);
+  //       this.isFloorErr = true;
+  //     } else {
+  //       this.isFloorErr = false;
+  //     }
+  //   }
+  // }
 }
 </script>
 
