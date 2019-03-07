@@ -11,7 +11,7 @@
     <div>
       <div>
         <ul class="viewImg">
-          <li><div class="img-box" v-for="(img, index) in imgagesArr" :key="index" :style="{backgroundImage: 'url(' + img +')'}" @click="showImagePreview(index)"></div></li>
+          <li><div class="img-box" v-for="(img, index) in imgagesArr" :key="index" v-lazy:background-image="img+'?imageView2/1/w/100/h/100'" @click="showImagePreview(index)"></div></li>
         </ul>
       </div>
     </div>
@@ -47,10 +47,13 @@ export default class ImagePreviewPage extends CommonMixins {
    * @author chenmo
    */
   private showImagePreview(position: any, timer: any): void {
-    const images: any[] = this.imgagesArr;
+    const images: any[] = this.imgagesArr.map((item: any) => {
+      return `${item}?imageView2/2/w/320`;
+    });
     const instance = ImagePreview({
       images,
-      startPosition: typeof position === 'number' ? position : 0
+      startPosition: typeof position === 'number' ? position : 0,
+      lazyLoad: true
     });
 
     if (timer) {

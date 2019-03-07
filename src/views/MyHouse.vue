@@ -24,7 +24,7 @@
               <p>暂无房源动态</p>
             </section>
          </section>
-         <BottomBtn :entrustId="entrustId" :cityId="houseInfo.cityId"></BottomBtn>
+         <BottomBtn :entrustId="entrustId" :cityId="houseInfo.starCityId"></BottomBtn>
         </van-tab>
         <van-tab title="房间信息">
           <section v-if="roomInfo.length > 0">
@@ -37,8 +37,8 @@
         </van-tab>
         <van-tab title="租赁信息">
           <section v-if="rentInfo.length > 0">
-            <section class="rent-info">
-              <div class="rent-title" v-if="rentInfo.length > 1">
+            <section class="rent-info" v-if="rentInfo.length > 1">
+              <div class="rent-title">
                 <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
                   {{rent.sourceName}}
                 </span>

@@ -140,7 +140,7 @@ export default class ServiceInfo extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return !this.ownerName || !this.isphoneErr || !this.isintroducePhoneErr;
+    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
   }
 
   // Watch
@@ -224,8 +224,7 @@ export default class ServiceInfo extends CommonMixins {
    */
   private buy() {
     this.bugVisible = true;
-    console.log(this.userInfo);
-    this.ownerName = this.userInfo.nickName;
+    this.ownerName = this.userInfo.realName;
     this.ownerPhone = this.userInfo.username;
   }
 
@@ -248,10 +247,10 @@ export default class ServiceInfo extends CommonMixins {
       return false;
     }
 
-    if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
-      this.$toast('请输入正确的推荐人电话');
-      return false;
-    }
+    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
+    //   this.$toast('请输入正确的推荐人电话');
+    //   return false;
+    // }
 
     this.submitData(this.ownerName, this.ownerPhone); // 提交数据
   }
@@ -272,16 +271,17 @@ export default class ServiceInfo extends CommonMixins {
       price: this.data.price,
       title: this.data.serviceName,
       remark: this.remark,
+      introducePhone: this.introducePhone
     };
     this.loading = true;
     try {
       const res: any = await this.axios.post(api.buyService, data);
       if (res && res.code === '000') {
         this.$toast.success('购买成功');
-        this.bugVisible = false;
         setTimeout(() => {
+          this.bugVisible = false;
           this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
-        }, 3000);
+        }, 2000);
       } else {
         this.$toast('购买失败，请重试');
       }
