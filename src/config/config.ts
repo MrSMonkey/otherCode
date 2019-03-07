@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 13:47:36
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-07 17:57:16
  */
 
 
@@ -93,6 +93,18 @@ export const componentsList: any[] = [
   {
     path: '404',
     title: '404'
+  },
+  {
+    path: 'maintainChecked',
+    title: '确认验收'
+  },
+  {
+    path: 'serviceRecord',
+    title: '服务记录'
+  },
+  {
+    path: 'confirmPay',
+    title: '确认支付'
   }
 ];
 

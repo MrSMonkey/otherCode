@@ -2,12 +2,12 @@
  * @Description: 图片预览组件
  * @Author: chenmo
  * @Date: 2019-02-19 14:43:28
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-19 16:02:51
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-07 14:02:51
  */
 
 <template>
-  <section class="imgView">
+  <section :class="!isFold?'imgView':'imgfoldView'">
     <div>
       <div>
         <ul class="viewImg">
@@ -38,6 +38,8 @@ const images: string[] = [
 export default class ImagePreviewPage extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private imgagesArr: any;
+  @Prop({ type: Boolean, default: false })
+  private isFold: boolean;
   // private imagesA: any[] = images;
   /**
    * @description 预览图片
@@ -92,4 +94,14 @@ export default class ImagePreviewPage extends CommonMixins {
       background-size cover
       background-position center center
       margin-right vw(10)
+.imgfoldView
+  width 100%
+  .img-box
+    display inline-block
+    width 80px
+    height 80px
+    background-repeat no-repeat
+    background-size cover
+    background-position center center
+    margin-right 5.5px
 </style>
