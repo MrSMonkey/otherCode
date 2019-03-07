@@ -13,7 +13,7 @@
       disabled
       label="服务房源"
       input-align="right"
-      placeholder="请输入联系人姓名"
+      placeholder="请输入服务房源"
       type="text"
     />
     <van-field
@@ -100,6 +100,7 @@
         :min-date="minDate"
         @confirm="confirmTime"
         @cancel="timeShow = false"
+        :formatter="formatter"
       /> 
     </van-popup>
   </section>
@@ -140,6 +141,7 @@ export default class StartService extends CommonMixins {
   private autosize: any = {
     minHeight: 116
   };
+
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
     this.productId = String(this.$route.query.productId);
@@ -291,6 +293,28 @@ export default class StartService extends CommonMixins {
     } finally {
       this.loading = false; // 关闭loading
     }
+  }
+
+  /**
+   * @description 显示时间格式化
+   * @params type 时间是时分秒年月日
+   * @params value 当前选择的时间
+   * @returns time
+   * @author chenmo
+   */
+  private formatter(type: any, value: any) {
+    if (type === 'year') {
+      return `${value}年`;
+    } else if (type === 'month') {
+      return `${value}月`;
+    } else if (type === 'day') {
+      return `${value}日`;
+    } else if (type === 'hour') {
+      return `${value}时`;
+    } else if (type === 'minute') {
+      return `${value}分`;
+    }
+    return value;
   }
 }
 </script>

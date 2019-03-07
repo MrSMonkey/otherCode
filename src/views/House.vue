@@ -7,7 +7,7 @@
  */
 
 <template>
-  <section class="house">
+  <section class="house" v-if="isData">
     <section v-if="tableData.length > 0">
       <div class="adver">
         <img  src="../assets/images/advertisement.png" alt="adver"/>
@@ -19,7 +19,12 @@
             <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
             <div class="next">您还可以点击此处<a :href="'/#/perfect?entrustId=' + house.entrustId"><span class="active"><img class="call-icon" alt="waith" src="../assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
           </div>
-          <div v-else class="set"> {{getRentType(house.consociationType)}} | {{getRentWay(house.rentWay)}} | {{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</div>
+          <div v-else class="set">
+            <span>{{getRentType(house.consociationType)}}</span> | 
+            <span>{{getRentWay(house.rentWay)}} </span> | 
+            <span v-if="house.rentWay === 2">{{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</span>
+            <span v-else>{{house.rentRoom ? `已出租` : '待租中'}}</span>
+          </div>
         </div>
       </div>
     </section>
@@ -50,7 +55,7 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class House extends CommonMixins {
   private tableData: any[] = []; // 委托房源列表
-
+  private isData: boolean = false; // 默认不显示
   private mounted() {
     this.getHouseList(); // 获取房源列表
   }
@@ -67,6 +72,7 @@ export default class House extends CommonMixins {
       loadingType: 'spinner',
       message: '加载中...'
     });
+    this.isData = false;
     try {
       const res: any = await this.axios.get(api.getHouseList);
       if (res && res.code === '000') {
@@ -77,6 +83,7 @@ export default class House extends CommonMixins {
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
+      this.isData = true;
       this.$toast.clear();
     }
   }
