@@ -271,6 +271,7 @@ export default class ServiceInfo extends CommonMixins {
       price: this.data.price,
       title: this.data.serviceName,
       remark: this.remark,
+      introducePhone: this.introducePhone
     };
     this.loading = true;
     try {

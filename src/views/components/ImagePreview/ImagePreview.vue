@@ -47,7 +47,9 @@ export default class ImagePreviewPage extends CommonMixins {
    * @author chenmo
    */
   private showImagePreview(position: any, timer: any): void {
-    const images: any[] = this.imgagesArr;
+    const images: any[] = this.imgagesArr.map((item: any) => {
+      return `${item}?imageView2/2/w/320`;
+    });
     const instance = ImagePreview({
       images,
       startPosition: typeof position === 'number' ? position : 0,

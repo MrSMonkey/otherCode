@@ -99,7 +99,7 @@ export default class RentInfo extends CommonMixins {
    */
   private getImages(images: any[]) {
     const arr: any[] = images && images.map((item, index) => {
-      return item.imageUrl;
+      return `${item.imageUrl}`;
     });
     return arr;
   }
