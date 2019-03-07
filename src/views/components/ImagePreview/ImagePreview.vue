@@ -11,7 +11,7 @@
     <div>
       <div>
         <ul class="viewImg">
-          <li><div class="img-box" v-for="(img, index) in imgagesArr" :key="index" v-lazy:background-image="img" @click="showImagePreview(index)"></div></li>
+          <li><div class="img-box" v-for="(img, index) in imgagesArr" :key="index" v-lazy:background-image="img+'?imageView2/1/w/100/h/100'" @click="showImagePreview(index)"></div></li>
         </ul>
       </div>
     </div>
