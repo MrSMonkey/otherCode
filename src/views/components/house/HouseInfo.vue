@@ -13,7 +13,7 @@
     <div class="base-info">
       <div class="block">
         <span>门牌号</span>
-        <p>{{`${houseInfo.building || '?'}栋`}}{{`${houseInfo.unit || '?'}单元`}}{{`${houseInfo.roomNum || '?'}号`}}</p>
+        <p>{{`${houseInfo.building || '?'}栋`}}{{`${houseInfo.unit || '?'}单元`}}{{`${houseInfo.number || '?'}号`}}</p>
       </div>
       <div class="block">
         <span>运营类型</span>
