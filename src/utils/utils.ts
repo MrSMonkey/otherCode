@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-19 10:45:24
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-07 20:25:21
  */
 
 /* 首字母大写 */
@@ -189,4 +189,23 @@ export function getQueryString(name: any) {
   return null;
 }
 
+/**
+ * @description 解决ios中键盘弹出 底部按钮隐藏bug
+ * @param visible boolean 参数名
+ * @return void
+ * @author zhegu
+ */
+export function solveScrollBug(visible: boolean) {
+  if(!visible){
+   setTimeout(function() {
+       (function smoothscroll() {
+         const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+         if (currentScroll > 0) {
+           window.requestAnimationFrame(smoothscroll);
+           window.scrollTo (0, currentScroll - (currentScroll / 5));
+         }
+       })();
+     }, 100);
+   }
+}
 
