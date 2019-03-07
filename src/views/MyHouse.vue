@@ -24,7 +24,7 @@
               <p>暂无房源动态</p>
             </section>
          </section>
-         <BottomBtn :entrustId="entrustId" :cityId="houseInfo.cityId"></BottomBtn>
+         <BottomBtn :entrustId="entrustId" :cityId="houseInfo.starCityId"></BottomBtn>
         </van-tab>
         <van-tab title="房间信息">
           <section v-if="roomInfo.length > 0">

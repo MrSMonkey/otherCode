@@ -117,7 +117,11 @@
           </li>
         </ul>
         <div v-if="tableList.length === 0 && isGetPlot">
-          暂无搜索结果
+          <div class="noserch">
+            <p class="noserch-title">未找到您输入的小区</p>
+            <p class="tips">快速咨询，请点击拨打：10105288</p>
+            <a href="tel:10105288">快速委托</a>
+          </div>
         </div>
       </main>
       <confirmBtn 
@@ -661,6 +665,24 @@ export default class Entrust extends CommonMixins {
         .active
           // background $bg-color-default
           color $main-color
+      .noserch
+        margin-top vw(200)
+        text-align center
+        .noserch-title
+          font-size 16px
+          color $text-color
+        .tips
+          font-size 14px
+          color $tip-text-color
+          margin-top vw(20)
+        a
+          display inline-block
+          border 1px solid $main-color
+          color $main-color
+          font-size 14px
+          padding vw(5) vw(20)
+          border-radius vw(4)
+          margin-top vw(20)
     .plot-footer
       position absolute
       bottom 0

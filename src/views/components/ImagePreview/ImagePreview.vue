@@ -50,7 +50,8 @@ export default class ImagePreviewPage extends CommonMixins {
     const images: any[] = this.imgagesArr;
     const instance = ImagePreview({
       images,
-      startPosition: typeof position === 'number' ? position : 0
+      startPosition: typeof position === 'number' ? position : 0,
+      lazyLoad: true
     });
 
     if (timer) {
