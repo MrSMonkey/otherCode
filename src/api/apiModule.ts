@@ -15,8 +15,8 @@ export default {
   getUserInfo: '/auth/user',
   buyService: '/partner/owner/buy_service',
   getServiceType: '/partner/owner/service_types',
-  getHouserInfo: '/partner/owner/push_service_get_house',
-  pushService: '/partner/owner/service_push',
+  getHouserInfo: '/partner/owner/house_info',
+  pushService: '/partner/owner/launch_service',
   getCommunityList: '/partner/common/communitys',
   getCitys: '/partner/common/city',
   pushEntrust: '/partner/owner/entrust'

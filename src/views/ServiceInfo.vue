@@ -247,10 +247,10 @@ export default class ServiceInfo extends CommonMixins {
       return false;
     }
 
-    if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
-      this.$toast('请输入正确的推荐人电话');
-      return false;
-    }
+    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
+    //   this.$toast('请输入正确的推荐人电话');
+    //   return false;
+    // }
 
     this.submitData(this.ownerName, this.ownerPhone); // 提交数据
   }

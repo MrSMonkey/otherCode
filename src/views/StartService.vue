@@ -13,7 +13,7 @@
       disabled
       label="服务房源"
       input-align="right"
-      placeholder="请输入联系人姓名"
+      placeholder="请输入服务房源"
       type="text"
     />
     <van-field
