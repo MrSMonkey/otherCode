@@ -278,10 +278,10 @@ export default class ServiceInfo extends CommonMixins {
       const res: any = await this.axios.post(api.buyService, data);
       if (res && res.code === '000') {
         this.$toast.success('购买成功');
-        this.bugVisible = false;
         setTimeout(() => {
+          this.bugVisible = false;
           this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
-        }, 3000);
+        }, 2000);
       } else {
         this.$toast('购买失败，请重试');
       }

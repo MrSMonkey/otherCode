@@ -7,7 +7,7 @@
  */
 
 <template>
-  <section class="house">
+  <section class="house" v-if="isData">
     <section v-if="tableData.length > 0">
       <div class="adver">
         <img  src="../assets/images/advertisement.png" alt="adver"/>
@@ -50,7 +50,7 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class House extends CommonMixins {
   private tableData: any[] = []; // 委托房源列表
-
+  private isData: boolean = false; // 默认不显示
   private mounted() {
     this.getHouseList(); // 获取房源列表
   }
@@ -67,6 +67,7 @@ export default class House extends CommonMixins {
       loadingType: 'spinner',
       message: '加载中...'
     });
+    this.isData = false;
     try {
       const res: any = await this.axios.get(api.getHouseList);
       if (res && res.code === '000') {
@@ -77,6 +78,7 @@ export default class House extends CommonMixins {
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
+      this.isData = true;
       this.$toast.clear();
     }
   }
