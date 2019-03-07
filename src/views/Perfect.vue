@@ -1,5 +1,5 @@
 /*
- * @Description: 提交房源
+ * @Description: 完善房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -10,7 +10,7 @@
   <section class="perfect">
     <section class="area mr-b10">
       <div class="perfect-input">
-        <div class="label">运营类型*</div>
+        <div class="label">运营类型</div>
         <div class="village">
           <van-field
             v-model="form.consociationTypeName"
@@ -27,7 +27,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">门牌号码*</div>
+        <div class="label">门牌号码</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
             v-model="form.building"
@@ -57,19 +57,19 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">楼&emsp;&emsp;层*</div>
+        <div class="label">楼&emsp;&emsp;层</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="6"><van-field
             v-model="form.floorNum"
             placeholder="第几层"
-            type="text"
+            type="number"
             input-align="center"
           /></van-col>
           <van-col span="6" class="house-info">
             <van-field
               v-model="form.floorTotality"
               placeholder="总楼层"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -78,19 +78,19 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">原始户型*</div>
+        <div class="label">户&emsp;&emsp;型</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
             v-model="form.roomNum"
             placeholder="几室"
-            type="text"
+            type="number"
             input-align="center"
           /></van-col>
           <van-col span="4" class="house-info">
             <van-field
               v-model="form.hallNum"
               placeholder="几厅"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -98,7 +98,7 @@
             <van-field
               v-model="form.kitchenNum"
               placeholder="几厨"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -106,7 +106,7 @@
             <van-field
               v-model="form.toiletNum"
               placeholder="几卫"
-              type="text"
+              type="number"
               input-align="center"
             />
           </van-col>
@@ -115,7 +115,7 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">朝&emsp;&emsp;向*</div>
+        <div class="label">朝&emsp;&emsp;向</div>
         <div class="village">
           <van-field
             v-model="form.towardName"
@@ -132,12 +132,12 @@
     </section>
     <section class="area">
       <div class="perfect-input">
-        <div class="label">面&emsp;&emsp;积*</div>
+        <div class="label">面&emsp;&emsp;积</div>
         <div class="village">
           <van-field
             v-model="form.buildAcreage"
             placeholder="请输入产权面积"
-            type="text"
+            type="number"
             input-align="right"
           >
           <span slot="button" >平米</span>
@@ -218,6 +218,7 @@ export default class Perfect extends CommonMixins {
   private cityShow: boolean = false;
   private towardShow: boolean = false;
   private loading: boolean = false;
+  private isFloorErr: boolean = false; // 校验楼层数和楼层
   private typeList: any[] = TYPELIST;
   private entrustId: string = ''; // 委托房源ID
   private twordList: any[] = TOWARDLIST; // 朝向
@@ -284,11 +285,19 @@ export default class Perfect extends CommonMixins {
     Object.assign(data, {
       entrustId: this.entrustId
     });
+    if (!this.form.floorNum && !this.form.floorTotality) {
+      const floorNum: any = this.form.floorNum;
+      const floorTotality: any = this.form.floorTotality;
+      if (parseFloat(floorNum) > parseFloat(floorTotality)) {
+        this.$toast(`楼层数不能大于总楼层数`);
+        return false;
+      }
+    }
     this.loading = true;
     try {
       const res: any = await this.axios.put(api.getHouseInfo, data);
       if (res && res.code === '000') {
-        this.$toast.success(res.msg);
+        this.$toast.success(`保存成功`);
         setTimeout(() => {
           window.location.href = '/#/house';
         }, 2000);
@@ -305,6 +314,31 @@ export default class Perfect extends CommonMixins {
   private plotCancel() {
     window.location.href = '/#/house';
   }
+
+  // // Watch
+  // @Watch('form.floorNum')
+  // private handlerFloorNum(newVal: string) {
+  //   if (newVal && this.form.floorTotality) {
+  //     if (parseFloat(newVal) > parseFloat(this.form.floorTotality)) {
+  //       this.$toast(`楼层数不能大于总楼层数`);
+  //       this.isFloorErr = true;
+  //     } else {
+  //       this.isFloorErr = false;
+  //     }
+  //   }
+  // }
+
+  // @Watch('form.floorTotality')
+  // private handlerFloorTotality(newVal: string) {
+  //   if (newVal && this.form.floorNum) {
+  //     if (parseFloat(newVal) < parseFloat(this.form.floorNum)) {
+  //       this.$toast(`楼层数不能大于总楼层数`);
+  //       this.isFloorErr = true;
+  //     } else {
+  //       this.isFloorErr = false;
+  //     }
+  //   }
+  // }
 }
 </script>
 

@@ -1,5 +1,5 @@
 /*
- * @Description: 服务订单
+ * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -60,7 +60,6 @@
           />
           <van-field
             v-model="introducePhone"
-            required
             clearable
             input-align="right"
             label="推荐人电话"
@@ -281,7 +280,7 @@ export default class ServiceInfo extends CommonMixins {
         this.$toast.success('购买成功');
         this.bugVisible = false;
         setTimeout(() => {
-          this.$router.push(`/myHouse?entrustId=${this.entrustId}`); // 跳转到房源列表
+          this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
         }, 3000);
       } else {
         this.$toast('购买失败，请重试');

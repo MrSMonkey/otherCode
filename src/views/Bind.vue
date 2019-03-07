@@ -58,7 +58,7 @@ import api from '@/api';
 const namespace: string = 'global';
 // 声明引入的组件
 @Component({
-  name: 'login',
+  name: 'Bind',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,
@@ -67,7 +67,7 @@ const namespace: string = 'global';
   }
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class Bind extends CommonMixins {
    public $refs!: {
     [key: string]: any,
     phoneErrorInfo: HTMLFormElement,

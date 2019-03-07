@@ -1,5 +1,5 @@
 /*
- * @Description: 服务订单
+ * @Description: 服务包列表
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -9,37 +9,70 @@
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
-    <section v-if="tableData.length > 0">
-    <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-      <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-        <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
-          <!-- <img :src="item.imgUrls[0]" alt=""/> -->
-        </div>
-        <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-        <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-      </router-link>
-    </div>
-    </section>
-    <section v-else>
-      <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
-    </section>
-    <!-- <van-tabs @click="onClick">
-      
+    
+    <van-tabs @click="onClick">
       <van-tab title="服务包">
-        
-    </van-tab>
-      <van-tab title="服务产品">
-        <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-          <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-            <div class="purchase-left">
-              <img :src="item.imgUrls[0]" alt=""/>
-            </div>
-            <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-            <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-          </router-link>
-        </div>
+        <section v-if="tableData.length > 0">
+          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+            <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+              <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+                <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+              </div>
+              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+            </router-link>
+          </div>
+        </section>
+        <section v-else>
+          <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section>
       </van-tab>
-    </van-tabs> -->
+      <van-tab title="服务产品">
+        <section class="tree">
+          <div class="tree-left">
+            <div v-for="(item, index) in list" :key="index" class="tree-left-item">
+              <p :class="item.id === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.name}}</p>
+              <transition name="down">
+                <section v-if="item.id === isActive" class="childrenItem">
+                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(ctx)">
+                    <p :class="ctx.gid === isActiveChildrenOne ? 'active' : ''">{{ctx.name}}</p>
+                  </div>
+                </section>
+              </transition>
+            </div>
+          </div>
+          <div class="tree-right">
+            <section v-if="tableData.length > 0">
+              <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+                <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+                  <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+                    <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+                  </div>
+                  <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+                  <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+                </router-link>
+              </div>
+            </section>
+            <section v-else>
+              <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+            </section>
+          </div>
+        </section>
+        <!-- <section v-if="tableData.length > 0">
+          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+            <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+              <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+              </div>
+              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+            </router-link>
+          </div>
+        </section>
+        <section v-else>
+          <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section> -->
+      </van-tab>
+    </van-tabs>
       
   </section>
 </template>
@@ -57,7 +90,7 @@ import api from '@/api';
 // 声明引入的组件
 @Component({
   name: 'Purchase',
-   components: {
+  components: {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     NoData
@@ -68,6 +101,48 @@ export default class Purchase extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private cityId: string = ''; // 城市ID
   private tableData: any[] = []; // 服务包列表
+  private isActive: number = 1; // 默认选择第一项
+  private isActiveChildrenOne: string = '11'; // 默认选择第一项
+  private list: any[] = [{
+    id: 1,
+    name: '带看带看',
+    children: [
+      {
+        gid: '11',
+        name: '龟速带看带看'
+      },
+      {
+        gid: '22',
+        name: '光速带看'
+      }
+    ]
+  }, {
+    id: 2,
+    name: '装修',
+    children: [
+      {
+        gid: '11',
+        name: '龟速带看'
+      },
+      {
+        gid: '22',
+        name: '光速带看'
+      }
+    ]
+  }, {
+    id: 3,
+    name: '保洁',
+    children: [
+      {
+        gid: '11',
+        name: '龟速带看'
+      },
+      {
+        gid: '22',
+        name: '光速带看'
+      }
+    ]
+  }];
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -119,7 +194,6 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private onClick(index: any) {
-    console.log(index);
     if (index === 0) {
       // this.getHouseInfo(this.entrustId);
       // this.getHouseStatus(this.entrustId);
@@ -129,52 +203,124 @@ export default class Purchase extends CommonMixins {
       // this.getRentInfo(this.entrustId);
     }
   }
+
+  /**
+   * @description 选择tree
+   * @params item 当前选择的item
+   * @returns null
+   * @author chenmo
+   */
+  private checkActive(item: any) {
+    this.isActive = item.id;
+    this.isActiveChildrenOne = item.children[0].gid; // 默认第一个
+  }
+
+  /**
+   * @description 选择tree子选项
+   * @params ctx 当前选择的item
+   * @returns null
+   * @author chenmo
+   */
+  private checkChildrenActive(ctx: any) {
+    this.isActiveChildrenOne = ctx.gid;
+  }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../assets/stylus/main.styl'
-  .purchase
-    .purchase-item
-      background $global-background
-      padding vw(15)
-      border-bottom 1px solid $bg-color-default
-      position relative
-      width 100%
-      top 0px
-      height vw(120)
-      .purchase-title
-        padding-left vw(120)
-        font-size 15px
-        font-weight 500
-        font-family PingFang-SC-Medium
+.purchase
+  .purchase-item
+    background $global-background
+    padding vw(15)
+    border-bottom 1px solid $bg-color-default
+    position relative
+    width 100%
+    top 0px
+    height vw(120)
+    .purchase-title
+      padding-left vw(120)
+      font-size 15px
+      font-weight 500
+      font-family PingFang-SC-Medium
+      color $text-color
+      display -webkit-box
+      -webkit-box-orient vertical
+      -webkit-line-clamp 3
+      overflow hidden
+    .purchase-money
+      text-align right
+      padding-top vw(15)
+      font-size 12px
+      span
         color $text-color
-        display -webkit-box
-        -webkit-box-orient vertical
-        -webkit-line-clamp 3
-        overflow hidden
-      .purchase-money
-        text-align right
-        padding-top vw(15)
-        font-size 12px
-        span
-          color $text-color
-          font-family PingFangSC-Semibold
-          font-size 18px
-          font-weight bold
-          display inline-block
-          padding-right 10px
-      .purchase-left
-        position absolute
-        top vw(15)
-        left vw(15)
-        background-repeat no-repeat
-        background-size cover
+        font-family PingFangSC-Semibold
+        font-size 18px
+        font-weight bold
+        display inline-block
+        padding-right 10px
+    .purchase-left
+      position absolute
+      top vw(15)
+      left vw(15)
+      background-repeat no-repeat
+      background-size cover
+      width vw(110)
+      border-radius 2px
+      height vw(90)
+      background-position center center
+      img 
         width vw(110)
-        border-radius 2px
-        height vw(90)
-        background-position center center
-        img 
-          width vw(110)
-          border-radius: 2px
+        border-radius: 2px
+  .tree
+    display -webkit-flex
+    display flex
+    justify-content space-between
+    .tree-left
+      width vw(80)
+      .childrenItem
+        transition: all 0.1s ease
+        &.dowm-enter-active, &.dowm-leave-active
+          transition all 3s ease
+      .tree-left-item
+        color $text-color
+        font-size 14px
+        // text-align center
+        position relative
+        .cname
+          color $text-color
+          // width vw(30)
+          height vw(60)
+          // margin 0 auto
+          margin-left vw(10)
+          display -webkit-flex
+          display flex
+          // justify-content center
+          align-items center
+        .cname-active
+          font-weight bold
+          &::before
+            position absolute
+            top 0px
+            left 0px
+            width vw(4)
+            height vw(60)
+            content ""
+            background $main-color
+        .next-item
+          background $global-background
+          p
+            color $text-color
+            // width vw(30)
+            height vw(60)
+            margin-left vw(10)
+            display -webkit-flex
+            display flex
+            // justify-content center
+            align-items center
+          .active
+            color $main-color
+    .tree-right
+      width 100%
+      background #fff
 </style>

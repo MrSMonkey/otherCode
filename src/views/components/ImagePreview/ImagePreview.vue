@@ -35,7 +35,7 @@ const images: string[] = [
   name: 'ImagePreview'
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class ImagePreviewPage extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private imgagesArr: any;
   // private imagesA: any[] = images;

@@ -21,9 +21,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
-  name: 'hrTitle',
+  name: 'HrTitle',
 })
-export default class Header extends Vue {
+export default class HrTitle extends Vue {
   @Prop({ type: String, default: 'Title' })
   private title: any;
   @Prop({ type: String, default: '' })

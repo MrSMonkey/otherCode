@@ -13,7 +13,7 @@
     <div class="base-info">
       <div class="block">
         <span>门牌号</span>
-        <p>{{`${houseInfo.building || '?'}栋`}}{{`${houseInfo.unit || '?'}单元`}}{{`${houseInfo.roomNum || '?'}室`}}</p>
+        <p>{{`${houseInfo.building || '?'}栋`}}{{`${houseInfo.unit || '?'}单元`}}{{`${houseInfo.roomNum || '?'}号`}}</p>
       </div>
       <div class="block">
         <span>运营类型</span>
@@ -30,8 +30,8 @@
         <span>{{houseInfo.floorNum || '?'}}/{{houseInfo.floorTotality || '?'}}层</span>
       </div>
       <div class="block">
-        <label>原始户型：</label>
-        <span>{{houseInfo.roomNum || '?'}}室{{houseInfo.hallNum || '?'}}厅{{houseInfo.toiletNum || '?'}}卫</span>
+        <label>户<span class="space-2"/>型：</label>
+        <span>{{houseInfo.roomNum || '?'}}室{{houseInfo.hallNum || '?'}}厅{{houseInfo.kitchenNum || '?'}}厨{{houseInfo.toiletNum || '?'}}卫</span>
       </div>
       <div class="block-secondary">
         <label>朝<span class="space-2"/>向：</label>
@@ -45,10 +45,10 @@
         <label>装修情况：</label>
         <span>{{houseInfo.decorationStatus === 0 ? '毛坯房' : '已装修'}}</span>
       </div>
-      <div class="block">
+      <!-- <div class="block">
         <label>改造后房间数：</label>
         <span>{{houseInfo.roomNum || '?'}}间</span>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>
@@ -64,7 +64,7 @@ import { RENT_TYPE, TOWARDNAME} from '@/config/config';
   name: 'HouseInfo',
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class HouseInfo extends CommonMixins {
   @Prop({ type: Object, default: {} })
   private houseInfo: any;
 

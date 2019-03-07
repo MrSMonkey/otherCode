@@ -84,7 +84,7 @@ import api from '@/api';
   }
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class MyHouse extends CommonMixins {
   private houseInfo: any = {}; // 委托房源详情
   private entrustId: string = ''; // 委托房源ID
   private houseStatus: any[] = []; // 房源动态
