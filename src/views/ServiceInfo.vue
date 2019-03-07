@@ -140,7 +140,7 @@ export default class ServiceInfo extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return !this.ownerName || !this.isphoneErr || !this.isintroducePhoneErr;
+    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
   }
 
   // Watch
@@ -224,8 +224,7 @@ export default class ServiceInfo extends CommonMixins {
    */
   private buy() {
     this.bugVisible = true;
-    console.log(this.userInfo);
-    this.ownerName = this.userInfo.nickName;
+    this.ownerName = this.userInfo.realName;
     this.ownerPhone = this.userInfo.username;
   }
 

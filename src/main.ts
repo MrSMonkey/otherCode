@@ -17,21 +17,23 @@ Vue.use(Toast);
 Vue.use(Picker);
 Vue.use(Popup);
 Vue.use(Button);
-Vue.use(Lazyload);
 Vue.use(Field);
 Vue.use(Loading);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Lazyload, {
+  lazyComponent: true,
+});
 // Intersection Observer polyfill
 require('intersection-observer');
 
 // 解决点击延迟300ms的问题， 兼容 IOS
-// if ('addEventListener' in document) {
-//   document.addEventListener('DOMContentLoaded', () => {
-//     (FastClick as any).attach(document.body);
-//   }, false);
-// }
-(FastClick as any).attach(document.body);
+if ('addEventListener' in document) {
+  document.addEventListener('DOMContentLoaded', () => {
+    (FastClick as any).attach(document.body);
+  }, false);
+}
+// (FastClick as any).attach(document.body);
 
 Vue.config.productionTip = false;
 

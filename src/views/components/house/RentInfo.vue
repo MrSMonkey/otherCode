@@ -26,7 +26,7 @@
       <section v-if="selectData.rentType === 1 && selectData.houseRentRoomDTO.length > 0">
         <div class="block" >
           <label>出租价格：</label>
-          <p>{{selectData.houseRentRoomDTO[0].rent || '0.00' }}元/月 | {{getRentStatus(selectData.houseRentRoomDTO[0].rentStatus)}} | 押{{selectData.houseRentRoomDTO[0].prepayNumber}}付{{selectData.houseRentRoomDTO[0].afterpayNumber}} | 中介费{{selectData.houseRentRoomDTO[0].agencyFee}}</p>
+          <p>{{selectData.houseRentRoomDTO[0].rent || '0.00' }}元/月 | {{getRentStatus(selectData.houseRentRoomDTO[0].rentStatus)}} | 押{{selectData.houseRentRoomDTO[0].prepayNumber}}付{{selectData.houseRentRoomDTO[0].afterpayNumber}} | 中介费{{selectData.houseRentRoomDTO[0].agencyFee}}%</p>
         </div>
       </section>
       <div class="block">
