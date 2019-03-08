@@ -27,22 +27,26 @@
       <van-button size="normal" type="default">验收通过</van-button>
       <van-button size="normal" type="default" @click="changeVisible(true)">验收不通过</van-button>
     </div>
-    <div class="mask" v-if="maskVisible" @click="changeVisible(false)"></div>
-    <div class="modal" v-if="modalVisible">
-      <h1>不通过原因</h1>
-      <van-field
-        class="text"
-        v-model="desc"
-        type="textarea"
-        placeholder="请输入50字以内的不通过原因描述"
-        rows="3"
-        autosize
-      />
-      <div class="modal-btn" >
-        <span @click="changeVisible(false)">取消</span>
-        <span @click="changeVisible(false)">确定</span>
+    <transition name="van-fade">
+      <div class="mask" v-show="maskVisible" @click="changeVisible(false)"></div>
+    </transition>
+    <transition name="van-fade">
+      <div v-show="modalVisible" class="modal">
+        <h1>不通过原因</h1>
+        <van-field
+          class="text"
+          v-model="desc"
+          type="textarea"
+          placeholder="请输入50字以内的不通过原因描述"
+          rows="3"
+          autosize
+        />
+        <div class="modal-btn" >
+          <span @click="changeVisible(false)">取消</span>
+          <span @click="changeVisible(false)">确定</span>
+        </div>
       </div>
-    </div>
+    </transition>
   </section>
 </template>
 
