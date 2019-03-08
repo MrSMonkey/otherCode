@@ -31,7 +31,7 @@
           <div :class="item.status === 7 ? '' : 'order-item-type'">{{getOrderStatusName(item.status)}}</div>
         </div>
         <div class="order-item">
-          <span>产品类型：{{item.serviceType || '无'}}</span>
+          <span>产品类型：{{item.serviceType || '无'}}</span><span class="check">查看服务记录<van-icon name="arrow" /></span>
         </div>
         <div class="order-item">
           <span>产品名称：{{item.serviceName || '无'}}</span>
@@ -149,5 +149,13 @@ export default class ServiceDetile extends CommonMixins {
       padding-top vw(10)
       .order-item-type
         color $main-color
-
+      .check
+        display inline-block
+        font-size 12px
+        border 1px solid $disabled-color
+        border-radius 4px
+        padding vw(2) vw(10)
+        i 
+          color $text-color
+          margin-top vw(2)
 </style>
