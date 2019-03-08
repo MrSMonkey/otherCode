@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 11:47:40
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 20:55:51
+ * @Last Modified time: 2019-03-08 15:29:07
 */
 
 <template>
@@ -75,18 +75,16 @@ export default class MaintainChecked extends CommonMixins {
   private maskVisible: boolean = false; // 遮罩层
   private modalVisible: boolean = false; // 模态框
   private desc: string = ''; // 不通过原因
-  
-  
-  /**
-   * @description 模态框显示/隐藏
-   * @params boolean 布尔值
-   * @returns void
-   * @author zhegu
-  */
+/**
+ * @description 模态框显示/隐藏
+ * @params boolean 布尔值
+ * @returns void
+ * @author zhegu
+ */
   private  changeVisible(visible: boolean) {
-    this.maskVisible = visible
-    this.modalVisible = visible
-    solveScrollBug(visible)
+    this.maskVisible = visible;
+    this.modalVisible = visible;
+    solveScrollBug(visible);
   }
 }
 </script>

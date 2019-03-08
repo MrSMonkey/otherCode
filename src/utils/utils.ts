@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 20:31:21
+ * @Last Modified time: 2019-03-08 15:36:23
  */
 
 /* 首字母大写 */
@@ -206,6 +206,6 @@ export function solveScrollBug(visible: boolean) {
          }
        })();
      }, 100);
-   }
+  }
 }
 
