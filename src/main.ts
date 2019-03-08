@@ -23,6 +23,8 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Lazyload, {
   lazyComponent: true,
+  loading: require('./assets/images/de_bg.jpg'),
+  error: require('./assets/images/de_bg.jpg'),
 });
 // Intersection Observer polyfill
 require('intersection-observer');

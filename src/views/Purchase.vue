@@ -12,7 +12,7 @@
     <section v-if="tableData.length > 0">
     <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
       <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-        <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+        <div class="purchase-left" v-lazy:background-image = "item.imgUrls[0] ? item.imgUrls[0] : '../assets/images/de_bg.jpg'">
           <!-- <img :src="item.imgUrls[0]" alt=""/> -->
         </div>
         <p  class="purchase-title">{{item.serviceName|| 1}}</p>

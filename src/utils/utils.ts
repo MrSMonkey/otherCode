@@ -150,13 +150,17 @@ export const handleWebStorage = {
   }
 };
 
-// 与日期相关的方法集合
+/**
+ * @description 获取当前年月日期
+ * @return time
+ * @author chenmo
+ */
 export const handleDate = {
   // 获取当前年份
   getCurrentFullYear() {
     return String(new Date().getFullYear());
   },
-
+  // 获取当前月份
   getMonth() {
     const mon = new Date().getMonth() + 1;
     return mon < 10 ? `0${mon}` : String(mon);
