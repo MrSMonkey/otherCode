@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 17:59:00
+ * @Last Modified time: 2019-03-08 17:02:55
  */
 
 <template>
@@ -39,6 +39,9 @@
     </section>
     <section v-else>
       <div class="buy-dialog">
+        <div class="tips">
+          <p>注：{{tips}}</p>
+        </div>
         <div class="el-input">
           <van-field
             v-model="ownerName"
@@ -134,7 +137,7 @@ export default class ServiceInfo extends CommonMixins {
   private isphoneErr: boolean = false;
   private isintroducePhoneErr: boolean = false;
   private introducePhone: string = ''; // 推荐人联系电话
-
+  private tips: string = '本次支付仅支付设计费用，装修费用需在确认装修改后支付！';
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
 
@@ -322,7 +325,7 @@ export default class ServiceInfo extends CommonMixins {
         left vw(15)
       p
         display inline-block
-        margin-left vw(88)
+        margin-left vw(98)
         word-wrap break-word
         text-align justify
         width vw(240)
@@ -340,6 +343,17 @@ export default class ServiceInfo extends CommonMixins {
         color #fff
   .buy-dialog
     height vw(300)
+    .tips
+      width 100%
+      height vw(40)
+      background #FFF5F5
+      padding vw(5) vw(15)
+      p
+        line-height 2.5
+        text-align left
+        display inline-block
+        font-size 12px
+        color #FF5252
     .title
       display -webkit-flex
       display flex

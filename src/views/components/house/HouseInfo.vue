@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-19 11:35:59
+ * @Last Modified time: 2019-03-08 17:00:25
  */
 /*
 
@@ -112,7 +112,7 @@ export default class HouseInfo extends CommonMixins {
       &:first-child
         border-right 1px solid  $border-color-light
   .detail-info
-    padding 20px
+    padding vw(10)
     border-top 1px solid $border-color-light
     background-color $global-background
     font-size 14px /* no */
