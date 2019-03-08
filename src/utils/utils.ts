@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 20:31:21
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-08 15:40:46
  */
 
 /* 首字母大写 */
