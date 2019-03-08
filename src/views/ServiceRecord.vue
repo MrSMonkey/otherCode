@@ -27,42 +27,48 @@
       <van-button size="normal" type="default" @click="changeDecorateVisible(true)">验收通过</van-button>
       <van-button size="normal" type="default" @click="changeNopassVisible(true)">验收不通过</van-button>
     </div>
-    <div class="mask" v-if="maskVisible" @click="changeNopassVisible(false)"></div>
-    <div class="nopass-modal" v-if="nopassVisible">
-      <h1>不通过原因</h1>
-      <van-field
-        class="text"
-        v-model="desc"
-        type="textarea"
-        placeholder="请输入50字以内的不通过原因描述"
-        rows="3"
-        autosize
-      />
-      <div class="modal-btn">
-        <span @click="changeNopassVisible(false)">取消</span>
-        <span @click="changeNopassVisible(false)">确定</span>
-      </div>
-    </div>
-    <div class="decorate-modal" v-if="decorateVisible">
-      <van-icon class="icon-close" name="cross"  @click="changeDecorateVisible(false)"/>
-      <h1>确认装修</h1>
-      <div class="content">
-        <p>装修项</p>
-        <ul>
-          <li>
-            <span>装修施工报价</span>
-            <span>￥1000.00元</span>
-          </li>
-          <li>
-            <span>主体拆改费用</span>
-            <span>￥1000.00元</span>
-          </li>
-        </ul>
-        <div class="decorate-btn">
-          <van-button size="normal" type="default" @click="changeDecorateVisible(false)">共计应付￥18000.00</van-button>
+    <transition name="van-fade">
+      <div class="mask" v-show="maskVisible" @click="changeNopassVisible(false)"></div>
+    </transition>
+    <transition name="van-fade">
+      <div class="nopass-modal" v-show="nopassVisible">
+        <h1>不通过原因</h1>
+        <van-field
+          class="text"
+          v-model="desc"
+          type="textarea"
+          placeholder="请输入50字以内的不通过原因描述"
+          rows="3"
+          autosize
+        />
+        <div class="modal-btn">
+          <span @click="changeNopassVisible(false)">取消</span>
+          <span @click="changeNopassVisible(false)">确定</span>
         </div>
       </div>
-    </div>
+    </transition>
+    <transition name="van-slide-up">
+      <div class="decorate-modal" v-show="decorateVisible">
+        <van-icon class="icon-close" name="cross"  @click="changeDecorateVisible(false)"/>
+        <h1>确认装修</h1>
+        <div class="content">
+          <p>装修项</p>
+          <ul>
+            <li>
+              <span>装修施工报价</span>
+              <span>￥1000.00元</span>
+            </li>
+            <li>
+              <span>主体拆改费用</span>
+              <span>￥1000.00元</span>
+            </li>
+          </ul>
+          <div class="decorate-btn">
+            <van-button size="normal" type="default" @click="changeDecorateVisible(false)">共计应付￥18000.00</van-button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </section>
 </template>
 
