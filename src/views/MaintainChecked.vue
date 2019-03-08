@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 11:47:40
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 20:18:53
+ * @Last Modified time: 2019-03-07 20:55:51
 */
 
 <template>
@@ -50,7 +50,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { solveScrollBug } from '@/utils/utils';
-
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field } from 'vant';
 

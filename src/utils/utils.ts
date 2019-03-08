@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 20:25:21
+ * @Last Modified time: 2019-03-07 20:31:21
  */
 
 /* 首字母大写 */
@@ -196,8 +196,8 @@ export function getQueryString(name: any) {
  * @author zhegu
  */
 export function solveScrollBug(visible: boolean) {
-  if(!visible){
-   setTimeout(function() {
+  if (!visible) {
+   setTimeout(() => {
        (function smoothscroll() {
          const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
          if (currentScroll > 0) {
