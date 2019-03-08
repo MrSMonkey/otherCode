@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-08 16:06:41
+ * @Last Modified time: 2019-03-08 16:56:53
  */
 
 <template>
@@ -172,8 +172,6 @@ export default class ServiceInfo extends CommonMixins {
     this.serviceId = String(this.$route.query.serviceId);
     this.getServiceDetils(this.serviceId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
-
-    
   }
 
   /**
