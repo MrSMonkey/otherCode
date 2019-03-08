@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 17:56:23
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 19:36:35
+ * @Last Modified time: 2019-03-08 15:28:58
  */
 
 <template>
@@ -23,7 +23,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
-import  HouseStatus  from './components/house/HouseStatus.vue'
+import HouseStatus from './components/house/HouseStatus.vue';
 // 声明引入的组件
 @Component({
   name: 'ConfirmPay',
@@ -38,20 +38,19 @@ import  HouseStatus  from './components/house/HouseStatus.vue'
 })
 export default class ConfirmPay extends CommonMixins {
   private data: any[] = [
-    { title: '上门检查', child:[
+    { title: '上门检查', child: [
       { title: '上门师傅检查问题', cost: '30.00'}
     ]},
-    { title: '电热水器', child:[
+    { title: '电热水器', child: [
       { title: '换电板', cost: '40.00'},
       { title: '更换控制板', cost: '40.00'}
     ]},
-    { title: '费用结算', child:[
+    { title: '费用结算', child: [
       { title: '上门检查费扣除', cost: '-30.00'},
       { title: '支付总金额', cost: '110.00'},
       { title: '还需支付金额', cost: '80.00'}
     ]}
   ]; // 支付数据
-  
 }
 </script>
 

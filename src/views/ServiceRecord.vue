@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 20:19:45
+ * @Last Modified time: 2019-03-08 15:28:22
 */
 
 <template>
@@ -72,7 +72,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { solveScrollBug } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
-import  HouseStatus  from './components/house/HouseStatus.vue'
+import HouseStatus from './components/house/HouseStatus.vue';
 // 声明引入的组件
 @Component({
   name: 'ServiceRecord',
@@ -99,37 +99,36 @@ export default class ServiceRecord extends CommonMixins {
   private decorateVisible: boolean = false; // 装修模态框
   private desc: string = ''; // 不通过原因
   private houseStatus: any[] = [
-    {content:'待确认验收'},
-    {content:'2018-08-02 14:34 已支付待维修', createTime:'2018-08-02 14:34'},
-    {content:'2018-08-02 14:34 已测量已设计', createTime:'2018-08-02 14:34'},
-    {content:'2018-08-02 14:34 服务中', createTime:'2018-08-02 14:34'},
-    {content:'2018-08-02 14:34 已接单待服务', createTime:'2018-08-02 14:34'},
+    {content: '待确认验收'},
+    {content: '2018-08-02 14:34 已支付待维修', createTime: '2018-08-02 14:34'},
+    {content: '2018-08-02 14:34 已测量已设计', createTime: '2018-08-02 14:34'},
+    {content: '2018-08-02 14:34 服务中', createTime: '2018-08-02 14:34'},
+    {content: '2018-08-02 14:34 已接单待服务', createTime: '2018-08-02 14:34'},
   ]; // 维修日志
-  
   /**
    * @description 不通过模态框显示/隐藏
    * @params boolean 布尔值
    * @returns void
    * @author zhegu
-  */
+   */
   private  changeNopassVisible(visible: boolean) {
-    this.maskVisible = visible
-    this.nopassVisible = visible
-    if(!visible){
-      this.decorateVisible = false
+    this.maskVisible = visible;
+    this.nopassVisible = visible;
+    if (!visible) {
+      this.decorateVisible = false;
     }
-    solveScrollBug(visible)
+    solveScrollBug(visible);
   }
   /**
    * @description 装修模态框显示/隐藏
    * @params boolean 布尔值
    * @returns void
    * @author zhegu
-  */
+   */
   private  changeDecorateVisible(visible: boolean) {
-    this.maskVisible = visible
-    this.decorateVisible = visible
-    solveScrollBug(visible)
+    this.maskVisible = visible;
+    this.decorateVisible = visible;
+    solveScrollBug(visible);
   }
 }
 </script>
