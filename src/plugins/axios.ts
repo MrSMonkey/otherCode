@@ -2,8 +2,8 @@
  * @Description: axios网络请求库二次封装
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
- * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-03-01 14:51:59
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-11 17:11:34
  */
 import axios from 'axios';
 import store from '../store';
@@ -24,7 +24,8 @@ Axios.interceptors.request.use(
       config.baseURL = 'http://api-gateway.uoko.com/';
       // config.baseURL = 'http://bi.uoko.com:9999/app/webapi/';
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TEST) {
-      config.baseURL = 'http://192.168.200.120:7070/';
+      // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
+      config.baseURL = 'https://api-gateway-pre.uoko.com'; // pre环境
     } else {
       // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
