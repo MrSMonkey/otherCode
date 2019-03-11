@@ -25,6 +25,8 @@ Vue.use(Icon);
 Vue.use(Dialog);
 Vue.use(Lazyload, {
   lazyComponent: true,
+  loading: require('./assets/images/de_bg.jpg'),
+  error: require('./assets/images/de_bg.jpg'),
 });
 // Intersection Observer polyfill
 require('intersection-observer');

@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-19 15:58:18
+ * @Last Modified time: 2019-03-08 17:01:06
  */
 /*
 
@@ -129,7 +129,7 @@ export default class RentInfo extends CommonMixins {
       label
         color $tip-text-color
         display: inline-block
-        width vw(70)
+        // width vw(70)
         position absolute
         top vw(10)
         left vw(15)

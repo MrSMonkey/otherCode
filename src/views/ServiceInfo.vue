@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-08 16:56:53
+ * @Last Modified time: 2019-03-08 17:02:55
  */
 
 <template>
@@ -325,7 +325,7 @@ export default class ServiceInfo extends CommonMixins {
         left vw(15)
       p
         display inline-block
-        margin-left vw(88)
+        margin-left vw(98)
         word-wrap break-word
         text-align justify
         width vw(240)
