@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-11 17:11:34
+ * @Last Modified time: 2019-03-11 23:41:09
  */
 import axios from 'axios';
 import store from '../store';
@@ -21,7 +21,7 @@ Axios.interceptors.request.use(
   (config: any) => {
     // 根据环境设置baseURL
     if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
-      config.baseURL = 'http://api-gateway.uoko.com/';
+      config.baseURL = 'https://api-gateway.uoko.com/';
       // config.baseURL = 'http://bi.uoko.com:9999/app/webapi/';
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TEST) {
       // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
