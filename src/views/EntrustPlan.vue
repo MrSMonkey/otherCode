@@ -3,8 +3,8 @@
   * @Description: 星级房屋托管计划
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
-  * @Last Modified by: chenmo
-  * @Last Modified time: 2019-02-15 14:41:27
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-11 14:49:00
   */
 -->
 
@@ -98,8 +98,9 @@ export default class EntrustPlan extends CommonMixins {
   private gotoEntrust() {
     if (typeof(this.sourceId) === 'undefined') {
       this.$router.push(`/entrust`); // 跳转到在线委托页
+      window.location.href = `/#/entrust`;
     } else {
-      this.$router.push(`/entrust?sourceId=${this.sourceId}`); // 跳转到在线委托页
+      window.location.href = `/#/entrust?sourceId=${this.sourceId}`; // 跳转到在线委托页
     }
   }
 }
