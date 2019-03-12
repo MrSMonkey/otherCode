@@ -3,10 +3,40 @@
  * @Author: LiuZhen
  * @Date: 2019-01-24 17:11:12
  * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-03-01 15:10:34
+ * @Last Modified time: 2019-03-12 11:29:30
  */
 const fs = require('fs');
 const qiniu = require('qiniu');
+
+/** 
+ *  @description 日期时间格式化工具方法
+ *  @param * fmt 要求输入的格式
+ *  @returns 格式化后的结果
+ *  @author LiuZhen 
+ */
+Date.prototype.Format = function (fmt) {
+  let o = {
+    "M+": this.getMonth() + 1, // 月
+    "d+": this.getDate(), // 日
+    "h+": this.getHours(), // 小时
+    "m+": this.getMinutes(), // 分
+    "s+": this.getSeconds(), // 秒
+  }
+
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+      
+  for (var k in o) {
+    if (o.hasOwnProperty(k)) {
+      if (new RegExp("(" + k + ")").test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      }
+    }
+  }
+   
+  return fmt;        
+}
 
 // 授权秘钥
 const accessKey = `G3XeV8kr7iu0JgXiP355hYY67TijAqZXaTT3mV2b`;
@@ -19,7 +49,7 @@ const bucket = `cdn-static`;
 const staticPath = `dist/static`;
 
 // 上传之后的文件前缀
-const prefix = `ET-FE/yz/static`;
+const prefix = `ET-FE/yz_${new Date().Format('yyyyMMddhhmm')}/static`;
 
 // 创建鉴权对象
 const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
