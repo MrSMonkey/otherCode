@@ -58,5 +58,6 @@ module.exports = {
             {convertPathData: false}
           ]
         })
-  }
+  },
+  productionSourceMap: false
 }
