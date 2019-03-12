@@ -229,7 +229,7 @@ export default class EntrustPlan extends CommonMixins {
           color $next-text-color
           letter-spacing 1px
   .entrust-btn
-    position absolute
+    position fixed
     bottom 0
     left 0
     background $main-color
