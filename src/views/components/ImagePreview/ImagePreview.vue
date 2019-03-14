@@ -25,7 +25,6 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { ImagePreview } from 'vant';
 
 const images: string[] = [
-  require('../../../assets/images/ccc.jpg'),
   'https://img.yzcdn.cn/upload_files/2017/03/14/FmTPs0SeyQaAOSK1rRe1sL8RcwSY.jpeg',
   'https://img.yzcdn.cn/upload_files/2017/03/15/FvexrWlG_WxtCE9Omo5l27n_mAG_.jpeg',
   'https://img.yzcdn.cn/upload_files/2017/03/14/FmTPs0SeyQaAOSK1rRe1sL8RcwSY.jpeg'
@@ -55,7 +54,6 @@ export default class ImagePreviewPage extends CommonMixins {
     const instance = ImagePreview({
       images,
       startPosition: typeof position === 'number' ? position : 0,
-      lazyLoad: true
     });
 
     if (timer) {

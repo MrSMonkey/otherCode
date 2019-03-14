@@ -77,6 +77,11 @@ export default class ChoicePlot extends CommonMixins {
     this.communityName = item.communityName;
   }
 
+  /**
+   * @description 获取查询到的小区列表
+   * @returns void
+   * @author chenmo
+   */
   private async getPlotList() {
     if (this.value === '') {
       return false;

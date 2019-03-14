@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-08 15:36:23
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-08 15:41:23
  */
 
 /* 首字母大写 */
@@ -150,13 +150,17 @@ export const handleWebStorage = {
   }
 };
 
-// 与日期相关的方法集合
+/**
+ * @description 获取当前年月日期
+ * @return time
+ * @author chenmo
+ */
 export const handleDate = {
   // 获取当前年份
   getCurrentFullYear() {
     return String(new Date().getFullYear());
   },
-
+  // 获取当前月份
   getMonth() {
     const mon = new Date().getMonth() + 1;
     return mon < 10 ? `0${mon}` : String(mon);

@@ -2,8 +2,8 @@
  * @Description: 公共Mixins
  * @Author: LiuZhen
  * @Date: 2018-09-18 16:32:24
- * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-01-22 18:06:07
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-08 16:48:41
  */
 import { Component, Vue } from 'vue-property-decorator';
 import { Row, Col, Collapse, CollapseItem } from 'vant';
@@ -15,7 +15,7 @@ import Header from '@/components/Header.vue';
     [Col.name]: Col,
     [Collapse.name]: Collapse,
     [CollapseItem.name]: CollapseItem,
-    [Header.name]: Header
+    [Header.name]: Header,
   }
 })
 export default class CommonMixins extends Vue {

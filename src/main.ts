@@ -9,7 +9,7 @@ import Footer from '@/components/Footer.vue';
 import FastClick from 'fastclick';
 // import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
-import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon } from 'vant';
+import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, Dialog } from 'vant';
 import 'vant/lib/index.css';
 
 
@@ -22,8 +22,11 @@ Vue.use(Loading);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Icon);
+Vue.use(Dialog);
 Vue.use(Lazyload, {
   lazyComponent: true,
+  loading: require('./assets/images/de_bg.jpg'),
+  error: require('./assets/images/de_bg.jpg'),
 });
 // Intersection Observer polyfill
 require('intersection-observer');

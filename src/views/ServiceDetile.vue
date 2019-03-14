@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-20 09:29:37
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 11:23:13
+ * @Last Modified time: 2019-03-08 16:31:50
  */
 
 <template>
@@ -96,6 +96,17 @@ export default class ServiceDetile extends CommonMixins {
       const res: any = await this.axios.get(api.getOrderDetils + `/${servicePackageId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
+        this.$dialog.confirm({
+          title: '提示',
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          className: 'dialogTips',
+          message: '是否立即发起本服务'
+        }).then(() => {
+          // on confirm
+        }).catch(() => {
+          // on cancel
+        });
       } else {
         this.$toast(`获取订单详情失败`);
       }
@@ -154,8 +165,20 @@ export default class ServiceDetile extends CommonMixins {
         font-size 12px
         border 1px solid $disabled-color
         border-radius 4px
-        padding vw(2) vw(10)
+        padding vw(2) vw(6) vw(2) vw(10)
         i 
+          display inline-block
           color $text-color
-          margin-top vw(2)
+          margin-top vw(1)
+          font-size 15px
+          vertical-align top
+.dialogTips
+  width 70%
+  .van-dialog__header
+    font-size 17px
+    color #2C2D2E
+    font-weight bold
+  .van-dialog__message--has-title
+    color #2C2D2E
+    font-size 14px
 </style>
