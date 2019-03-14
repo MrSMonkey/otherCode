@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-08 15:28:22
+ * @Last Modified time: 2019-03-14 20:06:33
 */
 
 <template>
@@ -11,12 +11,12 @@
     <div class="order">
       <h1 class="title">订单信息</h1>
       <div class="info">
-        <p>订单号：SN08982938356</p>
-        <p>服务房源：中粮香颂丽都-1栋2单元505室</p>
-        <p>产品名称：龟速带看</p>
-        <p>订单状态：服务中</p>
-        <p>开始日期：2018-09-10</p>
-        <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：点名要带看团队最好看的小姐姐带看</p>
+        <p>订单号：{{data.orderInfo && data.orderInfo.orderId}}</p>
+        <p>服务房源：{{data.orderInfo && data.orderInfo.productHouseName}}</p>
+        <p>产品名称：{{data.orderInfo && data.orderInfo.productName}}</p>
+        <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatus}}</p>
+        <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime}}</p>
+        <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks}}</p>
       </div>
     </div>
     <div class="log">
@@ -24,51 +24,10 @@
       <houseStatus :data="houseStatus"/>
     </div>
     <div class="btn">
-      <van-button size="normal" type="default" @click="changeDecorateVisible(true)">验收通过</van-button>
-      <van-button size="normal" type="default" @click="changeNopassVisible(true)">验收不通过</van-button>
+      <router-link  :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
+      <router-link  :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <van-button size="normal" type="default" >确认支付</van-button>
     </div>
-    <transition name="van-fade">
-      <div class="mask" v-show="maskVisible" @click="changeNopassVisible(false)"></div>
-    </transition>
-    <transition name="van-fade">
-      <div class="nopass-modal" v-show="nopassVisible">
-        <h1>不通过原因</h1>
-        <van-field
-          class="text"
-          v-model="desc"
-          type="textarea"
-          placeholder="请输入50字以内的不通过原因描述"
-          rows="3"
-          autosize
-        />
-        <div class="modal-btn">
-          <span @click="changeNopassVisible(false)">取消</span>
-          <span @click="changeNopassVisible(false)">确定</span>
-        </div>
-      </div>
-    </transition>
-    <transition name="van-slide-up">
-      <div class="decorate-modal" v-show="decorateVisible">
-        <van-icon class="icon-close" name="cross"  @click="changeDecorateVisible(false)"/>
-        <h1>确认装修</h1>
-        <div class="content">
-          <p>装修项</p>
-          <ul>
-            <li>
-              <span>装修施工报价</span>
-              <span>￥1000.00元</span>
-            </li>
-            <li>
-              <span>主体拆改费用</span>
-              <span>￥1000.00元</span>
-            </li>
-          </ul>
-          <div class="decorate-btn">
-            <van-button size="normal" type="default" @click="changeDecorateVisible(false)">共计应付￥18000.00</van-button>
-          </div>
-        </div>
-      </div>
-    </transition>
   </section>
 </template>
 
@@ -79,6 +38,8 @@ import { solveScrollBug } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
+import api from '@/api';
+
 // 声明引入的组件
 @Component({
   name: 'ServiceRecord',
@@ -92,25 +53,20 @@ import HouseStatus from './components/house/HouseStatus.vue';
   }
 })
 export default class ServiceRecord extends CommonMixins {
-  private imgUrls: any[] = [
-    'http://pic.58pic.com/58pic/15/68/59/71X58PICNjx_1024.jpg',
-    'http://pic.58pic.com/58pic/15/68/59/71X58PICNjx_1024.jpg',
-    'http://pic.58pic.com/58pic/15/68/59/71X58PICNjx_1024.jpg',
-    'http://pic.58pic.com/58pic/15/68/59/71X58PICNjx_1024.jpg',
-    'http://pic.58pic.com/58pic/15/68/59/71X58PICNjx_1024.jpg',
-    'http://pic.58pic.com/58pic/15/68/59/71X58PICNjx_1024.jpg'
-  ]; // 维修前照片
+  private data: any = {}; // 服务记录详情
   private maskVisible: boolean = false; // 遮罩层
   private nopassVisible: boolean = false; // 不通过模态框
   private decorateVisible: boolean = false; // 装修模态框
   private desc: string = ''; // 不通过原因
-  private houseStatus: any[] = [
-    {content: '待确认验收'},
-    {content: '2018-08-02 14:34 已支付待维修', createTime: '2018-08-02 14:34'},
-    {content: '2018-08-02 14:34 已测量已设计', createTime: '2018-08-02 14:34'},
-    {content: '2018-08-02 14:34 服务中', createTime: '2018-08-02 14:34'},
-    {content: '2018-08-02 14:34 已接单待服务', createTime: '2018-08-02 14:34'},
-  ]; // 维修日志
+  private houseStatus: any[] = []; // 维修日志
+  private orderId: string = ''; // 订单id
+  private entrustId: string = ''; // 房源id
+
+  private mounted() {
+    this.orderId = String(this.$route.query.orderId);
+    this.entrustId = String(this.$route.query.entrustId);
+    this.getServiceRecord(this.entrustId, this.orderId); // 获取服务记录详情
+  }
   /**
    * @description 不通过模态框显示/隐藏
    * @params boolean 布尔值
@@ -136,6 +92,37 @@ export default class ServiceRecord extends CommonMixins {
     this.decorateVisible = visible;
     solveScrollBug(visible);
   }
+
+  /**
+   * @description 获取服务记录
+   * @params orderId 订单id
+   * @params entrustId 订单id
+   * @returns void
+   * @author zhegu
+   */
+  private async getServiceRecord(entrustId: string, orderId: string) {
+    this.$toast.loading({
+      duration: 0,
+      mask: true,
+      loadingType: 'spinner',
+      message: '加载中...'
+    });
+    try {
+      const res: any = await this.axios.get(api.getServiceRecord + `/${entrustId}` + `/${orderId}`);
+      if (res && res.code === '000') {
+        this.data = res.data || [];
+        this.data.records.forEach( (element: any) => {
+          this.houseStatus.push({content: element.record, createTime: element.workTime});
+        });
+      } else {
+        this.$toast(`获取服务记录详情失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
+  }
 }
 </script>
 
@@ -159,12 +146,17 @@ export default class ServiceRecord extends CommonMixins {
     position fixed
     bottom 0
     width 100%
-    button 
+    button,a
+      display inline-block
       background-color $main-color
       color #fff
       height vw(50)
-      width 50%
+      line-height vw(50)
+      text-align center
+      width 100%
       font-size vw(17)
+    button
+      border 0
   .mask
     position fixed
     width 100%
