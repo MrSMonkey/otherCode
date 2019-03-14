@@ -41,7 +41,7 @@
           rows="3"
           autosize
         />
-        <div class="modal-btn" >
+        <div class="modal-btn">
           <span @click="changeVisible(false)">取消</span>
           <span @click="changeVisible(false)">确定</span>
         </div>
@@ -128,7 +128,7 @@ export default class MaintainChecked extends CommonMixins {
     position absolute
     width 100%
     height 100%
-    background: rgba(71,71,71,0.80);
+    background rgba(71,71,71,0.80)
     z-index 100
     top 0
   .modal
@@ -149,7 +149,7 @@ export default class MaintainChecked extends CommonMixins {
     .text
       width 90%
       background-color transparent
-      border: 1px solid #E7E7E7;
+      border 1px solid #E7E7E7
       border-radius vw(5)
       margin vw(15) auto
       padding vw(5)
