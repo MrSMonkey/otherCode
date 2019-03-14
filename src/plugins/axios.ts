@@ -27,8 +27,8 @@ Axios.interceptors.request.use(
       config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
       // config.baseURL = 'https://api-gateway-pre.uoko.com'; // pre环境
     } else {
-      config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
-      // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
+      // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
+      config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
     }
     /*登录授权, 登录接口修改 Authorization */
     if (config.url.indexOf('/auth/asset/register_login/web/mobile') > -1
