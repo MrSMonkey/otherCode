@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 17:57:16
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-14 20:25:18
  */
 
 
@@ -68,6 +68,10 @@ export const componentsList: any[] = [
   },
   {
     path: 'serviceDetile',
+    title: '订单详情'
+  },
+  {
+    path: 'productDetile',
     title: '订单详情'
   },
   {

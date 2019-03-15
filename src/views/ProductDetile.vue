@@ -1,41 +1,29 @@
 /*
- * @Description: 服务包订单详情
+ * @Description: 服务产品订单详情
  * @Author: chenmo
- * @Date: 2019-02-20 09:29:37
+ * @Date: 2019-03-14 20:26:26
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 20:34:49
+ * @Last Modified time: 2019-03-14 20:51:38
  */
 
 <template>
   <section class="order-detils">
     <div class="order-info">
-      <h2>服务包订单信息</h2>
+      <div><h2>服务产品订单信息</h2></div>
       <div class='serviceName'>
-        <span>服务包名称：{{orderInfo.servicePackage || '无'}}</span>
+        <span>服务产品名称：{{orderInfo.servicePackage || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>服务包订单号：{{orderInfo.servicePackageOrderNo || '无'}}</span>
+        <span>服务产品订单号：{{orderInfo.servicePackageOrderNo || '无'}}</span>
+      </div>
+      <div class='serviceName'>
+        <span>产品类型：{{orderInfo.servicePackageOrderNo || '无'}}</span>
       </div>
       <div class='serviceName'>
         <span>下单时间：{{orderInfo.createTime|| '无'}}</span>
       </div>
       <div class='serviceName'>
         <span>实付款：{{orderInfo.price || 0 }}元</span>
-      </div>
-    </div>
-    <div class="order-info">
-      <h2>服务包订单信息</h2>
-      <div class='order-type' v-for="(item, index) in orderInfo.serviceItems" :key="index">
-        <div class="order-item">
-          <span>订单号：{{item.orderNo || '无'}}</span>
-          <div :class="item.status === 7 ? '' : 'order-item-type'">{{getOrderStatusName(item.status)}}</div>
-        </div>
-        <div class="order-item">
-          <span>产品类型：{{item.serviceType || '无'}}</span><span class="check">查看服务记录<van-icon name="arrow" /></span>
-        </div>
-        <div class="order-item">
-          <span>产品名称：{{item.serviceName || '无'}}</span>
-        </div>
       </div>
     </div>
     <div class="order-info">
@@ -53,6 +41,9 @@
         <span>备      注：{{orderInfo.remark }}</span>
       </div>
     </div>
+    <section>
+      <van-button slot="button" size="large" type="default" class="entrust-btn" @click="pushRecord">查看服务历史</van-button>
+    </section>
   </section>
 </template>
 
@@ -67,25 +58,25 @@ import api from '@/api';
 
 // 声明引入的组件
 @Component({
-  name: 'ServiceDetile',
+  name: 'ProductDetile',
 })
 // 类方式声明当前组件
-export default class ServiceDetile extends CommonMixins {
-  private servicePackageId: string = ''; // 订单id
+export default class ProductDetile extends CommonMixins {
+  private orderId: string = ''; // 订单id
   private orderInfo: any = {}; // 服务订单详情
 
   private mounted() {
-    this.servicePackageId = String(this.$route.query.servicePackageId);
-    this.getServiceOrder(this.servicePackageId); // 获取订单列表
+    this.orderId = String(this.$route.query.orderId);
+    this.getServiceOrder(this.orderId); // 获取订单列表
   }
 
   /**
    * @description 获取订单详情
-   * @params servicePackageId 订单id
+   * @params orderId 订单id
    * @returns void
    * @author chenmo
    */
-  private async getServiceOrder(servicePackageId: string) {
+  private async getServiceOrder(orderId: string) {
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -93,20 +84,20 @@ export default class ServiceDetile extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.getOrderDetils + `/${servicePackageId}`);
+      const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        this.$dialog.confirm({
-          title: '提示',
-          confirmButtonText: '是',
-          cancelButtonText: '否',
-          className: 'dialogTips',
-          message: '是否立即发起本服务'
-        }).then(() => {
-          // on confirm
-        }).catch(() => {
-          // on cancel
-        });
+        // this.$dialog.confirm({
+        //   title: '提示',
+        //   confirmButtonText: '是',
+        //   cancelButtonText: '否',
+        //   className: 'dialogTips',
+        //   message: '是否立即发起本服务'
+        // }).then(() => {
+        //   // on confirm
+        // }).catch(() => {
+        //   // on cancel
+        // });
       } else {
         this.$toast(`获取订单详情失败`);
       }
@@ -125,6 +116,10 @@ export default class ServiceDetile extends CommonMixins {
    */
   private getOrderStatusName(status: number) {
     return STATUS_NAME[status];
+  }
+
+  private pushRecord() {
+    this.$router.push(`/serviceRecord?orderId=${this.orderId}`);
   }
 }
 </script>
@@ -181,4 +176,10 @@ export default class ServiceDetile extends CommonMixins {
   .van-dialog__message--has-title
     color #2C2D2E
     font-size 14px
+.entrust-btn
+  position fixed
+  bottom 0
+  left 0
+  background $main-color
+  color #fff
 </style>
