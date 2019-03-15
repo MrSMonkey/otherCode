@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-15 16:49:23
+ * @Last Modified time: 2019-03-15 18:14:00
  */
 
 
@@ -68,6 +68,10 @@ export const componentsList: any[] = [
   },
   {
     path: 'serviceDetile',
+    title: '订单详情'
+  },
+  {
+    path: 'productDetile',
     title: '订单详情'
   },
   {

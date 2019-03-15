@@ -1,9 +1,9 @@
 /*
- * @Description: 服务列表组件
+ * @Description: 服务产品订单列表组件
  * @Author: chenmo
- * @Date: 2019-02-20 14:20:54
+ * @Date: 2019-03-14 16:31:53
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 20:19:38
+ * @Last Modified time: 2019-03-14 20:48:01
  */
 
 
@@ -11,31 +11,23 @@
 <template>
   <section>
     <div class="order-list" :key="index" v-for="(order, index) in tableData">
-      <div class="list-title-box" @click="pushDetile(order.servicePackageId)">
-        <!-- <router-link :to="'/serviceDetile?servicePackageId=' + order.servicePackageId"> -->
-          <!-- <div class='list-title'><img src="../../../assets/images/icon/icon_order.png" alt=""/><span>{{order.houseName}}</span></div> -->
-          <div>
-            <div class='serviceName'>
-              <span>服务包名称：{{order.servicePackageName}}</span>
-            </div>
-            <div class='list-no'>
-              <span>服务包订单号：{{order.servicePackageOrderNo}}</span>
-            </div>
-          </div>
+      <div class="list-title-box" @click="pushDetile(order.orderId)">
+        <div class='list-no'>
+          <span>服务产品订单号：{{order.orderNum}}</span>
           <div><img src="../../../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
-        <!-- </router-link> -->
+        </div>
       </div>
       <div class="list-main">
-          <div class='list-item' v-for="(pro, index) in order.serviceItems" :key="index">
-            <span>产品名称：{{pro.serviceName}}</span>
-            <div :class="pro.status === '7' ? 'list-item-close' : 'list-item-type'">
-              {{getOrderStatusName(pro.status)}}
+          <div class='list-item'>
+            <span>产品名称：{{order.productName}}</span>
+            <div :class="order.orderStatus === '7' ? 'list-item-close' : 'list-item-type'">
+              {{getOrderStatusName(order.orderStatus)}}
             </div>
           </div>
       </div>
       <div class="list-footer">
-        <span class="list-footer-time">{{order.createTime}}</span>
-        <div class="list-footer-money">实付款：<span>{{order.price}}</span>元</div>
+        <span class="list-footer-time">{{order.orderStartTime}}</span>
+        <div class="list-footer-money">实付款：<span>{{order.orderAmount}}</span>元</div>
       </div>
     </div>
   </section>
@@ -48,10 +40,10 @@ import { STATUS_NAME } from '@/config/config';
 
 // 声明引入的组件
 @Component({
-  name: 'ServiceList',
+  name: 'ProductOrderList',
 })
 // 类方式声明当前组件
-export default class ServiceList extends CommonMixins {
+export default class ProductOrderList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any[];
 
@@ -67,14 +59,13 @@ export default class ServiceList extends CommonMixins {
 
   /**
    * @description 跳转到详情
-   * @params servicePackageId id
+   * @params orderId id
    * @returns string
    * @author chenmo
    */
-  private pushDetile(servicePackageId: string) {
-    this.$router.push(`/serviceDetile?servicePackageId=${servicePackageId}`);
+  private pushDetile(orderId: string) {
+    this.$router.push(`/productDetile?orderId=${orderId}`);
   }
-
 }
 </script>
 
@@ -86,13 +77,6 @@ export default class ServiceList extends CommonMixins {
   .list-title-box
     padding vw(15)
     border-bottom 1px solid $border-color-light
-    display -webkit-flex
-    display flex
-    justify-content space-between
-    align-items center
-    .icon-right
-      display inline-block
-      width vw(10)
   .list-title
     img
       display inline-block
@@ -109,11 +93,11 @@ export default class ServiceList extends CommonMixins {
     flex-wrap nowrap
     justify-content space-between
     align-items center
-    font-size 13px
+    font-size 14px
     color $tip-text-color
     .icon-right
       display inline-block
-      width 8px
+      width vw(8)
     span
       display inline-block
       padding 6px 0

@@ -3,13 +3,12 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 13:49:42
+ * @Last Modified time: 2019-03-14 16:06:17
  */
 
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
-    
     <van-tabs @click="onClick">
       <van-tab title="服务包">
         <section v-if="tableData.length > 0">
@@ -30,20 +29,20 @@
       <van-tab title="服务产品">
         <section class="tree">
           <div class="tree-left">
-            <div v-for="(item, index) in list" :key="index" class="tree-left-item">
-              <p :class="item.id === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.name}}</p>
-              <transition name="down">
+            <div v-for="(item, index) in productData" :key="index" class="tree-left-item">
+              <p :class="item.type === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.typeName}}</p>
+              <!-- <transition name="down">
                 <section v-if="item.id === isActive" class="childrenItem">
                   <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(ctx)">
                     <p :class="ctx.gid === isActiveChildrenOne ? 'active' : ''">{{ctx.name}}</p>
                   </div>
                 </section>
-              </transition>
+              </transition> -->
             </div>
           </div>
           <div class="tree-right">
-            <section v-if="tableData.length > 0">
-              <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+            <section v-if="productData.length > 0">
+              <div class="purchase-item" v-for="(item, index) in productData" :key="index">
                 <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
                   <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
                     <!-- <img :src="item.imgUrls[0]" alt=""/> -->
@@ -101,6 +100,7 @@ export default class Purchase extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private cityId: string = ''; // 城市ID
   private tableData: any[] = []; // 服务包列表
+  private productData: any[] = []; // 服务产品列表
   private isActive: number = 1; // 默认选择第一项
   private isActiveChildrenOne: string = '11'; // 默认选择第一项
   private list: any[] = [{
@@ -178,6 +178,34 @@ export default class Purchase extends CommonMixins {
   }
 
   /**
+   * @description 获取服务包列表
+   * @params cityId 城市id
+   * @returns void
+   * @author chenmo
+   */
+  private async getProductList(cityId: string) {
+    this.$toast.loading({
+      duration: 0,
+      mask: true,
+      loadingType: 'spinner',
+      message: '加载中...'
+    });
+    try {
+      const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
+      if (res && res.code === '000') {
+        this.productData = res.data || [];
+        console.log(this.productData);
+      } else {
+        this.$toast(`获取服务产品列表失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
+  }
+
+  /**
    * @description 获取订单状态
    * @params status 状态枚举
    * @returns string
@@ -195,10 +223,9 @@ export default class Purchase extends CommonMixins {
    */
   private onClick(index: any) {
     if (index === 0) {
-      // this.getHouseInfo(this.entrustId);
-      // this.getHouseStatus(this.entrustId);
+      this.getServiceList(this.cityId); // 获取服务包
     } else if (index === 1) {
-      // this.getHouseRoom(this.entrustId);
+      this.getProductList(this.cityId); // 获取服务产品
     } else if (index === 2) {
       // this.getRentInfo(this.entrustId);
     }
