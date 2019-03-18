@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-15 15:34:42
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-15 18:14:00
  */
 
 
@@ -113,6 +113,14 @@ export const componentsList: any[] = [
   {
     path: 'confirmPay',
     title: '确认支付'
+  },
+  {
+    path: 'serviceRecordLook',
+    title: '服务记录'
+  },
+  {
+    path: 'serviceOrderDetail',
+    title: '服务详情'
   }
 ];
 
