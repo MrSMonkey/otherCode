@@ -11,34 +11,34 @@
     <div class="order-info">
       <div><h2>服务产品订单信息</h2></div>
       <div class='serviceName'>
-        <span>服务产品名称：{{orderInfo.servicePackage || '无'}}</span>
+        <span>服务产品名称：{{orderInfo.productName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>服务产品订单号：{{orderInfo.servicePackageOrderNo || '无'}}</span>
+        <span>服务产品订单号：{{orderInfo.orderTypeName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>产品类型：{{orderInfo.servicePackageOrderNo || '无'}}</span>
+        <span>产品类型：{{orderInfo.orderType || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>下单时间：{{orderInfo.createTime|| '无'}}</span>
+        <span>下单时间：{{orderInfo.orderStartTime|| '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>实付款：{{orderInfo.price || 0 }}元</span>
+        <span>实付款：{{orderInfo.orderAmount || 0 }}元</span>
       </div>
     </div>
     <div class="order-info">
       <h2>其他信息</h2>
       <div class='serviceName'>
-        <span>服务房源：{{orderInfo.serviceHouseName || '无'}}</span>
+        <span>服务房源：{{orderInfo.productHouseName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>联系人：{{orderInfo.houseContact || '无'}}</span>
+        <span>联系人：{{orderInfo.buyersName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>联系电话：{{orderInfo.houseContactPhone|| '无'}}</span>
+        <span>联系电话：{{orderInfo.buyersPhone|| '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>备      注：{{orderInfo.remark }}</span>
+        <span>备      注：{{orderInfo.buyersRemarks }}</span>
       </div>
     </div>
     <section>

@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-08 15:41:23
+ * @Last Modified time: 2019-03-15 13:41:15
  */
 
 /* 首字母大写 */
@@ -213,3 +213,30 @@ export function solveScrollBug(visible: boolean) {
   }
 }
 
+/**
+ * @description 用正则判断是否存在class
+ * @param el dom
+ * @param className class名
+ * @return void
+ * @author chemo
+ */
+export function hasClass(el: any, className: any) {
+  const reg: any = new RegExp('(^|\\s)' + className + '(\\s|$)');
+  return reg.test(el.className);
+}
+
+/**
+ * @description 添加class
+ * @param el dom
+ * @param className class名
+ * @return void
+ * @author chemo
+ */
+export function addClass(el: any, className: any) {
+  if (hasClass(el, className)) {
+    return;
+  }
+  const newClass: any = el.className.split(' ');
+  newClass.push(className);
+  el.className = newClass.join(' ');
+}

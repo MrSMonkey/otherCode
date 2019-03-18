@@ -26,7 +26,7 @@
     name: 'BottomBtn'
   })
   export default class BottomBtn extends Vue {
-    @Prop({ type: String, default: '' })
+    @Prop({ type: String, default: '278' })
     private cityId: string;
 
     @Prop({ type: String, default: '' })

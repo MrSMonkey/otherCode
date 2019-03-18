@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 16:06:17
+ * @Last Modified time: 2019-03-15 15:58:54
  */
 
 <template>
@@ -14,7 +14,7 @@
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
             <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-              <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
+              <div class="purchase-left" v-lazy:background-image="item.imgUrls[0]">
                 <!-- <img :src="item.imgUrls[0]" alt=""/> -->
               </div>
               <p  class="purchase-title">{{item.serviceName|| 1}}</p>
@@ -30,46 +30,32 @@
         <section class="tree">
           <div class="tree-left">
             <div v-for="(item, index) in productData" :key="index" class="tree-left-item">
-              <p :class="item.type === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(item)">{{item.typeName}}</p>
-              <!-- <transition name="down">
-                <section v-if="item.id === isActive" class="childrenItem">
-                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(ctx)">
-                    <p :class="ctx.gid === isActiveChildrenOne ? 'active' : ''">{{ctx.name}}</p>
+              <p :class="index === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(index, item)">{{item.name}}</p>
+              <transition name="uokodown">
+                <section v-if="index === isActive" class="childrenItem" ref="childrenItem">
+                  <div v-for="(ctx, idx) in item.productDetails" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
+                    <p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p>
                   </div>
                 </section>
-              </transition> -->
+              </transition>
             </div>
           </div>
           <div class="tree-right">
-            <section v-if="productData.length > 0">
-              <div class="purchase-item" v-for="(item, index) in productData" :key="index">
-                <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-                  <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
-                    <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+            <section v-if="productItemData.length > 0">
+              <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
+                <router-link :to="'/productInfo?productId=' + item.productId + '&entrustId=' + entrustId">
+                  <div class="purchase-left" v-lazy:background-image="item.productImgs[0]">
                   </div>
-                  <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-                  <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+                  <p  class="purchase-title">{{item.productName|| ''}}</p>
+                  <p class="purchase-money">提成<span>{{item.commission}}</span></p>
                 </router-link>
               </div>
             </section>
-            <section v-else>
+            <!-- <section v-else>
               <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
-            </section>
+            </section> -->
           </div>
         </section>
-        <!-- <section v-if="tableData.length > 0">
-          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-            <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-              <div class="purchase-left" :style="{backgroundImage: 'url(' + (item.imgUrls[0] ? item.imgUrls[0] : '') + ')'}">
-              </div>
-              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-            </router-link>
-          </div>
-        </section>
-        <section v-else>
-          <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
-        </section> -->
       </van-tab>
     </van-tabs>
       
@@ -81,7 +67,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import NoData from '@/components/NoData.vue';
-import { getQueryString } from '@/utils/utils';
+import { getQueryString, addClass } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
@@ -97,52 +83,18 @@ import api from '@/api';
 })
 // 类方式声明当前组件
 export default class Purchase extends CommonMixins {
+  public $refs!: {
+    [key: string]: any,
+    childrenItem: HTMLFormElement,
+  };
+
   private entrustId: string = ''; // 委托房源ID
   private cityId: string = ''; // 城市ID
   private tableData: any[] = []; // 服务包列表
   private productData: any[] = []; // 服务产品列表
-  private isActive: number = 1; // 默认选择第一项
-  private isActiveChildrenOne: string = '11'; // 默认选择第一项
-  private list: any[] = [{
-    id: 1,
-    name: '带看带看',
-    children: [
-      {
-        gid: '11',
-        name: '龟速带看带看'
-      },
-      {
-        gid: '22',
-        name: '光速带看'
-      }
-    ]
-  }, {
-    id: 2,
-    name: '装修',
-    children: [
-      {
-        gid: '11',
-        name: '龟速带看'
-      },
-      {
-        gid: '22',
-        name: '光速带看'
-      }
-    ]
-  }, {
-    id: 3,
-    name: '保洁',
-    children: [
-      {
-        gid: '11',
-        name: '龟速带看'
-      },
-      {
-        gid: '22',
-        name: '光速带看'
-      }
-    ]
-  }];
+  private isActive: number = 0; // 默认选择第一项
+  private isActiveChildrenOne: number = 0; // 默认选择第一项
+  private productItemData: any[] = []; // 分类下的服务产品
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -194,7 +146,9 @@ export default class Purchase extends CommonMixins {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
         this.productData = res.data || [];
-        console.log(this.productData);
+        this.isActive = 0; // 默认值
+        this.isActiveChildrenOne = 0; // 默认值
+        this.productItemData = res.data[0].productDetails[0].products; // 进入页面默认第一条
       } else {
         this.$toast(`获取服务产品列表失败`);
       }
@@ -234,22 +188,29 @@ export default class Purchase extends CommonMixins {
   /**
    * @description 选择tree
    * @params item 当前选择的item
+   * @params index 当前选择的index
    * @returns null
    * @author chenmo
    */
-  private checkActive(item: any) {
-    this.isActive = item.id;
-    this.isActiveChildrenOne = item.children[0].gid; // 默认第一个
+  private checkActive(index: any, item: any) {
+    if (index === this.isActive) {
+      return false;
+    }
+    this.isActive = index;
+    this.isActiveChildrenOne = 0; // 默认第一个
+    this.productItemData = item.productDetails[0].products; // 当前选中的产品
   }
 
   /**
    * @description 选择tree子选项
-   * @params ctx 当前选择的item
+   * @params ctx 当前选择的index
+   * @params item 当前选中的item
    * @returns null
    * @author chenmo
    */
-  private checkChildrenActive(ctx: any) {
-    this.isActiveChildrenOne = ctx.gid;
+  private checkChildrenActive(ctx: any, item: any) {
+    this.isActiveChildrenOne = ctx;
+    this.productItemData = item.products; // 当前选中的产品
   }
 }
 </script>
@@ -271,13 +232,14 @@ export default class Purchase extends CommonMixins {
       font-weight 500
       font-family PingFang-SC-Medium
       color $text-color
+      min-height vw(50)
       display -webkit-box
       -webkit-box-orient vertical
       -webkit-line-clamp 3
       overflow hidden
     .purchase-money
       text-align right
-      padding-top vw(15)
+      padding-top vw(5)
       font-size 12px
       span
         color $text-color
@@ -305,10 +267,15 @@ export default class Purchase extends CommonMixins {
     justify-content space-between
     .tree-left
       width vw(80)
-      .childrenItem
-        transition: all 0.1s ease
-        &.dowm-enter-active, &.dowm-leave-active
-          transition all 3s ease
+      // .childrenItem
+      //   overflow: hidden;
+      //   max-height: 0;
+      //   -webkit-transition: max-height .3s ease-in-out;
+      //   transition: max-height .3s ease-in-out;
+      .uokodown-enter-active
+        transition: transform .3s
+      .uokodown-enter
+        transform: translate3d(0,-100%,0);
       .tree-left-item
         color $text-color
         font-size 14px
@@ -326,6 +293,7 @@ export default class Purchase extends CommonMixins {
           align-items center
         .cname-active
           font-weight bold
+          color $main-color
           &::before
             position absolute
             top 0px
@@ -349,5 +317,5 @@ export default class Purchase extends CommonMixins {
             color $main-color
     .tree-right
       width 100%
-      background #fff
+      // background #fff
 </style>

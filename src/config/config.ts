@@ -76,11 +76,15 @@ export const componentsList: any[] = [
   },
   {
     path: 'purchase',
-    title: '购买服务'
+    title: '购买服务包'
   },
   {
     path: 'serviceInfo',
     title: '服务包详情'
+  },
+  {
+    path: 'productInfo',
+    title: '服务产品详情'
   },
   {
     path: 'serviceType',
@@ -361,4 +365,8 @@ export const TOWARDLIST: any[] = [
   }
 ];
 
+// 装修购买提示
+export const TIPSONE: string = `注：本次支付仅支付设计费用，装修费用需在确认装修改后支付！`;
 
+// 维修购买提示
+export const TIPSTWO: string = `注：本次支付仅支付上门服务费，具体维修项费用需在确认验收改后进行支付！`;
