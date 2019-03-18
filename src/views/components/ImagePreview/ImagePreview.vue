@@ -2,8 +2,8 @@
  * @Description: 图片预览组件
  * @Author: chenmo
  * @Date: 2019-02-19 14:43:28
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-07 14:02:51
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-15 15:27:47
  */
 
 <template>
