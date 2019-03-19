@@ -118,7 +118,7 @@ export default class ConfirmPay extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.payment + `/${this.orderId}`);
       if (res && res.code === '000') {
-        // this.data = res.data || [];
+        // window.location.href = res.data.toPayUrl;
       } else {
         this.$toast(res.message);
       }
