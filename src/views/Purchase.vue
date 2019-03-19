@@ -34,7 +34,7 @@
               <transition name="uokodown">
                 <section v-if="index === isActive" class="childrenItem" ref="childrenItem">
                   <div v-for="(ctx, idx) in item.productDetails" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
-                    <p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p>
+                    <div><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
                   </div>
                 </section>
               </transition>
@@ -42,6 +42,7 @@
           </div>
           <div class="tree-right">
             <section v-if="productItemData.length > 0">
+              <p class="product-name">{{productName}}</p>
               <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
                 <router-link :to="'/productInfo?productId=' + item.productId + '&entrustId=' + entrustId">
                   <div class="purchase-left" v-lazy:background-image="item.productImgs[0]">
@@ -95,6 +96,7 @@ export default class Purchase extends CommonMixins {
   private isActive: number = 0; // 默认选择第一项
   private isActiveChildrenOne: number = 0; // 默认选择第一项
   private productItemData: any[] = []; // 分类下的服务产品
+  private productName: string = ''; // 当前选中的二级name
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -149,6 +151,7 @@ export default class Purchase extends CommonMixins {
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
         this.productItemData = res.data[0].productDetails[0].products; // 进入页面默认第一条
+        this.productName = res.data[0].productDetails[0].typeName; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
       }
@@ -199,6 +202,7 @@ export default class Purchase extends CommonMixins {
     this.isActive = index;
     this.isActiveChildrenOne = 0; // 默认第一个
     this.productItemData = item.productDetails[0].products; // 当前选中的产品
+    this.productName = item.productDetails[0].typeName;
   }
 
   /**
@@ -211,6 +215,7 @@ export default class Purchase extends CommonMixins {
   private checkChildrenActive(ctx: any, item: any) {
     this.isActiveChildrenOne = ctx;
     this.productItemData = item.products; // 当前选中的产品
+    this.productName = item.typeName;
   }
 }
 </script>
@@ -220,7 +225,7 @@ export default class Purchase extends CommonMixins {
 .purchase
   .purchase-item
     background $global-background
-    padding vw(15)
+    padding vw(15) vw(15) 0
     border-bottom 1px solid $bg-color-default
     position relative
     width 100%
@@ -304,18 +309,29 @@ export default class Purchase extends CommonMixins {
             background $main-color
         .next-item
           background $global-background
-          p
-            color $text-color
-            // width vw(30)
+          div
             height vw(60)
+            color $text-color
             margin-left vw(10)
             display -webkit-flex
             display flex
-            // justify-content center
             align-items center
-          .active
-            color $main-color
+            p
+              // width vw(30)
+              height vw(40)
+              display -webkit-box
+              -webkit-box-orient vertical
+              -webkit-line-clamp 2
+              overflow hidden
+            .active
+              color $main-color
     .tree-right
       width 100%
       // background #fff
+      .product-name
+        background #fff
+        font-size 14px
+        padding vw(15) 0 vw(0)
+        padding-left vw(15)
+        color $tip-text-color
 </style>

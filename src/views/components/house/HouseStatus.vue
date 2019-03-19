@@ -58,25 +58,25 @@ export default class HouseStatus extends CommonMixins {
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../../../assets/stylus/main.styl'
 .time-line
-  width: 100%;
+  width 100%
   padding vw(20) vw(20) 0
   li
-    position: relative;
-    margin-left vw(6);
+    position relative
+    margin-left vw(6)
     padding-left vw(18)
     height 65px
     border-left 1px dashed $border-color-light
     .dot
       position: absolute
-      top 0;
+      top 0
       left -6px
       width 12px
       height 12px
       border-radius 50%
       background-color $disabled-color
     p
-      vertical-align: top;
-      line-height: 1;
+      vertical-align top
+      line-height 1
       color $text-color
       font-size 14px
     span
