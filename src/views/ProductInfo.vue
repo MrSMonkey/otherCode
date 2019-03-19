@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-15 15:35:08
+ * @Last Modified time: 2019-03-18 16:20:42
  */
 
 
@@ -45,7 +45,7 @@
         </div> -->
         <div class="el-input">
           <van-field
-            v-model="ownerName"
+            v-model="buyersName"
             required
             clearable
             label="联系人"
@@ -54,7 +54,7 @@
             type="text"
           />
           <van-field
-            v-model="ownerPhone"
+            v-model="buyersPhone"
             required
             clearable
             input-align="right"
@@ -73,7 +73,7 @@
           <div class="dec">
             <p>备&emsp;&emsp;注</p>
             <van-field
-              v-model="remark"
+              v-model="buyersRemarks"
               class="textarea"
               input-align="left"
               placeholder="请输入20字以内的备注"
@@ -129,26 +129,28 @@ export default class ProductInfo extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private productId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
-  private ownerName: string = ''; // 联系人
-  private ownerPhone: string = ''; // 手机号
-  private remark: string = ''; // 备注
+  private buyersName: string = ''; // 联系人
+  private buyersPhone: string = ''; // 手机号
+  private buyersRemarks: string = ''; // 备注
   private bugVisible: boolean = false; // 购买弹窗
   private loading: boolean = false; // 提交加载
   private showDialog: boolean = false; // 提交加载
   private isphoneErr: boolean = false;
   private isintroducePhoneErr: boolean = false;
   private introducePhone: string = ''; // 推荐人联系电话
-  private tips: string = '本次支付仅支付设计费用，装修费用需在确认装修改后支付！';
+  private tips: string = TIPSONE;
+  private tipsTwo: string = TIPSTWO;
+
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
 
   // computed
   get isActive(): boolean {
-    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
+    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
   }
 
   // Watch
-  @Watch('ownerPhone')
+  @Watch('buyersPhone')
   private handlerPhone(newVal: string) {
     if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
       this.isphoneErr = true;
@@ -228,8 +230,8 @@ export default class ProductInfo extends CommonMixins {
    */
   private buy() {
     this.bugVisible = true;
-    this.ownerName = this.userInfo.realName;
-    this.ownerPhone = this.userInfo.username;
+    this.buyersName = this.userInfo.realName || '134';
+    this.buyersPhone = this.userInfo.username;
   }
 
   /**
@@ -238,15 +240,15 @@ export default class ProductInfo extends CommonMixins {
    * @author chenmo
    */
   private clickBuy() {
-    if (!this.ownerName) {
+    if (!this.buyersName) {
       this.$toast('请输入联系人姓名');
       return false;
     }
-    if (!this.ownerPhone) {
+    if (!this.buyersPhone) {
       this.$toast('请输入联系人电话');
       return false;
     }
-    if (!/^1[345789]\d{9}$/.test(this.ownerPhone)) {
+    if (!/^1[345789]\d{9}$/.test(this.buyersPhone)) {
       this.$toast('请输入正确的联系人电话');
       return false;
     }
@@ -256,7 +258,7 @@ export default class ProductInfo extends CommonMixins {
     //   return false;
     // }
 
-    this.submitData(this.ownerName, this.ownerPhone); // 提交数据
+    this.submitData(this.buyersName, this.buyersPhone); // 提交数据
   }
 
   /**
@@ -269,23 +271,22 @@ export default class ProductInfo extends CommonMixins {
   private async submitData(name: string, phone: string) {
     const data: any = {
       entrustId: this.entrustId,
-      ownerName: name,
-      ownerPhone: phone,
-      productId: this.serviceId,
-      price: this.data.price,
-      title: this.data.serviceName,
-      remark: this.remark,
+      buyersName: name,
+      buyersPhone: phone,
+      productId: this.productId,
+      productName: this.data.productName,
+      remark: this.buyersRemarks,
       introducePhone: this.introducePhone
     };
     this.loading = true;
     try {
-      const res: any = await this.axios.post(api.buyService, data);
+      const res: any = await this.axios.post(api.buyProduct, data);
       if (res && res.code === '000') {
-        this.$toast.success('购买成功');
-        setTimeout(() => {
-          this.bugVisible = false;
-          this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
-        }, 2000);
+        // this.$toast.success('购买成功');
+        // setTimeout(() => {
+        //   this.bugVisible = false;
+        //   this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
+        // }, 2000);
       } else {
         this.$toast('购买失败，请重试');
       }
@@ -302,7 +303,7 @@ export default class ProductInfo extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 @import '../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
