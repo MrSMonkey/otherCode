@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 18:01:37
+ * @Last Modified time: 2019-03-19 11:40:40
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -11,7 +11,7 @@ import { RootState } from '../types';
 import Vue from 'vue';
 import router from '@/router';
 import api from '@/api';
-import { handleWebStorage } from '@/utils/utils';
+import { handleWebStorage, openPostWindow } from '@/utils/utils';
 
 // 从本地获取token
 const getTokenFromLocal = () => {
@@ -70,6 +70,22 @@ export const actions: ActionTree<GlobalState, RootState> = {
         commit('updateUserInfo', res.data);
       } else {
         Vue.prototype.$toast(`获取用户信息失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  },
+  async payment({commit}, data) {
+    try {
+      const params: any = {
+        productURL: data.productURL
+      };
+      const res: any = await Vue.axios.post(api.payment + '/' + data.orderId, params);
+      if (res && res.code === '000') {
+        // 支付接口回调
+        openPostWindow(res.data.toPayUrl, res.data.payParams);
+      } else {
+        Vue.prototype.$toast(`支付失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-15 13:41:15
+ * @Last Modified time: 2019-03-19 14:10:20
  */
 
 /* 首字母大写 */
@@ -239,4 +239,33 @@ export function addClass(el: any, className: any) {
   const newClass: any = el.className.split(' ');
   newClass.push(className);
   el.className = newClass.join(' ');
+}
+
+/**
+ * @description post调用支付页面
+ * @param url 支付地址
+ * @param params 支付参数
+ * @return dom
+ * @author chemo
+ */
+export function openPostWindow(url: string, params: any) {
+  // 创建form表单
+  const tempForm: any = document.createElement('form');
+  tempForm.action = url;
+  tempForm.target = '_self'; // 打开新窗口
+  tempForm.method = 'POST';
+  tempForm.style.display = 'none';
+
+  // 添加参数
+  for (const i in params) {
+    if (params.hasOwnProperty(i)) {   // 这里必须使用 hasOwnProperty 判断元素是否为对象本身的而非继承的
+      const opt: any = document.createElement('input');
+      opt.name = params[i].param;
+      opt.value = params[i].paramValue;
+      tempForm.appendChild(opt);
+    }
+  }
+  document.body.appendChild(tempForm);
+  // 提交数据
+  tempForm.submit();
 }

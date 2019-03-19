@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-18 16:20:42
+ * @Last Modified time: 2019-03-19 11:37:54
  */
 
 
@@ -143,6 +143,7 @@ export default class ProductInfo extends CommonMixins {
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
+  @Action('payment', { namespace }) private payment: any;
 
   // computed
   get isActive(): boolean {
@@ -282,6 +283,11 @@ export default class ProductInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.buyProduct, data);
       if (res && res.code === '000') {
+        const data  = {
+          orderId: res.data.orderId,
+          productURL: 'www.baidu.com'
+        };
+        this.payment(data);
         // this.$toast.success('购买成功');
         // setTimeout(() => {
         //   this.bugVisible = false;

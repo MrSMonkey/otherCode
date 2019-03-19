@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 15:43:38
+ * @Last Modified time: 2019-03-19 11:14:30
  */
 
 export default {
@@ -80,7 +80,7 @@ export default {
   getProductOrderDetail: '/partner/owner/product/order/detail',
 
   /*支付*/
-  payment: '/partner/owner/product/service/payment',
+  payment: '/house/pay/owner',
 
   /*服务记录*/
   getServiceRecord: '/partner/owner/product/service_record',
