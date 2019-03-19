@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-19 14:10:20
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-19 20:27:51
  */
 
 /* 首字母大写 */
@@ -268,4 +268,19 @@ export function openPostWindow(url: string, params: any) {
   document.body.appendChild(tempForm);
   // 提交数据
   tempForm.submit();
+}
+
+/**
+ * @description 返回不同环境下的域名
+ * @return string
+ * @author zhegu
+ */
+export function returnDomain() {
+  if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
+    return 'https://api-gateway.uoko.com/';
+  } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TEST) {
+    return 'http://192.168.200.120:7070/'; // 测试环境
+  } else {
+    return 'http://' + window.location.host + '/#/'; // mock地址
+  }
 }

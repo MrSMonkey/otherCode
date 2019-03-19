@@ -37,18 +37,21 @@
         <span>需支付：</span>
         <span class="price">￥{{data.needPrice && parseFloat(data.needPrice).toFixed(2) || '0.00'}}</span>
       </span>
-      <span class="btn" @click="payment">确认支付</span>
+      <span class="btn" @click="submitPay">确认支付</span>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
 import api from '@/api';
+import { returnDomain } from '@/utils/utils';
+const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
@@ -63,25 +66,14 @@ import api from '@/api';
   }
 })
 export default class ConfirmPay extends CommonMixins {
-  private data: any[] = [
-    { title: '上门检查', child: [
-      { title: '上门师傅检查问题', cost: '30.00'}
-    ]},
-    { title: '电热水器', child: [
-      { title: '换电板', cost: '40.00'},
-      { title: '更换控制板', cost: '40.00'}
-    ]},
-    { title: '费用结算', child: [
-      { title: '上门检查费扣除', cost: '-30.00'},
-      { title: '支付总金额', cost: '110.00'},
-      { title: '还需支付金额', cost: '80.00'}
-    ]}
-  ]; // 支付数据
+  private data: any[] = []; // 支付数据
   private orderId: string = ''; // 订单id
+  @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
     this.orderId = String(this.$route.query.orderId);
-    this.getServiceRepair(this.orderId); // 获取维修服务验收详情
+    this.getServiceRepair(this.orderId); // 获取维修服务验收详情\
+    console.log('returnDomain', returnDomain());
   }
   /**
    * @description 维修服务支付详情
@@ -114,11 +106,15 @@ export default class ConfirmPay extends CommonMixins {
    * @returns void
    * @author zhegu
    */
-  private async payment() {
+  private async submitPay() {
     try {
       const res: any = await this.axios.post(api.payment + `/${this.orderId}`);
       if (res && res.code === '000') {
-        // window.location.href = res.data.toPayUrl;
+        const data  = {
+          orderId: res.data.orderId,
+          productURL: returnDomain() + 'ServiceRecord?orderId=' +  `/${this.orderId}`
+        };
+        this.payment(data);
       } else {
         this.$toast(res.message);
       }

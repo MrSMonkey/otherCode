@@ -96,4 +96,7 @@ export default {
 
   /*拒绝通过维修服务验收*/
   productRefuse: '/partner/owner/product/service/repair/refuse',
+
+  /*带看记录*/
+  ServiceRecordLook: '/partner/owner/product/look/service_record'
 };

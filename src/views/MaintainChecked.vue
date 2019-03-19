@@ -149,6 +149,9 @@ export default class MaintainChecked extends CommonMixins {
         setTimeout(() => {
           this.changeVisible(false);
         }, 500);
+        setTimeout(() => {
+          this.$router.push('/serviceRecord?orderId=' + this.orderId); // 跳转服务记录页
+        }, 1500);
       } else {
         this.$toast(res.msg);
       }
