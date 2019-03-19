@@ -14,6 +14,7 @@
       <div class="dot"></div>
       <p>{{item.content}}</p>
       <span>{{item.createTime}}</span>
+      <ImagePreview v-if="true" :imgagesArr="images" :isFold="true" />
     </li>
   </ul>
 </template>
@@ -23,10 +24,14 @@ import { Component, Vue, Prop  } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { getQueryString } from '@/utils/utils';
 import { RENT_TYPE, TOWARDNAME} from '@/config/config';
+import ImagePreview from '../ImagePreview/ImagePreview.vue';
 
 // 声明引入的组件
 @Component({
   name: 'HouseStatus',
+  components: {
+    ImagePreview
+  }
 })
 // 类方式声明当前组件
 export default class HouseStatus extends CommonMixins {
@@ -39,6 +44,12 @@ export default class HouseStatus extends CommonMixins {
    * @returns string
    * @author chenmo
    */
+  private images: any[] = [
+    'http://img5.imgtn.bdimg.com/it/u=4060543606,3642835235&fm=26&gp=0.jpg',
+    'http://img5.imgtn.bdimg.com/it/u=4060543606,3642835235&fm=26&gp=0.jpg',
+    'http://img5.imgtn.bdimg.com/it/u=4060543606,3642835235&fm=26&gp=0.jpg',
+    'http://img5.imgtn.bdimg.com/it/u=4060543606,3642835235&fm=26&gp=0.jpg'
+  ];
   private getRentType(type: number) {
     return RENT_TYPE[type];
   }
@@ -60,12 +71,17 @@ export default class HouseStatus extends CommonMixins {
 .time-line
   width 100%
   padding vw(20) vw(20) 0
+  .viewImg
+    margin-left vw(-20)
+    padding-bottom vw(25)
   li
     position relative
     margin-left vw(6)
     padding-left vw(18)
-    height 65px
+    min-height 65px
     border-left 1px dashed $border-color-light
+    .imgfoldView .img-box
+      margin-right vw(4.5)
     .dot
       position: absolute
       top 0

@@ -128,8 +128,8 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  handlePay(orderId: string) {
-    this.changePayVisible(true)
-    console.log('orderId',orderId)
+    this.changePayVisible(true);
+    console.log('orderId', orderId);
   }
   /**
    * @description 支付

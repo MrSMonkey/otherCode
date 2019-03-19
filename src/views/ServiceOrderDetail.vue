@@ -42,7 +42,13 @@ export default class ServiceRecord extends CommonMixins {
   private nopassVisible: boolean = false; // 不通过模态框
   private decorateVisible: boolean = false; // 装修模态框
   private desc: string = ''; // 不通过原因
-  private houseStatus: any[] = []; // 维修日志
+  private houseStatus: any[] = [
+    {content: '房间A', createTime: '2018-1-1'},
+    {content: '房间A', createTime: '2018-1-1'},
+    {content: '房间A', createTime: '2018-1-1'},
+    {content: '房间A', createTime: '2018-1-1'},
+    {content: '房间A', createTime: '2018-1-1'}
+  ]; // 维修日志
   private orderId: string = ''; // 订单id
   private entrustId: string = ''; // 房源id
 
@@ -70,9 +76,9 @@ export default class ServiceRecord extends CommonMixins {
       const res: any = await this.axios.get(api.getServiceRecord + `/${entrustId}` + `/${orderId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
-        this.data.records.forEach( (element: any) => {
-          this.houseStatus.push({content: element.record, createTime: element.workTime});
-        });
+        // this.data.records.forEach( (element: any) => {
+        //   this.houseStatus.push({content: element.record, createTime: element.workTime});
+        // });
       } else {
         this.$toast(`获取服务记录详情失败`);
       }
