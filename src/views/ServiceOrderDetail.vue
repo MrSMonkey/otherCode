@@ -3,14 +3,14 @@
  * @Author: zhegu
  * @Date: 2019-03-15 16:49:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-15 16:50:25
+ * @Last Modified time: 2019-03-20 17:04:57
  */
 
 
 <template>
   <section class="service-order-detail">
     <div class="log">
-      <houseStatus :data="houseStatus"/>
+      <LookServerDetail :data="data"  />
     </div>
   </section>
 </template>
@@ -21,7 +21,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { solveScrollBug } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
-import HouseStatus from './components/house/HouseStatus.vue';
+import LookServerDetail from './components/house/LookServerDetail.vue';
 import api from '@/api';
 
 // 声明引入的组件
@@ -29,7 +29,7 @@ import api from '@/api';
   name: 'ServiceRecord',
   components: {
     ImagePreview,
-    HouseStatus,
+    LookServerDetail,
     [Button.name]: Button,
     [CellGroup.name]: CellGroup,
     [Field.name]: Field,
@@ -37,25 +37,20 @@ import api from '@/api';
   }
 })
 export default class ServiceRecord extends CommonMixins {
-  private data: any = {}; // 服务记录详情
+  private data: any = []; // 服务记录详情
   private maskVisible: boolean = false; // 遮罩层
   private nopassVisible: boolean = false; // 不通过模态框
   private decorateVisible: boolean = false; // 装修模态框
   private desc: string = ''; // 不通过原因
-  private houseStatus: any[] = [
-    {content: '房间A', createTime: '2018-1-1'},
-    {content: '房间A', createTime: '2018-1-1'},
-    {content: '房间A', createTime: '2018-1-1'},
-    {content: '房间A', createTime: '2018-1-1'},
-    {content: '房间A', createTime: '2018-1-1'}
-  ]; // 维修日志
   private orderId: string = ''; // 订单id
-  private entrustId: string = ''; // 房源id
+  private statusId: string = ''; // 房源id
+  private rowId: string = ''; // 房源id
 
   private mounted() {
     this.orderId = String(this.$route.query.orderId);
-    this.entrustId = String(this.$route.query.entrustId);
-    this.getServiceDetail(this.entrustId, this.orderId); // 获取服务记录详情
+    this.statusId = String(this.$route.query.statusId);
+    this.rowId = String(this.$route.query.rowId);
+    this.getServiceDetail(this.orderId, this.statusId, this.rowId); // 获取服务记录详情
   }
 
   /**
@@ -65,7 +60,7 @@ export default class ServiceRecord extends CommonMixins {
    * @returns void
    * @author zhegu
    */
-  private async getServiceDetail(entrustId: string, orderId: string) {
+  private async getServiceDetail(orderId: string, statusId: string, rowId: string) {
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -73,12 +68,14 @@ export default class ServiceRecord extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.getServiceRecord + `/${entrustId}` + `/${orderId}`);
+      let res: any = [];
+      if ( statusId === '-1034') {
+        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}`);
+      } else {
+        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${statusId}`);
+      }
       if (res && res.code === '000') {
-        this.data = res.data || [];
-        // this.data.records.forEach( (element: any) => {
-        //   this.houseStatus.push({content: element.record, createTime: element.workTime});
-        // });
+        this.data = res.data.logList[rowId].logDetails || [];
       } else {
         this.$toast(`获取服务记录详情失败`);
       }

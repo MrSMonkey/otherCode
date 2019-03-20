@@ -3,8 +3,8 @@
   * @Description: 404
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
-  * @Last Modified by: chenmo
-  * @Last Modified time: 2019-02-15 14:41:27
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-20 16:48:13
   */
 -->
 
@@ -14,7 +14,7 @@
       <img src="../assets/images/404.png" alt="404"/>
     </div>
     <p>{{tip}}</p>
-    <div class="btn-box">
+    <div v-if="url" class="btn-box">
       <router-link class="inline-btn" :to="url">
         返回上一页
       </router-link>

@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 14:23:10
+ * @Last Modified time: 2019-03-20 17:02:29
  */
 /*
 
@@ -12,9 +12,9 @@
   <ul class="time-line">
     <li v-for="item in data" :key="item.id">
       <div class="dot"></div>
-      <p>{{item.content}}</p>
-      <span>{{item.createTime}}</span>
-      <ImagePreview  :imgagesArr="images" :isFold="true" />
+      <p>{{item.roomNumName}}</p>
+      <span>{{item.workTime}}</span>
+      <ImagePreview v-if="item.imgs" :imgagesArr="item.imgs" :isFold="true" />
     </li>
   </ul>
 </template>
