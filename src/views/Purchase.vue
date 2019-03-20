@@ -234,7 +234,7 @@ export default class Purchase extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 @import '../assets/stylus/main.styl'
 .purchase
   .purchase-item
@@ -331,7 +331,7 @@ export default class Purchase extends CommonMixins {
             display flex
             align-items center
             p
-              // width vw(30)
+              width vw(50)
               height vw(40)
               display -webkit-box
               -webkit-box-orient vertical
@@ -340,7 +340,14 @@ export default class Purchase extends CommonMixins {
             .active
               color $main-color
     .tree-right
-      width 100%
+      max-height 100%
+      overflow-y scroll
+      position fixed
+      top 44px
+      left vw(80)
+      right 0
+      bottom 0
+      margin-bottom vw(0)
       // background #fff
       .product-name
         background #fff

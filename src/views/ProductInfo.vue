@@ -115,6 +115,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import BuyModal from './components/service/BuyModal.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
 import api from '@/api';
 
@@ -246,7 +247,7 @@ export default class ProductInfo extends CommonMixins {
    */
   private buy() {
     this.bugVisible = true;
-    this.buyersName = this.userInfo.realName || '134';
+    this.buyersName = this.userInfo.realName;
     this.buyersPhone = this.userInfo.username;
   }
 
