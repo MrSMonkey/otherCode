@@ -9,7 +9,7 @@
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
-    <van-tabs @click="onClick">
+    <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
       <van-tab title="服务包">
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
@@ -216,6 +216,20 @@ export default class Purchase extends CommonMixins {
     this.isActiveChildrenOne = ctx;
     this.productItemData = item.products; // 当前选中的产品
     this.productName = item.typeName;
+  }
+
+  /**
+   * @description 滚动页面
+   * @params scrollTop  距离顶部位置
+   * @params isFixed 是否吸顶
+   * @returns null
+   * @author chenmo
+   */
+  private tabScroll(scrollTop: any, isFixed: any) {
+    return {
+      scrollTop: 0,
+      isFixed : true
+    };
   }
 }
 </script>
