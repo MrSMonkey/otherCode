@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-14 20:06:33
+ * @Last Modified time: 2019-03-20 15:31:53
 */
 
 <template>
@@ -137,7 +137,7 @@ export default class ServiceRecord extends CommonMixins {
     margin-bottom vw(10)
   .order
     .info 
-      height vw(187)
+      min-height vw(187)
       p
         font-size vw(15)
         line-height vw(21)

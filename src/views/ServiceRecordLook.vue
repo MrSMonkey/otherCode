@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-19 21:01:40
+ * @Last Modified time: 2019-03-20 17:10:05
  */
 
 <template>
@@ -21,22 +21,25 @@
     </div>
     <div class="order-type">
       <van-tabs  @click="chooseType">
-        <van-tab v-for="(item,index) in data" :title="item.name" :key="index">
-          <ul class="order-list">
-            <li v-for="(child,key) in data[index].value" :title="item.name" :key="key" @click="toDetail(child)">
+        <van-tab v-for="(item,index) in workOrderStatusList" :title="item.msg" :key="index">
+          <ul class="order-list" v-if="data.length > 0">
+            <li v-for="(child,key) in data" :title="item.roomNumName" :key="key" @click="toDetail(child,key)">
               <div class="list-detail">
                 <div>
                   <span>{{child.roomNumName}}</span>
-                  <span>服务中</span>
+                  <span>{{child.workOrderStatusName}}</span>
                   <span><img src="../assets/images/icon/icon_arrow2.png" alt="" class="icon-right"/></span>
                 </div>
-                <span class="timer">2018-11-11 10:30</span>
+                <span class="timer">{{child.workTime}}</span>
               </div>
               <div class="list-btn">
                 <van-button size="normal" type="default" @click="handlePay($event,child)">支付</van-button>
               </div>
             </li>
           </ul>
+          <section v-else>
+            <NoData tip="暂无服务产品" />
+          </section>
         </van-tab>
       </van-tabs>
     </div>
@@ -69,6 +72,7 @@ import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon, Tabs, Tab } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
+import NoData from '@/components/NoData.vue';
 import api from '@/api';
 import { Base64 } from 'js-base64';
 const namespace: string = 'global';
@@ -79,6 +83,7 @@ const namespace: string = 'global';
   components: {
     ImagePreview,
     HouseStatus,
+    NoData,
     [Button.name]: Button,
     [CellGroup.name]: CellGroup,
     [Field.name]: Field,
@@ -90,6 +95,7 @@ const namespace: string = 'global';
 export default class ServiceRecord extends CommonMixins {
   private data: any = []; // 服务记录详情
   private orderInfo: any = {}; // 服务记录详情
+  private workOrderStatusList: any = {}; // 工单状态
   private maskVisible: boolean = false; // 遮罩层
   private nopassVisible: boolean = false; // 不通过模态框
   private payVisible: boolean = false; // 支付模态框
@@ -97,14 +103,14 @@ export default class ServiceRecord extends CommonMixins {
   private houseStatus: any[] = []; // 维修日志
   private orderId: string = ''; // 订单id
   private rowId: string = ''; // 当前服务订单id
+  private statusId: string = '-1034'; // 当前服务类型id 默认全部
   private entrustId: string = ''; // 房源id
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
     this.orderId = String(this.$route.query.orderId);
     this.entrustId = String(this.$route.query.entrustId);
-    this.ServiceRecordLook(this.entrustId, this.orderId); // 获取服务记录详情
-    // console.log(Base64.encode(JSON.stringify({id:'123'})) === Base64.encode(JSON.stringify({id:'123'})))
+    this.ServiceRecordLook(this.orderId); // 获取服务记录详情
   }
   /**
    * @description 获取服务记录
@@ -113,7 +119,7 @@ export default class ServiceRecord extends CommonMixins {
    * @returns void
    * @author zhegu
    */
-  private async ServiceRecordLook(entrustId: string, orderId: string) {
+  private async ServiceRecordLook(orderId: string, workOrderStatus?: string) {
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -121,31 +127,19 @@ export default class ServiceRecord extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.ServiceRecordLook + `/${entrustId}` + `/${orderId}`);
+      let res: any = [];
+      if (!workOrderStatus) {
+        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}`);
+      } else {
+        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${workOrderStatus}`);
+      }
       if (res && res.code === '000') {
-        this.orderInfo = res.data.orderInfo || {};
-        // this.data = JSON.stringify(res.data);
-        this.data = [
-          {name: '全部', value: res.data.logAll},
-          {name: '待服务', value: res.data.waitingServiceLog},
-          {name: '服务中', value: res.data.serviceingLog},
-          {name: '已完成', value: res.data.completeLog},
-        ];
-        // const lookData = JSON.stringify(listData);
-        // const base64LookData = Base64.encode(lookData);
-        // const lookRecordData = localStorage.getItem('base64LookData');
-        // const localLookData = localStorage.getItem('localLookData');
-        // // console.log('lookRecordData', lookRecordData);
-        // if (localLookData && lookRecordData === base64LookData) {
-        //   console.log('存在');
-        //   this.data = listData;
-        //   return;
-        // } else {
-        //   localStorage.setItem('base64LookData', base64LookData);
-        //   localStorage.setItem('localLookData', lookData);
-        //   console.log('新设置');
-        // }
-        // console.log('isCommon', base64LookData);
+        if (!workOrderStatus) {
+          this.orderInfo = res.data.orderInfo || {};
+          this.workOrderStatusList = res.data.workOrderStatusList.slice(0, 3);
+          this.workOrderStatusList.unshift(res.data.workOrderStatusList[3]);
+        }
+        this.data = res.data.logList;
       } else {
         this.$toast(`获取服务记录详情失败`);
       }
@@ -174,8 +168,8 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  chooseType(index: string, title: string) {
-    console.log('index', index);
-    console.log('title', title);
+    this.statusId = this.workOrderStatusList[index].status;
+    this.ServiceRecordLook(this.orderId, this.workOrderStatusList[index].status);
   }
   /**
    * @description 显示支付模态框
@@ -189,13 +183,16 @@ export default class ServiceRecord extends CommonMixins {
   }
   /**
    * @description 进入订单详情
-   * @params orderId 订单id
+   * @params item 订单信息
    * @returns void
    * @author zhegu
    */
-  private  toDetail(orderId: string) {
-    this.rowId = orderId;
-    this.$router.push('/ServiceOrderDetail?orderId=' + orderId); // 跳转到服务详情
+  private  toDetail(item: string, index: string) {
+    console.log('item', item);
+    console.log('data', this.data);
+    console.log('index', index);
+    this.rowId = item;
+    this.$router.push('/ServiceOrderDetail?orderId=' + this.orderId + '&statusId=' + this.statusId + '&rowId=' + index); // 跳转到服务详情
   }
   /**
    * @description 支付
@@ -239,7 +236,7 @@ export default class ServiceRecord extends CommonMixins {
     margin-bottom vw(10)
   .order
     .info 
-      height vw(187)
+      min-height vw(187)
       p
         font-size vw(15)
         line-height vw(21)
