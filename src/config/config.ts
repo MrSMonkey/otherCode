@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-15 18:14:00
+ * @Last Modified time: 2019-03-20 20:42:14
  */
 
 
@@ -370,3 +370,7 @@ export const TIPSONE: string = `注：本次支付仅支付设计费用，装修
 
 // 维修购买提示
 export const TIPSTWO: string = `注：本次支付仅支付上门服务费，具体维修项费用需在确认验收改后进行支付！`;
+
+// 维修服务记录订单状态
+export const SERVICE_ORDER_STATUS: any[] = ['', '待支付', '待服务', '服务中', '待验收', '已完成待评价', '已完成已评价', '已关闭',
+'待处理', '验收不通过待服务', '尾款待支付', '尾款已支付', '尾款取消'];

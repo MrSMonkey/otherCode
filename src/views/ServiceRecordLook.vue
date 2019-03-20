@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 17:10:05
+ * @Last Modified time: 2019-03-20 20:57:13
  */
 
 <template>
@@ -14,7 +14,7 @@
         <p>订单号：{{orderInfo && orderInfo.orderId}}</p>
         <p>服务房源：{{orderInfo && orderInfo.productHouseName}}</p>
         <p>产品名称：{{orderInfo && orderInfo.productName}}</p>
-        <p>订单状态：{{orderInfo && orderInfo.orderStatus}}</p>
+        <p>订单状态：{{orderInfo && returnOrderStatus(orderInfo.orderStatus)}}</p>
         <p>开始日期：{{orderInfo && orderInfo.orderStartTime}}</p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{orderInfo && orderInfo.buyersRemarks}}</p>
       </div>
@@ -32,13 +32,13 @@
                 </div>
                 <span class="timer">{{child.workTime}}</span>
               </div>
-              <div class="list-btn">
+              <div v-if="child.workOrderStatus === 4" class="list-btn">
                 <van-button size="normal" type="default" @click="handlePay($event,child)">支付</van-button>
               </div>
             </li>
           </ul>
           <section v-else>
-            <NoData tip="暂无服务产品" />
+            <NoData tip="暂无数据" />
           </section>
         </van-tab>
       </van-tabs>
@@ -53,11 +53,11 @@
         <div class="content">
           <p>
             <span>应付金额</span>
-            <span>360元</span>
+            <span>{{orderInfo.orderAmount && parseFloat(orderInfo.orderAmount).toFixed(2) || '0.00'}}元</span>
           </p>
         </div>
         <div class="pay-btn">
-          <van-button size="normal" type="default" @click="submitPay">共计应付<span class="price">￥360.00</span></van-button>
+          <van-button size="normal" type="default" @click="submitPay">共计应付<span class="price">￥{{orderInfo.orderAmount && parseFloat(orderInfo.orderAmount).toFixed(2) || '0.00'}}</span></van-button>
         </div>
       </div>
     </transition>
@@ -74,7 +74,7 @@ import { Button, CellGroup, Field, Icon, Tabs, Tab } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
 import NoData from '@/components/NoData.vue';
 import api from '@/api';
-import { Base64 } from 'js-base64';
+import { SERVICE_ORDER_STATUS } from '@/config/config';
 const namespace: string = 'global';
 
 // 声明引入的组件
@@ -128,20 +128,25 @@ export default class ServiceRecord extends CommonMixins {
     });
     try {
       let res: any = [];
+      // 根据订单状态获取订单列表数据
       if (!workOrderStatus) {
         res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}`);
       } else {
         res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${workOrderStatus}`);
       }
       if (res && res.code === '000') {
+        // 判断是否 进行Tab切换操作
         if (!workOrderStatus) {
+          // 设置订单信息
           this.orderInfo = res.data.orderInfo || {};
+          // 对后天返回的订单状态顺序重组
           this.workOrderStatusList = res.data.workOrderStatusList.slice(0, 3);
           this.workOrderStatusList.unshift(res.data.workOrderStatusList[3]);
         }
+        // 设置订单列表数据
         this.data = res.data.logList;
       } else {
-        this.$toast(`获取服务记录详情失败`);
+        this.$toast(`获取服务记录失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -168,7 +173,9 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  chooseType(index: string, title: string) {
+    // 保存订单状态值
     this.statusId = this.workOrderStatusList[index].status;
+    // 切换Tab时，重新请求订单列表数据
     this.ServiceRecordLook(this.orderId, this.workOrderStatusList[index].status);
   }
   /**
@@ -182,17 +189,16 @@ export default class ServiceRecord extends CommonMixins {
     this.changePayVisible(true);
   }
   /**
-   * @description 进入订单详情
-   * @params item 订单信息
+   * @description 进入服务订单详情
+   * @params item 服务订单信息
    * @returns void
    * @author zhegu
    */
   private  toDetail(item: string, index: string) {
-    console.log('item', item);
-    console.log('data', this.data);
-    console.log('index', index);
-    this.rowId = item;
-    this.$router.push('/ServiceOrderDetail?orderId=' + this.orderId + '&statusId=' + this.statusId + '&rowId=' + index); // 跳转到服务详情
+    // 保存订单行列表索引
+    this.rowId = index;
+    // 跳转到服务订单详情
+    this.$router.push('/ServiceOrderDetail?orderId=' + this.orderId + '&statusId=' + this.statusId + '&rowId=' + index);
   }
   /**
    * @description 支付
@@ -218,6 +224,15 @@ export default class ServiceRecord extends CommonMixins {
     } finally {
       this.$toast.clear();
     }
+  }
+  /**
+   * @description 返回订单状态名
+   * @params string 订单状态枚举值
+   * @returns string
+   * @author zhegu
+   */
+  private  returnOrderStatus(status: number) {
+    return SERVICE_ORDER_STATUS[status];
   }
 }
 </script>

@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 14:23:10
+ * @Last Modified time: 2019-03-20 17:52:52
  */
 /*
 
@@ -14,7 +14,6 @@
       <div class="dot"></div>
       <p>{{item.content}}</p>
       <span>{{item.createTime}}</span>
-      <ImagePreview  :imgagesArr="images" :isFold="true" />
     </li>
   </ul>
 </template>
