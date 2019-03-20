@@ -21,7 +21,7 @@
       </div>
       <div class="block">
         <span>服务总次数：</span>
-        <p>{{data.serviceCount || '无'}}</p>
+        <p>{{data.serviceCount}}</p>
       </div>
       <div class="block">
         <span>产品描述：</span>
@@ -40,9 +40,14 @@
     </section>
     <section v-else>
       <div class="buy-dialog">
-        <!-- <div class="tips">
+        <!-- @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
+        @params typeId = 9 装修设计产品id -->
+        <div class="tips" v-if="data.productId === '118062916141300008' || data.productId === '118062916145800009' || data.cId === '118062916141300008' || data.cId === '118062916145800009'">
           <p>注：{{tips}}</p>
-        </div> -->
+        </div>
+        <div class="tips" v-else-if = "data.tpyeId === 9">
+          <p>注：{{tipsTwo}}</p>
+        </div>
         <div class="el-input">
           <van-field
             v-model="buyersName"
@@ -110,6 +115,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import BuyModal from './components/service/BuyModal.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
 import api from '@/api';
 
@@ -195,6 +201,16 @@ export default class ProductInfo extends CommonMixins {
       const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
+
+        /**
+         * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
+         * @params typeId = 9 装修设计产品id
+         */
+        if (res.data.productId === '118062916141300008' || res.data.productId === '118062916145800009') {
+          this.tips = TIPSONE;
+        } else if (res.data.typeId === 9) {
+          this.tips = TIPSTWO;
+        }
       } else {
         this.$toast(`获取服务产品详情失败`);
       }
@@ -231,7 +247,7 @@ export default class ProductInfo extends CommonMixins {
    */
   private buy() {
     this.bugVisible = true;
-    this.buyersName = this.userInfo.realName || '134';
+    this.buyersName = this.userInfo.realName;
     this.buyersPhone = this.userInfo.username;
   }
 
@@ -276,7 +292,7 @@ export default class ProductInfo extends CommonMixins {
       buyersPhone: phone,
       productId: this.productId,
       productName: this.data.productName,
-      remark: this.buyersRemarks,
+      buyersRemarks: this.buyersRemarks,
       introducePhone: this.introducePhone
     };
     this.loading = true;

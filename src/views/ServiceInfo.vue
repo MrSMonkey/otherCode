@@ -138,9 +138,10 @@ export default class ServiceInfo extends CommonMixins {
   private isintroducePhoneErr: boolean = false;
   private introducePhone: string = ''; // 推荐人联系电话
   private tips: string = '本次支付仅支付设计费用，装修费用需在确认装修改后支付！';
+
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
-
+  @Action('payment', { namespace }) private payment: any;
   // computed
   get isActive(): boolean {
     return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
@@ -280,11 +281,16 @@ export default class ServiceInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.buyService, data);
       if (res && res.code === '000') {
-        this.$toast.success('购买成功');
-        setTimeout(() => {
-          this.bugVisible = false;
-          this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
-        }, 2000);
+        // this.$toast.success('购买成功');
+        // setTimeout(() => {
+        //   this.bugVisible = false;
+        //   this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
+        // }, 2000);
+        const data  = {
+          orderId: res.data.orderId,
+          productURL: 'www.baidu.com'
+        };
+        this.payment(data);
       } else {
         this.$toast('购买失败，请重试');
       }

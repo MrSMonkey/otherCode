@@ -182,7 +182,7 @@
         title="选择朝向"
       />
     </van-popup>
-  </section>
+  </section>  
 </template>
 
 <script lang="ts">
