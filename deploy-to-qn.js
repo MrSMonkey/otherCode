@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2019-01-24 17:11:12
  * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-03-01 15:10:34
+ * @Last Modified time: 2019-03-21 11:38:39
  */
 const fs = require('fs');
 const qiniu = require('qiniu');
@@ -12,14 +12,31 @@ const qiniu = require('qiniu');
 const accessKey = `G3XeV8kr7iu0JgXiP355hYY67TijAqZXaTT3mV2b`;
 const secretKey = `Uvo5AFXku7iWGvpGJ_qYenzu_N83MS4mt_HmmMXX`;
 
-// 存储空间名称
-const bucket = `cdn-static`;
+/** 
+ *  根据 node argv 参数判断是正式环境还是pre环境部署
+ *  若是 pre 环境，bucket 的值为 fe-pre-static
+ *  否则为正式环境，bucket 的值为 fe-static 
+ */
+let bucket;
+if (process.argv[2] && process.argv[2] === 'pre') {
+  bucket = `fe-pre-static`;
+} else {
+  bucket = `fe-static`;
+}
 
 // 要上传的资源目录
 const staticPath = `dist/static`;
 
+// 从文件中获取日期时间标识符，拼接至下面的字符串中
+// 若不存在，则抛出异常，停止执行下面的代码
+const currentDateTime = fs.readFileSync('./local', 'utf8');
+
+if (!currentDateTime) {
+  throw new Error(`关键配置参数字符串未获取，deploy异常终止，请检查！`);
+}
+
 // 上传之后的文件前缀
-const prefix = `ET-FE/yz/static`;
+const prefix = `yz_${currentDateTime}/static`;
 
 // 创建鉴权对象
 const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);

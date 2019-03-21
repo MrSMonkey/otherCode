@@ -2,8 +2,8 @@
  * @Description: axios网络请求库二次封装
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 16:28:53
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-21 19:50:31
  */
 import axios from 'axios';
 import store from '../store';
@@ -20,17 +20,17 @@ const Axios = axios.create({
 Axios.interceptors.request.use(
   (config: any) => {
     // 根据环境设置baseURL
-    if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
+    if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'production') {  // 生产
       config.baseURL = 'https://api-gateway.uoko.com/';
-      // config.baseURL = 'http://bi.uoko.com:9999/app/webapi/';
-    } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TEST) {
-      config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
-      // config.baseURL = 'https://api-gateway-pre.uoko.com'; // pre环境
+    } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
+      config.baseURL = 'http://192.168.200.44:7070/';
+    } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
+      config.baseURL = 'https://api-gateway-pre.uoko.com/';
     } else {
-      config.baseURL = 'http://192.168.200.44:7070/'; // 测试环境
-      // config.baseURL = 'http://172.16.3.103:8008/'; // 林程旭
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
+      config.baseURL = 'http://192.168.200.44:7070/';
     }
+
     /*登录授权, 登录接口修改 Authorization */
     if (config.url.indexOf('/auth/asset/register_login/web/mobile') > -1
       || config.url.indexOf('/verification_code') > -1) {
@@ -39,6 +39,7 @@ Axios.interceptors.request.use(
       const token: string | null = localStorage.getItem('siteToken');
       config.headers.Authorization = token !== null ? `Bearer ${ token}` : '';
     }
+
     return config;
   }, (error) => {
     return Promise.reject(error);
