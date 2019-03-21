@@ -96,17 +96,6 @@ export default class ServiceDetile extends CommonMixins {
       const res: any = await this.axios.get(api.getOrderDetils + `/${servicePackageId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        this.$dialog.confirm({
-          title: '提示',
-          confirmButtonText: '是',
-          cancelButtonText: '否',
-          className: 'dialogTips',
-          message: '是否立即发起本服务'
-        }).then(() => {
-          // on confirm
-        }).catch(() => {
-          // on cancel
-        });
       } else {
         this.$toast(`获取订单详情失败`);
       }

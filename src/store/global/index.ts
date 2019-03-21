@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-19 11:40:40
+ * @Last Modified time: 2019-03-21 12:47:31
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -77,10 +77,12 @@ export const actions: ActionTree<GlobalState, RootState> = {
   },
   async payment({commit}, data) {
     try {
-      const params: any = {
-        productURL: data.productURL
-      };
-      const res: any = await Vue.axios.post(api.payment + '/' + data.orderId, params);
+      const res: any = await Vue.axios.get(api.payment + '/' + data.orderId, {
+        params: {
+          order: data.orderId,
+          productURL: data.productURL
+        }
+      });
       if (res && res.code === '000') {
         // 支付接口回调
         openPostWindow(res.data.toPayUrl, res.data.payParams);

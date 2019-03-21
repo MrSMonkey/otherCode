@@ -47,6 +47,9 @@ export default class ProductOrderList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any[];
 
+  @Prop({ type: String, default: '' })
+  private entrustId: string;
+
   /**
    * @description 获取订单状态
    * @params status 状态枚举
@@ -64,7 +67,8 @@ export default class ProductOrderList extends CommonMixins {
    * @author chenmo
    */
   private pushDetile(orderId: string) {
-    this.$router.push(`/productDetile?orderId=${orderId}`);
+    // status === 2 表示不是从支付进入详情，不需要弹出发起服务弹窗
+    this.$router.push(`/productDetile?orderId=${orderId}&entrustId=${this.entrustId}&status=2`);
   }
 }
 </script>

@@ -109,6 +109,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import BuyModal from './components/service/BuyModal.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
 
@@ -288,7 +289,7 @@ export default class ServiceInfo extends CommonMixins {
         // }, 2000);
         const data  = {
           orderId: res.data.orderId,
-          productURL: 'www.baidu.com'
+          productURL: `${returnDomain()}serviceDetile?entrustId=${this.entrustId}&orderId=${res.data.orderId}`
         };
         this.payment(data);
       } else {

@@ -14,11 +14,11 @@
           <NoData tip="暂无订单" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>
         <section v-else>
-          <ServiceList :tableData="tableData"></ServiceList>
+          <ServiceList :tableData="tableData" :entrustId="entrustId"></ServiceList>
         </section>
       </van-tab>
       <van-tab title="服务产品订单">
-        <ProductOrderList :tableData="tableProductData"></ProductOrderList>
+        <ProductOrderList :tableData="tableProductData" :entrustId="entrustId"></ProductOrderList>
       </van-tab>
     </van-tabs>
   </section>

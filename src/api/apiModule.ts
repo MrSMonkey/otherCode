@@ -80,7 +80,7 @@ export default {
   getProductOrderDetail: '/partner/owner/product/order/detail',
 
   /*支付*/
-  payment: '/house/pay/owner',
+  payment: '/partner/house/pay/owner',
 
   /*服务记录*/
   getServiceRecord: '/partner/owner/product/service_record',
