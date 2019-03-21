@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 20:26:26
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 17:28:55
+ * @Last Modified time: 2019-03-21 19:34:50
  */
 
 <template>
@@ -14,10 +14,10 @@
         <span>服务产品名称：{{orderInfo.productName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>服务产品订单号：{{orderInfo.orderTypeName || '无'}}</span>
+        <span>服务产品订单号：{{orderInfo.orderNum || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>产品类型：{{orderInfo.orderType || '无'}}</span>
+        <span>产品类型：{{orderInfo.orderTypeName || '无'}}</span>
       </div>
       <div class='serviceName'>
         <span>下单时间：{{orderInfo.orderStartTime|| '无'}}</span>
