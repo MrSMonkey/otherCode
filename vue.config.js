@@ -21,7 +21,34 @@ const getBaseUrl = (env) => {
 module.exports = {
   baseUrl: getBaseUrl(env),
   assetsDir: 'static',
-  configureWebpack: {},
+  configureWebpack: {
+    optimization: {
+      splitChunks: {
+        chunks: 'async',
+        minSize: 30000,   // 形成一个新代码块最小的体积
+        minChunks: 1,  // 在分割之前，这个代码块最小应该被引用的次数（译注：保证代码块复用性，默认配置的策略是不需要多次引用也可以被分割）
+        maxAsyncRequests: 5,  // 按需加载时候最大的并行请求数。
+        maxInitialRequests: 3,  // 一个入口最大的并行请求数
+        automaticNameDelimiter: '~',
+        name: true,
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10
+          },
+          vant: {
+            test: /[\\/]node_modules[\\/]vant[\\/]/,
+            priority: -4
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      }
+    }
+  },
   chainWebpack: (config) => {
     config.module
       .rule('images')

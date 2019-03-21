@@ -63,10 +63,12 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class ProductDetile extends CommonMixins {
   private orderId: string = ''; // 订单id
+  private entrustId: string = ''; // 房源id
   private orderInfo: any = {}; // 服务订单详情
 
   private mounted() {
     this.orderId = String(this.$route.query.orderId);
+    this.entrustId =  String(this.$route.query.entrustId);
     this.getServiceOrder(this.orderId); // 获取订单列表
   }
 
@@ -87,17 +89,22 @@ export default class ProductDetile extends CommonMixins {
       const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        // this.$dialog.confirm({
-        //   title: '提示',
-        //   confirmButtonText: '是',
-        //   cancelButtonText: '否',
-        //   className: 'dialogTips',
-        //   message: '是否立即发起本服务'
-        // }).then(() => {
-        //   // on confirm
-        // }).catch(() => {
-        //   // on cancel
-        // });
+        const status: string = String(this.$route.query.orderId);
+        if (status === '1') {
+          // 1代表支付进入 2 代表从订单进入不需要弹窗
+          this.$dialog.confirm({
+            title: '提示',
+            confirmButtonText: '是',
+            cancelButtonText: '否',
+            className: 'dialogTips',
+            message: '是否立即发起本服务'
+          }).then(() => {
+            // on confirm
+            this.$router.push(`/startService?productId=${res.data.productId}&entrustId=${this.entrustId}`); // 跳转到发起服务
+          }).catch(() => {
+            // on cancel 取消
+          });
+        }
       } else {
         this.$toast(`获取订单详情失败`);
       }

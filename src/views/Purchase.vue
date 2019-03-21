@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-15 15:58:54
+ * @Last Modified time: 2019-03-21 15:57:58
  */
 
 <template>
@@ -147,7 +147,14 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
-        this.productData = res.data || [];
+        this.productData = res.data.map((item: any) => {
+          // for (const i in item.productDetails) {
+          //   if ( item.productDetails[i].products.length === 0) {
+          //     delete item.productDetails[i]; // 删除服务产品没有的情况
+          //   }
+          // }
+          return item;
+        });
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
         this.productItemData = res.data[0].productDetails[0].products; // 进入页面默认第一条
@@ -332,7 +339,7 @@ export default class Purchase extends CommonMixins {
             align-items center
             p
               width vw(50)
-              height vw(40)
+              // height vw(40)
               display -webkit-box
               -webkit-box-orient vertical
               -webkit-line-clamp 2

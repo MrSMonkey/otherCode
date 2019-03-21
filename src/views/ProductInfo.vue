@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-19 11:37:54
+ * @Last Modified time: 2019-03-21 16:48:21
  */
 
 
@@ -42,11 +42,11 @@
       <div class="buy-dialog">
         <!-- @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
         @params typeId = 9 装修设计产品id -->
-        <div class="tips" v-if="data.productId === '118062916141300008' || data.productId === '118062916145800009' || data.cId === '118062916141300008' || data.cId === '118062916145800009'">
-          <p>注：{{tips}}</p>
+        <div class="tips" v-if="data.productId === '118062916141300008' || data.productId === '118062916145800009' || data.cid === '118062916141300008' || data.cid === '118062916145800009'">
+          <p>{{tips}}</p>
         </div>
         <div class="tips" v-else-if = "data.tpyeId === 9">
-          <p>注：{{tipsTwo}}</p>
+          <p>{{tipsTwo}}</p>
         </div>
         <div class="el-input">
           <van-field
@@ -60,7 +60,7 @@
           />
           <van-field
             v-model="buyersPhone"
-            required
+            requiredcls
             clearable
             input-align="right"
             label="联系电话"
@@ -200,17 +200,17 @@ export default class ProductInfo extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
       if (res && res.code === '000') {
-        this.data = res.data || [];
+        this.data = res.data || {};
 
         /**
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-        if (res.data.productId === '118062916141300008' || res.data.productId === '118062916145800009') {
-          this.tips = TIPSONE;
-        } else if (res.data.typeId === 9) {
-          this.tips = TIPSTWO;
-        }
+        // if (res.data.productId === '118062916141300008' || res.data.productId === '118062916145800009') {
+        //   this.tips = TIPSONE;
+        // } else if (res.data.typeId === 9) {
+        //   this.tips = TIPSTWO;
+        // }
       } else {
         this.$toast(`获取服务产品详情失败`);
       }
@@ -299,18 +299,23 @@ export default class ProductInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.buyProduct, data);
       if (res && res.code === '000') {
-        const data  = {
-          orderId: res.data.orderId,
-          productURL: 'www.baidu.com'
-        };
-        this.payment(data);
-        // this.$toast.success('购买成功');
-        // setTimeout(() => {
-        //   this.bugVisible = false;
-        //   this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
-        // }, 2000);
+        if (this.data.typeId === 4) {
+          // 带看
+          this.$toast.success('购买成功');
+          setTimeout(() => {
+            this.bugVisible = false;
+            this.$router.push(`/productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`); // 跳转到订单详情
+          }, 2000);
+        } else {
+          // status === 1 表示是从支付进入详情，需要弹出发起服务弹窗 `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`
+          const data  = {
+            orderId: res.data,
+            productURL: 'https://www.baidu.com'
+          };
+          this.payment(data);
+        }
       } else {
-        this.$toast('购买失败，请重试');
+        this.$toast(res.msg || '购买失败，请重试');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -353,7 +358,7 @@ export default class ProductInfo extends CommonMixins {
         word-wrap break-word
         text-align justify
         width vw(240)
-        max-height vw(100)
+        max-height vw(160)
         overflow-y scroll
       img
         padding-bottom vw(20)
@@ -371,7 +376,7 @@ export default class ProductInfo extends CommonMixins {
       width 100%
       height vw(40)
       background #FFF5F5
-      padding vw(5) vw(15)
+      padding vw(5) vw(5) vw(5) vw(15)
       p
         line-height 2.5
         text-align left
