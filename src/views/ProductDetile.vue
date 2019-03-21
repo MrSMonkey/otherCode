@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 20:26:26
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 20:51:38
+ * @Last Modified time: 2019-03-21 17:28:55
  */
 
 <template>
@@ -126,7 +126,12 @@ export default class ProductDetile extends CommonMixins {
   }
 
   private pushRecord() {
-    this.$router.push(`/serviceRecord?orderId=${this.orderId}`);
+    if (this.orderInfo.orderType === 4) {
+      // 带看
+      this.$router.push(`/serviceRecordLook?orderId=${this.orderId}`);
+    } else {
+      this.$router.push(`/serviceRecord?orderId=${this.orderId}`);
+    }
   }
 }
 </script>
