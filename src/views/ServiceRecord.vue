@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 15:31:53
+ * @Last Modified time: 2019-03-20 20:38:51
 */
 
 <template>
@@ -14,7 +14,7 @@
         <p>订单号：{{data.orderInfo && data.orderInfo.orderId}}</p>
         <p>服务房源：{{data.orderInfo && data.orderInfo.productHouseName}}</p>
         <p>产品名称：{{data.orderInfo && data.orderInfo.productName}}</p>
-        <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatus}}</p>
+        <p>订单状态：{{data.orderInfo && returnOrderStatus(data.orderInfo.orderStatus)}}</p>
         <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime}}</p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks}}</p>
       </div>
@@ -24,9 +24,9 @@
       <houseStatus :data="houseStatus"/>
     </div>
     <div class="btn">
-      <router-link  :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
-      <router-link  :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
-      <van-button size="normal" type="default" >确认支付</van-button>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 10" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderStatus === 11" size="normal" type="default" >确认支付</van-button>
     </div>
   </section>
 </template>
@@ -38,6 +38,7 @@ import { solveScrollBug } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
+import { SERVICE_ORDER_STATUS } from '@/config/config';
 import api from '@/api';
 
 // 声明引入的组件
@@ -65,7 +66,37 @@ export default class ServiceRecord extends CommonMixins {
   private mounted() {
     this.orderId = String(this.$route.query.orderId);
     this.entrustId = String(this.$route.query.entrustId);
-    this.getServiceRecord(this.entrustId, this.orderId); // 获取服务记录详情
+    this.getServiceRecord(this.orderId); // 获取服务记录详情
+  }
+  /**
+   * @description 获取服务记录
+   * @params orderId 订单id
+   * @params entrustId 订单id
+   * @returns void
+   * @author zhegu
+   */
+  private async getServiceRecord(orderId: string) {
+    this.$toast.loading({
+      duration: 0,
+      mask: true,
+      loadingType: 'spinner',
+      message: '加载中...'
+    });
+    try {
+      const res: any = await this.axios.get(api.getServiceRecord  + `/${orderId}`);
+      if (res && res.code === '000') {
+        this.data = res.data || [];
+        this.data.records.forEach( (element: any) => {
+          this.houseStatus.push({content: element.record, createTime: element.workTime});
+        });
+      } else {
+        this.$toast(`获取服务记录详情失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
   }
   /**
    * @description 不通过模态框显示/隐藏
@@ -92,37 +123,17 @@ export default class ServiceRecord extends CommonMixins {
     this.decorateVisible = visible;
     solveScrollBug(visible);
   }
-
   /**
-   * @description 获取服务记录
-   * @params orderId 订单id
-   * @params entrustId 订单id
-   * @returns void
+   * @description 返回订单状态名
+   * @params string 订单状态枚举值
+   * @returns string
    * @author zhegu
    */
-  private async getServiceRecord(entrustId: string, orderId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
-    try {
-      const res: any = await this.axios.get(api.getServiceRecord + `/${entrustId}` + `/${orderId}`);
-      if (res && res.code === '000') {
-        this.data = res.data || [];
-        this.data.records.forEach( (element: any) => {
-          this.houseStatus.push({content: element.record, createTime: element.workTime});
-        });
-      } else {
-        this.$toast(`获取服务记录详情失败`);
-      }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.$toast.clear();
-    }
+  private  returnOrderStatus(status: number) {
+    return SERVICE_ORDER_STATUS[status];
   }
+
+
 }
 </script>
 
