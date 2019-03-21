@@ -1,5 +1,5 @@
 /*
- * @Description: 服务订单
+ * @Description: 服务订单列表
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -9,10 +9,7 @@
 <template>
   <section class="service-order">
     <section class="background-tips" v-if="tableData.length === 0">
-      <img src='../assets/images/no_search.png' alt=""/>
-      <p>
-        未找到订单
-      </p>
+      <NoData tip="暂无订单" :url="'/myHouse?entrustId=' + entrustId"/>
     </section>
     <section v-else>
       <div class="order-list" :key="index" v-for="(order, index) in tableData">
@@ -49,6 +46,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import NoData from '@/components/NoData.vue';
 import { getQueryString } from '@/utils/utils';
 
 import { STATUS_NAME } from '@/config/config';
@@ -57,6 +55,9 @@ import api from '@/api';
 // 声明引入的组件
 @Component({
   name: 'ServiceOrder',
+  components: {
+    NoData
+  }
 })
 // 类方式声明当前组件
 export default class ServiceOrder extends CommonMixins {
@@ -86,7 +87,7 @@ export default class ServiceOrder extends CommonMixins {
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
-        this.$toast.fail(`获取房源详情失败`);
+        this.$toast(`获取房源详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -111,11 +112,11 @@ export default class ServiceOrder extends CommonMixins {
 @import '../assets/stylus/main.styl'
 .background-tips
   position relative
-  top 128px
+  top 10px
   text-align center
   font-size 15px /* no */
   img
-    width vw(200)
+    width vw(120)
     height auto
   p
     color $text-color

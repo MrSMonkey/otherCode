@@ -16,22 +16,40 @@
          <!-- 房源动态 -->
          <section class="house-status">
           <p class="title">房源动态</p>
-          <houseStatus :data="houseStatus"></houseStatus>
+            <section v-if="houseStatus.length > 0">
+              <houseStatus :data="houseStatus"></houseStatus>
+            </section>
+            <section v-else class="house-status-no">
+              <img src="../assets/images/404.png" alt=""/>
+              <p>暂无房源动态</p>
+            </section>
          </section>
-         <BottomBtn :entrustId="entrustId" :cityId="houseInfo.cityId"></BottomBtn>
+         <BottomBtn :entrustId="entrustId" :cityId="houseInfo.starCityId"></BottomBtn>
         </van-tab>
         <van-tab title="房间信息">
-          <roomInfo :roomInfo="roomInfo"></roomInfo>
+          <section v-if="roomInfo.length > 0">
+            <roomInfo :roomInfo="roomInfo"></roomInfo>
+          </section>
+          <section v-else class="list-no">
+            <img src="../assets/images/404.png" alt=""/>
+            <p>暂无房间信息</p>
+          </section>
         </van-tab>
         <van-tab title="租赁信息">
-          <section class="rent-info">
-            <div class="rent-title">
-              <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
-                {{getName(rent.source, index)}}
-              </span>
-            </div>
+          <section v-if="rentInfo.length > 0">
+            <section class="rent-info" v-if="rentInfo.length > 1">
+              <div class="rent-title">
+                <span v-for="(rent, index) in rentInfo" :key="index" :class="active=== index ? 'active' : ''" @click="checkIndex(index, rent)">
+                  {{rent.sourceName}}
+                </span>
+              </div>
+            </section>
+            <RentInfo :selectData="selectData"></RentInfo>
           </section>
-          <RentInfo :selectData="selectData"></RentInfo>
+          <section v-else class="list-no">
+              <img src="../assets/images/404.png" alt=""/>
+              <p>暂无租赁信息</p>
+          </section>
         </van-tab>
       </van-tabs>
     </section>
@@ -66,7 +84,7 @@ import api from '@/api';
   }
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class MyHouse extends CommonMixins {
   private houseInfo: any = {}; // 委托房源详情
   private entrustId: string = ''; // 委托房源ID
   private houseStatus: any[] = []; // 房源动态
@@ -99,7 +117,7 @@ export default class Login extends CommonMixins {
       if (res && res.code === '000') {
         this.houseInfo = res.data || {};
       } else {
-        this.$toast.fail(`获取房源详情失败`);
+        this.$toast(`获取房源详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -121,7 +139,7 @@ export default class Login extends CommonMixins {
       if (res && res.code === '000') {
         this.houseStatus = res.data || {};
       } else {
-        this.$toast.fail(`获取房源动态失败`);
+        this.$toast(`获取房源动态失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -146,7 +164,7 @@ export default class Login extends CommonMixins {
       if (res && res.code === '000') {
         this.roomInfo = res.data || [];
       } else {
-        this.$toast.fail(`获取房间配置信息失败`);
+        this.$toast(res.msg || `获取房间配置信息失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -172,9 +190,11 @@ export default class Login extends CommonMixins {
       const res: any = await this.axios.get(api.getRentInfo + `/${entrustId}`);
       if (res && res.code === '000') {
         this.rentInfo = res.data || [];
-        this.selectData = res.data[0].houseRoomCommonDTO; // 默认第一条
+        if (res.data.length > 0) {
+          this.selectData = res.data[0].houseRoomCommonDTO; // 默认第一条
+        }
       } else {
-        this.$toast.fail(`获取租赁信息失败`);
+        this.$toast(`获取租赁信息失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -184,31 +204,19 @@ export default class Login extends CommonMixins {
   }
 
   /**
-   * @description 已上架的房源跳转到我的房源列表
-   * @params house 房源信息
-   * @returns null
-   * @author chenmo
-   */
-  private linkTo(house: any) {
-    if (house.handleStatus !== 1) {
-      this.$router.push('/home');
-    }
-  }
-
-  /**
    * @description tabs切换
-   * @params index 当前tabs的索引值
+   * @params index 当前tabs的索引值 0 房源信息 1 房间信息 2 租赁信息
    * @returns null
    * @author chenmo
    */
   private onClick(index: any) {
-    console.log(index);
     if (index === 0) {
       this.getHouseInfo(this.entrustId);
       this.getHouseStatus(this.entrustId);
     } else if (index === 1) {
       this.getHouseRoom(this.entrustId);
     } else if (index === 2) {
+      this.active = 0;
       this.getRentInfo(this.entrustId);
     }
   }
@@ -278,5 +286,24 @@ export default class Login extends CommonMixins {
         color $next-text-color
       .active
         background $main-color
+        border 1px solid $main-color
         color #fff
+  .list-no
+    text-align center
+    margin-top vw(100)
+    img
+      display inline-block
+      width vw(120)
+    p
+      color $text-color
+      font-size 14px
+  .house-status-no
+    text-align center
+    padding vw(30) 0
+    img
+      display inline-block
+      width vw(120)
+    p
+      color $text-color
+      font-size 14px
 </style>

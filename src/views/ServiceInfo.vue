@@ -1,50 +1,46 @@
 /*
- * @Description: 服务订单
+ * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 17:59:00
+ * @Last Modified time: 2019-03-08 17:02:55
  */
 
 <template>
-  <section class="service-info">
-    <h2 class="serviceinfo-title">{{data.serviceName || '无'}}</h2>
-    <div class="block">
-      <span>产品单价：</span>
-      <p>{{data && parseFloat(data.price).toFixed(2) || '0.00'}}元</p>
-    </div>
-    <div class="block">
-      <span>服务产品：</span>
-      <p v-for="(item, index) in data.productInfosBeans" :key="index">{{item.childProductName || '无'}}</p>
-    </div>
-    <div class="block">
-      <span>产品描述：</span>
-      <p>{{data.desc || '无'}}</p>
-    </div>
-    <div class="block">
-      <span>产品图片：</span>
-      <p>&emsp;</p>
-    </div>
-    <div class="imgbox">
-      <ImagePreview />
-    </div>
-    <div class="service-footer">
-      <van-button slot="button" size="large" type="default" class="service-btn" @click="buy">购买</van-button>
-    </div>
-    <!-- 购买弹窗 -->
-     <van-popup v-model="bugVisible" position="bottom" @click-overlay="cancel">
+  <section>
+    <section class="service-info" v-if="!bugVisible">
+      <h2 class="serviceinfo-title">{{data.serviceName || '无'}}</h2>
+      <div class="block">
+        <span>产品单价：</span>
+        <p>{{data && parseFloat(data.price).toFixed(2) || '0.00'}}元</p>
+      </div>
+      <div class="block">
+        <span>服务产品：</span>
+        <p v-for="(item, index) in data.productInfosBeans" :key="index">{{item.childProductName || '无'}}</p>
+      </div>
+      <div class="block">
+        <span>咨询电话：</span>
+        <p>{{data.phone || '无'}}</p>
+      </div>
+      <div class="block">
+        <span>产品描述：</span>
+        <p>{{data.desc || '无'}}</p>
+      </div>
+      <div class="block">
+        <span>产品图片：</span>
+        <p>&emsp;</p>
+      </div>
+      <div class="imgbox">
+        <ImagePreview :imgagesArr="data.imgUrls"/>
+      </div>
+      <div class="service-footer">
+        <van-button slot="button" size="large" type="default" class="service-btn" @click="buy">购买</van-button>
+      </div>
+    </section>
+    <section v-else>
       <div class="buy-dialog">
-        <div class="title">
-          <div class="left" @click="cancel">
-            <img src="../assets/images/icon/icon_close.png" alt=""/>
-          </div>
-          <div class="content">
-            购买信息
-          </div>
-          <div class="right" @click="clickBuy">
-            <span v-if="!loading">购买</span>
-            <van-loading type="spinner" v-else size="20px"/>
-          </div>
+        <div class="tips">
+          <p>注：{{tips}}</p>
         </div>
         <div class="el-input">
           <van-field
@@ -65,8 +61,16 @@
             placeholder="请输入联系人电话"
             type="number"
           />
+          <van-field
+            v-model="introducePhone"
+            clearable
+            input-align="right"
+            label="推荐人电话"
+            placeholder="请输入推荐人电话"
+            type="number"
+          />
           <div class="dec">
-            <p>备注</p>
+            <p>备&emsp;&emsp;注</p>
             <van-field
               v-model="remark"
               class="textarea"
@@ -77,17 +81,34 @@
             />
           </div>
         </div>
+        <confirmBtn 
+          loadingText="购买中"
+          cancelText="取消"
+          :loading="loading"
+          @confirm="clickBuy"
+          @plotCancel="plotCancel"
+          :isActive="!isActive"
+        >
+          <template slot="confirm">
+            <span>购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></span>
+          </template>
+        </confirmBtn>
+        <!-- <section class="plot-footer">
+          <van-button size="normal" type="default" @click="plotCancel">取消</van-button>
+          <van-button size="normal" type="default"  @click="clickBuy" :loading="loading" loading-text="购买中">购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></van-button>
+        </section> -->
       </div>
-  </van-popup>
+    </section>
   </section>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import BuyModal from './components/service/BuyModal.vue';
+import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
 
@@ -98,7 +119,8 @@ const namespace: string = 'global';
   name: 'ServiceInfo',
   components: {
     ImagePreview,
-    BuyModal
+    BuyModal,
+    ConfirmBtn
   }
 })
 // 类方式声明当前组件
@@ -111,9 +133,39 @@ export default class ServiceInfo extends CommonMixins {
   private remark: string = ''; // 备注
   private bugVisible: boolean = false; // 购买弹窗
   private loading: boolean = false; // 提交加载
-
+  private showDialog: boolean = false; // 提交加载
+  private isphoneErr: boolean = false;
+  private isintroducePhoneErr: boolean = false;
+  private introducePhone: string = ''; // 推荐人联系电话
+  private tips: string = '本次支付仅支付设计费用，装修费用需在确认装修改后支付！';
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
+
+  // computed
+  get isActive(): boolean {
+    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
+  }
+
+  // Watch
+  @Watch('ownerPhone')
+  private handlerPhone(newVal: string) {
+    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
+      this.isphoneErr = true;
+    } else {
+      this.isphoneErr = false;
+      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
+    }
+  }
+
+  @Watch('introducePhone')
+  private handlerIntroducePhone(newVal: string) {
+    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
+      this.isintroducePhoneErr = true;
+    } else {
+      this.isintroducePhoneErr = false;
+      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
+    }
+  }
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -140,7 +192,7 @@ export default class ServiceInfo extends CommonMixins {
       if (res && res.code === '000') {
         this.data = res.data || [];
       } else {
-        this.$toast.fail(`获取服务包详情失败`);
+        this.$toast(`获取服务包详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -175,8 +227,7 @@ export default class ServiceInfo extends CommonMixins {
    */
   private buy() {
     this.bugVisible = true;
-    console.log(this.userInfo);
-    this.ownerName = this.userInfo.nickName;
+    this.ownerName = this.userInfo.realName;
     this.ownerPhone = this.userInfo.username;
   }
 
@@ -198,6 +249,12 @@ export default class ServiceInfo extends CommonMixins {
       this.$toast('请输入正确的联系人电话');
       return false;
     }
+
+    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
+    //   this.$toast('请输入正确的推荐人电话');
+    //   return false;
+    // }
+
     this.submitData(this.ownerName, this.ownerPhone); // 提交数据
   }
 
@@ -217,24 +274,29 @@ export default class ServiceInfo extends CommonMixins {
       price: this.data.price,
       title: this.data.serviceName,
       remark: this.remark,
+      introducePhone: this.introducePhone
     };
     this.loading = true;
     try {
       const res: any = await this.axios.post(api.buyService, data);
       if (res && res.code === '000') {
         this.$toast.success('购买成功');
-        this.bugVisible = false;
         setTimeout(() => {
-          this.$router.push(`/myHouse?entrustId=${this.entrustId}`); // 跳转到房源列表
+          this.bugVisible = false;
+          this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
         }, 2000);
       } else {
-        this.$toast.fail('购买失败，请重试');
+        this.$toast('购买失败，请重试');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
       this.loading = false;
     }
+  }
+
+  private plotCancel() {
+    this.bugVisible = false;
   }
 }
 </script>
@@ -263,7 +325,7 @@ export default class ServiceInfo extends CommonMixins {
         left vw(15)
       p
         display inline-block
-        margin-left vw(88)
+        margin-left vw(98)
         word-wrap break-word
         text-align justify
         width vw(240)
@@ -281,6 +343,17 @@ export default class ServiceInfo extends CommonMixins {
         color #fff
   .buy-dialog
     height vw(300)
+    .tips
+      width 100%
+      height vw(40)
+      background #FFF5F5
+      padding vw(5) vw(15)
+      p
+        line-height 2.5
+        text-align left
+        display inline-block
+        font-size 12px
+        color #FF5252
     .title
       display -webkit-flex
       display flex
@@ -308,6 +381,7 @@ export default class ServiceInfo extends CommonMixins {
         color $text-color
       .dec
         padding-top vw(15)
+        background $global-background
         p
           padding-left vw(15)
           font-size 15px
@@ -318,4 +392,9 @@ export default class ServiceInfo extends CommonMixins {
             background #fafafa
             border-radius 4px
             padding vw(10)
+            height vw(80)
+    .plot-price
+      display inline-block
+      font-size 18px
+      margin-left vw(6)
 </style>

@@ -37,7 +37,7 @@ import { TOWARDNAME } from '@/config/config';
   name: 'RoomInfo',
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class RoomInfo extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private roomInfo: any;
 

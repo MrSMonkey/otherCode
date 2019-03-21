@@ -7,8 +7,9 @@
  */
 <template>
   <div class="bottom-btn">
-    <router-link :to="'/serviceOrder?entrustId=' + entrustId">
-      <img src="../assets/images/icon/icon_detail.png" alt="" class="order-icon"/>服务账单
+    <router-link :to="'/serviceOrder?entrustId=' + entrustId" class="btn-order">
+      <img src="../assets/images/icon/icon_detail.png" alt="" class="order-icon"/>
+      <p>查看订单</p>
     </router-link>
     <router-link :to="'/purchase?cityId=' + cityId + '&entrustId=' + entrustId" class="btn">
       购买服务
@@ -21,7 +22,9 @@
 
 <script lang="ts">
   import { Component, Vue, Prop } from 'vue-property-decorator';
-  @Component
+  @Component({
+    name: 'BottomBtn'
+  })
   export default class BottomBtn extends Vue {
     @Prop({ type: String, default: '' })
     private cityId: string;
@@ -55,13 +58,18 @@
     display flex
     justify-content space-around
     align-items center
-    .order-icon
-      width 16px
-      height 16px
-      vertical-align middle
-      display inline-block
-      margin-top -1px
-      margin-right 2px
+    .btn-order
+      text-align center
+      p
+        color $main-color
+        font-size 12px
+      .order-icon
+        width 20px
+        height 20px
+        vertical-align middle
+        display inline-block
+        margin-top -1px
+        margin-right 2px
     a
       color #5d656b
     .btn

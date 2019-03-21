@@ -11,9 +11,9 @@
 <template>
   <section class="home">
     <main class="home-comp_list">
-      <section class="header-img">
+      <!-- <section class="header-img">
         <img src="../assets/images/home_bg.png" alt=""/>
-      </section>
+      </section> -->
       <hr-title title="星空产品服务群"></hr-title>
       <section class="star-home">
         <img v-for="img in startHomeImg" :key="img.alt" alt="img.alt" :src="img.src"/>
@@ -40,7 +40,7 @@
             1299
             <span>￥1499</span>
           </p>
-          <a href={SMART_LOCK_LINK}>
+          <a :href="link">
             <button type="button">优惠购买</button>
           </a>
           <p class="lock-footer">
@@ -58,10 +58,11 @@ import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import HrTitle from '@/components/HrTitle.vue';
 import UokoDetailPlant from '@/components/UokoDetailPlant.vue';
-import {START_HOME_IMG} from '@/config/config';
+import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
 
 // 声明引入的组件
 @Component({
+  name: 'Home',
   components: {
     [Icon.name]: Icon,
     HrTitle,
@@ -71,6 +72,7 @@ import {START_HOME_IMG} from '@/config/config';
 // 类方式声明当前组件
 export default class Home extends CommonMixins {
   private startHomeImg: any[] = START_HOME_IMG;
+  private link: string = SMART_LOCK_LINK;
   @State('version') private version: string;
 }
 </script>
@@ -90,7 +92,7 @@ export default class Home extends CommonMixins {
     justify-content space-between
     img 
       margin-bottom 10px
-      width 162px
+      width vw(162)
       height 100px
       vertical-align bottom
   .smart-lock

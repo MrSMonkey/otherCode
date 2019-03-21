@@ -13,26 +13,29 @@
     <div class="img">
       <img src="../assets/images/404.png" alt="404"/>
     </div>
-    <p>您访问的页面不存在</p>
+    <p>{{tip}}</p>
     <div class="btn-box">
-      <router-link class="inline-btn" to="/">
-        返回首页
+      <router-link class="inline-btn" :to="url">
+        返回上一页
       </router-link>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-
-
 
 // 声明引入的组件
 @Component({
-  name: 'Nofond'
+  name: 'NoData'
 })
-export default class Nofond extends CommonMixins {
+export default class NoData extends CommonMixins {
+  @Prop({ type: String, default: '' })
+  private url: string;
+
+  @Prop({ type: String, default: '' })
+  private tip: string;
 }
 </script>
 
@@ -48,7 +51,7 @@ export default class Nofond extends CommonMixins {
       background $main-color
       color #fff
       font-size 14px
-      padding vw(10) vw(30)
+      padding vw(10) vw(20)
       border-radius 4px
   img
     display inline-block

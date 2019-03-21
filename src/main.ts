@@ -7,9 +7,9 @@ import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
 import FastClick from 'fastclick';
-import VueLazyload from 'vue-lazyload';
+// import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
-import {Toast, Picker, Popup, Lazyload, Button, Field, Loading  } from 'vant';
+import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col } from 'vant';
 import 'vant/lib/index.css';
 
 
@@ -17,9 +17,15 @@ Vue.use(Toast);
 Vue.use(Picker);
 Vue.use(Popup);
 Vue.use(Button);
-Vue.use(Lazyload);
 Vue.use(Field);
 Vue.use(Loading);
+Vue.use(Row);
+Vue.use(Col);
+Vue.use(Lazyload, {
+  lazyComponent: true,
+  loading: require('./assets/images/de_bg.jpg'),
+  error: require('./assets/images/de_bg.jpg'),
+});
 // Intersection Observer polyfill
 require('intersection-observer');
 
@@ -29,16 +35,17 @@ if ('addEventListener' in document) {
     (FastClick as any).attach(document.body);
   }, false);
 }
+// (FastClick as any).attach(document.body);
 
 Vue.config.productionTip = false;
 
 // 全局注册Axios 无需在组件中引入axios，直接使用 this.$axios
 // Vue.prototype.$axios = Axios;
 Vue.use(Vueaxios, Axios);
-Vue.use(VueLazyload, {
-  lazyComponent: true,
-  preLoad: 0.7
-});
+// Vue.use(VueLazyload, {
+//   lazyComponent: true,
+//   preLoad: 0.7
+// });
 Vue.use(VueLazyComponent);
 
 // 全局注册页脚组件

@@ -70,7 +70,7 @@ import api from '@/api';
   name: 'ServiceDetile',
 })
 // 类方式声明当前组件
-export default class ServiceOrder extends CommonMixins {
+export default class ServiceDetile extends CommonMixins {
   private servicePackageId: string = ''; // 订单id
   private orderInfo: any = {}; // 服务订单详情
 
@@ -97,7 +97,7 @@ export default class ServiceOrder extends CommonMixins {
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
       } else {
-        this.$toast.fail(`获取订单详情失败`);
+        this.$toast(`获取订单详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

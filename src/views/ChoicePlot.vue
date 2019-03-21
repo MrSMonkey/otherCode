@@ -42,7 +42,7 @@ const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
-  name: 'choicePlot',
+  name: 'ChoicePlot',
   components: {
     [List.name]: List,
     [Cell.name]: Cell

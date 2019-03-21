@@ -25,7 +25,7 @@
           <div class="code">
             <van-field
               v-model="code"
-              type="number"
+              type="text"
               placeholder="验证码"
               clearable
             />
@@ -58,7 +58,7 @@ import api from '@/api';
 const namespace: string = 'global';
 // 声明引入的组件
 @Component({
-  name: 'login',
+  name: 'Bind',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,
@@ -67,7 +67,7 @@ const namespace: string = 'global';
   }
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class Bind extends CommonMixins {
    public $refs!: {
     [key: string]: any,
     phoneErrorInfo: HTMLFormElement,
@@ -137,7 +137,7 @@ export default class Login extends CommonMixins {
         this.updateToken(res.data.access_token);
         this.$router.push('/house'); // 跳转到房源列表
       } else {
-        this.$toast.fail(res.msg || '登录失败');
+        this.$toast(res.msg || '登录失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

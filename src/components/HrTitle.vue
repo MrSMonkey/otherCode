@@ -21,9 +21,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
-  name: 'hrTitle',
+  name: 'HrTitle',
 })
-export default class Header extends Vue {
+export default class HrTitle extends Vue {
   @Prop({ type: String, default: 'Title' })
   private title: any;
   @Prop({ type: String, default: '' })
@@ -53,6 +53,6 @@ export default class Header extends Vue {
     }
   .line 
     display  inline-block
-    width 80px
+    width vw(80)
     border-top 1px solid $disabled-color
 </style>

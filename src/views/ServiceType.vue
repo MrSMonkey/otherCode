@@ -1,5 +1,5 @@
 /*
- * @Description: 服务订单
+ * @Description: 服务类型
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -7,33 +7,42 @@
  */
 
 <template>
-  <section class="service-type">
-    <div class="list" v-for="(item, index) in tableData" :key="index" @click="selectPro(item)">
-      <h2>{{item.serviceTypeName}}</h2>
-      <div class="serviceType-right"><img src="../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
-    </div>
-    <!-- 选择产品弹窗 -->
-    <van-popup v-model="proShow" position="bottom" :overlay="true">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        title="选择产品"
-        @confirm="cityConfirm"
-        @cancel="proShow = false"
-      />
-    </van-popup>
+  <section>
+    <section class="service-type" v-if="tableData.length > 0">
+      <div class="list" v-for="(item, index) in tableData" :key="index" @click="selectPro(item)">
+        <h2>{{item.serviceTypeName}}</h2>
+        <div class="serviceType-right"><img src="../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
+      </div>
+      <!-- 选择产品弹窗 -->
+      <van-popup v-model="proShow" position="bottom" :overlay="true">
+        <van-picker
+          show-toolbar
+          :columns="columns"
+          title="选择产品"
+          @confirm="cityConfirm"
+          @cancel="proShow = false"
+        />
+      </van-popup>
+    </section>
+    <section v-else>
+      <NoData tip="暂无服务类型" :url="'/myHouse?entrustId=' + entrustId"/>
+    </section>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
+import NoData from '@/components/NoData.vue';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import api from '@/api';
 
 // 声明引入的组件
 @Component({
   name: 'ServiceType',
+  components: {
+    NoData
+  }
 })
 // 类方式声明当前组件
 export default class ServiceType extends CommonMixins {
@@ -64,7 +73,7 @@ export default class ServiceType extends CommonMixins {
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
-        this.$toast.fail(`获取服务类型失败`);
+        this.$toast(`获取服务类型失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -85,13 +94,13 @@ export default class ServiceType extends CommonMixins {
       this.$toast('未找到有效订单，请先购买服务后发起');
       return false;
     }
-    const arr: any[] = item.ownerServiceTypes.map((ctx: any) => {
-      return {
-        text: ctx.label,
-        value: ctx.value
-      };
-    });
-    this.columns = arr;
+    // const arr: any[] = item.ownerServiceTypes.map((ctx: any) => {
+    //   return {
+    //     text: ctx.label,
+    //     value: ctx.value
+    //   };
+    // });
+    this.columns = item.ownerServiceTypes;
     this.proShow = true;
   }
 

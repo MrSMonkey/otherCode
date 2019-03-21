@@ -13,7 +13,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 
-@Component
+@Component({
+  name: 'Footer'
+})
 export default class Footer extends Vue {
   @State('version') private version: string;
 }

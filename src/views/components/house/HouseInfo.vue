@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-19 11:35:59
+ * @Last Modified time: 2019-03-08 17:00:25
  */
 /*
 
@@ -13,7 +13,7 @@
     <div class="base-info">
       <div class="block">
         <span>门牌号</span>
-        <p>{{`${houseInfo.building || ' '}栋`}}{{`${houseInfo.unit || ' '}单元`}}{{`${houseInfo.number || ' '}室`}}</p>
+        <p>{{`${houseInfo.building || '?'}栋`}}{{`${houseInfo.unit || '?'}单元`}}{{`${houseInfo.number || '?'}号`}}</p>
       </div>
       <div class="block">
         <span>运营类型</span>
@@ -23,28 +23,32 @@
     <div class="detail-info">
       <div class="block">
         <label>小区名称：</label>
-        <span>{{houseInfo.communityName}}</span>
+        <span>{{houseInfo.communityName|| '无'}}</span>
       </div>
       <div class="block-secondary">
         <label>楼<span class="space-2"/>层：</label>
-        <span>{{houseInfo.floorNum}}/{{houseInfo.floorTotality}}层</span>
+        <span>{{houseInfo.floorNum || '?'}}/{{houseInfo.floorTotality || '?'}}层</span>
       </div>
       <div class="block">
-        <label>原始户型：</label>
-        <span>{{houseInfo.roomNum}}室{{houseInfo.hallNum}}厅{{houseInfo.toiletNum}}卫</span>
+        <label>户<span class="space-2"/>型：</label>
+        <span>{{houseInfo.roomNum || '?'}}室{{houseInfo.hallNum || '?'}}厅{{houseInfo.kitchenNum || '?'}}厨{{houseInfo.toiletNum || '?'}}卫</span>
       </div>
       <div class="block-secondary">
         <label>朝<span class="space-2"/>向：</label>
-        <span>{{getToward(houseInfo.toward)}}</span>
+        <span>{{getToward(houseInfo.toward) || '?'}}</span>
       </div>
       <div class="block">
         <label>面<span class="space-2"/>积：</label>
-        <span>{{houseInfo.buildAcreage}}㎡</span>
+        <span>{{houseInfo.buildAcreage || '?'}}㎡</span>
       </div>
       <div class="block-secondary">
-        <label>改造户型：</label>
-        <span>{{houseInfo.roomNum}}间</span>
+        <label>装修情况：</label>
+        <span>{{houseInfo.decorationStatus === 0 ? '毛坯房' : '已装修'}}</span>
       </div>
+      <!-- <div class="block">
+        <label>改造后房间数：</label>
+        <span>{{houseInfo.roomNum || '?'}}间</span>
+      </div> -->
     </div>
   </section>
 </template>
@@ -60,7 +64,7 @@ import { RENT_TYPE, TOWARDNAME} from '@/config/config';
   name: 'HouseInfo',
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class HouseInfo extends CommonMixins {
   @Prop({ type: Object, default: {} })
   private houseInfo: any;
 
@@ -86,7 +90,7 @@ export default class Login extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" >
 @import '../../../assets/stylus/main.styl'
 .house-info
   .base-info
@@ -108,7 +112,7 @@ export default class Login extends CommonMixins {
       &:first-child
         border-right 1px solid  $border-color-light
   .detail-info
-    padding 20px
+    padding vw(10)
     border-top 1px solid $border-color-light
     background-color $global-background
     font-size 14px /* no */

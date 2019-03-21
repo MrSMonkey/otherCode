@@ -27,6 +27,11 @@ export const START_HOME_IMG: any[] = [
   }
 ];
 
+ /* 定义购买链接 */
+export const SMART_LOCK_LINK: string =
+`http://coupon.m.jd.com/coupons/show.action?key=58840135e3f64759b6e648
+ de6c8190d5&roleId=13925125&to=item.jd.com/28149452434.html`;
+
  /* 定义路由 */
 export const componentsList: any[] = [
   {
@@ -44,6 +49,10 @@ export const componentsList: any[] = [
   {
     path: 'entrust',
     title: '在线委托'
+  },
+  {
+    path: 'perfect',
+    title: '完善房源信息'
   },
   {
     path: 'house',
@@ -90,14 +99,14 @@ export const componentsList: any[] = [
 /* 定义托管类型 */
 export const RENT_TYPE: any = {
   0: '未知',
-  1: '星空家盟直租',
-  2: '优客逸家加盟',
-  3: '优客逸家自营',
-  4: '星空家盟加盟'
+  1: '加盟托管',
+  2: '非加盟托管',
+  3: '自主管理',
 };
 
 /* 定义租赁类型 */
 export const RENT_WAY: any = {
+  0: '未知',
   1: '整租',
   2: '合租',
 };
@@ -252,6 +261,7 @@ export const LIST: any = [
   }
 ];
 
+/* 定义线上提交流程*/
 export const HOUSTFLOW: any = [
   {
     img: require('../assets/images/icon_submit.png'),
@@ -264,6 +274,66 @@ export const HOUSTFLOW: any = [
   {
     img: require('../assets/images/icon_sale.png'),
     text: '房源上架'
+  }
+];
+
+/* 定义线上运营类型*/
+export const TYPELIST: any = [
+  {
+    value: 1,
+    text: '加盟托管',
+  },
+  {
+    value: 2,
+    text: '非加盟托管',
+  },
+  {
+    value: 3,
+    text: '自主管理'
+  }
+];
+
+/* 定义房间朝向枚举 */
+export const TOWARDLIST: any[] = [
+  {
+    text: '东',
+    value: '1'
+  },
+  {
+    text: '南',
+    value: '2'
+  },
+  {
+    text: '西',
+    value: '3'
+  },
+  {
+    text: '北',
+    value: '4'
+  },
+  {
+    text: '东南',
+    value: '5'
+  },
+  {
+    text: '西南',
+    value: '6'
+  },
+  {
+    text: '东北',
+    value: '7'
+  },
+  {
+    text: '西北',
+    value: '8'
+  },
+  {
+    text: '南北',
+    value: '9'
+  },
+  {
+    text: '东西',
+    value: '10'
   }
 ];
 

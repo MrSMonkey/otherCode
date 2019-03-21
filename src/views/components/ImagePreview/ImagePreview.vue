@@ -11,7 +11,7 @@
     <div>
       <div>
         <ul class="viewImg">
-          <li><div class="img-box" v-for="(img, index) in imagesA" :key="index" :style="{backgroundImage: 'url(' + img +')'}" @click="showImagePreview(index)"></div></li>
+          <li><div class="img-box" v-for="(img, index) in imgagesArr" :key="index" v-lazy:background-image="img+'?imageView2/1/w/100/h/100'" @click="showImagePreview(index)"></div></li>
         </ul>
       </div>
     </div>
@@ -25,7 +25,6 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { ImagePreview } from 'vant';
 
 const images: string[] = [
-  require('../../../assets/images/ccc.jpg'),
   'https://img.yzcdn.cn/upload_files/2017/03/14/FmTPs0SeyQaAOSK1rRe1sL8RcwSY.jpeg',
   'https://img.yzcdn.cn/upload_files/2017/03/15/FvexrWlG_WxtCE9Omo5l27n_mAG_.jpeg',
   'https://img.yzcdn.cn/upload_files/2017/03/14/FmTPs0SeyQaAOSK1rRe1sL8RcwSY.jpeg'
@@ -35,10 +34,10 @@ const images: string[] = [
   name: 'ImagePreview'
 })
 // 类方式声明当前组件
-export default class Login extends CommonMixins {
+export default class ImagePreviewPage extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private imgagesArr: any;
-  private imagesA: any[] = images;
+  // private imagesA: any[] = images;
   /**
    * @description 预览图片
    * @params position 位置
@@ -47,10 +46,12 @@ export default class Login extends CommonMixins {
    * @author chenmo
    */
   private showImagePreview(position: any, timer: any): void {
-    // const images: any[] = this.imgagesArr;
+    const images: any[] = this.imgagesArr.map((item: any) => {
+      return `${item}?imageView2/2/w/320`;
+    });
     const instance = ImagePreview({
       images,
-      startPosition: typeof position === 'number' ? position : 0
+      startPosition: typeof position === 'number' ? position : 0,
     });
 
     if (timer) {

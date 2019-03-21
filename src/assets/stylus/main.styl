@@ -19,7 +19,7 @@ html, body
   background-color $bg-color-default
 
 body 
-  font-family "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
+  font-family "system-ui, Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
   position relative
 hr 
   box-sizing content-box
@@ -201,6 +201,8 @@ h6
         color: #455a64
         background-color #dfdfdf
         font-family Source Code Pro,Monaco,Inconsolata,monospace
+.mr-b10
+  margin-bottom vw(10)
 
 // .van-button--primary
 //   background-color $main-color
@@ -219,9 +221,13 @@ h6
 
 .fr 
   float right
+
 #app
   height 100%
   overflow auto
+  -webkit-overflow-scrolling touch // 苹果手机浏览器上上下滑动出现卡顿现象
+  overflow-scrolling touch // 苹果手机浏览器上上下滑动出现卡顿现象
+
 .van-picker__confirm
   color $main-color
 .van-picker__cancel
@@ -234,4 +240,9 @@ h6
   color $main-color
 .van-popup
   position absolute
+input
+  &::-webkit-input-placeholder
+    color $disabled-color
+.van-icon-arrow
+  color $disabled-color
 

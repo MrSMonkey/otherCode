@@ -1,5 +1,5 @@
 /*
- * @Description: 购买弹窗
+ * @Description: 首页表格组件
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: chenmo

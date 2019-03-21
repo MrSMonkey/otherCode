@@ -1,5 +1,5 @@
 /*
- * @Description: 提交房源
+ * @Description: 委托房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
@@ -51,19 +51,19 @@
           <div class="village">
             <van-field
               v-model="ownerName"
-              placeholder="如何让称呼您"
+              placeholder="如何称呼您"
               type="text"
               clearable
             />
           </div>
         </div>
-        <div class="city">
+        <div class="city" v-if="!isLogin">
           <div class="label">联系方式*</div>
           <div class="village">
             <van-field
               v-model="ownerPhone"
               placeholder="您的联系电话"
-              type="text"
+              type="number"
               clearable
             />
           </div>
@@ -74,7 +74,7 @@
             <van-field
               v-model="varityCold"
               placeholder="请输入验证码"
-              type="text"
+              type="number"
               clearable
             >
             <van-button slot="button" size="small" type="default" class="code-btn" v-if="!isphoneErr">获取验证码</van-button>
@@ -97,7 +97,7 @@
         </div>
       </section>
       <section>
-        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isphoneErr || !ownerName || !isLogin && !isCodeErr">立即提交</van-button>
+        <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!isLogin && !isphoneErr || !ownerName || !isLogin && !isCodeErr || !communityName">立即提交</van-button>
         <van-button slot="button" size="large" type="default" class="entrust-btn" v-else @click="getSubmitData" :loading="loading" loading-text="提交中">立即提交</van-button>
       </section>
     </section>
@@ -107,21 +107,38 @@
           v-model="value"
           placeholder="请输入您爱屋所在的小区" 
           clearable
-          @change="getPlotList"
         />
       </section>
       <main class="main">
-        <ul class="list">
+        <ul class="list" v-if="tableList.length > 0">
           <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
-            <span>{{item.communityName}}</span>
+            <span>{{item.communityName}}({{item.address}})</span>
             <img src="../assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
           </li>
         </ul>
+        <div v-if="tableList.length === 0 && isGetPlot">
+          <div class="noserch">
+            <p class="noserch-title">未找到您输入的小区</p>
+            <p class="tips">快速咨询，请点击拨打：10105288</p>
+            <a href="tel:10105288">快速委托</a>
+          </div>
+        </div>
       </main>
-      <section class="plot-footer">
+      <confirmBtn 
+        loadingText="保存中"
+        cancelText="返回"
+        @confirm="onOk"
+        @plotCancel="plotCancel"
+        :isActive="tableList.length > 0"
+      >
+        <template slot="confirm">
+          <span>确认</span>
+        </template>
+      </confirmBtn>
+      <!-- <section class="plot-footer">
         <a @click="plotCancel">返回</a>
         <a @click="onOk">确认</a>
-      </section>
+      </section> -->
     </section>
     <!-- 城市弹窗 -->
     <van-popup v-model="cityShow" position="bottom" :overlay="true">
@@ -142,6 +159,8 @@ import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Button } from 'vant';
 import HrTitle from '@/components/HrTitle.vue';
+import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import { handleWebStorage } from '@/utils/utils';
 import {HOUSTFLOW} from '@/config/config';
 import api from '@/api';
 
@@ -149,18 +168,19 @@ const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
-  name: 'entrust',
+  name: 'Entrust',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,
     [Col.name]: Col,
     [Button.name]: Button,
-    HrTitle
+    HrTitle,
+    ConfirmBtn
   }
 })
 // 类方式声明当前组件
 export default class Entrust extends CommonMixins {
-  private cityName: string = '成都';
+  private cityName: string = '成都市';
   private cityId: string = '510100';
   private code: string = '';
   private cityShow: boolean = false;
@@ -185,20 +205,31 @@ export default class Entrust extends CommonMixins {
   private time: number = 60;
   private varityCold: string = '';
   private isCodeErr: boolean = false; // 校验验证码
+  private isGetPlot: boolean = false; // 判断是否请求了小区
+  private sourceId: any = ''; // 来源渠道id
   private houseSetting: any[] = [
     {
       id: 1,
-      name: '毛坯房',
+      name: '已装修',
     },
     {
-      id: 2,
-      name: '已装修',
+      id: 0,
+      name: '毛坯房',
     }
   ];
 
+  @Mutation('updateToken', { namespace }) private updateToken: any;
+  @Getter('getUserInfo', { namespace }) private userInfo: any;
+  @Action('getUserInfo', { namespace }) private getUserInfo: any;
+
   private mounted() {
+    this.sourceId = this.$route.query.sourceId;
     this.getCitys(); // 获取城市
-    this.isLogin = !!localStorage.getItem('userId');
+    const token: string = String(localStorage.getItem('siteToken'));
+    this.isLogin = !!localStorage.getItem('siteToken');
+    if (this.isLogin) {
+      this.getUserInfo();
+    }
   }
   /**
    * @description 选择城市确认
@@ -213,6 +244,8 @@ export default class Entrust extends CommonMixins {
     this.selectData = {};
     this.communityId = '';
     this.communityName = '';
+    this.plotAacive = -1;
+    this.isGetPlot = false;
     this.cityShow = false;
   }
 
@@ -225,6 +258,11 @@ export default class Entrust extends CommonMixins {
     this.active = id;
   }
 
+  /**
+   * @description 获取城市列表
+   * @returns void
+   * @author chenmo
+   */
   private async getCitys() {
     try {
       const res: any = await this.axios.get(api.getCitys);
@@ -236,7 +274,7 @@ export default class Entrust extends CommonMixins {
           };
         });
       } else {
-        this.$toast.fail(res.msg || '获取城市失败');
+        this.$toast(res.msg || '获取城市失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -250,6 +288,11 @@ export default class Entrust extends CommonMixins {
     this.showPlot = true;
   }
 
+  /**
+   * @description 获取小区
+   * @returns void
+   * @author chenmo
+   */
   private async getPlotList() {
     if (this.value === '') {
       return false;
@@ -258,6 +301,7 @@ export default class Entrust extends CommonMixins {
       const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.value}`);
       if (res && res.code === '000') {
         this.tableList = res.data || [];
+        this.isGetPlot = true; // 请求成功
       } else {
         this.$toast(res.msg);
       }
@@ -275,12 +319,6 @@ export default class Entrust extends CommonMixins {
     if (this.value === '') {
       this.$toast('请输入您爱屋所在的小区');
     } else {
-      if (this.tableList.length === 0) {
-        // 搜索的小区为[]
-        this.communityId = '';
-        this.communityName = this.value;
-        this.showPlot = false;
-      } else {
         if (Object.keys(this.selectData).length === 0) {
           // 未选择
           this.$toast('请选择您爱屋所在的小区');
@@ -290,7 +328,13 @@ export default class Entrust extends CommonMixins {
           this.communityName = this.selectData.communityName;
           this.showPlot = false;
         }
-      }
+      // if (this.tableList.length === 0) {
+      //   // 搜索的小区为[]
+      //   this.communityId = '';
+      //   this.communityName = this.value;
+      //   this.showPlot = false;
+      // } else {
+      // }
     }
   }
 
@@ -360,17 +404,66 @@ export default class Entrust extends CommonMixins {
       return false;
     }
 
-    if (!this.ownerPhone) {
-      this.$toast('请输入您的手机号');
-      return false;
+    // if (!this.ownerPhone) {
+    //   this.$toast('请输入您的手机号');
+    //   return false;
+    // }
+    if (this.isLogin) {
+      this.submitData();
+    } else {
+      // 未登录先登录注册
+      this.submitLogin();
     }
-    this.submitData();
+  }
+
+  /**
+   * @description 登录
+   * @return void
+   * @author chenmo
+   */
+  private async submitLogin() {
+    try {
+      const res: any = await this.axios.post(api.login, {
+        mobile: this.ownerPhone,
+        verificationCode: this.varityCold,
+        registerSource: 1
+      });
+      this.loading = true;
+      if (res && res.code === '000') {
+        handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
+        handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
+        this.updateToken(res.data.access_token);
+        this.submitData(); // 登录后提交房源信息
+      } else {
+        this.$toast(res.msg || '登录失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.loading = false;
+    }
   }
 
   private async submitData() {
     this.loading = true;
+    const data: any = {
+      cityId: this.cityId,
+      cityName: this.cityName,
+      communityId: this.communityId,
+      communityName: this.communityName,
+      decorationStatus: this.active,
+      ownerName: this.ownerName,
+      ownerPhone: this.isLogin ? (this.userInfo && this.userInfo.username) : this.ownerPhone,
+      ownerUserId: localStorage.getItem('userId'),
+      source: typeof(this.sourceId) === undefined ? '' : this.sourceId
+    };
     try {
-      const res: any = await this.axios.post(api.getHouseList);
+      const res: any = await this.axios.post(api.pushEntrust, data);
+      if (res && res.code === '000') {
+        this.$router.push('/house');
+      } else {
+        this.$toast(res.msg);
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
@@ -399,6 +492,21 @@ export default class Entrust extends CommonMixins {
       // this.$refs.codeErrorInfo.innerHTML = '请输入6位手机验证码';
     }
   }
+
+  @Watch('value')
+  private handlerValue(newVal: string) {
+    if (newVal !== '') {
+      // this.$refs.codeErrorInfo.innerHTML = '';
+      // this.isCodeErr = true;
+      this.getPlotList(); // 请求小区数据
+    } else {
+      this.isCodeErr = false;
+      this.isGetPlot = false;
+      this.tableList = []; // 清空查询
+      this.plotAacive = -1;
+      this.selectData = {};
+    }
+  }
 }
 </script>
 
@@ -422,7 +530,7 @@ export default class Entrust extends CommonMixins {
     .city
       background $global-background
       height vw(55)
-      padding vw(10)
+      padding vw(20)
       border-bottom 1px solid $bg-color-default
       display -webkit-flex
       display flex
@@ -436,25 +544,26 @@ export default class Entrust extends CommonMixins {
           color $tip-text-color
         .btn-active
           color $main-color
-      .van-field
-        // padding: 0 15px;
-        input
-          font-size 15px
-          color $text-color
-          &::-webkit-input-placeholder
-            color $disabled-color
-        .van-field__label
-          text-align justify
-          span 
-            display inline-block
-            width 100%
-            text-align justify
-            color $text-color
+        .van-cell
+          // padding: 0 15px;
+          padding vw(10) vw(0) vw(10) vw(10) !important
+          input
             font-size 15px
+            color $text-color
+            &::-webkit-input-placeholder
+              color $disabled-color
+          .van-field__label
+            text-align justify
+            span 
+              display inline-block
+              width 100%
+              text-align justify
+              color $text-color
+              font-size 15px
     .fixture
       background $global-background
       height vw(55)
-      padding vw(10)
+      padding vw(20)
       border-bottom 1px solid $separate-line-color
       display -webkit-flex
       display flex
@@ -520,10 +629,16 @@ export default class Entrust extends CommonMixins {
       top 0
       left 0
       width 100%
+      z-index 1000
       .van-field
         font-size 14px
     .main
+      margin-top vw(75)
+      margin-bottom vw(70)
       .list
+        margin-top vw(20)
+        height vw(520)
+        overflow-y scroll
         li
           background #fff
           height vw(45)
@@ -537,6 +652,11 @@ export default class Entrust extends CommonMixins {
           display flex
           justify-content space-between
           align-items center
+          span  
+            width vw(320)
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
           img 
             display inline-block
             text-align right
@@ -545,6 +665,24 @@ export default class Entrust extends CommonMixins {
         .active
           // background $bg-color-default
           color $main-color
+      .noserch
+        margin-top vw(200)
+        text-align center
+        .noserch-title
+          font-size 16px
+          color $text-color
+        .tips
+          font-size 14px
+          color $tip-text-color
+          margin-top vw(20)
+        a
+          display inline-block
+          border 1px solid $main-color
+          color $main-color
+          font-size 14px
+          padding vw(5) vw(20)
+          border-radius vw(4)
+          margin-top vw(20)
     .plot-footer
       position absolute
       bottom 0
@@ -564,7 +702,7 @@ export default class Entrust extends CommonMixins {
         line-height vw(46)
         &:nth-child(1)
           background #fff
-          color $mian-color
+          color $main-color
         &:nth-child(2)
           background $main-color
           color #fff

@@ -3,8 +3,8 @@
   * @Description: 星级房屋托管计划
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
-  * @Last Modified by: chenmo
-  * @Last Modified time: 2019-02-15 14:41:27
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-11 14:49:00
   */
 -->
 
@@ -74,6 +74,7 @@ import { STEP,  TABLES, COLUMNS, BADGES, LIST} from '@/config/config';
 
 // 声明引入的组件
 @Component({
+  name: 'EntrustPlan',
   components: {
     [Icon.name]: Icon,
     HrTitle,
@@ -82,15 +83,25 @@ import { STEP,  TABLES, COLUMNS, BADGES, LIST} from '@/config/config';
   }
 })
 // 类方式声明当前组件
-export default class Home extends CommonMixins {
+export default class EntrustPlan extends CommonMixins {
   private step: any[] = STEP;
   private tables: any[] = TABLES;
   private columns: any[] = COLUMNS;
   private badges: any[] = BADGES;
   private list: any[] = LIST;
+  private sourceId: any = ''; // 来源渠道id
+
+  private mounted() {
+    this.sourceId = this.$route.query.sourceId;
+  }
 
   private gotoEntrust() {
-    this.$router.push('/entrust'); // 跳转到在线委托页
+    if (typeof(this.sourceId) === 'undefined') {
+      this.$router.push(`/entrust`); // 跳转到在线委托页
+      window.location.href = `/#/entrust`;
+    } else {
+      window.location.href = `/#/entrust?sourceId=${this.sourceId}`; // 跳转到在线委托页
+    }
   }
 }
 </script>
