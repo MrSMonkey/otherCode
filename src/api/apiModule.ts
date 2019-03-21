@@ -2,8 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-19 11:14:30
+ * @Last Modified by: zhegu
+ * @Last Modified time: 2019-03-21 19:02:40
  */
 
 export default {
@@ -86,7 +86,7 @@ export default {
   getServiceRecord: '/partner/owner/product/service_record',
 
   /*维修服务支付详情*/
-  getServiceRepair: '/partner/owner/product/service/repair/pay',
+  getServiceRepair: '/partner/owner/product/service/repair/payment_detail',
 
   /*维修服务验收详情*/
   getProductAcceptance: '/partner/owner/product/service/repair/acceptance',

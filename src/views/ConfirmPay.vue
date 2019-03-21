@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 17:56:23
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-14 20:49:18
+ * @Last Modified time: 2019-03-21 19:03:36
  */
 
 <template>
@@ -32,7 +32,7 @@
         </p>
       </div>
     </section>
-    <div class="pay-footer">
+    <div class="pay-footer" v-if="data.needPrice != 0">
       <span>
         <span>需支付：</span>
         <span class="price">￥{{data.needPrice && parseFloat(data.needPrice).toFixed(2) || '0.00'}}</span>

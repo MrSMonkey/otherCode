@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 14:23:04
+ * @Last Modified time: 2019-03-21 18:57:34
  */
 
 <template>
@@ -14,7 +14,7 @@
         <p>订单号：{{orderInfo && orderInfo.orderId}}</p>
         <p>服务房源：{{orderInfo && orderInfo.productHouseName}}</p>
         <p>产品名称：{{orderInfo && orderInfo.productName}}</p>
-        <p>订单状态：{{orderInfo && returnOrderStatus(orderInfo.orderStatus)}}</p>
+        <p>订单状态：{{orderInfo && orderInfo.orderStatusName}}</p>
         <p>开始日期：{{orderInfo && orderInfo.orderStartTime}}</p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{orderInfo && orderInfo.buyersRemarks}}</p>
       </div>

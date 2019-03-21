@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 17:12:11
+ * @Last Modified time: 2019-03-21 18:58:22
 */
 
 <template>
@@ -14,7 +14,7 @@
         <p>订单号：{{data.orderInfo && data.orderInfo.orderId}}</p>
         <p>服务房源：{{data.orderInfo && data.orderInfo.productHouseName}}</p>
         <p>产品名称：{{data.orderInfo && data.orderInfo.productName}}</p>
-        <p>订单状态：{{data.orderInfo && returnOrderStatus(data.orderInfo.orderStatus)}}</p>
+        <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName}}</p>
         <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime}}</p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks}}</p>
       </div>
@@ -25,7 +25,7 @@
     </div>
     <div class="btn">
       <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
-      <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 10" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderStatus === 11" size="normal" type="default" >确认支付</van-button>
     </div>
   </section>
