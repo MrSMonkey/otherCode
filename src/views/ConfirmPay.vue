@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 17:56:23
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 19:39:19
+ * @Last Modified time: 2019-03-21 23:07:32
  */
 
 <template>
@@ -110,7 +110,7 @@ export default class ConfirmPay extends CommonMixins {
     try {
       const data  = {
           orderId: this.orderId,
-          productURL: returnDomain() + 'ServiceRecord?orderId=' +  `/${this.orderId}`
+          productURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
       };
       this.payment(data);
     } catch (err) {

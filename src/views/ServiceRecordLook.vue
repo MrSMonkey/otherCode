@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 22:35:12
+ * @Last Modified time: 2019-03-21 23:07:57
  */
 
 <template>
@@ -206,19 +206,9 @@ export default class ServiceRecord extends CommonMixins {
     try {
       const data  = {
         orderId: this.orderId,
-        productURL: returnDomain() + 'ServiceRecordLook?orderId=' +  `/${this.orderId}`
+        productURL: returnDomain() + 'ServiceRecordLook?orderId=' +  `${this.orderId}`
       };
       this.payment(data);
-      // const res: any = await this.axios.post(api.payment + `/${this.rowId}`);
-      // if (res && res.code === '000') {
-      //   const data  = {
-      //     orderId: res.data.orderId,
-      //     productURL: returnDomain() + 'ServiceRecordLook?orderId=' +  `/${this.orderId}`
-      //   };
-      //   this.payment(data);
-      // } else {
-      //   this.$toast(res.message);
-      // }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {

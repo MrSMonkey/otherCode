@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 18:58:22
+ * @Last Modified time: 2019-03-21 23:13:13
 */
 
 <template>
@@ -26,20 +26,41 @@
     <div class="btn">
       <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
       <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderStatus === 11" size="normal" type="default" >确认支付</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="passService">确认验收</van-button>
     </div>
+    <transition name="van-fade">
+      <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
+    </transition>
+    <transition name="van-slide-up">
+      <div class="buildpay-modal" v-if="buildPayVisible">
+        <van-icon class="icon-close" name="cross" @click="changebuildPayVisible(false)"/>
+        <h1>确认装修</h1>
+        <div class="content">
+          <p>
+            <span>装修总报价</span>
+            <span>{{data.orderInfo && parseFloat(data.orderInfo.orderAmount).toFixed(2) || '0.00'}}元</span>
+          </p>
+        </div>
+        <div class="pay-btn">
+          <van-button size="normal" type="default" @click="submitPay">去支付<span class="price">￥{{data.orderInfo && parseFloat(data.orderInfo.orderAmount).toFixed(2) || '0.00'}}</span></van-button>
+        </div>
+      </div>
+    </transition>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { solveScrollBug } from '@/utils/utils';
+import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
 import { SERVICE_ORDER_STATUS } from '@/config/config';
 import api from '@/api';
+const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
@@ -58,11 +79,12 @@ export default class ServiceRecord extends CommonMixins {
   private data: any = {}; // 服务记录详情
   private maskVisible: boolean = false; // 遮罩层
   private nopassVisible: boolean = false; // 不通过模态框
-  private decorateVisible: boolean = false; // 装修模态框
+  private buildPayVisible: boolean = false; // 装修模态框
   private desc: string = ''; // 不通过原因
   private houseStatus: any[] = []; // 维修日志
   private orderId: string = ''; // 订单id
   private entrustId: string = ''; // 房源id
+  @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
     this.orderId = String(this.$route.query.orderId);
@@ -109,7 +131,7 @@ export default class ServiceRecord extends CommonMixins {
     this.maskVisible = visible;
     this.nopassVisible = visible;
     if (!visible) {
-      this.decorateVisible = false;
+      this.buildPayVisible = false;
     }
     solveScrollBug(visible);
   }
@@ -119,9 +141,9 @@ export default class ServiceRecord extends CommonMixins {
    * @returns void
    * @author zhegu
    */
-  private  changeDecorateVisible(visible: boolean) {
+  private  changebuildPayVisible(visible: boolean) {
     this.maskVisible = visible;
-    this.decorateVisible = visible;
+    this.buildPayVisible = visible;
     solveScrollBug(visible);
   }
   /**
@@ -133,8 +155,49 @@ export default class ServiceRecord extends CommonMixins {
   private  returnOrderStatus(status: number) {
     return SERVICE_ORDER_STATUS[status];
   }
-
-
+  /**
+   * @description 支付
+   * @params orderId 订单id
+   * @params entrustId 订单id
+   * @returns void
+   * @author zhegu
+   */
+  private async submitPay() {
+    try {
+      const data  = {
+        orderId: this.orderId,
+        productURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
+      };
+      this.payment(data);
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
+  }
+  /**
+   * @description 通过装修服务验收
+   * @params orderId 订单id
+   * @returns void
+   * @author zhegu
+   */
+  private async passService() {
+    try {
+      const res: any = await this.axios.put(api.passService + `/${this.orderId}`);
+      if (res && res.code === '000') {
+        this.$toast.success(`验收通过`);
+        this.getServiceRecord(this.orderId);
+      } else {
+        this.$toast(res.msg);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      setTimeout(() => {
+        this.$toast.clear();
+      }, 1000);
+    }
+  }
 }
 </script>
 
@@ -212,13 +275,14 @@ export default class ServiceRecord extends CommonMixins {
           color #2c3d2e
         &:nth-child(2)
           color $main-color
-  .decorate-modal
+  .buildpay-modal
     position fixed
     bottom 0
     width 100%
     height vw(250)
     background #fff
     z-index 200
+    color $text-color
     .icon-close
       position absolute
       font-size vw(16)
@@ -234,8 +298,12 @@ export default class ServiceRecord extends CommonMixins {
     .content
       padding vw(10) vw(15)
       p
-        font-size vw(14)
-        color #b8b8b8
+        font-size vw(15)
+        display flex
+        flex-direction row
+        justify-content space-between
+        border-bottom 1px solid #e7e7e7
+        padding-bottom vw(12)
       ul
         width 100%
         padding-bottom vw(17)
@@ -247,13 +315,21 @@ export default class ServiceRecord extends CommonMixins {
           padding vw(12) 0
           font-size vw(15)
           color #474747
+    .pay-btn
+      position absolute
+      bottom vw(10)
+      left 0
+      width 100%
+      padding 0 vw(15)
       button
         width 100%
         background-color $main-color
         color #fff
         height vw(50)
-        font-size vw(17)
+        font-size vw(14)
         border 0
+        .price 
+          font-size vw(17)
 .title
   font-size vw(16)
   margin-bottom vw(10)
