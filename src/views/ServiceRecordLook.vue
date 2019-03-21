@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 20:57:13
+ * @Last Modified time: 2019-03-21 14:23:04
  */
 
 <template>
@@ -41,6 +41,7 @@
             <NoData tip="暂无数据" />
           </section>
         </van-tab>
+        <span  class="red-dot"></span>
       </van-tabs>
     </div>
     <transition name="van-fade">
@@ -94,7 +95,7 @@ const namespace: string = 'global';
 })
 export default class ServiceRecord extends CommonMixins {
   private data: any = []; // 服务记录详情
-  private orderInfo: any = {}; // 服务记录详情
+  private orderInfo: any = {}; // 服务订单详情
   private workOrderStatusList: any = {}; // 工单状态
   private maskVisible: boolean = false; // 遮罩层
   private nopassVisible: boolean = false; // 不通过模态框
@@ -127,15 +128,9 @@ export default class ServiceRecord extends CommonMixins {
       message: '加载中...'
     });
     try {
-      let res: any = [];
-      // 根据订单状态获取订单列表数据
-      if (!workOrderStatus) {
-        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}`);
-      } else {
-        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${workOrderStatus}`);
-      }
+      const res: any = !workOrderStatus ? await this.axios.get(api.ServiceRecordLook  + `/${orderId}`) : await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${workOrderStatus}`);
       if (res && res.code === '000') {
-        // 判断是否 进行Tab切换操作
+        // Tab切换操作
         if (!workOrderStatus) {
           // 设置订单信息
           this.orderInfo = res.data.orderInfo || {};
@@ -276,6 +271,16 @@ export default class ServiceRecord extends CommonMixins {
     flex 1
     .van-tab span
       font-size vw(15)
+    .red-dot
+      display inline-block
+      position absolute
+      right vw(18)
+      top vw(10)
+      width vw(5)
+      height vw(5)
+      border-radius 50%
+      background #f00
+      z-index 200
     .order-list
       li
         display flex
