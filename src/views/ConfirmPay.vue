@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 17:56:23
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 19:03:36
+ * @Last Modified time: 2019-03-21 19:29:28
  */
 
 <template>
@@ -32,7 +32,7 @@
         </p>
       </div>
     </section>
-    <div class="pay-footer" v-if="data.needPrice != 0">
+    <div class="pay-footer" v-if="data && data.needPrice != 0">
       <span>
         <span>需支付：</span>
         <span class="price">￥{{data.needPrice && parseFloat(data.needPrice).toFixed(2) || '0.00'}}</span>
@@ -108,16 +108,11 @@ export default class ConfirmPay extends CommonMixins {
    */
   private async submitPay() {
     try {
-      const res: any = await this.axios.post(api.payment + `/${this.orderId}`);
-      if (res && res.code === '000') {
-        const data  = {
-          orderId: res.data.orderId,
+      const data  = {
+          orderId: this.orderId,
           productURL: returnDomain() + 'ServiceRecord?orderId=' +  `/${this.orderId}`
-        };
-        this.payment(data);
-      } else {
-        this.$toast(res.message);
-      }
+      };
+      this.payment(data);
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
@@ -150,6 +145,7 @@ export default class ConfirmPay extends CommonMixins {
         display flex
         flex-direction row
         justify-content space-between
+        margin-bottom vw(10)
         span 
           font-size vw(15)
           &:nth-child(2)
