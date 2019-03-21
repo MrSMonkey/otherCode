@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-08 17:02:55
+ * @Last Modified time: 2019-03-11 21:44:51
  */
 
 <template>
@@ -39,9 +39,9 @@
     </section>
     <section v-else>
       <div class="buy-dialog">
-        <div class="tips">
+        <!-- <div class="tips">
           <p>注：{{tips}}</p>
-        </div>
+        </div> -->
         <div class="el-input">
           <van-field
             v-model="ownerName"
