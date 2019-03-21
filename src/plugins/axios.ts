@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-03-01 14:51:59
+ * @Last Modified time: 2019-03-21 11:39:44
  */
 import axios from 'axios';
 import store from '../store';
@@ -19,7 +19,6 @@ const Axios = axios.create({
 // http request请求拦截器(所有请求发送都要执行的操作)
 Axios.interceptors.request.use(
   (config: any) => {
-    console.log(process.env);
     // 根据环境设置baseURL
     if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
       config.baseURL = 'http://api-gateway.uoko.com/';
@@ -30,6 +29,7 @@ Axios.interceptors.request.use(
       // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
       config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
     }
+
     /*登录授权, 登录接口修改 Authorization */
     if (config.url.indexOf('/auth/login/web/mobile') > -1 || config.url.indexOf('/verification_code') > -1) {
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2';
@@ -37,6 +37,7 @@ Axios.interceptors.request.use(
       const token: string | null = localStorage.getItem('siteToken');
       config.headers.Authorization = `Bearer ${token !== null ? token : ''}`;
     }
+
     return config;
   }, (error) => {
     return Promise.reject(error);

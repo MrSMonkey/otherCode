@@ -4,11 +4,27 @@ const fs = require('fs');
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 const SVG_ICON_PATH = 'src/assets/svg-icons';  // 增加svgIcon图标目录
 const { currentDateTime } = require('./config');
-const env = process.env.NODE_ENV;
 
-const addrConfig = {
-  'development': '/',
-  'production': `https://cdn-static.uoko.com/ET-FE/yz_${currentDateTime}/`
+let env;
+let baseURL;
+if (process.env.NODE_ENV === 'production') {
+  if (process.env.VUE_APP_TITLE === 'test') { // 测试
+    env = 'test';
+    baseURL = '/';
+  }
+
+  if (process.env.VUE_APP_TITLE === 'pre-release') { // 预发布
+    env = 'pre-release';
+    baseURL = `https://fe-pre-static.uoko.com/yz_${currentDateTime}/`;
+  }
+
+  if (process.env.VUE_APP_TITLE === 'production') { // 生产
+    env = 'production';
+    baseURL = `https://fe-static.uoko.com/yz_${currentDateTime}/`;
+  }
+} else {
+  env = 'development';
+  baseURL = '/';
 }
 
 /**
@@ -20,17 +36,8 @@ const addrConfig = {
  */ 
 fs.writeFileSync('./local', currentDateTime, 'utf8');
 
-const getBaseUrl = (env) => {
-  if (!process.env.VUE_APP_TEST) {    // 打包模式，应用于非测试下
-    return addrConfig[env];
-  } else {
-    // process.env.TEST_API_URL 为真，则为测试环境下，打包方式为生产
-    return '/';
-  }
-}
-
 module.exports = {
-  baseUrl: getBaseUrl(env),
+  baseUrl: baseURL,
   assetsDir: 'static',
   configureWebpack: {},
   chainWebpack: (config) => {

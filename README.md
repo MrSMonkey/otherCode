@@ -2,7 +2,7 @@
 
 ## 项目介绍
 
-优客逸家 - 数据平台移动版(Typescript)
+优客逸家 - 业主公众号平台(Typescript)
 
 ## 简介
 
@@ -12,7 +12,7 @@
 
 克隆地址：
 
-http://win-tfs-cd-01.uoko.local:8080/tfs/DefaultCollection/star/_git/uoko-fe-data-platform
+http://win-tfs-cd-01.uoko.local:8080/tfs/DefaultCollection/star/_git/uoko-fe-landlord-site
 
 安装依赖：
 
