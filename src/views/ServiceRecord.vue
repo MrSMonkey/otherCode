@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 16:18:57
+ * @Last Modified time: 2019-03-21 17:12:11
 */
 
 <template>
@@ -53,6 +53,7 @@ import api from '@/api';
     [Icon.name]: Icon
   }
 })
+
 export default class ServiceRecord extends CommonMixins {
   private data: any = {}; // 服务记录详情
   private maskVisible: boolean = false; // 遮罩层
