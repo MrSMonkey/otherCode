@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-03-21 11:52:01
+ * @Last Modified time: 2019-03-21 14:01:35
  */
 import axios from 'axios';
 import store from '../store';
@@ -23,13 +23,12 @@ Axios.interceptors.request.use(
     if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'production') {  // 生产
       config.baseURL = 'https://api-gateway.uoko.com/';
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
-      config.baseURL = 'http://192.168.200.120:7070/';
+      config.baseURL = 'http://192.168.200.44:7070/';
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
       config.baseURL = 'https://api-gateway-pre.uoko.com/';
     } else {
-      // config.baseURL = 'http://192.168.200.120:7070/'; // 测试环境
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
-      config.baseURL = ' http://192.168.200.120:7070/';
+      config.baseURL = 'http://192.168.200.44:7070/';
     }
 
     /*登录授权, 登录接口修改 Authorization */
