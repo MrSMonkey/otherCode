@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 19:02:40
+ * @Last Modified time: 2019-03-21 20:31:05
  */
 
 export default {
@@ -92,7 +92,7 @@ export default {
   getProductAcceptance: '/partner/owner/product/service/repair/acceptance',
 
   /*通过维修服务验收*/
-  passService: '/partner/owner/product/service/repair/pass',
+  passService: '/partner/owner/product/service/repair/passing',
 
   /*拒绝通过维修服务验收*/
   productRefuse: '/partner/owner/product/service/repair/refuse',

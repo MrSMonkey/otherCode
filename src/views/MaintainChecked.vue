@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 11:47:40
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-14 17:22:41
+ * @Last Modified time: 2019-03-21 20:30:25
 */
 
 <template>
@@ -25,7 +25,7 @@
     </div>
     <div class="btn">
       <van-button size="normal" type="default" @click="passService">验收通过</van-button>
-      <van-button size="normal" type="default" @click="changeVisible(true)">验收不通过</van-button>
+      <!-- <van-button size="normal" type="default" @click="changeVisible(true)">验收不通过</van-button> -->
     </div>
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changeVisible(false)"></div>
@@ -220,7 +220,7 @@ export default class MaintainChecked extends CommonMixins {
       background-color $main-color
       color #fff
       height vw(50)
-      width 50%
+      width 100%
       font-size vw(17)
   .mask
     position absolute
