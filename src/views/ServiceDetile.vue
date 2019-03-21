@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-20 09:29:37
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 20:34:49
+ * @Last Modified time: 2019-03-21 18:47:13
  */
 
 <template>
@@ -31,7 +31,7 @@
           <div :class="item.status === 7 ? '' : 'order-item-type'">{{getOrderStatusName(item.status)}}</div>
         </div>
         <div class="order-item">
-          <span>产品类型：{{item.serviceType || '无'}}</span><span class="check">查看服务记录<van-icon name="arrow" /></span>
+          <span>产品类型：{{item.serviceType || '无'}}</span><span class="check" @click="checkout(item.serviceId, item.orderType)">查看服务记录<van-icon name="arrow" /></span>
         </div>
         <div class="order-item">
           <span>产品名称：{{item.serviceName || '无'}}</span>
@@ -114,6 +114,21 @@ export default class ServiceDetile extends CommonMixins {
    */
   private getOrderStatusName(status: number) {
     return STATUS_NAME[status];
+  }
+
+  /**
+   * @description 跳转服务记录
+   * @params orderId 订单id
+   * @params orderType 订单类型
+   * @returns string
+   * @author chenmo
+   */
+  private checkout(orderId: string, orderType: number) {
+    if (orderType === 4) {
+      this.$router.push(`/serviceRecordLook?orderId=${orderId}`);
+    } else {
+      this.$router.push(`/serviceRecord?orderId=${orderId}`);
+    }
   }
 }
 </script>
