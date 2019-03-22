@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 20:31:05
+ * @Last Modified time: 2019-03-22 10:25:12
  */
 
 export default {
@@ -98,5 +98,7 @@ export default {
   productRefuse: '/partner/owner/product/service/repair/refuse',
 
   /*带看记录*/
-  ServiceRecordLook: '/partner/owner/product/look/service_record'
+  serviceRecordLook: '/partner/owner/product/look/service_record',
+  /*装修订单通过验收*/
+  buildPass: '/partner/owner/product/service/renovation/passing'
 };

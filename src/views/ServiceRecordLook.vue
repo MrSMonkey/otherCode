@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 09:37:09
+ * @Last Modified time: 2019-03-22 10:57:09
  */
 
 <template>
@@ -116,7 +116,7 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 获取服务记录
    * @params orderId 订单id
-   * @params entrustId 订单id
+   * @params entrustId 房源id
    * @returns void
    * @author zhegu
    */
@@ -128,7 +128,7 @@ export default class ServiceRecord extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = !workOrderStatus ? await this.axios.get(api.ServiceRecordLook  + `/${orderId}`) : await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${workOrderStatus}`);
+      const res: any = !workOrderStatus ? await this.axios.get(api.serviceRecordLook  + `/${orderId}`) : await this.axios.get(api.serviceRecordLook  + `/${orderId}` + `/${workOrderStatus}`);
       if (res && res.code === '000') {
         // Tab切换操作
         if (!workOrderStatus) {
@@ -198,7 +198,7 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 支付
    * @params orderId 订单id
-   * @params entrustId 订单id
+   * @params entrustId 房源id
    * @returns void
    * @author zhegu
    */

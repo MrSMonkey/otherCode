@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 16:49:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 22:34:39
+ * @Last Modified time: 2019-03-22 10:22:27
  */
 
 
@@ -70,9 +70,9 @@ export default class ServiceRecord extends CommonMixins {
     try {
       let res: any = [];
       if ( statusId === '-1034') {
-        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}`);
+        res = await this.axios.get(api.serviceRecordLook  + `/${orderId}`);
       } else {
-        res = await this.axios.get(api.ServiceRecordLook  + `/${orderId}` + `/${statusId}`);
+        res = await this.axios.get(api.serviceRecordLook  + `/${orderId}` + `/${statusId}`);
       }
       if (res && res.code === '000') {
         this.data = res.data.logList[rowId].logDetails || [];

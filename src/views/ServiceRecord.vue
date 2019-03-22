@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 23:13:13
+ * @Last Modified time: 2019-03-22 11:19:03
 */
 
 <template>
@@ -25,9 +25,9 @@
     </div>
     <div class="btn">
       <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
-      <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="passService">确认验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="buildPass">确认验收</van-button>
     </div>
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
@@ -94,7 +94,7 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 获取服务记录
    * @params orderId 订单id
-   * @params entrustId 订单id
+   * @params entrustId 房源id
    * @returns void
    * @author zhegu
    */
@@ -158,7 +158,7 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 支付
    * @params orderId 订单id
-   * @params entrustId 订单id
+   * @params entrustId 房源id
    * @returns void
    * @author zhegu
    */
@@ -178,12 +178,13 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 通过装修服务验收
    * @params orderId 订单id
+   * @params entrustId 房源id
    * @returns void
    * @author zhegu
    */
-  private async passService() {
+  private async buildPass() {
     try {
-      const res: any = await this.axios.put(api.passService + `/${this.orderId}`);
+      const res: any = await this.axios.put(api.buildPass + `/${this.entrustId}` + `/${this.orderId}`);
       if (res && res.code === '000') {
         this.$toast.success(`验收通过`);
         this.getServiceRecord(this.orderId);
