@@ -115,7 +115,7 @@ export default class ConfirmPay extends CommonMixins {
     try {
       const data  = {
           orderId: this.orderId,
-          productURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
+          returnURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
       };
       this.payment(data);
     } catch (err) {

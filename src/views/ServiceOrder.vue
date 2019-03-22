@@ -11,14 +11,19 @@
      <van-tabs @click="onClick">
       <van-tab title="服务包订单">
         <section class="background-tips" v-if="tableData.length === 0">
-          <NoData tip="暂无订单" :url="'/myHouse?entrustId=' + entrustId"/>
+          <NoData tip="暂无服务包订单" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>
         <section v-else>
           <ServiceList :tableData="tableData" :entrustId="entrustId"></ServiceList>
         </section>
       </van-tab>
       <van-tab title="服务产品订单">
-        <ProductOrderList :tableData="tableProductData" :entrustId="entrustId"></ProductOrderList>
+        <section class="background-tips" v-if="tableProductData.length === 0">
+          <NoData tip="暂无服务产品订单" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section>
+        <section v-else>
+          <ProductOrderList :tableData="tableProductData" :entrustId="entrustId"></ProductOrderList>
+        </section>
       </van-tab>
     </van-tabs>
   </section>

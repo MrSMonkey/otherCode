@@ -25,7 +25,7 @@
     </div>
     <div class="btn">
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
-      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="buildPass">确认验收</van-button>
     </div>
@@ -166,7 +166,7 @@ export default class ServiceRecord extends CommonMixins {
     try {
       const data  = {
         orderId: this.orderId,
-        productURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
+        returnURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
       };
       this.payment(data);
     } catch (err) {
