@@ -80,7 +80,8 @@ export const actions: ActionTree<GlobalState, RootState> = {
       const res: any = await Vue.axios.get(api.payment + '/' + data.orderId, {
         params: {
           order: data.orderId,
-          productURL: data.productURL
+          returnURL: data.returnURL,
+          extralParams: ''
         }
       });
       if (res && res.code === '000') {

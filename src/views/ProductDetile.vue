@@ -89,7 +89,8 @@ export default class ProductDetile extends CommonMixins {
       const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        const status: string = String(this.$route.query.orderId);
+        const status: string = String(this.$route.query.status).replace('?', '');
+        console.log(status);
         if (status === '1') {
           // 1代表支付进入 2 代表从订单进入不需要弹窗
           this.$dialog.confirm({
@@ -100,7 +101,7 @@ export default class ProductDetile extends CommonMixins {
             message: '是否立即发起本服务'
           }).then(() => {
             // on confirm
-            this.$router.push(`/startService?productId=${res.data.productId}&entrustId=${this.entrustId}`); // 跳转到发起服务
+            this.$router.push(`/startService?productId=${res.data.orderId}&entrustId=${this.entrustId}`); // 跳转到发起服务
           }).catch(() => {
             // on cancel 取消
           });
@@ -130,7 +131,7 @@ export default class ProductDetile extends CommonMixins {
       // 带看
       this.$router.push(`/serviceRecordLook?orderId=${this.orderId}`);
     } else {
-      this.$router.push(`/serviceRecord?orderId=${this.orderId}`);
+      this.$router.push(`/serviceRecord?orderId=${this.orderId}&entrustId=${this.entrustId}`);
     }
   }
 }

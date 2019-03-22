@@ -75,7 +75,7 @@ export default class ServiceDetile extends CommonMixins {
   private orderInfo: any = {}; // 服务订单详情
 
   private mounted() {
-    this.servicePackageId = String(this.$route.query.servicePackageId);
+    this.servicePackageId = String(this.$route.query.orderId).replace('?', '');
     this.getServiceOrder(this.servicePackageId); // 获取订单列表
   }
 

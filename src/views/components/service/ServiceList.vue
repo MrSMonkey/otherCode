@@ -72,7 +72,7 @@ export default class ServiceList extends CommonMixins {
    * @author chenmo
    */
   private pushDetile(servicePackageId: string) {
-    this.$router.push(`/serviceDetile?servicePackageId=${servicePackageId}`);
+    this.$router.push(`/serviceDetile?orderId=${servicePackageId}`);
   }
 
 }

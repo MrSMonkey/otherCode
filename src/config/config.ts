@@ -365,10 +365,10 @@ export const TOWARDLIST: any[] = [
 ];
 
 // 装修购买提示
-export const TIPSONE: string = `注：本次支付仅支付设计费用，装修费用需在确认装修改后支付！`;
+export const TIPSONE: string = `注：本次支付仅支付上门检测费，具体维修项费用需在确认维修后支付！`;
 
 // 维修购买提示
-export const TIPSTWO: string = `注：本次支付仅支付上门服务费，具体维修项费用需在确认验收改后进行支付！`;
+export const TIPSTWO: string = `注：本次支付仅支付装修设计费，装修工程费用需在确认装修后支付！`;
 
 // 维修服务记录订单状态
 export const SERVICE_ORDER_STATUS: any[] = ['', '待支付', '待服务', '服务中', '待验收', '已完成待评价', '已完成已评价', '已关闭',
