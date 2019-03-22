@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 22:35:40
+ * @Last Modified time: 2019-03-22 09:38:04
  */
 /*
 
@@ -12,7 +12,7 @@
   <ul class="time-line">
     <li v-for="item in data" :key="item.id">
       <div class="dot"></div>
-      <p>{{item.roomNumName}}&nbsp;&nbsp;{{item.record}}</p>
+      <p>【{{item.roomName}}】&nbsp;&nbsp;{{item.record}}</p>
       <span>{{item.workTime}}</span>
       <ImagePreview v-if="item.imgs" :imgagesArr="item.imgs" :isFold="true" />
     </li>

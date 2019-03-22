@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 23:07:57
+ * @Last Modified time: 2019-03-22 09:37:09
  */
 
 <template>
@@ -26,7 +26,7 @@
             <li v-for="(child,key) in data" :title="item.roomNumName" :key="key" @click="toDetail(child,key)">
               <div class="list-detail">
                 <div>
-                  <span>{{child.roomNumName}}</span>
+                  <span>【{{child.roomName}}】</span>
                   <span>{{child.record}}</span>
                   <span><img src="../assets/images/icon/icon_arrow2.png" alt="" class="icon-right"/></span>
                 </div>
