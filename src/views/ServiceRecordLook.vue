@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 10:57:09
+ * @Last Modified time: 2019-03-22 15:03:57
  */
 
 <template>
@@ -11,12 +11,12 @@
     <div class="order">
       <h1 class="title">订单信息</h1>
       <div class="info">
-        <p>订单号：{{orderInfo && orderInfo.orderId}}</p>
-        <p>服务房源：{{orderInfo && orderInfo.productHouseName}}</p>
-        <p>产品名称：{{orderInfo && orderInfo.productName}}</p>
-        <p>订单状态：{{orderInfo && orderInfo.orderStatusName}}</p>
-        <p>开始日期：{{orderInfo && orderInfo.orderStartTime}}</p>
-        <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{orderInfo && orderInfo.buyersRemarks}}</p>
+        <p>订单号：{{orderInfo && orderInfo.orderId || '无'}}</p>
+        <p>服务房源：{{orderInfo && orderInfo.productHouseName || '无'}}</p>
+        <p>产品名称：{{orderInfo && orderInfo.productName || '无'}}</p>
+        <p>订单状态：{{orderInfo && orderInfo.orderStatusName || '无'}}</p>
+        <p>开始日期：{{orderInfo && orderInfo.orderStartTime || '无'}}</p>
+        <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{orderInfo && orderInfo.buyersRemarks || '无'}}</p>
       </div>
     </div>
     <div class="order-type">
@@ -32,7 +32,7 @@
                 </div>
                 <span class="timer">{{child.workTime}}</span>
               </div>
-              <div v-if="child.workOrderStatus === 4" class="list-btn">
+              <div v-if="child.workOrderStatus === 4 && child.lookResult === 1" class="list-btn">
                 <van-button size="normal" type="default" @click="handlePay($event,child)">支付</van-button>
               </div>
             </li>

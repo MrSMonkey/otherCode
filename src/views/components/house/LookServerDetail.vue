@@ -3,13 +3,13 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 09:38:04
+ * @Last Modified time: 2019-03-22 15:07:51
  */
 /*
 
 
 <template>
-  <ul class="time-line">
+  <ul class="time-line-look">
     <li v-for="item in data" :key="item.id">
       <div class="dot"></div>
       <p>【{{item.roomName}}】&nbsp;&nbsp;{{item.record}}</p>
@@ -67,7 +67,7 @@ export default class HouseStatus extends CommonMixins {
 
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../../../assets/stylus/main.styl'
-.time-line
+.time-line-look
   width 100%
   padding vw(20) vw(20) 0
   .viewImg
@@ -91,7 +91,7 @@ export default class HouseStatus extends CommonMixins {
       background-color $disabled-color
     p
       vertical-align top
-      line-height 1
+      line-height 18px
       color $text-color
       font-size 14px
     span

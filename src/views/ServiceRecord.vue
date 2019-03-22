@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 11:23:29
+ * @Last Modified time: 2019-03-22 15:08:02
 */
 
 <template>
@@ -11,12 +11,12 @@
     <div class="order">
       <h1 class="title">订单信息</h1>
       <div class="info">
-        <p>订单号：{{data.orderInfo && data.orderInfo.orderId}}</p>
-        <p>服务房源：{{data.orderInfo && data.orderInfo.productHouseName}}</p>
-        <p>产品名称：{{data.orderInfo && data.orderInfo.productName}}</p>
-        <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName}}</p>
-        <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime}}</p>
-        <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks}}</p>
+        <p>订单号：{{data.orderInfo && data.orderInfo.orderId || '无'}}</p>
+        <p>服务房源：{{data.orderInfo && data.orderInfo.productHouseName || '无'}}</p>
+        <p>产品名称：{{data.orderInfo && data.orderInfo.productName || '无'}}</p>
+        <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName || '无'}}</p>
+        <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime || '无'}}</p>
+        <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks || '无'}}</p>
       </div>
     </div>
     <div class="log">
