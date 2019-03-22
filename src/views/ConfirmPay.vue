@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 17:56:23
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-21 23:07:32
+ * @Last Modified time: 2019-03-22 15:32:35
  */
 
 <template>
@@ -32,11 +32,13 @@
         </p>
       </div>
     </section>
-    <div class="pay-footer" v-if="data && data.needPrice != 0">
-      <span>
+    <!--  -->
+    <div class="pay-footer" v-if="data">
+      <!-- <span>
         <span>需支付：</span>
         <span class="price">￥{{data.needPrice && parseFloat(data.needPrice).toFixed(2) || '0.00'}}</span>
-      </span>
+      </span> -->
+      <span class="btn cancel" @click="cancelPay">取消支付</span>
       <span class="btn" @click="submitPay">确认支付</span>
     </div>
   </section>
@@ -66,7 +68,7 @@ const namespace: string = 'global';
   }
 })
 export default class ConfirmPay extends CommonMixins {
-  private data: any[] = []; // 支付数据
+  private data: any = {}; // 支付数据
   private orderId: string = ''; // 订单id
   @Action('payment', { namespace }) private payment: any;
 
@@ -107,12 +109,34 @@ export default class ConfirmPay extends CommonMixins {
    * @author zhegu
    */
   private async submitPay() {
+    if (this.data.needPrice <= 0) {
+      return;
+    }
     try {
       const data  = {
           orderId: this.orderId,
           productURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
       };
       this.payment(data);
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
+  }
+  /**
+   * @description 取消支付
+   * @returns void
+   * @author zhegu
+   */
+  private async cancelPay() {
+    try {
+      const res: any = await this.axios.put(api.cancelPay + `/${this.orderId}`);
+      if (res && res.code === '000') {
+        this.$router.push('/ServiceRecord?orderId=' + this.orderId);
+      } else {
+        this.$toast(`获取维修服务支付详情失败`);
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
@@ -162,17 +186,19 @@ export default class ConfirmPay extends CommonMixins {
     line-height vw(49)
     background #fff
     box-shadow 0 -1px 10px 0 rgba(0,0,0,0.05)
-    padding-left vw(20)
     font-size vw(14)
     .price
       font-size vw(16)
       color $main-color
     .btn
       display inline-block
-      width vw(110)
+      width 50%
       height 100%
       background-color $main-color
       color #fff
       font-size vw(17)
       text-align center
+    .cancel
+      background #fff
+      color $main-color
 </style>
