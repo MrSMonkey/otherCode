@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 11:22:34
+ * @Last Modified time: 2019-03-22 11:23:29
 */
 
 <template>
@@ -24,7 +24,7 @@
       <houseStatus :data="houseStatus"/>
     </div>
     <div class="btn">
-      <router-link v-if="data.orderInfo && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="buildPass">确认验收</van-button>
