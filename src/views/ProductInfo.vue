@@ -307,10 +307,10 @@ export default class ProductInfo extends CommonMixins {
             this.$router.push(`/productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`); // 跳转到订单详情
           }, 2000);
         } else {
-          // status === 1 表示是从支付进入详情，需要弹出发起服务弹窗 `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`
+          // status === 1 表示是从支付进入详情，需要弹出发起服务弹窗?entrustId=${this.entrustId}&orderId=${res.data}&status=1
           const data  = {
             orderId: res.data,
-            productURL: 'https://www.baidu.com'
+            returnURL: `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`,
           };
           this.payment(data);
         }

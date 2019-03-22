@@ -288,12 +288,12 @@ export default class ServiceInfo extends CommonMixins {
         //   this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
         // }, 2000);
         const data  = {
-          orderId: res.data.orderId,
-          productURL: `${returnDomain()}serviceDetile?entrustId=${this.entrustId}&orderId=${res.data.orderId}`
+          orderId: res.data,
+          returnURL: `${returnDomain()}serviceDetile?entrustId=${this.entrustId}&orderId=${res.data}`
         };
         this.payment(data);
       } else {
-        this.$toast('购买失败，请重试');
+        this.$toast(res.msg || '购买失败，请重试');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
