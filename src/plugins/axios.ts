@@ -10,7 +10,7 @@ import store from '../store';
 import router from '../router';
 import Vue from 'vue';
 const Axios = axios.create({
-  timeout: 20000,
+  timeout: 500000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   }
@@ -23,7 +23,7 @@ Axios.interceptors.request.use(
     if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'production') {  // 生产
       config.baseURL = 'https://api-gateway.uoko.com/';
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
-      config.baseURL = 'http://192.168.200.44:7070/';
+      config.baseURL = 'http://api-gateway.testuoko.com/';
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
       config.baseURL = 'https://api-gateway-pre.uoko.com/';
     } else {

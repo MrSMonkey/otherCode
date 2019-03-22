@@ -308,9 +308,10 @@ export default class ProductInfo extends CommonMixins {
           }, 2000);
         } else {
           // status === 1 表示是从支付进入详情，需要弹出发起服务弹窗?entrustId=${this.entrustId}&orderId=${res.data}&status=1
+          const status: string = this.data.typeId === 9 ? '2' : '1'; // 装修不需要发起服务
           const data  = {
             orderId: res.data,
-            returnURL: `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`,
+            returnURL: `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=${status}`,
           };
           this.payment(data);
         }

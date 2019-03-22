@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 15:08:02
+ * @Last Modified time: 2019-03-22 16:33:05
 */
 
 <template>
@@ -11,7 +11,7 @@
     <div class="order">
       <h1 class="title">订单信息</h1>
       <div class="info">
-        <p>订单号：{{data.orderInfo && data.orderInfo.orderId || '无'}}</p>
+        <p>订单号：{{data.orderInfo && data.orderInfo.orderNum || '无'}}</p>
         <p>服务房源：{{data.orderInfo && data.orderInfo.productHouseName || '无'}}</p>
         <p>产品名称：{{data.orderInfo && data.orderInfo.productName || '无'}}</p>
         <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName || '无'}}</p>
@@ -24,10 +24,11 @@
       <houseStatus :data="houseStatus"/>
     </div>
     <div class="btn">
-      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
-      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="buildPass">确认验收</van-button>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderType != 2 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderType != 2 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 2" size="normal" type="default" @click="buildPass">确认验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4 " size="normal" type="default" @click="cleanPass">验收通过</van-button>
     </div>
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
@@ -87,8 +88,8 @@ export default class ServiceRecord extends CommonMixins {
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
-    this.orderId = String(this.$route.query.orderId);
-    this.entrustId = String(this.$route.query.entrustId);
+    this.orderId = String(this.$route.query.orderId).replace('?', '');
+    this.entrustId = String(this.$route.query.entrustId).replace('?', '');
     this.getServiceRecord(this.orderId); // 获取服务记录详情
   }
   /**
@@ -198,6 +199,14 @@ export default class ServiceRecord extends CommonMixins {
         this.$toast.clear();
       }, 1000);
     }
+  }
+  /**
+   * @description 保洁验收
+   * @returns void
+   * @author zhegu
+   */
+  private async cleanPass() {
+    return;
   }
 }
 </script>

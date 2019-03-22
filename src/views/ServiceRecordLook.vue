@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 15:03:57
+ * @Last Modified time: 2019-03-22 16:09:26
  */
 
 <template>
@@ -11,7 +11,7 @@
     <div class="order">
       <h1 class="title">订单信息</h1>
       <div class="info">
-        <p>订单号：{{orderInfo && orderInfo.orderId || '无'}}</p>
+        <p>订单号：{{orderInfo && orderInfo.orderNum || '无'}}</p>
         <p>服务房源：{{orderInfo && orderInfo.productHouseName || '无'}}</p>
         <p>产品名称：{{orderInfo && orderInfo.productName || '无'}}</p>
         <p>订单状态：{{orderInfo && orderInfo.orderStatusName || '无'}}</p>
@@ -32,7 +32,7 @@
                 </div>
                 <span class="timer">{{child.workTime}}</span>
               </div>
-              <div v-if="child.workOrderStatus === 4 && child.lookResult === 1" class="list-btn">
+              <div v-if="child.workOrderStatus === 3 && child.payStatus === 1" class="list-btn">
                 <van-button size="normal" type="default" @click="handlePay($event,child)">支付</van-button>
               </div>
             </li>
@@ -106,11 +106,12 @@ export default class ServiceRecord extends CommonMixins {
   private rowId: string = ''; // 当前服务订单id
   private statusId: string = '-1034'; // 当前服务类型id 默认全部
   private entrustId: string = ''; // 房源id
+  private item: any = {}; // 行信息
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
-    this.orderId = String(this.$route.query.orderId);
-    this.entrustId = String(this.$route.query.entrustId);
+    this.orderId = String(this.$route.query.orderId).replace('?', '');
+    this.entrustId = String(this.$route.query.entrustId).replace('?', '');
     this.ServiceRecordLook(this.orderId); // 获取服务记录详情
   }
   /**
@@ -179,9 +180,10 @@ export default class ServiceRecord extends CommonMixins {
    * @returns void
    * @author zhegu
    */
-  private  handlePay(e: any, orderId: string) {
+  private  handlePay(e: any, item: any) {
     e.stopPropagation();
     this.changePayVisible(true);
+    this.item = item;
   }
   /**
    * @description 进入服务订单详情
@@ -206,7 +208,8 @@ export default class ServiceRecord extends CommonMixins {
     try {
       const data  = {
         orderId: this.orderId,
-        productURL: returnDomain() + 'ServiceRecordLook?orderId=' +  `${this.orderId}`
+        returnURL: returnDomain() + 'ServiceRecordLook?orderId=' +  `${this.orderId}`,
+        workId: this.item.workId
       };
       this.payment(data);
     } catch (err) {

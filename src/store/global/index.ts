@@ -81,14 +81,15 @@ export const actions: ActionTree<GlobalState, RootState> = {
         params: {
           order: data.orderId,
           returnURL: data.returnURL,
-          extralParams: ''
+          extralParams: '',
+          workId: data.workId ? data.workId : null
         }
       });
       if (res && res.code === '000') {
         // 支付接口回调
         openPostWindow(res.data.toPayUrl, res.data.payParams);
       } else {
-        Vue.prototype.$toast(`支付失败`);
+        Vue.prototype.$toast(res.msg || `支付失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
