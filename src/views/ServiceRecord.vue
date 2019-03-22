@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 15:08:02
+ * @Last Modified time: 2019-03-22 16:33:05
 */
 
 <template>
@@ -26,7 +26,7 @@
     <div class="btn">
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9 && data.orderInfo.orderStatus === 1" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 10" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="buildPass">确认验收</van-button>
     </div>
     <transition name="van-fade">
@@ -87,8 +87,8 @@ export default class ServiceRecord extends CommonMixins {
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
-    this.orderId = String(this.$route.query.orderId);
-    this.entrustId = String(this.$route.query.entrustId);
+    this.orderId = String(this.$route.query.orderId).replace('?', '');
+    this.entrustId = String(this.$route.query.entrustId).replace('?', '');
     this.getServiceRecord(this.orderId); // 获取服务记录详情
   }
   /**

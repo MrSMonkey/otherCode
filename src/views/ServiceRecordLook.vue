@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 15:03:57
+ * @Last Modified time: 2019-03-22 16:09:26
  */
 
 <template>
@@ -109,8 +109,8 @@ export default class ServiceRecord extends CommonMixins {
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
-    this.orderId = String(this.$route.query.orderId);
-    this.entrustId = String(this.$route.query.entrustId);
+    this.orderId = String(this.$route.query.orderId).replace('?', '');
+    this.entrustId = String(this.$route.query.entrustId).replace('?', '');
     this.ServiceRecordLook(this.orderId); // 获取服务记录详情
   }
   /**
