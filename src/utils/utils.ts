@@ -203,7 +203,7 @@ export function solveScrollBug(visible: boolean) {
   if (!visible) {
    setTimeout(() => {
        (function smoothscroll() {
-         const currentScroll: any | null = document.documentElement.scrollTop || document.body.scrollTop;
+         const currentScroll: any = document.body.scrollTop;
          if (currentScroll > 0) {
            window.requestAnimationFrame(smoothscroll);
            window.scrollTo (0, currentScroll - (currentScroll / 5));
