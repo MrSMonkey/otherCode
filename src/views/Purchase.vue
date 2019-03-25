@@ -150,11 +150,12 @@ export default class Purchase extends CommonMixins {
         this.productData = res.data.map((item: any) => {
           // for (const i in item.productDetails) {
           //   if ( item.productDetails[i].products.length === 0) {
-          //     delete item.productDetails[i]; // 删除服务产品没有的情况
+          //     item.productDetails.splice(i, 1); // 删除服务产品没有的情况
           //   }
           // }
           return item;
         });
+        // console.log(this.productData)
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
         this.productItemData = res.data[0].productDetails[0].products; // 进入页面默认第一条
