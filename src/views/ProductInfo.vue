@@ -45,7 +45,7 @@
         <div class="tips" v-if="data.productId === '118062916141300008' || data.productId === '118062916145800009' || data.cid === '118062916141300008' || data.cid === '118062916145800009'">
           <p>{{tips}}</p>
         </div>
-        <div class="tips" v-else-if = "data.tpyeId === 9">
+        <div class="tips" v-else-if="data.typeId === 9">
           <p>{{tipsTwo}}</p>
         </div>
         <div class="el-input">
@@ -375,11 +375,11 @@ export default class ProductInfo extends CommonMixins {
     height vw(300)
     .tips
       width 100%
-      height vw(40)
+      // height vw(40)
       background #FFF5F5
       padding vw(5) vw(5) vw(5) vw(15)
       p
-        line-height 2.5
+        // line-height 2.5
         text-align left
         display inline-block
         font-size 12px
