@@ -276,9 +276,9 @@ export function openPostWindow(url: string, params: any) {
  * @author zhegu
  */
 export function returnDomain() {
-  if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_TEST) {
+  if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'production') {  // 生产
     return 'https://yezhu.uoko.com/#/'; // 生产环境
-  } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TEST) {
+  } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
     return 'http://yz.testuoko.com/#/'; // 测试环境
   } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
     return 'https://yz-fe-pre.uoko.com/#/'; // pre环境
