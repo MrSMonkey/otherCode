@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 16:09:26
+ * @Last Modified time: 2019-03-25 11:13:44
  */
 
 <template>
@@ -54,11 +54,11 @@
         <div class="content">
           <p>
             <span>应付金额</span>
-            <span>{{orderInfo.orderAmount && parseFloat(orderInfo.orderAmount).toFixed(2) || '0.00'}}元</span>
+            <span>{{item.price && parseFloat(item.price).toFixed(2) || '0.00'}}元</span>
           </p>
         </div>
         <div class="pay-btn">
-          <van-button size="normal" type="default" @click="submitPay">共计应付<span class="price">￥{{orderInfo.orderAmount && parseFloat(orderInfo.orderAmount).toFixed(2) || '0.00'}}</span></van-button>
+          <van-button size="normal" type="default" @click="submitPay">共计应付<span class="price">￥{{item.price && parseFloat(item.price).toFixed(2) || '0.00'}}</span></van-button>
         </div>
       </div>
     </transition>
