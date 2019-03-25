@@ -379,7 +379,6 @@ export default class ProductInfo extends CommonMixins {
       background #FFF5F5
       padding vw(5) vw(5) vw(5) vw(15)
       p
-        // line-height 2.5
         text-align left
         display inline-block
         font-size 12px
