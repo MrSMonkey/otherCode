@@ -23,7 +23,7 @@
           </div>
         </section>
         <section v-else>
-          <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
+          <NoData tip="暂无服务包" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>
       </van-tab>
       <van-tab title="服务产品">
@@ -48,13 +48,15 @@
                   <div class="purchase-left" v-lazy:background-image="item.productImgs[0]">
                   </div>
                   <p  class="purchase-title">{{item.productName|| ''}}</p>
-                  <p class="purchase-money">提成<span>{{item.commission}}</span></p>
+                  <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
+                  <p class="purchase-money" v-else><span>{{item.price || 0}}</span>元</p>
                 </router-link>
               </div>
             </section>
-            <!-- <section v-else>
-              <NoData tip="暂无服务产品" :url="'/myHouse?entrustId=' + entrustId"/>
-            </section> -->
+            <section v-else class="list-no">
+              <img src="../assets/images/404.png" alt=""/>
+              <p>暂无服务产品</p>
+            </section>
           </div>
         </section>
       </van-tab>
@@ -369,4 +371,13 @@ export default class Purchase extends CommonMixins {
         padding vw(15) 0 vw(0)
         padding-left vw(15)
         color $tip-text-color
+      .list-no
+        text-align center
+        margin-top vw(100)
+        img
+          display inline-block
+          width vw(120)
+        p
+          color $text-color
+          font-size 14px
 </style>

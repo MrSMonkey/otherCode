@@ -18,7 +18,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { solveScrollBug } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
 import LookServerDetail from './components/house/LookServerDetail.vue';
