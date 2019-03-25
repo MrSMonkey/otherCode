@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 16:49:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 10:22:27
+ * @Last Modified time: 2019-03-25 13:50:50
  */
 
 
@@ -55,7 +55,8 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 获取服务详情
    * @params orderId 订单id
-   * @params entrustId 订单id
+   * @params statusId 订单状态id
+   * @params rowId 当前行id
    * @returns void
    * @author zhegu
    */

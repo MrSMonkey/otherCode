@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 11:07:09
+ * @Last Modified time: 2019-03-25 15:27:56
 */
 
 <template>
@@ -24,11 +24,11 @@
       <houseStatus :data="houseStatus"/>
     </div>
     <div class="btn">
-      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
-      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
+      <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 2" size="normal" type="default" @click="buildPass">确认验收</van-button>
-      <!-- <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4 " size="normal" type="default" @click="cleanPass">验收通过</van-button> -->
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4 " size="normal" type="default" @click="cleanPass">去验收</van-button>
     </div>
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
@@ -57,7 +57,7 @@ import { Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
-import { Button, CellGroup, Field, Icon } from 'vant';
+import { Button, CellGroup, Field, Icon} from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
 import { SERVICE_ORDER_STATUS } from '@/config/config';
 import api from '@/api';
@@ -95,7 +95,6 @@ export default class ServiceRecord extends CommonMixins {
   /**
    * @description 获取服务记录
    * @params orderId 订单id
-   * @params entrustId 房源id
    * @returns void
    * @author zhegu
    */
@@ -122,20 +121,7 @@ export default class ServiceRecord extends CommonMixins {
       this.$toast.clear();
     }
   }
-  /**
-   * @description 不通过模态框显示/隐藏
-   * @params boolean 布尔值
-   * @returns void
-   * @author zhegu
-   */
-  private  changeNopassVisible(visible: boolean) {
-    this.maskVisible = visible;
-    this.nopassVisible = visible;
-    if (!visible) {
-      this.buildPayVisible = false;
-    }
-    solveScrollBug(visible);
-  }
+
   /**
    * @description 装修模态框显示/隐藏
    * @params boolean 布尔值
@@ -206,7 +192,33 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private async cleanPass() {
-    return;
+    this.$dialog.confirm({
+          title: '验收',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          className: 'dialogTips',
+          message: '确认验收通过吗？'
+    }).then(async () => {
+          // on confirm
+        try {
+          const res: any = await this.axios.put(api.cleanPass + `/${this.orderId}`);
+          if (res && res.code === '000') {
+            this.$toast.success(`验收通过`);
+            this.getServiceRecord(this.orderId);
+          } else {
+            this.$toast(res.msg);
+          }
+        } catch (err) {
+          throw new Error(err || 'Unknow Error!');
+        } finally {
+          setTimeout(() => {
+            this.$toast.clear();
+          }, 1000);
+        }
+    }).catch(() => {
+          // on cancel 取消
+    });
+
   }
 }
 </script>

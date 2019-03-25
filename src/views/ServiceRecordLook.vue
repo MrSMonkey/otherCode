@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 11:13:44
+ * @Last Modified time: 2019-03-25 13:57:41
  */
 
 <template>
@@ -176,12 +176,13 @@ export default class ServiceRecord extends CommonMixins {
   }
   /**
    * @description 显示支付模态框
-   * @params orderId 订单id
+   * @params event 事件对象
+   * @params item 当前行信息
    * @returns void
    * @author zhegu
    */
-  private  handlePay(e: any, item: any) {
-    e.stopPropagation();
+  private  handlePay(event: any, item: any) {
+    event.stopPropagation();
     this.changePayVisible(true);
     this.item = item;
   }
