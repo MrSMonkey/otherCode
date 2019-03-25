@@ -14,10 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://cdn-static.uoko.com/ET-FE/yz/precache-manifest.cffea6ceb8096f409a2267b92169f10d.js"
+  "/precache-manifest.6ba01487a9109f8f0508ae56471ad55f.js"
 );
 
-workbox.core.setCacheNameDetails({prefix: "uoko-fe-themes-mobile"});
+workbox.core.setCacheNameDetails({prefix: "uoko-fe-landlord-site"});
 
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to

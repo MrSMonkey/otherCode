@@ -150,17 +150,12 @@ export default class Purchase extends CommonMixins {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
         this.productData = res.data.map((item: any) => {
-          // for (const i in item.productDetails) {
-          //   if ( item.productDetails[i].products.length === 0) {
-          //     item.productDetails.splice(i, 1);
+          // const arr: any = item.productDetails.map((ctx: any) => {
+          //   // 删除服务产品没有的情况
+          //   if (!(ctx.products.length === 0)) {
+          //     return ctx;
           //   }
-          // }
-          const arr: any = item.productDetails.map((ctx: any) => {
-            // 删除服务产品没有的情况
-            if (!(ctx.products.length === 0)) {
-              return ctx;
-            }
-          })
+          // });
           return item;
         });
         // console.log(this.productData)
