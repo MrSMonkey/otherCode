@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 13:57:41
+ * @Last Modified time: 2019-03-25 17:45:47
  */
 
 <template>
@@ -80,7 +80,7 @@ const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
-  name: 'ServiceRecord',
+  name: 'ServiceRecordLook',
   components: {
     ImagePreview,
     HouseStatus,
