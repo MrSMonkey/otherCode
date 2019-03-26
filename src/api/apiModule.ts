@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 15:18:05
+ * @Last Modified time: 2019-03-26 21:02:05
  */
 
 export default {
@@ -106,6 +106,7 @@ export default {
   /*保洁验收*/
   cleanPass: 'partner/owner/product/service/cleaning/passing',
   /*获取带看服务待支付价格*/
-  lookPrice: 'partner/house/pay/look/detail'
-
+  lookPrice: 'partner/house/pay/look/detail',
+  /*创建装修订单*/
+  creatBuildOrder: 'partner/owner/product/service/build'
 };

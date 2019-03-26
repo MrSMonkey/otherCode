@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 16:04:39
+ * @Last Modified time: 2019-03-26 21:03:44
 */
 
 <template>
@@ -28,9 +28,9 @@
     <div class="btn">
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && (data.orderInfo.orderStatus === 2 || data.orderInfo.orderStatus === 3 || data.orderInfo.orderStatus === 4) && data.orderInfo.decType === 2" size="normal" type="default" @click="buildPass">确认验收</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4 " size="normal" type="default" @click="cleanPass">去验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="createBuildOrder">确认装修并支付装修款</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && (data.orderInfo.orderStatus === 2 || data.orderInfo.orderStatus === 3 || data.orderInfo.orderStatus === 4) && data.orderInfo.decType === 2 && data.orderInfo.houseId" size="normal" type="default" @click="buildPass">确认验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="cleanPass">去验收</van-button>
     </div>
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
@@ -42,11 +42,11 @@
         <div class="content">
           <p>
             <span>装修总报价</span>
-            <span>{{data.orderInfo && parseFloat(data.orderInfo.orderAmount).toFixed(2) || '0.00'}}元</span>
+            <span>{{buildOrderDetail.amount && parseFloat(buildOrderDetail.amount).toFixed(2) || '0.00'}}元</span>
           </p>
         </div>
         <div class="pay-btn">
-          <van-button size="normal" type="default" @click="submitPay">去支付<span class="price">￥{{data.orderInfo && parseFloat(data.orderInfo.orderAmount).toFixed(2) || '0.00'}}</span></van-button>
+          <van-button size="normal" type="default" @click="submitPay">去支付<span class="price">￥{{buildOrderDetail.amount && parseFloat(buildOrderDetail.amount).toFixed(2) || '0.00'}}</span></van-button>
         </div>
       </div>
     </transition>
@@ -87,6 +87,7 @@ export default class ServiceRecord extends CommonMixins {
   private houseStatus: any[] = []; // 维修日志
   private orderId: string = ''; // 订单id
   private entrustId: string = ''; // 房源id
+  private buildOrderDetail: any = {}; // 被创建装修订单详情
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
@@ -145,6 +146,28 @@ export default class ServiceRecord extends CommonMixins {
    */
   private  returnOrderStatus(status: number) {
     return STATUS_NAME[status];
+  }
+  /**
+   * @description 创建装修订单
+   * @returns void
+   * @author zhegu
+   */
+  private  async createBuildOrder() {
+    try {
+      const res: any = await this.axios.put(api.creatBuildOrder + `/${this.orderId}`);
+      if (res && res.code === '000') {
+        this.buildOrderDetail = res.data;
+        this.changebuildPayVisible(true);
+      } else {
+        this.$toast(res.msg);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      setTimeout(() => {
+        this.$toast.clear();
+      }, 1000);
+    }
   }
   /**
    * @description 支付
