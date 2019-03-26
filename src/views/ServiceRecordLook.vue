@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 17:45:47
+ * @Last Modified time: 2019-03-26 14:22:10
  */
 
 <template>
@@ -188,12 +188,13 @@ export default class ServiceRecord extends CommonMixins {
    */
   private async handlePay(event: any, item: any) {
     event.stopPropagation();
-    this.changePayVisible(true);
-    this.item = item;
+    // 获取带看金额详情
     try {
       const res: any =  await this.axios.get(api.lookPrice  + `/${this.orderId}` + `/${item.workId}`);
       if (res && res.code === '000') {
         this.lookPriceDetail = res.data;
+        this.changePayVisible(true);
+        this.item = item;
       } else {
         this.$toast(res.msg);
       }
@@ -202,7 +203,6 @@ export default class ServiceRecord extends CommonMixins {
     } finally {
       this.$toast.clear();
     }
-    // 
   }
   /**
    * @description 进入服务订单详情

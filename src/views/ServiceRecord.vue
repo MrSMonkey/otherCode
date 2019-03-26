@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 15:27:56
+ * @Last Modified time: 2019-03-26 14:24:01
 */
 
 <template>
@@ -16,6 +16,8 @@
         <p>产品名称：{{data.orderInfo && data.orderInfo.productName || '无'}}</p>
         <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName || '无'}}</p>
         <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime || '无'}}</p>
+        <p>服务人员姓名：{{data.orderInfo && data.orderInfo.serviceUserNickname || '无'}}</p>
+        <p>服务人员电话：<a :href="'tel:'+data.orderInfo.serviceUserPhone">{{data.orderInfo && data.orderInfo.serviceUserPhone || '无'}}</a></p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks || '无'}}</p>
       </div>
     </div>
