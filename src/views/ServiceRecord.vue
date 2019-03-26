@@ -90,8 +90,8 @@ export default class ServiceRecord extends CommonMixins {
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
-    this.orderId = String(this.$route.query.orderId).replace('?', '');
-    this.entrustId = String(this.$route.query.entrustId).replace('?', '');
+    this.orderId = String(this.$route.query.orderId).split('?')[0];
+    this.entrustId = String(this.$route.query.entrustId).split('?')[0];
     this.getServiceRecord(this.orderId); // 获取服务记录详情
   }
   /**

@@ -89,7 +89,7 @@ export default class ProductDetile extends CommonMixins {
       const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        const status: string = String(this.$route.query.status).replace('?', '');
+        const status: string = String(this.$route.query.status).substring(0, 1);
         console.log(status);
         if (status === '1') {
           // 1代表支付进入 2 代表从订单进入不需要弹窗
