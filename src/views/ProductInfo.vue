@@ -24,6 +24,10 @@
         <p>{{data.serviceCount}}</p>
       </div>
       <div class="block">
+        <span>咨询电话：</span>
+        <p>{{data.phone || '无'}}</p>
+      </div>
+      <div class="block">
         <span>产品描述：</span>
         <p>{{data.description || '无'}}</p>
       </div>
