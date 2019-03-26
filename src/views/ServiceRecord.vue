@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 14:32:51
+ * @Last Modified time: 2019-03-26 16:02:39
 */
 
 <template>
@@ -101,6 +101,7 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private async getServiceRecord(orderId: string) {
+    this.houseStatus = [];
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -176,6 +177,7 @@ export default class ServiceRecord extends CommonMixins {
       const res: any = await this.axios.put(api.buildPass + `/${this.entrustId}` + `/${this.orderId}`);
       if (res && res.code === '000') {
         this.$toast.success(`验收通过`);
+        this.data = {}
         this.getServiceRecord(this.orderId);
       } else {
         this.$toast(res.msg);
