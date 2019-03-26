@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 14:32:51
+ * @Last Modified time: 2019-03-26 16:04:39
 */
 
 <template>
@@ -101,6 +101,8 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private async getServiceRecord(orderId: string) {
+    // 初始化日志列表，避免出现重复数据
+    this.houseStatus = [];
     this.$toast.loading({
       duration: 0,
       mask: true,

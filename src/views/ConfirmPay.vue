@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 17:56:23
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-22 15:32:35
+ * @Last Modified time: 2019-03-26 15:29:41
  */
 
 <template>
@@ -198,6 +198,8 @@ export default class ConfirmPay extends CommonMixins {
       color #fff
       font-size vw(17)
       text-align center
+      &:nth-child(2)
+        flex 1
     .cancel
       background #fff
       color $main-color
