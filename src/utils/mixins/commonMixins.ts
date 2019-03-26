@@ -7,7 +7,6 @@
  */
 import { Component, Vue } from 'vue-property-decorator';
 import { Row, Col, Collapse, CollapseItem } from 'vant';
-import Header from '@/components/Header.vue';
 
 @Component({
   components: {
@@ -15,7 +14,6 @@ import Header from '@/components/Header.vue';
     [Col.name]: Col,
     [Collapse.name]: Collapse,
     [CollapseItem.name]: CollapseItem,
-    [Header.name]: Header,
   }
 })
 export default class CommonMixins extends Vue {

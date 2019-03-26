@@ -104,5 +104,8 @@ export default {
   /*取消支付*/
   cancelPay: 'partner/owner/product/service/repair/cancel_pay',
   /*保洁验收*/
-  cleanPass: 'partner/owner/product/service/cleaning/passing'
+  cleanPass: 'partner/owner/product/service/cleaning/passing',
+  /*获取带看服务待支付价格*/
+  lookPrice: 'partner/house/pay/look/detail'
+
 };

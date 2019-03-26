@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 15:27:56
+ * @Last Modified time: 2019-03-26 14:24:01
 */
 
 <template>
@@ -16,6 +16,8 @@
         <p>产品名称：{{data.orderInfo && data.orderInfo.productName || '无'}}</p>
         <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName || '无'}}</p>
         <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime || '无'}}</p>
+        <p>服务人员姓名：{{data.orderInfo && data.orderInfo.serviceUserNickname || '无'}}</p>
+        <p>服务人员电话：<a :href="'tel:'+data.orderInfo.serviceUserPhone">{{data.orderInfo && data.orderInfo.serviceUserPhone || '无'}}</a></p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks || '无'}}</p>
       </div>
     </div>
@@ -27,7 +29,7 @@
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && data.orderInfo.orderStatus === 4" :to="'/maintainChecked?orderId=' + orderId">去验收</router-link>
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="changebuildPayVisible(true)">确认装修并支付装修款</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 2" size="normal" type="default" @click="buildPass">确认验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && (data.orderInfo.orderStatus === 2 || data.orderInfo.orderStatus === 3 || data.orderInfo.orderStatus === 4) && data.orderInfo.decType === 2" size="normal" type="default" @click="buildPass">确认验收</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4 " size="normal" type="default" @click="cleanPass">去验收</van-button>
     </div>
     <transition name="van-fade">
@@ -59,7 +61,7 @@ import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon} from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
-import { SERVICE_ORDER_STATUS } from '@/config/config';
+import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
 const namespace: string = 'global';
 
@@ -140,7 +142,7 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  returnOrderStatus(status: number) {
-    return SERVICE_ORDER_STATUS[status];
+    return STATUS_NAME[status];
   }
   /**
    * @description 支付

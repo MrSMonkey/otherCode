@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 17:45:47
+ * @Last Modified time: 2019-03-26 14:22:10
  */
 
 <template>
@@ -53,12 +53,16 @@
         <h1>支付</h1>
         <div class="content">
           <p>
-            <span>应付金额</span>
-            <span>{{item.price && parseFloat(item.price).toFixed(2) || '0.00'}}元</span>
+            <span>房租</span>
+            <span>{{lookPriceDetail.houseAmount && parseFloat(lookPriceDetail.houseAmount).toFixed(2) || '0.00'}}元/月</span>
+          </p>
+          <p>
+            <span>提成</span>
+            <span>{{lookPriceDetail.percent && parseFloat(lookPriceDetail.percent).toFixed(2) || '0.00'}}%</span>
           </p>
         </div>
         <div class="pay-btn">
-          <van-button size="normal" type="default" @click="submitPay">共计应付<span class="price">￥{{item.price && parseFloat(item.price).toFixed(2) || '0.00'}}</span></van-button>
+          <van-button size="normal" type="default" @click="submitPay">共计应付<span class="price">￥{{lookPriceDetail.amount && parseFloat(lookPriceDetail.amount).toFixed(2) || '0.00'}}</span></van-button>
         </div>
       </div>
     </transition>
@@ -75,7 +79,7 @@ import { Button, CellGroup, Field, Icon, Tabs, Tab } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
 import NoData from '@/components/NoData.vue';
 import api from '@/api';
-import { SERVICE_ORDER_STATUS } from '@/config/config';
+import { STATUS_NAME } from '@/config/config';
 const namespace: string = 'global';
 
 // 声明引入的组件
@@ -107,6 +111,7 @@ export default class ServiceRecord extends CommonMixins {
   private statusId: string = '-1034'; // 当前服务类型id 默认全部
   private entrustId: string = ''; // 房源id
   private item: any = {}; // 行信息
+  private lookPriceDetail: any = {}; // 带看价格详情
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
@@ -181,10 +186,23 @@ export default class ServiceRecord extends CommonMixins {
    * @returns void
    * @author zhegu
    */
-  private  handlePay(event: any, item: any) {
+  private async handlePay(event: any, item: any) {
     event.stopPropagation();
-    this.changePayVisible(true);
-    this.item = item;
+    // 获取带看金额详情
+    try {
+      const res: any =  await this.axios.get(api.lookPrice  + `/${this.orderId}` + `/${item.workId}`);
+      if (res && res.code === '000') {
+        this.lookPriceDetail = res.data;
+        this.changePayVisible(true);
+        this.item = item;
+      } else {
+        this.$toast(res.msg);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
   }
   /**
    * @description 进入服务订单详情
@@ -226,7 +244,7 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  returnOrderStatus(status: number) {
-    return SERVICE_ORDER_STATUS[status];
+    return STATUS_NAME[status];
   }
 }
 </script>
@@ -273,13 +291,13 @@ export default class ServiceRecord extends CommonMixins {
     .red-dot
       display inline-block
       position absolute
-      right vw(18)
+      right 29.8vw
       top vw(10)
       width vw(5)
       height vw(5)
       border-radius 50%
       background #f00
-      z-index 200
+      z-index 100
     .order-list
       li
         display flex
@@ -346,6 +364,7 @@ export default class ServiceRecord extends CommonMixins {
       border-bottom 1px solid #e7e7e7
     .content
       padding vw(10) vw(15)
+      padding-top 0
       p
         font-size vw(15)
         display flex
@@ -353,6 +372,7 @@ export default class ServiceRecord extends CommonMixins {
         justify-content space-between
         border-bottom 1px solid #e7e7e7
         padding-bottom vw(12)
+        padding-top vw(12)
       ul
         width 100%
         padding-bottom vw(17)
