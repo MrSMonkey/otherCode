@@ -59,7 +59,7 @@ import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon} from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
-import { SERVICE_ORDER_STATUS } from '@/config/config';
+import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
 const namespace: string = 'global';
 
@@ -140,7 +140,7 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  returnOrderStatus(status: number) {
-    return SERVICE_ORDER_STATUS[status];
+    return STATUS_NAME[status];
   }
   /**
    * @description 支付

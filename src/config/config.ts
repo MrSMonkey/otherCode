@@ -178,7 +178,7 @@ export const RENT_STATUS: any = {
 };
 
 /* 定义服务订单状态 */
-export const STATUS_NAME: string[] = ['', '待付款', '待服务' , '服务中', ' 待验收', '待评价', '已评价', '已关闭', ' 待处理', '验收不通过'];
+export const STATUS_NAME: string[] = ['', '待付款', '待服务' , '服务中', ' 待验收', '已完成待评价', '已完成已评价', '已关闭', ' 待处理', '验收不通过待服务', '尾款待支付', '尾款已支付', '尾款取消'];
 
 /*步骤 */
 export const STEP: any[] = [
@@ -370,6 +370,3 @@ export const TIPSONE: string = `注：本次支付仅支付上门检测费，具
 // 维修购买提示
 export const TIPSTWO: string = `注：本次支付仅支付装修设计费，装修工程费用需在确认装修后支付！`;
 
-// 维修服务记录订单状态
-export const SERVICE_ORDER_STATUS: any[] = ['', '待支付', '待服务', '服务中', '待验收', '已完成待评价', '已完成已评价', '已关闭',
-'待处理', '验收不通过待服务', '尾款待支付', '尾款已支付', '尾款取消'];

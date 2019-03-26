@@ -75,7 +75,7 @@ import { Button, CellGroup, Field, Icon, Tabs, Tab } from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
 import NoData from '@/components/NoData.vue';
 import api from '@/api';
-import { SERVICE_ORDER_STATUS } from '@/config/config';
+import { STATUS_NAME } from '@/config/config';
 const namespace: string = 'global';
 
 // 声明引入的组件
@@ -226,7 +226,7 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private  returnOrderStatus(status: number) {
-    return SERVICE_ORDER_STATUS[status];
+    return STATUS_NAME[status];
   }
 }
 </script>
