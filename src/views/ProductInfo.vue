@@ -13,7 +13,7 @@
       <h2 class="serviceinfo-title">{{data.productName || '无'}}</h2>
       <div class="block">
         <span>产品单价：</span>
-        <p>{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2) || '0.00'}}元{{data.typeId === 4 ? '' : data.unit}}</p>
+        <p>{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2) || '0.00'}}元{{data.typeId === 4 ? '' : '/' + data.unit}}</p>
       </div>
       <div class="block">
         <span>产品类型：</span>

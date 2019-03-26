@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 14:24:01
+ * @Last Modified time: 2019-03-26 14:32:51
 */
 
 <template>
@@ -17,7 +17,7 @@
         <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName || '无'}}</p>
         <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime || '无'}}</p>
         <p>服务人员姓名：{{data.orderInfo && data.orderInfo.serviceUserNickname || '无'}}</p>
-        <p>服务人员电话：<a :href="'tel:'+data.orderInfo.serviceUserPhone">{{data.orderInfo && data.orderInfo.serviceUserPhone || '无'}}</a></p>
+        <p>服务人员电话：<a v-if="data.orderInfo" :href="'tel:'+data.orderInfo.serviceUserPhone">{{data.orderInfo && data.orderInfo.serviceUserPhone || '无'}}</a></p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks || '无'}}</p>
       </div>
     </div>
@@ -90,8 +90,8 @@ export default class ServiceRecord extends CommonMixins {
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
-    this.orderId = String(this.$route.query.orderId).replace('?', '');
-    this.entrustId = String(this.$route.query.entrustId).replace('?', '');
+    this.orderId = String(this.$route.query.orderId).split('?')[0];
+    this.entrustId = String(this.$route.query.entrustId).split('?')[0];
     this.getServiceRecord(this.orderId); // 获取服务记录详情
   }
   /**
