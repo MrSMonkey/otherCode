@@ -272,7 +272,7 @@ export default class StartService extends CommonMixins {
       orderId: this.productId,
       ownerName: this.ownerName,
       remark: this.remark,
-      roomId: this.data.houseType === 0 ? this.roomId : '',
+      roomId: this.data.houseType === 0 ? this.roomId : this.entrustId,
       roomName: this.data.houseType === 0 ? this.rooms : '整租',
       subscribeTime: this.startTime,
       ownerPhone: this.ownerPhone
