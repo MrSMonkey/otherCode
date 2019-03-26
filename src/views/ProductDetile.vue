@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 20:26:26
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 19:34:50
+ * @Last Modified time: 2019-03-26 17:13:59
  */
 
 <template>
@@ -89,8 +89,7 @@ export default class ProductDetile extends CommonMixins {
       const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        const status: string = String(this.$route.query.status).substring(0, 1);
-        console.log(status);
+        const status: string = String(this.$route.query.status).split('?')[0];
         if (status === '1') {
           // 1代表支付进入 2 代表从订单进入不需要弹窗
           this.$dialog.confirm({
