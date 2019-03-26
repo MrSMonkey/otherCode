@@ -20,7 +20,7 @@
         <h1>费用结算</h1>
         <p>
           <span>上门检查费扣除</span>
-          <span>{{data.yetPrice && parseFloat(data.yetPrice).toFixed(2) || '0.00'}}元</span>
+          <span>{{data.yetPrice && parseFloat(-data.yetPrice).toFixed(2) || '0.00'}}元</span>
         </p>
         <p>
           <span>支付总金额</span>
