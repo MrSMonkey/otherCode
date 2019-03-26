@@ -1,21 +1,23 @@
 /*
- * @Description: Home组件单元测试
- * @Author: LiuZhen
- * @Date: 2018-10-10 17:35:09
+ * @Description: 底部按钮单元组件测试
+ * @Author: chenmo
+ * @Date: 2019-03-26 15:28:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-26 16:03:04
+ * @Last Modified time: 2019-03-26 16:03:02
  */
+
+import Vue from 'vue';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import router from 'vue-router';
 import Vuex from 'vuex';
-import Home from '@/views/Home.vue';
+import VueRouter from 'vue-router';
+import BottomBtn from '@/components/BottomBtn.vue';
 
 // 独立构建Vue构造函数
 const localVue = createLocalVue();
-localVue.use(router);
 localVue.use(Vuex);
+localVue.use(VueRouter);
 
-describe('对Home组件进行的单元测试', () => {
+describe('对BottomBtn组件进行的单元测试', () => {
   let store: any;
   let wrapper: any;
 
@@ -27,9 +29,9 @@ describe('对Home组件进行的单元测试', () => {
     });
 
     // 挂载组件
-    wrapper = shallowMount(Home, {
+    wrapper = shallowMount(BottomBtn, {
       store,
-      localVue,
+      localVue
     });
   });
 
@@ -38,13 +40,13 @@ describe('对Home组件进行的单元测试', () => {
     wrapper.destroy();
   });
 
-  test('home', () => {
+  test('BottomBtn', () => {
     // 测试实例是Vue组件
     expect(wrapper.isVueInstance()).toBeTruthy();
-    // 验证是否挂载了Home组件
-    expect(wrapper.is(Home)).toBeTruthy();
-    // 验证内容被渲染
-    expect(wrapper.contains('.home-comp_list')).toBeTruthy();
+    // 存在 BottomBtn 组件
+    expect(wrapper.is(BottomBtn)).toBeTruthy();
+    // 验证组件是否渲染
+    expect(wrapper.contains('.bottom-btn')).toBeTruthy();
   });
 
   // 生成测试快照

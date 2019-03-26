@@ -100,7 +100,13 @@ export default class ServiceType extends CommonMixins {
     //     value: ctx.value
     //   };
     // });
-    this.columns = item.ownerServiceTypes;
+    this.columns = item.ownerServiceTypes.map((item: any) => {
+      return {
+        text: item.status === 0 ? `${item.text}(已使用)` : item.text,
+        value: item.value,
+        disabled: item.status === 0 ? true : false
+      };
+    });
     this.proShow = true;
   }
 

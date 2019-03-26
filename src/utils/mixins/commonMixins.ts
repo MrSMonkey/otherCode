@@ -25,30 +25,3 @@ export default class CommonMixins extends Vue {
     document.documentElement!.scrollTop = 0;
   }
 }
-
-// export const commonMixins = {
-//   beforeCreate(): void {
-//     this.$Progress.start()
-
-//     this.$router.beforeEach((to, from, next) => {
-//       if (to.meta.progress !== undefined) {
-//         const meta = to.meta.progress
-//         this.$Progress.parseMeta(meta)
-//       }
-//       this.$Progress.start()
-//       next()
-//     })
-
-//     this.$router.afterEach((to, from) => {
-//       this.$Progress.finish()
-//     })
-//   },
-
-//   mounted(): void {
-//     this.$Progress.finish()
-//   },
-
-//   components: {
-//     Header
-//   }
-// };

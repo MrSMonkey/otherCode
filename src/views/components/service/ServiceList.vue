@@ -55,6 +55,9 @@ export default class ServiceList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any[];
 
+  @Prop({ type: String, default: '' })
+  private entrustId: string;
+
   /**
    * @description 获取订单状态
    * @params status 状态枚举
@@ -72,7 +75,7 @@ export default class ServiceList extends CommonMixins {
    * @author chenmo
    */
   private pushDetile(servicePackageId: string) {
-    this.$router.push(`/serviceDetile?orderId=${servicePackageId}`);
+    this.$router.push(`/serviceDetile?orderId=${servicePackageId}&entrustId=${this.entrustId}`);
   }
 
 }

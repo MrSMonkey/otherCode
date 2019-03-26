@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 16:48:21
+ * @Last Modified time: 2019-03-26 17:11:46
  */
 
 
@@ -11,9 +11,13 @@
   <section>
     <section class="service-info" v-if="!bugVisible">
       <h2 class="serviceinfo-title">{{data.productName || '无'}}</h2>
-      <div class="block">
+      <div class="block" v-if="data.typeId === 4">
+        <span>产品价格：</span>
+        <p>每签约1单按原租金{{data.commission}}提成</p>
+      </div>
+      <div class="block" v-else>
         <span>产品单价：</span>
-        <p>{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2) || '0.00'}}元{{data.typeId === 4 ? '' : '/' + data.unit}}</p>
+        <p>{{parseFloat(data.price).toFixed(2) || '0.00'}}{{data.unit}}</p>
       </div>
       <div class="block">
         <span>产品类型：</span>
