@@ -14,7 +14,7 @@
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
             <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
-              <div class="purchase-left" v-lazy:background-image="item.imgUrls[0]">
+              <div class="purchase-left" v-lazy:background-image="item.imgUrls && item.imgUrls[0]">
                 <!-- <img :src="item.imgUrls[0]" alt=""/> -->
               </div>
               <p  class="purchase-title">{{item.serviceName|| 1}}</p>
@@ -45,7 +45,7 @@
               <p class="product-name">{{productName}}</p>
               <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
                 <router-link :to="'/productInfo?productId=' + item.productId + '&entrustId=' + entrustId">
-                  <div class="purchase-left" v-lazy:background-image="item.productImgs[0]">
+                  <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
                   </div>
                   <p  class="purchase-title">{{item.productName|| ''}}</p>
                   <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
@@ -149,6 +149,7 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
+        console.log(res.data)
         this.productData = res.data.map((item: any) => {
           // const arr: any = item.productDetails.map((ctx: any) => {
           //   // 删除服务产品没有的情况
