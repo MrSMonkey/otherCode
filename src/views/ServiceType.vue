@@ -118,6 +118,10 @@ export default class ServiceType extends CommonMixins {
    * @author chenmo
    */
   private cityConfirm(item: any, index: number) {
+    if (item.disabled) {
+      // 已使用
+      return false;
+    }
     this.proShow = false;
     this.$router.push(`/startService?productId=${item.value}&entrustId=${this.entrustId}`);
   }
