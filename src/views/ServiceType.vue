@@ -102,9 +102,9 @@ export default class ServiceType extends CommonMixins {
     // });
     this.columns = item.ownerServiceTypes.map((item: any) => {
       return {
-        text: item.status === 0 ? `${item.text}(已使用)` : item.text,
+        text: item.status === 1 ? `${item.text}(已使用)` : item.text,
         value: item.value,
-        disabled: item.status === 0 ? true : false
+        disabled: item.status === 1 ? true : false
       };
     });
     this.proShow = true;
@@ -118,6 +118,10 @@ export default class ServiceType extends CommonMixins {
    * @author chenmo
    */
   private cityConfirm(item: any, index: number) {
+    if (item.disabled) {
+      // 已使用
+      return false;
+    }
     this.proShow = false;
     this.$router.push(`/startService?productId=${item.value}&entrustId=${this.entrustId}`);
   }
