@@ -178,8 +178,8 @@ export default class ServiceRecord extends CommonMixins {
    */
   private async submitPay() {
     try {
-      const data  = { 
-        orderId: this.orderId,
+      const data  = {
+        orderId: this.buildOrderDetail.orderId,
         returnURL: returnDomain() + 'ServiceRecord?orderId=' +  `${this.orderId}`
       };
       this.payment(data);
