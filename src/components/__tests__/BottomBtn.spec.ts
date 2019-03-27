@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-26 15:28:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-26 16:03:02
+ * @Last Modified time: 2019-03-27 11:51:02
  */
 
 import Vue from 'vue';
@@ -50,7 +50,7 @@ describe('对BottomBtn组件进行的单元测试', () => {
   });
 
   // 生成测试快照
-  // test('create expected html structure', () => {
-  //   expect(wrapper.element).toMatchSnapshot();
-  // });
+  test('create expected html structure', () => {
+    expect(wrapper.element).toMatchSnapshot();
+  });
 });

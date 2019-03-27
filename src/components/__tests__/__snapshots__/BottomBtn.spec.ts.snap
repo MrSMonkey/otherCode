@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`对BottomBtn组件进行的单元测试 create expected html structure 1`] = `
+<div
+  class="bottom-btn"
+>
+  <router-link-stub
+    class="btn-order"
+    event="click"
+    tag="a"
+    to="/serviceOrder?entrustId="
+  >
+    <img
+      alt=""
+      class="order-icon"
+      src="../assets/images/icon/icon_detail.png"
+    />
+     
+    <p>
+      查看订单
+    </p>
+  </router-link-stub>
+   
+  <router-link-stub
+    class="btn"
+    event="click"
+    tag="a"
+    to="/purchase?cityId=278&entrustId="
+  >
+    
+    购买服务
+  
+  </router-link-stub>
+   
+  <router-link-stub
+    class="btn"
+    event="click"
+    tag="a"
+    to="/serviceType?entrustId="
+  >
+    
+    发起服务
+  
+  </router-link-stub>
+</div>
+`;
