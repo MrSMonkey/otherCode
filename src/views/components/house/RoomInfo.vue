@@ -59,7 +59,6 @@ export default class RoomInfo extends CommonMixins {
   padding vw(15)
   margin-bottom vw(10)
   background #fff
-  border-top 1px solid #eaeaea
   .item-tit 
     h2 
       margin-right 10px

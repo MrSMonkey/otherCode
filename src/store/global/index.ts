@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 12:47:31
+ * @Last Modified time: 2019-03-28 16:11:11
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -81,7 +81,6 @@ export const actions: ActionTree<GlobalState, RootState> = {
         params: {
           order: data.orderId,
           returnURL: data.returnURL,
-          extralParams: '',
           workId: data.workId ? data.workId : null
         }
       });

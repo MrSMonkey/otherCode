@@ -8,7 +8,7 @@
 
 <template>
   <section class="service-order">
-     <van-tabs @click="onClick">
+     <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
       <van-tab title="服务包订单">
         <section class="background-tips" v-if="tableData.length === 0">
           <NoData tip="暂无服务包订单" :url="'/myHouse?entrustId=' + entrustId"/>
@@ -130,6 +130,20 @@ export default class ServiceOrder extends CommonMixins {
     } else if (index === 2) {
       // this.getRentInfo(this.entrustId);
     }
+  }
+
+  /**
+   * @description 滚动页面
+   * @params scrollTop  距离顶部位置
+   * @params isFixed 是否吸顶
+   * @returns null
+   * @author chenmo
+   */
+  private tabScroll(scrollTop: any, isFixed: any) {
+    return {
+      scrollTop: 0,
+      isFixed : true
+    };
   }
 }
 </script>
