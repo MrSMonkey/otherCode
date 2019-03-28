@@ -21,7 +21,10 @@
     </div>
     <div class="order-type">
       <van-tabs  @click="chooseType">
-        <van-tab v-for="(item,index) in workOrderStatusList" :title="item.msg" :key="index">
+        <van-tab v-for="(item,index) in workOrderStatusList" :key="index">
+          <div slot="title">
+            <span>{{item.msg}}<span  class="red-dot" v-if="item.needPayStatus === 1"></span></span>
+          </div>
           <ul class="order-list" v-if="data.length > 0">
             <li v-for="(child,key) in data" :title="item.roomNumName" :key="key" @click="toDetail(child,key)">
               <div class="list-detail">
@@ -32,7 +35,7 @@
                 </div>
                 <span class="timer">{{child.workTime}}</span>
               </div>
-              <div v-if="child.workOrderStatus === 3 && child.payStatus === 1" class="list-btn">
+              <div v-if="child.workOrderStatus === 4 && child.payStatus === 1" class="list-btn">
                 <van-button size="normal" type="default" @click="handlePay($event,child)">支付</van-button>
               </div>
             </li>
@@ -41,7 +44,6 @@
             <NoData tip="暂无数据" />
           </section>
         </van-tab>
-        <span  class="red-dot"></span>
       </van-tabs>
     </div>
     <transition name="van-fade">
@@ -62,7 +64,7 @@
           </p> -->
           <p>
             <span>带看服务费</span>
-            <span>{{lookPriceDetail.amount && parseFloat(lookPriceDetail.amount).toFixed(2) || '0.00'}}</span>
+            <span>{{lookPriceDetail.amount && parseFloat(lookPriceDetail.amount).toFixed(2) || '0.00'}}元</span>
           </p>
         </div>
         <div class="pay-btn">
@@ -145,8 +147,8 @@ export default class ServiceRecord extends CommonMixins {
           // 设置订单信息
           this.orderInfo = res.data.orderInfo || {};
           // 对后天返回的订单状态顺序重组
-          this.workOrderStatusList = res.data.workOrderStatusList.slice(0, 3);
-          this.workOrderStatusList.unshift(res.data.workOrderStatusList[3]);
+          this.workOrderStatusList = res.data.workOrderStatusList;
+          // this.workOrderStatusList.unshift(res.data.workOrderStatusList[3]);
         }
         // 设置订单列表数据
         this.data = res.data.logList;
@@ -295,7 +297,7 @@ export default class ServiceRecord extends CommonMixins {
     .red-dot
       display inline-block
       position absolute
-      right 29.8vw
+      right vw(20)
       top vw(10)
       width vw(5)
       height vw(5)
@@ -307,6 +309,7 @@ export default class ServiceRecord extends CommonMixins {
         display flex
         flex-direction row
         justify-content space-between
+        align-items center
         padding vw(12) vw(15)
         border-bottom 1px solid #e7e7e7
         &:last-child
@@ -350,7 +353,7 @@ export default class ServiceRecord extends CommonMixins {
     position fixed
     bottom 0
     width 100%
-    height vw(250)
+    height vw(200)
     background #fff
     z-index 200
     color $text-color
