@@ -16,8 +16,8 @@
         <p>产品名称：{{data.orderInfo && data.orderInfo.productName || '无'}}</p>
         <p>订单状态：{{data.orderInfo && data.orderInfo.orderStatusName || '无'}}</p>
         <p>开始日期：{{data.orderInfo && data.orderInfo.orderStartTime || '无'}}</p>
-        <p>服务人员姓名：{{data.orderInfo && data.orderInfo.serviceUserNickname || '无'}}</p>
-        <p>服务人员电话：<a v-if="data.orderInfo" :href="'tel:'+data.orderInfo.serviceUserPhone">{{data.orderInfo && data.orderInfo.serviceUserPhone || '无'}}</a></p>
+        <p v-if="data.orderInfo && data.orderInfo.orderType != 9">服务人员姓名：{{data.orderInfo && data.orderInfo.serviceUserNickname || '无'}}</p>
+        <p v-if="data.orderInfo && data.orderInfo.orderType != 9">服务人员电话：<a v-if="data.orderInfo" :href="'tel:'+data.orderInfo.serviceUserPhone">{{data.orderInfo && data.orderInfo.serviceUserPhone || '无'}}</a></p>
         <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：{{data.orderInfo && data.orderInfo.buyersRemarks || '无'}}</p>
       </div>
     </div>
