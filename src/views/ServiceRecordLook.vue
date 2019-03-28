@@ -29,7 +29,7 @@
             <li v-for="(child,key) in data" :title="item.roomNumName" :key="key" @click="toDetail(child,key)">
               <div class="list-detail">
                 <div>
-                  <span>【{{child.roomName}}】</span>
+                  <!-- <span>【{{child.roomName}}】</span> -->
                   <span>{{child.record}}</span>
                   <span><img src="../assets/images/icon/icon_arrow2.png" alt="" class="icon-right"/></span>
                 </div>
