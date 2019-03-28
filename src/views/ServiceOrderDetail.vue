@@ -2,8 +2,8 @@
  * @Description: 服务详情
  * @Author: zhegu
  * @Date: 2019-03-15 16:49:27
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-25 13:50:50
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-28 16:46:25
  */
 
 
@@ -101,7 +101,7 @@ export default class ServiceRecord extends CommonMixins {
     .info 
       height vw(187)
       p
-        font-size vw(15)
+        font-size 15px
         line-height vw(21)
         margin-bottom vw(10)
   .btn
@@ -116,7 +116,7 @@ export default class ServiceRecord extends CommonMixins {
       line-height vw(50)
       text-align center
       width 100%
-      font-size vw(17)
+      font-size 17px
     button
       border 0
   .mask
@@ -138,7 +138,7 @@ export default class ServiceRecord extends CommonMixins {
     margin auto
     z-index 200
     h1
-      font-size vw(17)
+      font-size 17px
       text-align center
       margin-top vw(15)
     .text
@@ -157,7 +157,7 @@ export default class ServiceRecord extends CommonMixins {
         display inline-block
         width 50%
         text-align center
-        font-size vw(17)
+        font-size 17px
         &:nth-child(1)
           color #2c3d2e
         &:nth-child(2)
@@ -171,12 +171,12 @@ export default class ServiceRecord extends CommonMixins {
     z-index 200
     .icon-close
       position absolute
-      font-size vw(16)
+      font-size 16px
       top vw(16)
       left vw(16)
       color #b8b8b8
     h1
-      font-size vw(17)
+      font-size 17px
       text-align center
       margin-top vw(11)
       padding-bottom vw(15)
@@ -184,7 +184,7 @@ export default class ServiceRecord extends CommonMixins {
     .content
       padding vw(10) vw(15)
       p
-        font-size vw(14)
+        font-size 14px
         color #b8b8b8
       ul
         width 100%
@@ -195,14 +195,14 @@ export default class ServiceRecord extends CommonMixins {
           justify-content space-between
           border-bottom 1px solid #e7e7e7
           padding vw(12) 0
-          font-size vw(15)
+          font-size 15px
           color #474747
       button
         width 100%
         background-color $main-color
         color #fff
         height vw(50)
-        font-size vw(17)
+        font-size 17px
         border 0
 .title
   font-size vw(16)
