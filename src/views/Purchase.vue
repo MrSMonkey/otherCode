@@ -32,7 +32,7 @@
             <div v-for="(item, index) in productData" :key="index" class="tree-left-item">
               <p :class="index === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(index, item)">{{item.name}}</p>
               <transition name="uokodown">
-                <section v-if="index === isActive" class="childrenItem" ref="childrenItem">
+                <section v-if="index === isSlide" class="childrenItem" ref="childrenItem">
                   <div v-for="(ctx, idx) in item.productDetails" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
                     <div><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
                   </div>
@@ -96,6 +96,7 @@ export default class Purchase extends CommonMixins {
   private tableData: any[] = []; // 服务包列表
   private productData: any[] = []; // 服务产品列表
   private isActive: number = 0; // 默认选择第一项
+  private isSlide: number = -1; // 默认不展开
   private isActiveChildrenOne: number = 0; // 默认选择第一项
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
@@ -207,13 +208,16 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private checkActive(index: any, item: any) {
-    if (index === this.isActive) {
+    if (index === this.isSlide) {
+      this.isSlide = -1; // 再次点击收起
       return false;
+    } else {
+      this.isSlide = index; // 展开
+      this.isActive = index;
+      this.isActiveChildrenOne = 0; // 默认第一个
+      this.productItemData = item.productDetails[0].products; // 当前选中的产品
+      this.productName = item.productDetails[0].typeName;
     }
-    this.isActive = index;
-    this.isActiveChildrenOne = 0; // 默认第一个
-    this.productItemData = item.productDetails[0].products; // 当前选中的产品
-    this.productName = item.productDetails[0].typeName;
   }
 
   /**
