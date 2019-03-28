@@ -52,13 +52,17 @@
         <van-icon class="icon-close" name="cross" @click="changePayVisible(false)"/>
         <h1>支付</h1>
         <div class="content">
-          <p>
+          <!-- <p>
             <span>房租</span>
             <span>{{lookPriceDetail.houseAmount && parseFloat(lookPriceDetail.houseAmount).toFixed(2) || '0.00'}}元/月</span>
           </p>
           <p>
             <span>提成</span>
             <span>{{lookPriceDetail.percent && parseFloat(lookPriceDetail.percent).toFixed(2) || '0.00'}}%</span>
+          </p> -->
+          <p>
+            <span>带看服务费</span>
+            <span>{{lookPriceDetail.amount && parseFloat(lookPriceDetail.amount).toFixed(2) || '0.00'}}</span>
           </p>
         </div>
         <div class="pay-btn">
