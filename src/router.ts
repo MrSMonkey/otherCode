@@ -19,20 +19,27 @@ Vue.use(Router);
 let router!: any;
 
 const loadView = (view: string) => {
-  return () => import(/* webpackChunkName: "view-[request]" */ `./views/${view}.vue`);
+  const viewArr: any[] = view.split('/');
+  viewArr[viewArr.length - 1] = firstUpperCase(viewArr[viewArr.length - 1]);
+  view = viewArr.join('/');
+  return () => import(/* webpackChunkName: "view-[request]" */ `./views${view}.vue`);
 };
 
-const createRouters = (list: any) => {
+const createRouters = (list: any, dirname?: string) => {
   const routers = [];
   for (const item of list) {
+    let childrenRoutes: any[] = [];
+    if (item.children && item.children.length > 0 ) {
+      childrenRoutes = createRouters(item.children, `${dirname}/${item.path}`);
+    }
     routers.push({
-      path: `/${item.path}`,
+      path: dirname !== '' ? item.path : `/${item.path}`,
       name: `${item.path}`,
       meta: `${item.title}`,
-      component: loadView(firstUpperCase(`${item.path}`))
+      component: loadView(`${dirname}/${item.path}`),
+      children: childrenRoutes
     });
   }
-
   return routers;
 };
 
@@ -40,7 +47,7 @@ router = new Router({
   base: process.env.BASE_URL,
   routes: [
     { path: '/', name: 'index', component: Home, meta: '星空业主服务号' },
-    ...createRouters(componentsList)
+    ...createRouters(componentsList, '')
   ]
 });
 

@@ -120,6 +120,16 @@ export const componentsList: any[] = [
   {
     path: 'serviceOrderDetail',
     title: '服务详情'
+  },
+  {
+    path: 'houseAppraise',
+    title: '房屋估价',
+    children: [
+      {
+        path: 'appraiseHouseInfo',
+        title: '估价房屋信息'
+      }
+    ]
   }
 ];
 
