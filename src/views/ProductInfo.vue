@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-26 17:11:46
+ * @Last Modified time: 2019-03-28 16:14:42
  */
 
 
@@ -25,7 +25,8 @@
       </div>
       <div class="block">
         <span>服务总次数：</span>
-        <p>{{data.serviceCount}}</p>
+        <p v-if="data.typeId === 4 && data.serviceCount === 0">不限制次数</p>
+        <p v-else>{{data.serviceCount}}</p>
       </div>
       <div class="block">
         <span>咨询电话：</span>

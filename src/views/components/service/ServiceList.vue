@@ -124,7 +124,7 @@ export default class ServiceList extends CommonMixins {
     font-size 16px
     color: #474747;
   .list-main 
-    padding 0px vw(15)
+    padding 0px vw(15) vw(15)
     border-bottom 1px solid $border-color-light
     .list-item
       display -webkit-flex /* Safari */
@@ -135,7 +135,7 @@ export default class ServiceList extends CommonMixins {
       align-items center
       font-size 14px
       color $text-color
-      padding vw(12) 0
+      padding vw(12) 0 0
       .list-item-type
         color $main-color
       .list-item-close

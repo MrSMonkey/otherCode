@@ -462,7 +462,7 @@ export default class Entrust extends CommonMixins {
       if (res && res.code === '000') {
         this.$router.push('/house');
       } else {
-        this.$toast(res.msg);
+        this.$toast(res.msg || '委托失败，请重试！');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

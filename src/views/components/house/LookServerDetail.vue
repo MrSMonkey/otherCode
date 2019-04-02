@@ -12,7 +12,7 @@
   <ul class="time-line-look">
     <li v-for="item in data" :key="item.id">
       <div class="dot"></div>
-      <p>【{{item.roomName}}】&nbsp;&nbsp;{{item.record}}</p>
+      <p>{{item.record}}</p>
       <span>{{item.workTime}}</span>
       <ImagePreview v-if="item.imgs" :imgagesArr="item.imgs" :isFold="true" />
     </li>

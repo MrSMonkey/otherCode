@@ -2,8 +2,8 @@
  * @Description: 服务记录
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 21:06:41
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-28 16:33:59
 */
 
 <template>
@@ -274,7 +274,7 @@ export default class ServiceRecord extends CommonMixins {
     .info 
       min-height vw(187)
       p
-        font-size vw(15)
+        font-size 15px
         line-height vw(21)
         margin-bottom vw(10)
   .btn
@@ -289,7 +289,7 @@ export default class ServiceRecord extends CommonMixins {
       line-height vw(50)
       text-align center
       width 100%
-      font-size vw(17)
+      font-size 17px
     button
       border 0
   .mask
@@ -311,7 +311,7 @@ export default class ServiceRecord extends CommonMixins {
     margin auto
     z-index 200
     h1
-      font-size vw(17)
+      font-size 17px
       text-align center
       margin-top vw(15)
     .text
@@ -330,7 +330,7 @@ export default class ServiceRecord extends CommonMixins {
         display inline-block
         width 50%
         text-align center
-        font-size vw(17)
+        font-size 17px
         &:nth-child(1)
           color #2c3d2e
         &:nth-child(2)
@@ -345,12 +345,12 @@ export default class ServiceRecord extends CommonMixins {
     color $text-color
     .icon-close
       position absolute
-      font-size vw(16)
+      font-size 16px
       top vw(16)
       left vw(16)
       color #b8b8b8
     h1
-      font-size vw(17)
+      font-size 17px
       text-align center
       margin-top vw(11)
       padding-bottom vw(15)
@@ -358,7 +358,7 @@ export default class ServiceRecord extends CommonMixins {
     .content
       padding vw(10) vw(15)
       p
-        font-size vw(15)
+        font-size 15px
         display flex
         flex-direction row
         justify-content space-between
@@ -373,7 +373,7 @@ export default class ServiceRecord extends CommonMixins {
           justify-content space-between
           border-bottom 1px solid #e7e7e7
           padding vw(12) 0
-          font-size vw(15)
+          font-size 15px
           color #474747
     .pay-btn
       position absolute
@@ -386,12 +386,12 @@ export default class ServiceRecord extends CommonMixins {
         background-color $main-color
         color #fff
         height vw(50)
-        font-size vw(14)
+        font-size 14px
         border 0
         .price 
-          font-size vw(17)
+          font-size 17px
 .title
-  font-size vw(16)
+  font-size 16px
   margin-bottom vw(10)
   border-bottom 1px solid #e7e7e7
   padding-bottom vw(10)

@@ -96,7 +96,7 @@ export default class HouseInfo extends CommonMixins {
   .base-info
     padding-top 18px
     padding-bottom 22px
-    border-top 1px solid $border-color-light
+    // border-top 1px solid $border-color-light
     background-color $global-background
     .block 
       width: 50%

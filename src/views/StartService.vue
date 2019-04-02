@@ -16,7 +16,7 @@
       placeholder="请输入服务房源"
       type="text"
     />
-    <van-field
+    <!-- <van-field
       v-model="rooms"
       required
       disabled
@@ -38,7 +38,7 @@
       @click="roomShow = true"
       readonly
       v-else
-    />
+    /> -->
     <van-field
       v-model="startTime"
       required
@@ -242,10 +242,10 @@ export default class StartService extends CommonMixins {
    * @author chenmo
    */
   private startService() {
-    if (this.data.houseType === 0 && !this.roomId) {
-      this.$toast(`请选择房间`);
-      return false;
-    }
+    // if (this.data.houseType === 0 && !this.roomId) {
+    //   this.$toast(`请选择房间`);
+    //   return false;
+    // }
     if (!this.startTime) {
       this.$toast(`请选择时间`);
       return false;
@@ -272,8 +272,8 @@ export default class StartService extends CommonMixins {
       orderId: this.productId,
       ownerName: this.ownerName,
       remark: this.remark,
-      roomId: this.data.houseType === 0 ? this.roomId : this.entrustId,
-      roomName: this.data.houseType === 0 ? this.rooms : '整租',
+      roomId: this.entrustId,
+      roomName: '整套',
       subscribeTime: this.startTime,
       ownerPhone: this.ownerPhone
     };
@@ -286,7 +286,7 @@ export default class StartService extends CommonMixins {
           this.$router.push(`/myHouse?entrustId=${this.entrustId}`); // 跳转到房源列表
         }, 2000);
       } else {
-        this.$toast(res.msg);
+        this.$toast(res.msg || '发起失败，请重试！');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

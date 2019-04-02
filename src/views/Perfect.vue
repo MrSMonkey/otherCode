@@ -302,7 +302,7 @@ export default class Perfect extends CommonMixins {
           window.location.href = '/#/house';
         }, 2000);
       } else {
-        this.$toast(res.msg);
+        this.$toast(res.msg || '保存失败，请重试！');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`对ConfirmBtn组件进行的单元测试 create expected html structure 1`] = `
+<section
+  class="plot-footer"
+>
+  <van-button
+    size="normal"
+    type="default"
+  >
+    取消
+  </van-button>
+   
+  <van-button
+    size="normal"
+    type="default"
+    url="/home"
+  />
+</section>
+`;

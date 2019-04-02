@@ -2,8 +2,8 @@
  * @Description: 带看服务记录
  * @Author: zhegu
  * @Date: 2019-03-15 10:23:57
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 14:22:10
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-03-28 16:34:52
  */
 
 <template>
@@ -29,7 +29,7 @@
             <li v-for="(child,key) in data" :title="item.roomNumName" :key="key" @click="toDetail(child,key)">
               <div class="list-detail">
                 <div>
-                  <span>【{{child.roomName}}】</span>
+                  <!-- <span>【{{child.roomName}}】</span> -->
                   <span>{{child.record}}</span>
                   <span><img src="../assets/images/icon/icon_arrow2.png" alt="" class="icon-right"/></span>
                 </div>
@@ -271,7 +271,7 @@ export default class ServiceRecord extends CommonMixins {
     .info 
       min-height vw(187)
       p
-        font-size vw(15)
+        font-size 15px
         line-height vw(21)
         margin-bottom vw(10)
   .btn
@@ -286,14 +286,14 @@ export default class ServiceRecord extends CommonMixins {
       line-height vw(50)
       text-align center
       width 100%
-      font-size vw(17)
+      font-size 17px
     button
       border 0
   .order-type
     background-color #fff
     flex 1
     .van-tab span
-      font-size vw(15)
+      font-size 15px
     .red-dot
       display inline-block
       position absolute
@@ -317,10 +317,10 @@ export default class ServiceRecord extends CommonMixins {
         .list-detail
           display flex
           flex-direction column
-          font-size vw(15)
+          font-size 15px
           color #474747
           .timer
-            font-size vw(12)
+            font-size 12px
             color #b8b8b8
             margin-top vw(5)
           img 
@@ -341,7 +341,7 @@ export default class ServiceRecord extends CommonMixins {
           background-color $main-color
           border 0
           color #fff
-          font-size vw(15)
+          font-size 15px
   .mask
     position fixed
     width 100%
@@ -359,12 +359,12 @@ export default class ServiceRecord extends CommonMixins {
     color $text-color
     .icon-close
       position absolute
-      font-size vw(16)
+      font-size 16px
       top vw(16)
       left vw(16)
       color #b8b8b8
     h1
-      font-size vw(17)
+      font-size 17px
       text-align center
       margin-top vw(11)
       padding-bottom vw(15)
@@ -373,7 +373,7 @@ export default class ServiceRecord extends CommonMixins {
       padding vw(10) vw(15)
       padding-top 0
       p
-        font-size vw(15)
+        font-size 15px
         display flex
         flex-direction row
         justify-content space-between
@@ -389,7 +389,7 @@ export default class ServiceRecord extends CommonMixins {
           justify-content space-between
           border-bottom 1px solid #e7e7e7
           padding vw(12) 0
-          font-size vw(15)
+          font-size 15px
           color #474747
     .pay-btn
       position absolute
@@ -402,12 +402,12 @@ export default class ServiceRecord extends CommonMixins {
         background-color $main-color
         color #fff
         height vw(50)
-        font-size vw(14)
+        font-size 14px
         border 0
         .price 
-          font-size vw(17)
+          font-size 17px
 .title
-  font-size vw(16)
+  font-size 16px
   margin-bottom vw(10)
   border-bottom 1px solid #e7e7e7
   padding-bottom vw(10)
