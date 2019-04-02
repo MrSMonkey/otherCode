@@ -61,7 +61,7 @@ import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import { Loading, ErrorMsg } from '@/utils/decorators';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon} from 'vant';
-import HouseStatus from '../HouseDetile/components/HouseStatus.vue';
+import HouseStatus from '../HouseDetail/components/HouseStatus.vue';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
 const namespace: string = 'global';
