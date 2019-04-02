@@ -1,33 +1,40 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/views/Home.vue';
+import Home from '@/views/Home/Home.vue';
 Vue.use(Router);
 
 let router!: any;
-const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/EntrustPlan.vue');
-const Bind = () => import(/* webpackChunkName: 'bind' */ '@/views/Bind.vue');
-const Entrust = () => import(/* webpackChunkName: 'entrust' */ '@/views/Entrust.vue');
-const Perfect = () => import(/* webpackChunkName: 'perfect' */ '@/views/Perfect.vue');
-const House = () => import(/* webpackChunkName: 'house' */ '@/views/House.vue');
-const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/MyHouse.vue');
-const ServiceOrder = () => import(/* webpackChunkName: 'serviceOrder' */ '@/views/ServiceOrder.vue');
-const ServiceDetile = () => import(/* webpackChunkName: 'serviceDetile' */ '@/views/ServiceDetile.vue');
-const ProductDetile = () => import(/* webpackChunkName: 'productDetile' */ '@/views/ProductDetile.vue');
-const Purchase = () => import(/* webpackChunkName: 'purchase' */ '@/views/Purchase.vue');
-const ServiceInfo = () => import(/* webpackChunkName: 'serviceInfo' */ '@/views/ServiceInfo.vue');
-const ProductInfo = () => import(/* webpackChunkName: 'productInfo' */ '@/views/ProductInfo.vue');
-const ServiceType = () => import(/* webpackChunkName: 'serviceType' */ '@/views/ServiceType.vue');
-const StartService = () => import(/* webpackChunkName: 'startService' */ '@/views/StartService.vue');
-const ChoicePlot = () => import(/* webpackChunkName: 'choicePlot' */ '@/views/ChoicePlot.vue');
+
+const Bind = () => import(/* webpackChunkName: 'bind' */ '@/views/Login/Bind.vue');
+
+const Entrust = () => import(/* webpackChunkName: 'entrust' */ '@/views/House/Entrust.vue');
+const Perfect = () => import(/* webpackChunkName: 'perfect' */ '@/views/House/Perfect.vue');
+const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/HouseList.vue');
+const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/House/EntrustPlan.vue');
+
+const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetile/MyHouse.vue');
+const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetile/HouseImages.vue');
+
+const ServiceOrder = () => import(/* webpackChunkName: 'serviceOrder' */ '@/views/ServiceOrder/ServiceOrder.vue');
+const ServiceDetile = () => import(/* webpackChunkName: 'serviceDetile' */ '@/views/ServiceOrder/ServiceDetile.vue');
+const ProductDetile = () => import(/* webpackChunkName: 'productDetile' */ '@/views/ServiceOrder/ProductDetile.vue');
+const ServiceOrderDetail = () => import(/* webpackChunkName: 'serviceOrderDetail' */ '@/views/ServiceOrder/ServiceOrderDetail.vue');
+const ServiceInfo = () => import(/* webpackChunkName: 'serviceInfo' */ '@/views/ServiceOrder/ServiceInfo.vue');
+const ProductInfo = () => import(/* webpackChunkName: 'productInfo' */ '@/views/ServiceOrder/ProductInfo.vue');
+
+const Purchase = () => import(/* webpackChunkName: 'purchase' */ '@/views/Service/Purchase.vue');
+const ServiceType = () => import(/* webpackChunkName: 'serviceType' */ '@/views/Service/ServiceType.vue');
+const StartService = () => import(/* webpackChunkName: 'startService' */ '@/views/Service/StartService.vue');
 const NotFoundComp = () => import(/* webpackChunkName: '404' */ '@/components/404.vue');
-const MaintainChecked = () => import(/* webpackChunkName: 'maintainChecked' */ '@/views/MaintainChecked.vue');
-const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/views/ServiceRecord.vue');
-const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ConfirmPay.vue');
-const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecordLook.vue');
-const ServiceOrderDetail = () => import(/* webpackChunkName: 'serviceOrderDetail' */ '@/views/ServiceOrderDetail.vue');
-const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise.vue');
-const AppraiseHouseInfo = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/houseAppraise/AppraiseHouseInfo.vue');
-const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseImages.vue');
+
+const MaintainChecked = () => import(/* webpackChunkName: 'maintainChecked' */ '@/views/ServiceRecord/MaintainChecked.vue');
+const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/views/ServiceRecord/ServiceRecord.vue');
+const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ServiceRecord/ConfirmPay.vue');
+const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
+
+const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
+const AppraiseHouseInfo = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
@@ -46,7 +53,6 @@ router = new Router({
     { path: '/productInfo', name: 'productInfo', meta: '服务产品详情', component: ProductInfo},
     { path: '/serviceType', name: 'serviceType', meta: '选择服务类型', component: ServiceType},
     { path: '/startService', name: 'startService', meta: '发起服务', component: StartService},
-    { path: '/choicePlot', name: 'choicePlot', meta: '选择小区', component: ChoicePlot},
     { path: '/404', name: '404', meta: '404', component: NotFoundComp},
     { path: '/maintainChecked', name: 'maintainChecked', meta: '确认验收', component: MaintainChecked},
     { path: '/serviceRecord', name: 'serviceRecord', meta: '服务记录', component: ServiceRecord},
