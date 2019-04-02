@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 20:42:14
+ * @Last Modified time: 2019-04-02 10:47:34
  */
 
 
@@ -120,6 +120,10 @@ export const componentsList: any[] = [
   {
     path: 'serviceOrderDetail',
     title: '服务详情'
+  },
+  {
+    path: 'houseImages',
+    title: '房源照片'
   }
 ];
 
