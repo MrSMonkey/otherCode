@@ -2,8 +2,8 @@
  * @Description: 完善房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-18 11:28:30
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-02 16:29:55
  */
 
 <template>
@@ -194,6 +194,7 @@ import HrTitle from '@/components/HrTitle.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { TYPELIST, TOWARDLIST} from '@/config/config';
 import { PerfectForm } from '@/interface/perfectInterface';
+import { TypeListInterface, TowardListInterface } from '@/interface/configInterface';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -219,9 +220,9 @@ export default class Perfect extends CommonMixins {
   private towardShow: boolean = false;
   private loading: boolean = false;
   private isFloorErr: boolean = false; // 校验楼层数和楼层
-  private typeList: any[] = TYPELIST;
+  private typeList: TypeListInterface = TYPELIST;
   private entrustId: string = ''; // 委托房源ID
-  private twordList: any[] = TOWARDLIST; // 朝向
+  private twordList: TowardListInterface = TOWARDLIST; // 朝向
   private form: PerfectForm = {
     buildAcreage: '', // 房屋建筑面积
     building: '', // 楼栋
