@@ -2,13 +2,14 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-04-02 10:47:34
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-02 16:16:03
  */
 
+import * as confInterface from '@/interface/configInterface';
 
  /* 定义首页星空图片 */
-export const START_HOME_IMG: any[] = [
+export const START_HOME_IMG: confInterface.StartHomeImgInterface[] = [
   {
     alt: '星空',
     src: require('../assets/images/starhome01.png')
@@ -31,104 +32,8 @@ export const START_HOME_IMG: any[] = [
 export const SMART_LOCK_LINK: string =
 `http://coupon.m.jd.com/coupons/show.action?key=58840135e3f64759b6e648de6c8190d5&roleId=13925125&to=item.jd.com/28149452434.html`;
 
- /* 定义路由 */
-export const componentsList: any[] = [
-  {
-    path: 'home',
-    title: '星空业主服务号'
-  },
-  {
-    path: 'entrustPlan',
-    title: '星级房屋托管计划'
-  },
-  {
-    path: 'bind',
-    title: '登录'
-  },
-  {
-    path: 'entrust',
-    title: '在线委托'
-  },
-  {
-    path: 'perfect',
-    title: '完善房源信息'
-  },
-  {
-    path: 'house',
-    title: '我的房源列表'
-  },
-  {
-    path: 'myHouse',
-    title: '房源详情'
-  },
-  {
-    path: 'serviceOrder',
-    title: '服务订单'
-  },
-  {
-    path: 'serviceDetile',
-    title: '订单详情'
-  },
-  {
-    path: 'productDetile',
-    title: '订单详情'
-  },
-  {
-    path: 'purchase',
-    title: '购买服务包'
-  },
-  {
-    path: 'serviceInfo',
-    title: '服务包详情'
-  },
-  {
-    path: 'productInfo',
-    title: '服务产品详情'
-  },
-  {
-    path: 'serviceType',
-    title: '选择服务类型'
-  },
-  {
-    path: 'startService',
-    title: '发起服务'
-  },
-  {
-    path: 'choicePlot',
-    title: '选择小区'
-  },
-  {
-    path: '404',
-    title: '404'
-  },
-  {
-    path: 'maintainChecked',
-    title: '确认验收'
-  },
-  {
-    path: 'serviceRecord',
-    title: '服务记录'
-  },
-  {
-    path: 'confirmPay',
-    title: '确认支付'
-  },
-  {
-    path: 'serviceRecordLook',
-    title: '服务记录'
-  },
-  {
-    path: 'serviceOrderDetail',
-    title: '服务详情'
-  },
-  {
-    path: 'houseImages',
-    title: '房源照片'
-  }
-];
-
 /* 定义托管类型 */
-export const RENT_TYPE: any = {
+export const RENT_TYPE: confInterface.EnumInterface = {
   0: '未知',
   1: '加盟托管',
   2: '非加盟托管',
@@ -136,14 +41,14 @@ export const RENT_TYPE: any = {
 };
 
 /* 定义租赁类型 */
-export const RENT_WAY: any = {
+export const RENT_WAY: confInterface.EnumInterface = {
   0: '未知',
   1: '整租',
   2: '合租',
 };
 
 /* 定义房间朝向 */
-export const TOWARDNAME: any = {
+export const TOWARDNAME: confInterface.EnumInterface = {
   1: '东',
   2: '南',
   3: '西',
@@ -157,7 +62,7 @@ export const TOWARDNAME: any = {
 };
 
 /* 定义房间配置 */
-export const HOUSECONFIG: any = {
+export const HOUSECONFIG: confInterface.EnumInterface = {
   1: '床',
   2: '衣柜',
   3: '书桌',
@@ -175,7 +80,7 @@ export const ZCFU: any = {
 };
 
 /* 定义房间状态 */
-export const RENT_STATUS: any = {
+export const RENT_STATUS: confInterface.EnumInterface = {
   1: '待租中',
   2: '已出租',
   3: '已预订'
@@ -184,8 +89,8 @@ export const RENT_STATUS: any = {
 /* 定义服务订单状态 */
 export const STATUS_NAME: string[] = ['', '待付款', '待服务' , '服务中', ' 待验收', '已完成待评价', '已完成已评价', '已关闭', ' 待处理', '验收不通过待服务', '尾款待支付', '尾款已支付', '尾款取消'];
 
-/*步骤 */
-export const STEP: any[] = [
+/* 步骤 */
+export const STEP: confInterface.StepInterface = [
   {
     src: require('../assets/images/icon/consult.png'),
     text: '咨询'
@@ -205,7 +110,7 @@ export const STEP: any[] = [
 ];
 
 /* 表格 */
-export const TABLES: any[] = [
+export const TABLES: confInterface.TablesInterface = [
   {
     title: '租前及租中费用承担表',
     data: [
@@ -229,7 +134,7 @@ export const TABLES: any[] = [
   }
 ];
 
-export const COLUMNS: any[] = [
+export const COLUMNS: confInterface.ColumnsInterface = [
   {
     dataIndex: 'name',
     title: '',
@@ -245,7 +150,7 @@ export const COLUMNS: any[] = [
 ];
 
 
-export const BADGES: any[] = [
+export const BADGES: confInterface.BadgesInterface = [
   {
     img: require('../assets/images/badge_brand.png'),
     text: '明星企业',
@@ -269,7 +174,7 @@ export const BADGES: any[] = [
 ];
 
 /* 资产列表*/
-export const LIST: any = [
+export const LIST: confInterface.ListInterface = [
   {
     title: '资产管家',
     text: '为您指派专业资产管家，为您提供专业、专属的托管服务'
@@ -293,7 +198,7 @@ export const LIST: any = [
 ];
 
 /* 定义线上提交流程*/
-export const HOUSTFLOW: any = [
+export const HOUSTFLOW: confInterface.HoustFlowInterface = [
   {
     img: require('../assets/images/icon_submit.png'),
     text: '线上提交',
@@ -309,7 +214,7 @@ export const HOUSTFLOW: any = [
 ];
 
 /* 定义线上运营类型*/
-export const TYPELIST: any = [
+export const TYPELIST: confInterface.TypeListInterface = [
   {
     value: 1,
     text: '加盟托管',
@@ -325,7 +230,7 @@ export const TYPELIST: any = [
 ];
 
 /* 定义房间朝向枚举 */
-export const TOWARDLIST: any[] = [
+export const TOWARDLIST: confInterface.TowardListInterface = [
   {
     text: '东',
     value: '1'
