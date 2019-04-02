@@ -51,7 +51,7 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   (response: any) => {
     // 这里可以做一些响应拦截的操作
-    if (response.status === '401') {
+    if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
       localStorage.removeItem('siteToken'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
       router.push({
