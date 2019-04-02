@@ -30,8 +30,8 @@
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="createBuildOrder">确认装修并支付装修款</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && (data.orderInfo.orderStatus === 2 || data.orderInfo.orderStatus === 3 || data.orderInfo.orderStatus === 4) && data.orderInfo.decType === 2 && data.orderInfo.houseId" size="normal" type="default" @click="buildPass">确认验收</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4" size="normal" type="default" @click="cleanPass">去验收</van-button>
-    </div>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4"  size="normal" type="default" @click="cleanPass">去验收</van-button>
+    </div> 
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
     </transition>
@@ -46,7 +46,7 @@
           </p>
         </div>
         <div class="pay-btn">
-          <van-button size="normal" type="default" @click="submitPay">去支付<span class="price">￥{{buildOrderDetail.amount && parseFloat(buildOrderDetail.amount).toFixed(2) || '0.00'}}</span></van-button>
+          <van-button size="normal" type="default" @click="submitPay"  :loading="loading">去支付<span class="price">￥{{buildOrderDetail.amount && parseFloat(buildOrderDetail.amount).toFixed(2) || '0.00'}}</span></van-button>
         </div>
       </div>
     </transition>
@@ -88,6 +88,7 @@ export default class ServiceRecord extends CommonMixins {
   private orderId: string = ''; // 订单id
   private entrustId: string = ''; // 房源id
   private buildOrderDetail: any = {}; // 被创建装修订单详情
+  private loading: boolean = false; // 按钮loading
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
@@ -197,21 +198,31 @@ export default class ServiceRecord extends CommonMixins {
    * @author zhegu
    */
   private async buildPass() {
-    try {
-      const res: any = await this.axios.put(api.buildPass + `/${this.entrustId}` + `/${this.orderId}`);
-      if (res && res.code === '000') {
-        this.$toast.success(`验收通过`);
-        this.getServiceRecord(this.orderId);
-      } else {
-        this.$toast(res.msg);
-      }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    } finally {
-      setTimeout(() => {
-        this.$toast.clear();
-      }, 1000);
-    }
+    this.$dialog.confirm({
+      title: '验收',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      className: 'dialogTips',
+      message: '确认验收通过吗？'
+    }).then(async () => {
+        try {
+          const res: any = await this.axios.put(api.buildPass + `/${this.entrustId}` + `/${this.orderId}`);
+          if (res && res.code === '000') {
+            this.$toast.success(`验收通过`);
+            this.getServiceRecord(this.orderId);
+          } else {
+            this.$toast(res.msg);
+          }
+        } catch (err) {
+          throw new Error(err || 'Unknow Error!');
+        } finally {
+          setTimeout(() => {
+            this.$toast.clear();
+          }, 1000);
+        }
+    }).catch(() => {
+          // on cancel 取消
+    });
   }
   /**
    * @description 保洁验收
