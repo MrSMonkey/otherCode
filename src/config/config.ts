@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-20 20:42:14
+ * @Last Modified time: 2019-04-02 10:47:34
  */
 
 
@@ -30,6 +30,102 @@ export const START_HOME_IMG: any[] = [
  /* 定义购买链接 */
 export const SMART_LOCK_LINK: string =
 `http://coupon.m.jd.com/coupons/show.action?key=58840135e3f64759b6e648de6c8190d5&roleId=13925125&to=item.jd.com/28149452434.html`;
+
+ /* 定义路由 */
+export const componentsList: any[] = [
+  {
+    path: 'home',
+    title: '星空业主服务号'
+  },
+  {
+    path: 'entrustPlan',
+    title: '星级房屋托管计划'
+  },
+  {
+    path: 'bind',
+    title: '登录'
+  },
+  {
+    path: 'entrust',
+    title: '在线委托'
+  },
+  {
+    path: 'perfect',
+    title: '完善房源信息'
+  },
+  {
+    path: 'house',
+    title: '我的房源列表'
+  },
+  {
+    path: 'myHouse',
+    title: '房源详情'
+  },
+  {
+    path: 'serviceOrder',
+    title: '服务订单'
+  },
+  {
+    path: 'serviceDetile',
+    title: '订单详情'
+  },
+  {
+    path: 'productDetile',
+    title: '订单详情'
+  },
+  {
+    path: 'purchase',
+    title: '购买服务包'
+  },
+  {
+    path: 'serviceInfo',
+    title: '服务包详情'
+  },
+  {
+    path: 'productInfo',
+    title: '服务产品详情'
+  },
+  {
+    path: 'serviceType',
+    title: '选择服务类型'
+  },
+  {
+    path: 'startService',
+    title: '发起服务'
+  },
+  {
+    path: 'choicePlot',
+    title: '选择小区'
+  },
+  {
+    path: '404',
+    title: '404'
+  },
+  {
+    path: 'maintainChecked',
+    title: '确认验收'
+  },
+  {
+    path: 'serviceRecord',
+    title: '服务记录'
+  },
+  {
+    path: 'confirmPay',
+    title: '确认支付'
+  },
+  {
+    path: 'serviceRecordLook',
+    title: '服务记录'
+  },
+  {
+    path: 'serviceOrderDetail',
+    title: '服务详情'
+  },
+  {
+    path: 'houseImages',
+    title: '房源照片'
+  }
+];
 
 /* 定义托管类型 */
 export const RENT_TYPE: any = {
