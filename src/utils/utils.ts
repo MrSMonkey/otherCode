@@ -286,3 +286,18 @@ export function returnDomain() {
     return 'http://' + window.location.host + '/#/'; // mock地址
   }
 }
+/**
+ * 获取后端接口返回的错误信息
+ * @param  {any} e 错误对象
+ * @param  {string} defaultMsg 默认信息
+ * @returns string
+ */
+export function getErrorMessage(e: any, defaultMsg?: string): string {
+  let msg = defaultMsg;
+  try {
+    msg = e.response.data.Message;
+  } catch (e) {
+    // 占位 消除warning
+  }
+  return msg || '';
+}

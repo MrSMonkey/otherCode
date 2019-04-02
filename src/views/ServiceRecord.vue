@@ -58,6 +58,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
+import { Loading, ErrorMsg } from '@/utils/decorators';
 import ImagePreview from './components/ImagePreview/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon} from 'vant';
 import HouseStatus from './components/house/HouseStatus.vue';
@@ -96,6 +97,8 @@ export default class ServiceRecord extends CommonMixins {
     this.entrustId = String(this.$route.query.entrustId).split('?')[0];
     this.getServiceRecord(this.orderId); // 获取服务记录详情
   }
+  @Loading({ target: '.service-record' })
+  @ErrorMsg('获取服务记录详情失败')
   /**
    * @description 获取服务记录
    * @params orderId 订单id
@@ -105,26 +108,16 @@ export default class ServiceRecord extends CommonMixins {
   private async getServiceRecord(orderId: string) {
     // 初始化日志列表，避免出现重复数据
     this.houseStatus = [];
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
-    try {
-      const res: any = await this.axios.get(api.getServiceRecord  + `/${orderId}`);
-      if (res && res.code === '000') {
-        this.data = res.data || [];
+    const res: any = await this.axios.get(api.getServiceRecord  + `/${orderId}`);
+    if (res && res.code === '000') {
+      this.data = res.data || [];
+      if (this.data.length !== 0) {
         this.data.records.forEach( (element: any) => {
           this.houseStatus.push({content: element.record, createTime: element.workTime});
         });
-      } else {
-        this.$toast(`获取服务记录详情失败`);
       }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.$toast.clear();
+    } else {
+      this.$toast(res.msg);
     }
   }
 
