@@ -12,8 +12,8 @@ const Perfect = () => import(/* webpackChunkName: 'perfect' */ '@/views/House/Pe
 const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/HouseList.vue');
 const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/House/EntrustPlan.vue');
 
-const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetile/MyHouse.vue');
-const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetile/HouseImages.vue');
+const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetail/MyHouse.vue');
+const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetail/HouseImages.vue');
 
 const ServiceOrder = () => import(/* webpackChunkName: 'serviceOrder' */ '@/views/ServiceOrder/ServiceOrder.vue');
 const ServiceDetile = () => import(/* webpackChunkName: 'serviceDetile' */ '@/views/ServiceOrder/ServiceDetile.vue');
