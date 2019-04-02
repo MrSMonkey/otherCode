@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`对HrTitle组件进行的单元测试 create expected html structure 1`] = `
+<section
+  class="hr-title"
+>
+  <span
+    class="line"
+  />
+   
+  <h2
+    class="content"
+  >
+    
+    标题
+    
+    <span>
+      描述
+    </span>
+  </h2>
+   
+  <span
+    class="line"
+  />
+</section>
+`;

@@ -34,7 +34,10 @@ if (process.env.NODE_ENV === 'production') {
  * 执行 deploy-to-qn.js 时读取此文件中的值
  * 写入文件采用同步方式，异步可能会执行被延后导致结果不一致
  */ 
-fs.writeFileSync('./local', currentDateTime, 'utf8');
+if (process.env.VUE_APP_TITLE === 'pre-release' || process.env.VUE_APP_TITLE === 'production') {
+  // 只有在 PRE 或 生产环境下才进行时间标识符的更新
+  fs.writeFileSync('./local', currentDateTime, 'utf8');
+}
 
 module.exports = {
   baseUrl: baseURL,
