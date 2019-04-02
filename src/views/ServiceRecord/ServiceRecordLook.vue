@@ -81,7 +81,7 @@ import { Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { handleWebStorage, solveScrollBug,  returnDomain } from '@/utils/utils';
 import { Button, CellGroup, Field, Icon, Tabs, Tab } from 'vant';
-import HouseStatus from '../HouseDetile/components/HouseStatus.vue';
+import HouseStatus from '../HouseDetail/components/HouseStatus.vue';
 import NoData from '@/components/NoData.vue';
 import api from '@/api';
 import { STATUS_NAME } from '@/config/config';

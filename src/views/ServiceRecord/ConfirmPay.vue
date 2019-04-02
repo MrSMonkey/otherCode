@@ -50,7 +50,7 @@ import { Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { Button, CellGroup, Field, Icon } from 'vant';
-import HouseStatus from '../HouseDetile/components/HouseStatus.vue';
+import HouseStatus from '../HouseDetail/components/HouseStatus.vue';
 import api from '@/api';
 import { returnDomain } from '@/utils/utils';
 const namespace: string = 'global';
