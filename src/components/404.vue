@@ -11,7 +11,7 @@
 <template>
   <section class="no-match-page">
     <div class="img">
-      <img src="../assets/images/404.png" alt="404"/>
+      <img src="@/assets/images/404.png" alt="404"/>
     </div>
     <p>您访问的页面不存在</p>
     <div class="btn-box">

@@ -12,7 +12,6 @@ import VueLazyComponent from '@xunlei/vue-lazy-component';
 import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, Dialog } from 'vant';
 import 'vant/lib/index.css';
 
-
 Vue.use(Toast);
 Vue.use(Picker);
 Vue.use(Popup);
