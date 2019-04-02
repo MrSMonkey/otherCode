@@ -3,8 +3,8 @@
   * @Description: 星级房屋托管计划
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-11 14:49:00
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-02 16:28:44
   */
 -->
 
@@ -71,6 +71,8 @@ import HrTitle from '@/components/HrTitle.vue';
 import UokoDetailPlant from '@/components/UokoDetailPlant.vue';
 import Table from './components/Table.vue';
 import { STEP,  TABLES, COLUMNS, BADGES, LIST} from '@/config/config';
+import { StepInterface,  TablesInterface, ColumnsInterface, BadgesInterface, ListInterface} from '@/interface/configInterface';
+
 
 // 声明引入的组件
 @Component({
@@ -84,11 +86,11 @@ import { STEP,  TABLES, COLUMNS, BADGES, LIST} from '@/config/config';
 })
 // 类方式声明当前组件
 export default class EntrustPlan extends CommonMixins {
-  private step: any[] = STEP;
-  private tables: any[] = TABLES;
-  private columns: any[] = COLUMNS;
-  private badges: any[] = BADGES;
-  private list: any[] = LIST;
+  private step: StepInterface = STEP;
+  private tables: TablesInterface = TABLES;
+  private columns: ColumnsInterface = COLUMNS;
+  private badges: BadgesInterface = BADGES;
+  private list: ListInterface = LIST;
   private sourceId: any = ''; // 来源渠道id
 
   private mounted() {
