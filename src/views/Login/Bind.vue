@@ -72,7 +72,7 @@ export default class Bind extends CommonMixins {
     [key: string]: any,
     phoneErrorInfo: HTMLFormElement,
   };
-  private redirectUrl: string = '/house';
+  private redirectUrl: string = '';
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
 
@@ -169,7 +169,7 @@ export default class Bind extends CommonMixins {
     }
   }
   private mounted() {
-    this.redirectUrl = this.$route.params.redirectUrl;
+    this.redirectUrl = this.$route.params.redirectUrl || '/house';
   }
 }
 </script>

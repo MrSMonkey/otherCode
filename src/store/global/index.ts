@@ -26,6 +26,7 @@ export const state: GlobalState = {
   userInfo: {},
   communityId: '',
   communityName: '',
+  keepAlive: 'Purchase,ServiceOrder,Entrust',
 };
 
 // getters
@@ -41,6 +42,9 @@ export const getters: GetterTree<GlobalState, RootState> = {
   },
   getCommunityName(state: GlobalState): any {
     return state.communityName;
+  },
+  getKeepAlive(state: GlobalState): any {
+    return state.keepAlive;
   },
 };
 
@@ -58,6 +62,9 @@ export const mutations: MutationTree<GlobalState> = {
   },
   updateCommunityName: (state, data: string) => {
     state.communityName = data;
+  },
+  updateKeepAlive: (state, data: string) => {
+    state.keepAlive = data;
   },
 };
 

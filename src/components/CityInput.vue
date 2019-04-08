@@ -127,29 +127,5 @@ export default class CityInput extends CommonMixins {
               text-align justify
               color $text-color
               font-size 15px
-    .fixture
-      background $global-background
-      height vw(55)
-      padding vw(20)
-      border-bottom 1px solid $separate-line-color
-      display -webkit-flex
-      display flex
-      justify-content flex-start
-      align-items center
-      .check
-        border: 1px solid $tip-text-color
-        border-radius 4px
-        margin-left vw(6)
-        span
-          display inline-block
-          width vw(65)
-          height vw(30)
-          line-height vw(30)
-          text-align center
-          font-size 12px
-          color $text-color
-        .active
-          background $main-color
-          color #fff
 </style>
 
