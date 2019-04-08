@@ -9,8 +9,9 @@ const Bind = () => import(/* webpackChunkName: 'bind' */ '@/views/Login/Bind.vue
 
 const Entrust = () => import(/* webpackChunkName: 'entrust' */ '@/views/House/Entrust.vue');
 const Perfect = () => import(/* webpackChunkName: 'perfect' */ '@/views/House/Perfect.vue');
-const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/HouseList.vue');
+const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/House.vue');
 const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/House/EntrustPlan.vue');
+const ChoiceHouse = () => import(/* webpackChunkName: 'choiceHouse' */ '@/views/House/ChoiceHouse.vue');
 
 const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetail/MyHouse.vue');
 const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetail/HouseImages.vue');
@@ -44,6 +45,7 @@ router = new Router({
     { path: '/entrust', name: 'entrust', meta: '在线委托', component: Entrust},
     { path: '/perfect', name: 'perfect', meta: '完善房源信息', component: Perfect},
     { path: '/house', name: 'house', meta: '我的房源列表', component: House},
+    { path: '/choiceHouse', name: 'choiceHouse', meta: '选择房源', component: ChoiceHouse},
     { path: '/myHouse', name: 'myHouse', meta: '房源详情', component: MyHouse},
     { path: '/serviceOrder', name: 'serviceOrder', meta: '服务订单', component: ServiceOrder},
     { path: '/serviceDetile', name: 'serviceDetile', meta: '订单详情', component: ServiceDetile},

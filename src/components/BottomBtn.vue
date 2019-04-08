@@ -58,6 +58,7 @@
     display flex
     justify-content space-around
     align-items center
+    overflow-y scroll
     .btn-order
       text-align center
       p
