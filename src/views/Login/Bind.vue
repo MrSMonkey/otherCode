@@ -68,10 +68,11 @@ const namespace: string = 'global';
 })
 // 类方式声明当前组件
 export default class Bind extends CommonMixins {
-   public $refs!: {
+  public $refs!: {
     [key: string]: any,
     phoneErrorInfo: HTMLFormElement,
   };
+  private redirectUrl: string = '/house';
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
 
@@ -135,7 +136,7 @@ export default class Bind extends CommonMixins {
         handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
-        this.$router.push('/house'); // 跳转到房源列表
+        this.$router.push(this.redirectUrl); // 跳转
       } else {
         this.$toast(res.msg || '登录失败');
       }
@@ -166,6 +167,9 @@ export default class Bind extends CommonMixins {
       this.isCodeErr = false;
       this.$refs.codeErrorInfo.innerHTML = '请输入6位手机验证码';
     }
+  }
+  private mounted() {
+    this.redirectUrl = this.$route.params.redirectUrl;
   }
 }
 </script>

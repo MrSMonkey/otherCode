@@ -9,21 +9,9 @@
 <template>
   <section>
     <section class="entrust" v-if="!showPlot">
+      <CityInput @city-confirm="cityConfirm" :cityList="cityList"></CityInput>
+      <CommunityInput></CommunityInput>
       <section class="area">
-        <div class="city">
-          <div class="label">城&emsp;&emsp;市*</div>
-          <div class="village">
-            <van-field
-              v-model="cityName"
-              placeholder="请选择您爱屋所在城市"
-              type="text"
-              right-icon="arrow"
-              readonly
-              @click="cityShow = true"
-              @click-right-icon="cityShow = true"
-            />
-          </div>
-        </div>
         <div class="city">
           <div class="label">小&emsp;&emsp;区*</div>
           <div class="village">
@@ -140,16 +128,6 @@
         <a @click="onOk">确认</a>
       </section> -->
     </section>
-    <!-- 城市弹窗 -->
-    <van-popup v-model="cityShow" position="bottom" :overlay="true">
-      <van-picker
-        show-toolbar
-        :columns="cityList"
-        @confirm="cityConfirm"
-        @cancel="cityShow = false"
-        title="选择城市"
-      />
-    </van-popup>
   </section>
 </template>
 
@@ -160,6 +138,8 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Button } from 'vant';
 import HrTitle from '@/components/HrTitle.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import CityInput from '@/components/CityInput.vue';
+import CommunityInput from '@/components/CommunityInput.vue';
 import { handleWebStorage } from '@/utils/utils';
 import {HOUSTFLOW} from '@/config/config';
 import api from '@/api';
@@ -174,6 +154,8 @@ const namespace: string = 'global';
     [Row.name]: Row,
     [Col.name]: Col,
     [Button.name]: Button,
+    CityInput,
+    CommunityInput,
     HrTitle,
     ConfirmBtn
   }
@@ -510,7 +492,7 @@ export default class Entrust extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 @import '../../assets/stylus/main.styl'
 .entrust
   .area
