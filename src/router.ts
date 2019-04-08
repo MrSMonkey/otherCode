@@ -32,8 +32,8 @@ const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/vi
 const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ServiceRecord/ConfirmPay.vue');
 const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
 
-const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
-const AppraiseHouseInfo = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/houseAppraise/HouseAppraise.vue');
+const AppraiseHouseInfo = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/houseAppraise/AppraiseHouseInfo.vue');
 
 router = new Router({
   base: process.env.BASE_URL,
