@@ -10,5 +10,6 @@ export interface GlobalState {
   userInfo?: any;
   communityId?: string;
   communityName?: string;
+  keepAlive?: string;
 }
 
