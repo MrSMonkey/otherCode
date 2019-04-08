@@ -11,9 +11,9 @@
 <template>
   <section class="home">
     <main class="home-comp_list">
-      <section class="header-img">
+      <!-- <section class="header-img">
         <img src="@/assets/images/home_bg.png" alt=""/>
-      </section>
+      </section> -->
       <hr-title title="星空产品服务群"></hr-title>
       <section class="star-home">
         <img v-for="img in startHomeImg" :key="img.alt" alt="img.alt" :src="img.src"/>

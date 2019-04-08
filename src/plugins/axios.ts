@@ -55,7 +55,7 @@ Axios.interceptors.response.use(
       localStorage.removeItem('siteToken'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
       router.push({
-        path: '/bind'
+        path: '/bind',
       });
     }
     return response.data;

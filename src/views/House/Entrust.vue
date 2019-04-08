@@ -110,7 +110,7 @@
         />
       </section>
       <main class="main">
-        <van-list
+        <!-- <van-list
           v-model="loading"
           :finished="finished"
           finished-text="没有更多了"
@@ -121,7 +121,7 @@
             :key="item"
             :title="item"
           />
-        </van-list>
+        </van-list> -->
         <ul class="list" v-if="tableList.length > 0">
           <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
             <span>{{item.communityName}}({{item.address}})</span>
