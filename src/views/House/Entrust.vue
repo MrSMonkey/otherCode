@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-18 11:28:30
+ * @Last Modified time: 2019-04-04 13:57:46
  */
 
 <template>
@@ -110,6 +110,18 @@
         />
       </section>
       <main class="main">
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <van-cell
+            v-for="item in list"
+            :key="item"
+            :title="item"
+          />
+        </van-list>
         <ul class="list" v-if="tableList.length > 0">
           <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
             <span>{{item.communityName}}({{item.address}})</span>
@@ -157,7 +169,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { Field, Row, Col, Button } from 'vant';
+import { Field, Row, Col, Button, List, Cell } from 'vant';
 import HrTitle from '@/components/HrTitle.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { handleWebStorage } from '@/utils/utils';
@@ -174,6 +186,8 @@ const namespace: string = 'global';
     [Row.name]: Row,
     [Col.name]: Col,
     [Button.name]: Button,
+    [List.name]: List,
+    [Cell.name]: Cell,
     HrTitle,
     ConfirmBtn
   }
@@ -207,6 +221,7 @@ export default class Entrust extends CommonMixins {
   private isCodeErr: boolean = false; // 校验验证码
   private isGetPlot: boolean = false; // 判断是否请求了小区
   private sourceId: any = ''; // 来源渠道id
+  private list: any[] = [];
   private houseSetting: any[] = [
     {
       id: 1,
@@ -249,6 +264,21 @@ export default class Entrust extends CommonMixins {
     this.cityShow = false;
   }
 
+  private onLoad() {
+      // 异步更新数据
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          this.list.push(this.list.length + 1);
+        }
+        // 加载状态结束
+        this.loading = false;
+
+        // 数据全部加载完成
+        if (this.list.length >= 40) {
+          this.finished = true;
+        }
+      }, 500);
+    }
   /**
    * @description 获取城市列表
    * @returns void
