@@ -8,22 +8,9 @@
 
 <template>
   <section>
-    <section class="entrust" v-if="!showPlot">
+    <section class="entrust">
+      <CityInput @city-confirm="cityConfirm" :city-list="cityList"></CityInput>
       <section class="area">
-        <div class="city">
-          <div class="label">城&emsp;&emsp;市*</div>
-          <div class="village">
-            <van-field
-              v-model="cityName"
-              placeholder="请选择您爱屋所在城市"
-              type="text"
-              right-icon="arrow"
-              readonly
-              @click="cityShow = true"
-              @click-right-icon="cityShow = true"
-            />
-          </div>
-        </div>
         <div class="city">
           <div class="label">小&emsp;&emsp;区*</div>
           <div class="village">
@@ -33,8 +20,8 @@
               type="text"
               readonly
               right-icon="arrow"
-              @click-right-icon="toPlot"
-              @click="toPlot"
+              @click-right-icon="toCommunity"
+              @click="toCommunity"
             />
           </div>
         </div>
@@ -101,67 +88,6 @@
         <van-button slot="button" size="large" type="default" class="entrust-btn" v-else @click="getSubmitData" :loading="loading" loading-text="提交中">立即提交</van-button>
       </section>
     </section>
-    <section class="plot" v-else>
-      <section class="search" v-if="showPlot">
-        <van-field
-          v-model="value"
-          placeholder="请输入您爱屋所在的小区" 
-          clearable
-        />
-      </section>
-      <main class="main">
-        <!-- <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
-        >
-          <van-cell
-            v-for="item in list"
-            :key="item"
-            :title="item"
-          />
-        </van-list> -->
-        <ul class="list" v-if="tableList.length > 0">
-          <li v-for="item in tableList" :key="item.id" @click="selectPlot(item)" :class="item.id === plotAacive ? 'active' : ''">
-            <span>{{item.communityName}}({{item.address}})</span>
-            <img src="@/assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
-          </li>
-        </ul>
-        <div v-if="tableList.length === 0 && isGetPlot">
-          <div class="noserch">
-            <p class="noserch-title">未找到您输入的小区</p>
-            <p class="tips">快速咨询，请点击拨打：10105288</p>
-            <a href="tel:10105288">快速委托</a>
-          </div>
-        </div>
-      </main>
-      <confirmBtn 
-        loadingText="保存中"
-        cancelText="返回"
-        @confirm="onOk"
-        @plotCancel="plotCancel"
-        :isActive="tableList.length > 0"
-      >
-        <template slot="confirm">
-          <span>确认</span>
-        </template>
-      </confirmBtn>
-      <!-- <section class="plot-footer">
-        <a @click="plotCancel">返回</a>
-        <a @click="onOk">确认</a>
-      </section> -->
-    </section>
-    <!-- 城市弹窗 -->
-    <van-popup v-model="cityShow" position="bottom" :overlay="true">
-      <van-picker
-        show-toolbar
-        :columns="cityList"
-        @confirm="cityConfirm"
-        @cancel="cityShow = false"
-        title="选择城市"
-      />
-    </van-popup>
   </section>
 </template>
 
@@ -172,6 +98,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Button, List, Cell } from 'vant';
 import HrTitle from '@/components/HrTitle.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import CityInput from '@/components/CityInput.vue';
 import { handleWebStorage } from '@/utils/utils';
 import {HOUSTFLOW} from '@/config/config';
 import api from '@/api';
@@ -186,6 +113,7 @@ const namespace: string = 'global';
     [Row.name]: Row,
     [Col.name]: Col,
     [Button.name]: Button,
+    CityInput,
     [List.name]: List,
     [Cell.name]: Cell,
     HrTitle,
@@ -203,7 +131,6 @@ export default class Entrust extends CommonMixins {
   private plotAacive: number = -1;
   private houstFlow: any = HOUSTFLOW;
   private plot: string = ''; // 选择小区
-  private showPlot: boolean = false;
   private value: string = '';
   private loading: boolean = false;
   private finished: boolean = false;
@@ -246,6 +173,15 @@ export default class Entrust extends CommonMixins {
       this.getUserInfo();
     }
   }
+
+  private activated() {
+    // 获取小区信息
+    if (this.$route.params.communityId) {
+      this.communityId = this.$route.params.communityId;
+      this.communityName = this.$route.params.communityName;
+    }
+  }
+
   /**
    * @description 选择城市确认
    * @returns void
@@ -311,11 +247,13 @@ export default class Entrust extends CommonMixins {
     }
   }
 
-  private toPlot() {
-    // this.$router.push(`/choicePlot?cityId=${this.cityId}`);
-    // this.tableList = []; // 清空
-    // this.value = '';
-    this.showPlot = true;
+  private toCommunity() {
+    this.$router.push({
+      name: 'community',
+      params: {
+        cityId: this.cityId
+      }
+    });
   }
 
   /**
@@ -338,48 +276,6 @@ export default class Entrust extends CommonMixins {
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
-  }
-
-  /**
-   * @description 确认选中
-   * @returns void
-   * @author chenmo
-   */
-  private onOk() {
-    if (this.value === '') {
-      this.$toast('请输入您爱屋所在的小区');
-    } else {
-        if (Object.keys(this.selectData).length === 0) {
-          // 未选择
-          this.$toast('请选择您爱屋所在的小区');
-        } else {
-          // 选择
-          this.communityId = this.selectData.id;
-          this.communityName = this.selectData.communityName;
-          this.showPlot = false;
-        }
-      // if (this.tableList.length === 0) {
-      //   // 搜索的小区为[]
-      //   this.communityId = '';
-      //   this.communityName = this.value;
-      //   this.showPlot = false;
-      // } else {
-      // }
-    }
-  }
-
-  /**
-   * @description 选择小区
-   * @returns void
-   * @author chenmo
-   */
-  private selectPlot(item: any) {
-    this.plotAacive = item.id;
-    this.selectData = item;
-  }
-
-  private plotCancel() {
-    this.showPlot = false;
   }
 
   /**
@@ -522,25 +418,10 @@ export default class Entrust extends CommonMixins {
       // this.$refs.codeErrorInfo.innerHTML = '请输入6位手机验证码';
     }
   }
-
-  @Watch('value')
-  private handlerValue(newVal: string) {
-    if (newVal !== '') {
-      // this.$refs.codeErrorInfo.innerHTML = '';
-      // this.isCodeErr = true;
-      this.getPlotList(); // 请求小区数据
-    } else {
-      this.isCodeErr = false;
-      this.isGetPlot = false;
-      this.tableList = []; // 清空查询
-      this.plotAacive = -1;
-      this.selectData = {};
-    }
-  }
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 @import '../../assets/stylus/main.styl'
 .entrust
   .area
@@ -647,93 +528,4 @@ export default class Entrust extends CommonMixins {
   .bg-active
     background $disabled-color
     color #fff
- .plot
-    // height 100%
-    // background $global-background
-    .search
-      height vw(55)
-      background $global-background
-      padding-top vw(5)
-      border-bottom 1px solid #eee
-      position absolute
-      top 0
-      left 0
-      width 100%
-      z-index 1000
-      .van-field
-        font-size 14px
-    .main
-      margin-top vw(75)
-      margin-bottom vw(70)
-      .list
-        margin-top vw(20)
-        height vw(520)
-        overflow-y scroll
-        li
-          background #fff
-          height vw(45)
-          width 100%
-          line-height vw(45)
-          color $text-color
-          font-size 14px
-          padding 0 vw(15)
-          border-bottom 1px solid #eee
-          display -webkit-flex
-          display flex
-          justify-content space-between
-          align-items center
-          span  
-            width vw(320)
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-          img 
-            display inline-block
-            text-align right
-            width vw(16)
-            vertical-align middle
-        .active
-          // background $bg-color-default
-          color $main-color
-      .noserch
-        margin-top vw(200)
-        text-align center
-        .noserch-title
-          font-size 16px
-          color $text-color
-        .tips
-          font-size 14px
-          color $tip-text-color
-          margin-top vw(20)
-        a
-          display inline-block
-          border 1px solid $main-color
-          color $main-color
-          font-size 14px
-          padding vw(5) vw(20)
-          border-radius vw(4)
-          margin-top vw(20)
-    .plot-footer
-      position absolute
-      bottom 0
-      left 0
-      display -webkit-flex
-      display flex
-      justify-content space-between
-      width 100%
-      height vw(46)
-      align-items center
-      a
-        display inline-block
-        width 100%
-        font-size 14px
-        text-align center
-        height 100%
-        line-height vw(46)
-        &:nth-child(1)
-          background #fff
-          color $main-color
-        &:nth-child(2)
-          background $main-color
-          color #fff
 </style>

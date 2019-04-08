@@ -26,7 +26,7 @@ export const state: GlobalState = {
   userInfo: {},
   communityId: '',
   communityName: '',
-  keepAlive: 'Purchase,ServiceOrder',
+  keepAlive: 'Purchase,ServiceOrder,Entrust',
 };
 
 // getters

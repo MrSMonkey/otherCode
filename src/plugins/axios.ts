@@ -54,8 +54,12 @@ Axios.interceptors.response.use(
     if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
       localStorage.removeItem('siteToken'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
+      console.log(window.location);
       router.push({
-        path: '/bind',
+        name: 'bind',
+        params: {
+          redirectUrl: window.location.href.split('#')[1]
+        }
       });
     }
     return response.data;

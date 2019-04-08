@@ -12,6 +12,7 @@ const Perfect = () => import(/* webpackChunkName: 'perfect' */ '@/views/House/Pe
 const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/House.vue');
 const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/House/EntrustPlan.vue');
 const ChoiceHouse = () => import(/* webpackChunkName: 'choiceHouse' */ '@/views/House/ChoiceHouse.vue');
+const Community = () => import(/* webpackChunkName: 'Community' */ '@/views/House/Community.vue');
 
 const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetail/MyHouse.vue');
 const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetail/HouseImages.vue');
@@ -55,7 +56,6 @@ router = new Router({
     { path: '/productInfo', name: 'productInfo', meta: '服务产品详情', component: ProductInfo},
     { path: '/serviceType', name: 'serviceType', meta: '选择服务类型', component: ServiceType},
     { path: '/startService', name: 'startService', meta: '发起服务', component: StartService},
-    { path: '/404', name: '404', meta: '404', component: NotFoundComp},
     { path: '/maintainChecked', name: 'maintainChecked', meta: '确认验收', component: MaintainChecked},
     { path: '/serviceRecord', name: 'serviceRecord', meta: '服务记录', component: ServiceRecord},
     { path: '/confirmPay', name: 'confirmPay', meta: '确认支付', component: ConfirmPay},
@@ -71,7 +71,9 @@ router = new Router({
       children: [
         {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
       ]
-    }
+    },
+    { path: '/community', name: 'community', meta: '选择小区', component: Community},
+    { path: '/404', name: '404', meta: '404', component: NotFoundComp}
   ]
 });
 
@@ -93,7 +95,7 @@ router.beforeEach((to: any, from: any, next: any) => {
   const token: any = localStorage.getItem('siteToken');
   if (!token) {
     // 非登陆状态
-    if (to.path !== '/bind' && to.path !== '/entrust' && to.path !== '/entrustPlan' && to.path !== '/') {
+    if (to.path !== '/bind' && to.path !== '/entrust' && to.path !== '/entrustPlan' && to.path !== '/community' && to.path !== '/' ) {
       // 除了登录页 && 在线委托页 && 星级房屋托管计划，其他将跳转到登陆页
       router.push('/bind');
     }
