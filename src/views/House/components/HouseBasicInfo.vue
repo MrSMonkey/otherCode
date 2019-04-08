@@ -47,7 +47,7 @@ import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
 
 // 声明引入的组件
-@component({
+@Component({
   name: 'HouseBasicInfo',
   components: {
     [Field.name]: Field,

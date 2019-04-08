@@ -1,8 +1,8 @@
 <template>
-  <section class="plot">
+  <section>
     <section class="search">
       <van-field
-        v-model="value"
+        v-model="searchInputValue"
         placeholder="请输入您爱屋所在的小区" 
         clearable
       />
@@ -55,7 +55,7 @@ import api from '@/api';
 })
 
 export default class Community extends CommonMixins {
-  private value: string = '';
+  private searchInputValue: string = '';
   private cityId: string = '';
   private plotAacive: number = -1;
   private communityId: string = '';
@@ -63,8 +63,8 @@ export default class Community extends CommonMixins {
   private tableList: any[] = [];
   private isGetPlot: boolean = false; // 判断是否请求了小区
 
-  @Watch('value')
-  private handlerValue(newVal: string) {
+  @Watch('searchInputValue')
+  private handlerSearchInputValue(newVal: string) {
     if (newVal !== '') {
       this.getPlotList(); // 请求小区数据
     } else {
@@ -79,11 +79,11 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private async getPlotList() {
-    if (this.value === '') {
+    if (this.searchInputValue === '') {
       return false;
     }
     try {
-      const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.value}`);
+      const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.searchInputValue}`);
       if (res && res.code === '000') {
         this.tableList = res.data || [];
         this.isGetPlot = true; // 请求成功
@@ -112,7 +112,7 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private onOk() {
-    if (this.value === '') {
+    if (this.searchInputValue === '') {
       this.$toast('请输入您爱屋所在的小区');
     } else {
         if (this.communityId === '') {
@@ -150,7 +150,6 @@ export default class Community extends CommonMixins {
 
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
- .plot
     .search
       height vw(55)
       background $global-background

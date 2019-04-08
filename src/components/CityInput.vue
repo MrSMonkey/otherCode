@@ -1,21 +1,19 @@
 <template>
   <section>
-    <section class="area">
-      <div class="city">
-        <div class="label">城&emsp;&emsp;市*</div>
-        <div class="village">
-          <van-field
-            v-model="cityName"
-            :placeholder="placeholderText"
-            type="text"
-            right-icon="arrow"
-            readonly
-            @click="cityShow = true"
-            @click-right-icon="cityShow = true"
-          />
-        </div>
+    <div class="city">
+      <div class="label">城&emsp;&emsp;市*</div>
+      <div class="village">
+        <van-field
+          v-model="cityName"
+          :placeholder="placeholderText"
+          type="text"
+          right-icon="arrow"
+          readonly
+          @click="cityShow = true"
+          @click-right-icon="cityShow = true"
+        />
       </div>
-    </section>
+    </div>
     <!-- 城市弹窗 -->
     <van-popup v-model="cityShow" position="bottom" :overlay="true">
       <van-picker
@@ -80,21 +78,19 @@ export default class CityInput extends CommonMixins {
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 @import '../assets/stylus/main.styl'
-  .area
-    margin-bottom vw(10)
-    .label
+  .label
+    display inline-block
+    width 83px
+    font-size 15px
+    color $text-color
+    padding-top vw(18)
+    &::after
+      content ''
       display inline-block
-      width 83px
-      font-size 15px
-      color $text-color
-      padding-top vw(18)
-      &::after
-        content ''
-        display inline-block
-        width 100%
-    .just
-      text-align justify
-    .city
+      width 100%
+  .just
+    text-align justify
+  .city
       background $global-background
       height vw(55)
       padding vw(20)
