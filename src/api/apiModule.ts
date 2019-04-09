@@ -99,14 +99,19 @@ export default {
 
   /*带看记录*/
   serviceRecordLook: '/partner/owner/product/look/service_record',
+
   /*装修订单通过验收*/
   buildPass: '/partner/owner/product/service/renovation/passing',
+
   /*取消支付*/
   cancelPay: 'partner/owner/product/service/repair/cancel_pay',
+
   /*保洁验收*/
   cleanPass: 'partner/owner/product/service/cleaning/passing',
+
   /*获取带看服务待支付价格*/
   lookPrice: 'partner/house/pay/look/detail',
+
   /*创建装修订单*/
   creatBuildOrder: 'partner/owner/product/service/build'
 };
