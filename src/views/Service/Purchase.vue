@@ -60,6 +60,13 @@
           </div>
         </section>
       </van-tab>
+      <van-tab disabled>
+        <div slot="title" @click="chooseCity" class="pisition-tab">
+          <span class="pisition">
+            <van-icon :name="produciconLocationtName" size="16px"/> 成都
+          </span>
+        </div>
+      </van-tab>
     </van-tabs>
     
   </section>
@@ -100,6 +107,7 @@ export default class Purchase extends CommonMixins {
   private isActiveChildrenOne: number = 0; // 默认选择第一项
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
+  private produciconLocationtName: string = require('../../assets/images/icon/icon_location.png');
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -185,6 +193,14 @@ export default class Purchase extends CommonMixins {
   }
 
   /**
+   * @description 选择城市
+   * @author linyu
+   */
+  private chooseCity() {
+    console.log('城市选择暂未开放。');
+  }
+
+  /**
    * @description tabs切换
    * @params index 当前tabs的索引值
    * @returns null
@@ -249,7 +265,7 @@ export default class Purchase extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
+<style lang="stylus" rel="stylesheet/stylus">
 @import '../../assets/stylus/main.styl'
 .purchase
   .purchase-item
@@ -379,4 +395,19 @@ export default class Purchase extends CommonMixins {
         p
           color $text-color
           font-size 14px
+  .van-tab--disabled
+    max-width 23% !important
+  .pisition-tab
+    position relative
+    &::after
+      position absolute
+      content ''
+      display block
+      top 11px
+      left 0px
+      height 21px
+      width 2px
+      background #e7e7e7
+    i
+      top 2px
 </style>

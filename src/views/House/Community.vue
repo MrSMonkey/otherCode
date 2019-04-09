@@ -1,3 +1,11 @@
+/*
+ * @Description: 选择小区页面
+ * @Author: linyu
+ * @Date: 2019-04-09 12:40:00
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 12:40:20
+ */
+
 <template>
   <section>
     <section class="search">

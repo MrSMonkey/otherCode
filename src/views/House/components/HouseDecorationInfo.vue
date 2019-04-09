@@ -1,3 +1,11 @@
+/*
+ * @Description: 房屋装修情况input组件
+ * @Author: linyu
+ * @Date: 2019-04-09 12:38:30
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 12:41:33
+ */
+
 <template>
   <div class="fixture">
     <div class="label">装修情况*</div>
