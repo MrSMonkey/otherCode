@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 19:17:24
+ * @Last Modified time: 2019-04-09 19:28:17
  */
 
 
@@ -195,7 +195,7 @@ export default class ProductPayment extends CommonMixins {
    * @author linyu
    */
   private toHouse() {
-    this.$router.push('/choiceHouse?nextUrl=ServiceHouseInfo');
+    this.$router.push('/choiceHouse?preUrl=productPayment');
   }
 
   /**

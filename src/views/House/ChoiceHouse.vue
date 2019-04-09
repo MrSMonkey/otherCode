@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 19:12:42
+ * @Last Modified time: 2019-04-09 19:31:15
  */
 
 <template>
@@ -42,10 +42,12 @@ import api from '@/api';
 })
 // 类方式声明当前组件
 export default class ChoiceHouse extends CommonMixins {
+  private preUrl: string; // 上个页面地址
   private addHouseUrl: string = 'serviceHouseInfo'; // 新增房源跳转地址
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
+    this.preUrl = String(this.$route.query.preUrl);
     this.getHouseList(); // 获取房源列表
   }
 
@@ -63,7 +65,7 @@ export default class ChoiceHouse extends CommonMixins {
     });
     this.isData = false;
     try {
-      const res: any = await this.axios.get(api.getHouseList);
+      const res: any = await this.axios.get(api.getHouseList + '/' + '510100');
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
@@ -84,6 +86,12 @@ export default class ChoiceHouse extends CommonMixins {
    */
   private clickItem(houseItem: any) {
     console.log(houseItem);
+    this.$router.push({
+      path: `/${this.preUrl}`,
+      query: {
+        entrustId: houseItem.entrustId
+      }
+    });
   }
 
   /**
