@@ -1,3 +1,11 @@
+/*
+ * @Description: 选择城市input组件
+ * @Author: linyu
+ * @Date: 2019-04-09 12:39:25
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 12:40:47
+ */
+
 <template>
   <section>
     <div class="city">
