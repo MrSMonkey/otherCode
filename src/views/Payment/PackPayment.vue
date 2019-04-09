@@ -2,8 +2,8 @@
  * @Description: 服务包支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 20:06:22
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 20:09:44
  */
 
 
@@ -173,7 +173,7 @@ export default class Payment extends CommonMixins {
     this.$router.push({
       path: '/choiceHouse',
       query: {
-        preUrl: 'productPayment',
+        preUrl: 'packPayment',
         serviceId: this.serviceId
       }
     });
