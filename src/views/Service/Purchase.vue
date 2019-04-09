@@ -162,8 +162,8 @@ export default class Purchase extends CommonMixins {
         // console.log(this.productData)
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
-        this.productItemData = res.data[0].productDetails[0].products; // 进入页面默认第一条
-        this.productName = res.data[0].productDetails[0].typeName; // 默认第一条的name
+        this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].length.products : []; // 进入页面默认第一条
+        this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
       }
@@ -215,8 +215,8 @@ export default class Purchase extends CommonMixins {
       this.isSlide = index; // 展开
       this.isActive = index;
       this.isActiveChildrenOne = 0; // 默认第一个
-      this.productItemData = item.productDetails[0].products; // 当前选中的产品
-      this.productName = item.productDetails[0].typeName;
+      this.productItemData = item.productDetails.length > 0 ? item.productDetails[0].products : []; // 当前选中的产品
+      this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
     }
   }
 
