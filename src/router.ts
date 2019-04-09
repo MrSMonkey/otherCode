@@ -13,6 +13,7 @@ const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/House.
 const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/House/EntrustPlan.vue');
 const ChoiceHouse = () => import(/* webpackChunkName: 'choiceHouse' */ '@/views/House/ChoiceHouse.vue');
 const Community = () => import(/* webpackChunkName: 'Community' */ '@/views/House/Community.vue');
+const ServiceHouseInfo = () => import(/* webpackChunkName: 'ServiceHouseInfo' */ '@/views/House/ServiceHouseInfo.vue');
 
 const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetail/MyHouse.vue');
 const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetail/HouseImages.vue');
@@ -73,6 +74,7 @@ router = new Router({
       ]
     },
     { path: '/community', name: 'community', meta: '选择小区', component: Community},
+    { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: '选择小区', component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: '404', component: NotFoundComp}
   ]
 });
