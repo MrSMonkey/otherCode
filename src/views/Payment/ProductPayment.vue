@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 17:14:16
+ * @Last Modified time: 2019-04-09 17:17:22
  */
 
 
@@ -24,6 +24,7 @@
           required
           type="text"
           readonly
+          input-align="right"
           right-icon="arrow"
           v-if="!(entrustId !== '' && pre === 'productInfo')"
         />
