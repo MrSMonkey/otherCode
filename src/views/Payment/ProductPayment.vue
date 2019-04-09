@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 19:28:17
+ * @Last Modified time: 2019-04-09 19:46:40
  */
 
 
@@ -20,6 +20,7 @@
       </div>
       <div class="el-input">
         <van-field
+          v-model="houseName"
           label="房源"
           required
           type="text"
@@ -123,7 +124,7 @@ export default class ProductPayment extends CommonMixins {
   private tipsTwo: string = TIPSTWO;
   private pre: string = ''; // 判断入口
   private houseInfo: any = {}; // 房源信息
-
+  private houseName: string = ''; // 房源名称
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
   @Action('payment', { namespace }) private payment: any;
@@ -166,6 +167,8 @@ export default class ProductPayment extends CommonMixins {
   }
 
   private activated() {
+    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+    this.productId = String(this.$route.query.productId) === 'undefined' ? '' : String(this.$route.query.productId);
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
@@ -180,7 +183,7 @@ export default class ProductPayment extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getHouserInfo + `/${entrustId}`);
       if (res && res.code === '000') {
-        this.houseInfo = res.data;
+        this.houseName = res.data.houseName;
       } else {
         this.$toast(`获取服务房源失败`);
       }
