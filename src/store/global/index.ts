@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 15:51:56
+ * @Last Modified time: 2019-04-09 19:26:35
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -26,7 +26,7 @@ export const state: GlobalState = {
   userInfo: {},
   communityId: '',
   communityName: '',
-  keepAlive: 'Purchase,ServiceOrder,Entrust,,Payment,ServiceHouseInfo',
+  keepAlive: 'Purchase,ServiceOrder,Entrust,Payment,ServiceHouseInfo',
 };
 
 // getters

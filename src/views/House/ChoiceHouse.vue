@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 19:11:12
+ * @Last Modified time: 2019-04-09 19:27:11
  */
 
 <template>
@@ -48,6 +48,7 @@ export default class ChoiceHouse extends CommonMixins {
   private isData: boolean = false; // 默认不显示
   private mounted() {
     this.preUrl = String(this.$route.query.preUrl);
+    console.log(12);
     this.getHouseList(); // 获取房源列表
   }
 
