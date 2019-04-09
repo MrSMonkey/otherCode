@@ -1,9 +1,9 @@
 /*
- * @Description: 支付页面
+ * @Description: 服务包支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 16:53:51
+ * @Last Modified time: 2019-04-09 17:12:22
  */
 
 
@@ -17,7 +17,7 @@
           type="text"
           readonly
           right-icon="arrow"
-          v-if="pre !== 'serviceInfo'"
+          v-if="!(entrustId !== '' && pre === 'serviceInfo')"
         />
         <van-field
           v-model="ownerName"

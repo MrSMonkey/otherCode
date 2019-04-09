@@ -12,7 +12,7 @@ const Perfect = () => import(/* webpackChunkName: 'perfect' */ '@/views/House/Pe
 const House = () => import(/* webpackChunkName: 'house' */ '@/views/House/House.vue');
 const EntrustPlan = () => import(/* webpackChunkName: 'entrustPlan' */ '@/views/House/EntrustPlan.vue');
 const ChoiceHouse = () => import(/* webpackChunkName: 'choiceHouse' */ '@/views/House/ChoiceHouse.vue');
-const Community = () => import(/* webpackChunkName: 'Community' */ '@/views/House/Community.vue');
+const Community = () => import(/* webpackChunkName: 'community' */ '@/views/House/Community.vue');
 
 const MyHouse = () => import(/* webpackChunkName: 'myHouse' */ '@/views/HouseDetail/MyHouse.vue');
 const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/HouseDetail/HouseImages.vue');
@@ -35,13 +35,13 @@ const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/Se
 const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
 
 const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
-const AppraiseHouseInfo = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
 
 // 服务产品支付
-const ProductPayment = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/Payment/Payment.vue');
+const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/views/Payment/ProductPayment.vue');
 
 // 服务包购买
-const PackPayment = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/Payment/PackPayment.vue');
+const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
 router = new Router({
   base: process.env.BASE_URL,

@@ -1,9 +1,9 @@
 /*
- * @Description: 支付页面
+ * @Description: 服务产品支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 16:56:47
+ * @Last Modified time: 2019-04-09 17:14:16
  */
 
 
@@ -25,7 +25,7 @@
           type="text"
           readonly
           right-icon="arrow"
-          v-if="pre !== 'productInfo'"
+          v-if="!(entrustId !== '' && pre === 'productInfo')"
         />
         <van-field
           v-model="buyersName"
@@ -77,10 +77,6 @@
           <span>购买应付<span class="plot-price">¥{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2)}}</span></span>
         </template>
       </confirmBtn>
-      <!-- <section class="plot-footer">
-        <van-button size="normal" type="default" @click="plotCancel">取消</van-button>
-        <van-button size="normal" type="default"  @click="clickBuy" :loading="loading" loading-text="购买中">购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></van-button>
-      </section> -->
     </div>
   </section>
 </template>
@@ -99,14 +95,14 @@ const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
-  name: 'Payment',
+  name: 'ProductPayment',
   components: {
     ImagePreview,
     ConfirmBtn
   }
 })
 // 类方式声明当前组件
-export default class Payment extends CommonMixins {
+export default class ProductPayment extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private productId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
