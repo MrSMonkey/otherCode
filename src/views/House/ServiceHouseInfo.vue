@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 19:23:51
+ * @Last Modified time: 2019-04-09 20:21:53
  */
 
 <template>
@@ -155,7 +155,8 @@ export default class ServiceHouseInfo extends CommonMixins {
         this.cityList = res.data && res.data.map((item: any) => {
           return {
             text: item.cityName,
-            value: item.id
+            value: item.id,
+            disabled: item.id !== '510100'
           };
         });
       } else {
