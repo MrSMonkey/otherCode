@@ -2,15 +2,15 @@
  * @Description: 选择房源列表
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 13:52:19
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 17:58:52
  */
 
 
 
 <template>
   <section class="house-list">
-    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
+    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="clickItem(house)">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <section v-if="house.handleStatus !== 1">
@@ -47,11 +47,9 @@ export default class ChoiceHouseList extends CommonMixins {
    * @returns null
    * @author chenmo
    */
-  private linkTo(house: any) {
-    this.$router.push({
-
-    });
-
+  @Emit()
+  private clickItem(house: any) {
+    return;
   }
 
   /**

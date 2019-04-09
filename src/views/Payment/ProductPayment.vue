@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 17:18:02
+ * @Last Modified time: 2019-04-09 17:24:28
  */
 
 
@@ -168,7 +168,7 @@ export default class ProductPayment extends CommonMixins {
    * @author linyu
    */
   private toHouse() {
-    this.$router.push('/house?nextUrl=ServiceHouseInfo');
+    this.$router.push('/choiceHouse?nextUrl=ServiceHouseInfo');
   }
 
   /**
@@ -239,12 +239,6 @@ export default class ProductPayment extends CommonMixins {
       this.$toast('请输入正确的联系人电话');
       return false;
     }
-
-    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
-    //   this.$toast('请输入正确的推荐人电话');
-    //   return false;
-    // }
-
     this.submitData(this.buyersName, this.buyersPhone); // 提交数据
   }
 

@@ -3,11 +3,11 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 15:11:43
+ * @Last Modified time: 2019-04-09 17:43:23
  */
 
 <template>
-  <section>
+  <section class="community">
     <section class="search">
       <van-field
         v-model="searchInputValue"
@@ -158,6 +158,8 @@ export default class Community extends CommonMixins {
 
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
+  .community
+    overflow auto
     .search
       height vw(55)
       background $global-background

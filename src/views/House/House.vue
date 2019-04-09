@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 16:57:59
+ * @Last Modified time: 2019-04-09 17:29:23
  */
 
 <template>
@@ -15,7 +15,7 @@
       <HouseList :tableData="tableData"></HouseList>
     </section>
     <section v-else>
-      <NoHouseList :url="addHouseUrl"/>
+      <NoHouseList url="entrust"/>
     </section>
   </section>
 </template>
@@ -42,15 +42,9 @@ import api from '@/api';
 })
 // 类方式声明当前组件
 export default class House extends CommonMixins {
-  private addHouseUrl: string; // 新增房源时跳转的url
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
-    console.log(this.$route.query.nextUrl);
-    this.$route.query.nextUrl
-    ? this.addHouseUrl = String(this.$route.query.nextUrl)
-    : this.addHouseUrl = 'entrust';
-    console.log(this.addHouseUrl);
     this.getHouseList(); // 获取房源列表
   }
 
