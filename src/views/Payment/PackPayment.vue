@@ -2,8 +2,8 @@
  * @Description: 服务包支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 19:08:47
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-09 20:06:22
  */
 
 
@@ -12,9 +12,12 @@
     <div class="buy-dialog">
       <div class="el-input">
         <van-field
+          v-model="houseName"
           label="房源"
           required
           type="text"
+          input-align="right"
+          placeholder="请选择房源"
           readonly
           right-icon="arrow"
           @click-right-icon="toHouse"
@@ -110,6 +113,7 @@ export default class Payment extends CommonMixins {
   private isintroducePhoneErr: boolean = false;
   private introducePhone: string = ''; // 推荐人联系电话
   private pre: string = ''; // 判断入口
+  private houseName: string = ''; // 房源名称
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
@@ -142,13 +146,23 @@ export default class Payment extends CommonMixins {
   }
 
   private mounted() {
-    this.entrustId = String(this.$route.query.entrustId);
-    this.serviceId = String(this.$route.query.serviceId);
+    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+    this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
     this.pre = String(this.$route.query.pre);
     this.getServiceDetils(this.serviceId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
+    if (this.entrustId !== '') {
+      this.getHouserInfo(this.entrustId);
+    }
   }
-
+  private activated() {
+    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+    this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
+    this.pre = String(this.$route.query.pre);
+    if (this.entrustId !== '') {
+      this.getHouserInfo(this.entrustId);
+    }
+  }
   /**
    * @description 选择房源
    * @params productId 服务产品id
@@ -156,7 +170,32 @@ export default class Payment extends CommonMixins {
    * @author linyu
    */
   private toHouse() {
-    this.$router.push('/choiceHouse?preUrl=packPayment');
+    this.$router.push({
+      path: '/choiceHouse',
+      query: {
+        preUrl: 'productPayment',
+        serviceId: this.serviceId
+      }
+    });
+  }
+
+  /**
+   * @description 获取服务房源信息
+   * @params entrustId 委托id
+   * @returns void
+   * @author chenmo
+   */
+  private async getHouserInfo(entrustId: string) {
+    try {
+      const res: any = await this.axios.get(api.getHouserInfo + `/${entrustId}`);
+      if (res && res.code === '000') {
+        this.houseName = res.data.houseName;
+      } else {
+        this.$toast(`获取服务房源失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
   }
 
   /**
