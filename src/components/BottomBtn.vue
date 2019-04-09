@@ -3,7 +3,7 @@
  * @Author: QingTong 
  * @Date: 2018-11-27 11:15:10 
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 11:49:57
+ * @Last Modified time: 2019-04-09 14:47:57
  */
 <template>
   <div class="bottom-btn">
@@ -26,7 +26,7 @@
     name: 'BottomBtn'
   })
   export default class BottomBtn extends Vue {
-    @Prop({ type: String, default: '278' })
+    @Prop({ type: String, default: '510100' })
     private cityId: string;
 
     @Prop({ type: String, default: '' })

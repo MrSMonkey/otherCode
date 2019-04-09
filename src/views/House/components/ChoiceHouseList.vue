@@ -1,9 +1,9 @@
 /*
- * @Description: 首页表格组件
+ * @Description: 选择房源列表
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 15:43:10
+ * @Last Modified time: 2019-04-09 13:52:19
  */
 
 
@@ -13,11 +13,7 @@
     <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
-        <div v-if="house.handleStatus === 1" class="item-dec-ok">
-          <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
-          <div class="next">您还可以点击此处<a :href="'/#/perfect?entrustId=' + house.entrustId"><span class="active"><img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
-        </div>
-        <section v-else>
+        <section v-if="house.handleStatus !== 1">
           <HouseAttribute :house="house"></HouseAttribute>
         </section>
       </div>
@@ -34,27 +30,28 @@ import HouseAttribute from './HouseAttribute.vue';
 
 // 声明引入的组件
 @Component({
-  name: 'HouseList',
+  name: 'ChoiceHouseList',
   components: {
     HouseTitle,
     HouseAttribute
   }
 })
 // 类方式声明当前组件
-export default class HouseList extends CommonMixins {
+export default class ChoiceHouseList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any;
 
   /**
-   * @description 已上架的房源跳转到我的房源列表
+   * @description 选择房源
    * @params house 房源信息
    * @returns null
    * @author chenmo
    */
   private linkTo(house: any) {
-    if (house.handleStatus !== 1) {
-      this.$router.push('/myHouse?entrustId=' + house.entrustId);
-    }
+    this.$router.push({
+
+    });
+
   }
 
   /**

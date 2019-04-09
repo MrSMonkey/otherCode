@@ -38,6 +38,9 @@ const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' 
 const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
 const AppraiseHouseInfo = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
 
+// 支付
+const Payment = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/Payment/Payment.vue');
+
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
@@ -64,6 +67,7 @@ router = new Router({
     { path: '/serviceOrderDetail', name: 'serviceOrderDetail', meta: '服务详情', component: ServiceOrderDetail},
     { path: '/serviceOrderDetail', name: 'serviceOrderDetail', meta: '服务详情', component: ServiceOrderDetail},
     { path: '/houseImages', name: 'houseImages', meta: '房源照片', component: HouseImages},
+    { path: '/Payment', name: 'houseImages', meta: '房源照片', component: Payment},
     {
       path: '/houseAppraise',
       name: 'houseAppraise',

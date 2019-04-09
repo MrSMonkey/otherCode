@@ -3,13 +3,12 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-28 16:14:42
+ * @Last Modified time: 2019-04-09 15:15:58
  */
 
 
 <template>
-  <section>
-    <section class="service-info" v-if="!bugVisible">
+  <section class="service-info">
       <h2 class="serviceinfo-title">{{data.productName || '无'}}</h2>
       <div class="block" v-if="data.typeId === 4">
         <span>产品价格：</span>
@@ -46,74 +45,6 @@
       <div class="service-footer">
         <van-button slot="button" size="large" type="default" class="service-btn" @click="buy">购买</van-button>
       </div>
-    </section>
-    <section v-else>
-      <div class="buy-dialog">
-        <!-- @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
-        @params typeId = 9 装修设计产品id -->
-        <div class="tips" v-if="data.productId === '118062916141300008' || data.productId === '118062916145800009' || data.cid === '118062916141300008' || data.cid === '118062916145800009'">
-          <p>{{tips}}</p>
-        </div>
-        <div class="tips" v-else-if="data.typeId === 9">
-          <p>{{tipsTwo}}</p>
-        </div>
-        <div class="el-input">
-          <van-field
-            v-model="buyersName"
-            required
-            clearable
-            label="联系人"
-            input-align="right"
-            placeholder="请输入联系人姓名"
-            type="text"
-          />
-          <van-field
-            v-model="buyersPhone"
-            requiredcls
-            clearable
-            input-align="right"
-            label="联系电话"
-            placeholder="请输入联系人电话"
-            type="number"
-          />
-          <van-field
-            v-model="introducePhone"
-            clearable
-            input-align="right"
-            label="推荐人电话"
-            placeholder="请输入推荐人电话"
-            type="number"
-          />
-          <div class="dec">
-            <p>备&emsp;&emsp;注</p>
-            <van-field
-              v-model="buyersRemarks"
-              class="textarea"
-              input-align="left"
-              placeholder="请输入20字以内的备注"
-              type="textarea"
-              maxlength="20"
-            />
-          </div>
-        </div>
-        <confirmBtn 
-          loadingText="购买中"
-          cancelText="取消"
-          :loading="loading"
-          @confirm="clickBuy"
-          @plotCancel="plotCancel"
-          :isActive="!isActive"
-        >
-          <template slot="confirm">
-            <span>购买应付<span class="plot-price">¥{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2)}}</span></span>
-          </template>
-        </confirmBtn>
-        <!-- <section class="plot-footer">
-          <van-button size="normal" type="default" @click="plotCancel">取消</van-button>
-          <van-button size="normal" type="default"  @click="clickBuy" :loading="loading" loading-text="购买中">购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></van-button>
-        </section> -->
-      </div>
-    </section>
   </section>
 </template>
 
@@ -122,7 +53,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from '@/components/ImagePreview.vue';
-import BuyModal from './components/BuyModal.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
@@ -135,7 +65,6 @@ const namespace: string = 'global';
   name: 'ProductInfo',
   components: {
     ImagePreview,
-    BuyModal,
     ConfirmBtn
   }
 })
@@ -156,41 +85,17 @@ export default class ProductInfo extends CommonMixins {
   private tips: string = TIPSONE;
   private tipsTwo: string = TIPSTWO;
 
-  @Getter('getUserInfo', { namespace }) private userInfo: any;
-  @Action('getUserInfo', { namespace }) private getUserInfo: any;
-  @Action('payment', { namespace }) private payment: any;
-
   // computed
   get isActive(): boolean {
     return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
   }
 
-  // Watch
-  @Watch('buyersPhone')
-  private handlerPhone(newVal: string) {
-    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
-      this.isphoneErr = true;
-    } else {
-      this.isphoneErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
-    }
-  }
 
-  @Watch('introducePhone')
-  private handlerIntroducePhone(newVal: string) {
-    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
-      this.isintroducePhoneErr = true;
-    } else {
-      this.isintroducePhoneErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
-    }
-  }
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
     this.productId = String(this.$route.query.productId);
     this.getProductDetail(this.productId); // 获取服务包详情
-    this.getUserInfo(); // 获取用户信息
   }
 
   /**
@@ -255,83 +160,7 @@ export default class ProductInfo extends CommonMixins {
    * @author chenmo
    */
   private buy() {
-    this.bugVisible = true;
-    this.buyersName = this.userInfo.realName;
-    this.buyersPhone = this.userInfo.username;
-  }
-
-  /**
-   * @description 购买
-   * @returns void
-   * @author chenmo
-   */
-  private clickBuy() {
-    if (!this.buyersName) {
-      this.$toast('请输入联系人姓名');
-      return false;
-    }
-    if (!this.buyersPhone) {
-      this.$toast('请输入联系人电话');
-      return false;
-    }
-    if (!/^1[345789]\d{9}$/.test(this.buyersPhone)) {
-      this.$toast('请输入正确的联系人电话');
-      return false;
-    }
-
-    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
-    //   this.$toast('请输入正确的推荐人电话');
-    //   return false;
-    // }
-
-    this.submitData(this.buyersName, this.buyersPhone); // 提交数据
-  }
-
-  /**
-   * @description 提交数据
-   * @params name 联系人姓名
-   * @params phone 联系人电话
-   * @returns void
-   * @author chenmo
-   */
-  private async submitData(name: string, phone: string) {
-    const data: any = {
-      entrustId: this.entrustId,
-      buyersName: name,
-      buyersPhone: phone,
-      productId: this.productId,
-      productName: this.data.productName,
-      buyersRemarks: this.buyersRemarks,
-      introducePhone: this.introducePhone
-    };
-    this.loading = true;
-    try {
-      const res: any = await this.axios.post(api.buyProduct, data);
-      if (res && res.code === '000') {
-        if (this.data.typeId === 4) {
-          // 带看
-          this.$toast.success('购买成功');
-          setTimeout(() => {
-            this.bugVisible = false;
-            this.$router.push(`/productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`); // 跳转到订单详情
-          }, 2000);
-        } else {
-          // status === 1 表示是从支付进入详情，需要弹出发起服务弹窗?entrustId=${this.entrustId}&orderId=${res.data}&status=1
-          const status: string = this.data.typeId === 9 ? '2' : '1'; // 装修不需要发起服务
-          const data  = {
-            orderId: res.data,
-            returnURL: `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=${status}`,
-          };
-          this.payment(data);
-        }
-      } else {
-        this.$toast(res.msg || '购买失败，请重试');
-      }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.loading = false;
-    }
+    this.$router.push(`/payment?productId=${this.productId}`);
   }
 
   private plotCancel() {
