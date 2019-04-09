@@ -2,8 +2,8 @@
  * @Description: 支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 15:41:59
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 16:59:15
  */
 
 
@@ -23,8 +23,12 @@
           label="房源"
           required
           type="text"
+          input-align="right"
+          placeholder="请选择房源"
           readonly
           right-icon="arrow"
+          @click-right-icon="toHouse"
+          @click="toHouse"
         />
         <van-field
           v-model="buyersName"
@@ -156,6 +160,16 @@ export default class Payment extends CommonMixins {
     this.productId = String(this.$route.query.productId);
     this.getProductDetail(this.productId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
+  }
+
+  /**
+   * @description 选择房源
+   * @params productId 服务产品id
+   * @returns void
+   * @author linyu
+   */
+  private toHouse() {
+    this.$router.push('/house?nextUrl=ServiceHouseInfo');
   }
 
   /**
