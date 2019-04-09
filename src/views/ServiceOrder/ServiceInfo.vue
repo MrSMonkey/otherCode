@@ -3,102 +3,38 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-11 21:44:51
+ * @Last Modified time: 2019-04-09 16:56:42
  */
 
 <template>
-  <section>
-    <section class="service-info" v-if="!bugVisible">
-      <h2 class="serviceinfo-title">{{data.serviceName || '无'}}</h2>
-      <div class="block">
-        <span>产品单价：</span>
-        <p>{{data && parseFloat(data.price).toFixed(2) || '0.00'}}元</p>
-      </div>
-      <div class="block">
-        <span>服务产品：</span>
-        <p v-for="(item, index) in data.productInfosBeans" :key="index">{{item.childProductName || '无'}}</p>
-      </div>
-      <div class="block">
-        <span>咨询电话：</span>
-        <p>{{data.phone || '无'}}</p>
-      </div>
-      <div class="block">
-        <span>产品描述：</span>
-        <p>{{data.desc || '无'}}</p>
-      </div>
-      <div class="block">
-        <span>产品图片：</span>
-        <p>&emsp;</p>
-      </div>
-      <div class="imgbox">
-        <ImagePreview :imgagesArr="data.imgUrls"/>
-      </div>
-      <div class="service-footer">
-        <van-button slot="button" size="large" type="default" class="service-btn" @click="buy">购买</van-button>
-      </div>
-    </section>
-    <section v-else>
-      <div class="buy-dialog">
-        <!-- <div class="tips">
-          <p>注：{{tips}}</p>
-        </div> -->
-        <div class="el-input">
-          <van-field
-            v-model="ownerName"
-            required
-            clearable
-            label="联系人"
-            input-align="right"
-            placeholder="请输入联系人姓名"
-            type="text"
-          />
-          <van-field
-            v-model="ownerPhone"
-            required
-            clearable
-            input-align="right"
-            label="联系电话"
-            placeholder="请输入联系人电话"
-            type="number"
-          />
-          <van-field
-            v-model="introducePhone"
-            clearable
-            input-align="right"
-            label="推荐人电话"
-            placeholder="请输入推荐人电话"
-            type="number"
-          />
-          <div class="dec">
-            <p>备&emsp;&emsp;注</p>
-            <van-field
-              v-model="remark"
-              class="textarea"
-              input-align="left"
-              placeholder="请输入20字以内的备注"
-              type="textarea"
-              maxlength="20"
-            />
-          </div>
-        </div>
-        <confirmBtn 
-          loadingText="购买中"
-          cancelText="取消"
-          :loading="loading"
-          @confirm="clickBuy"
-          @plotCancel="plotCancel"
-          :isActive="!isActive"
-        >
-          <template slot="confirm">
-            <span>购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></span>
-          </template>
-        </confirmBtn>
-        <!-- <section class="plot-footer">
-          <van-button size="normal" type="default" @click="plotCancel">取消</van-button>
-          <van-button size="normal" type="default"  @click="clickBuy" :loading="loading" loading-text="购买中">购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></van-button>
-        </section> -->
-      </div>
-    </section>
+  <section class="service-info">
+    <h2 class="serviceinfo-title">{{data.serviceName || '无'}}</h2>
+    <div class="block">
+      <span>产品单价：</span>
+      <p>{{data && parseFloat(data.price).toFixed(2) || '0.00'}}元</p>
+    </div>
+    <div class="block">
+      <span>服务产品：</span>
+      <p v-for="(item, index) in data.productInfosBeans" :key="index">{{item.childProductName || '无'}}</p>
+    </div>
+    <div class="block">
+      <span>咨询电话：</span>
+      <p>{{data.phone || '无'}}</p>
+    </div>
+    <div class="block">
+      <span>产品描述：</span>
+      <p>{{data.desc || '无'}}</p>
+    </div>
+    <div class="block">
+      <span>产品图片：</span>
+      <p>&emsp;</p>
+    </div>
+    <div class="imgbox">
+      <ImagePreview :imgagesArr="data.imgUrls"/>
+    </div>
+    <div class="service-footer">
+      <van-button slot="button" size="large" type="default" class="service-btn" @click="buy">购买</van-button>
+    </div>
   </section>
 </template>
 
@@ -129,51 +65,14 @@ export default class ServiceInfo extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private serviceId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
-  private ownerName: string = ''; // 联系人
-  private ownerPhone: string = ''; // 手机号
-  private remark: string = ''; // 备注
-  private bugVisible: boolean = false; // 购买弹窗
-  private loading: boolean = false; // 提交加载
-  private showDialog: boolean = false; // 提交加载
-  private isphoneErr: boolean = false;
-  private isintroducePhoneErr: boolean = false;
-  private introducePhone: string = ''; // 推荐人联系电话
-  private tips: string = '本次支付仅支付设计费用，装修费用需在确认装修改后支付！';
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
-  @Action('getUserInfo', { namespace }) private getUserInfo: any;
-  @Action('payment', { namespace }) private payment: any;
-  // computed
-  get isActive(): boolean {
-    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
-  }
 
-  // Watch
-  @Watch('ownerPhone')
-  private handlerPhone(newVal: string) {
-    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
-      this.isphoneErr = true;
-    } else {
-      this.isphoneErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
-    }
-  }
-
-  @Watch('introducePhone')
-  private handlerIntroducePhone(newVal: string) {
-    if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
-      this.isintroducePhoneErr = true;
-    } else {
-      this.isintroducePhoneErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
-    }
-  }
 
   private mounted() {
-    this.entrustId = String(this.$route.query.entrustId);
-    this.serviceId = String(this.$route.query.serviceId);
+    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+    this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
     this.getServiceDetils(this.serviceId); // 获取服务包详情
-    this.getUserInfo(); // 获取用户信息
   }
 
   /**
@@ -214,97 +113,14 @@ export default class ServiceInfo extends CommonMixins {
   }
 
   /**
-   * @description 关闭dialog
-   * @returns string
-   * @author chenmo
-   */
-  private cancel() {
-    this.bugVisible = false;
-  }
-
-  /**
    * @description 购买
    * @returns string
    * @author chenmo
    */
   private buy() {
-    this.bugVisible = true;
-    this.ownerName = this.userInfo.realName;
-    this.ownerPhone = this.userInfo.username;
+    this.$router.push(`/packPayment?serviceId=${this.serviceId}&entrustId=${this.entrustId}&pre=serviceInfo`);
   }
 
-  /**
-   * @description 购买
-   * @returns void
-   * @author chenmo
-   */
-  private clickBuy() {
-    if (!this.ownerName) {
-      this.$toast('请输入联系人姓名');
-      return false;
-    }
-    if (!this.ownerPhone) {
-      this.$toast('请输入联系人电话');
-      return false;
-    }
-    if (!/^1[345789]\d{9}$/.test(this.ownerPhone)) {
-      this.$toast('请输入正确的联系人电话');
-      return false;
-    }
-
-    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
-    //   this.$toast('请输入正确的推荐人电话');
-    //   return false;
-    // }
-
-    this.submitData(this.ownerName, this.ownerPhone); // 提交数据
-  }
-
-  /**
-   * @description 提交数据
-   * @params name 联系人姓名
-   * @params phone 联系人电话
-   * @returns void
-   * @author chenmo
-   */
-  private async submitData(name: string, phone: string) {
-    const data: any = {
-      entrustId: this.entrustId,
-      ownerName: name,
-      ownerPhone: phone,
-      productId: this.serviceId,
-      price: this.data.price,
-      title: this.data.serviceName,
-      remark: this.remark,
-      introducePhone: this.introducePhone
-    };
-    this.loading = true;
-    try {
-      const res: any = await this.axios.post(api.buyService, data);
-      if (res && res.code === '000') {
-        // this.$toast.success('购买成功');
-        // setTimeout(() => {
-        //   this.bugVisible = false;
-        //   this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
-        // }, 2000);
-        const data  = {
-          orderId: res.data,
-          returnURL: `${returnDomain()}serviceDetile?entrustId=${this.entrustId}&orderId=${res.data}`
-        };
-        this.payment(data);
-      } else {
-        this.$toast(res.msg || '购买失败，请重试');
-      }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  private plotCancel() {
-    this.bugVisible = false;
-  }
 }
 </script>
 
