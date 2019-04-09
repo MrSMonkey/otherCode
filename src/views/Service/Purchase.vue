@@ -3,13 +3,13 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 15:57:58
+ * @Last Modified time: 2019-04-09 15:31:48
  */
 
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
-    <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll" animated>
+    <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
       <van-tab title="服务包">
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
@@ -99,7 +99,7 @@ export default class Purchase extends CommonMixins {
   };
 
   private entrustId: string = ''; // 委托房源ID
-  private cityId: string = ''; // 城市ID
+  private cityId: string = ''; // 城市ID默认成都
   private tableData: any[] = []; // 服务包列表
   private productData: any[] = []; // 服务产品列表
   private isActive: number = 0; // 默认选择第一项
@@ -107,7 +107,7 @@ export default class Purchase extends CommonMixins {
   private isActiveChildrenOne: number = 0; // 默认选择第一项
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
-  private produciconLocationtName: string = require('../../assets/images/icon/icon_location.png');
+  private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
@@ -170,7 +170,7 @@ export default class Purchase extends CommonMixins {
         // console.log(this.productData)
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
-        this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].length.products : []; // 进入页面默认第一条
+        this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].products : []; // 进入页面默认第一条
         this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
@@ -406,7 +406,7 @@ export default class Purchase extends CommonMixins {
       top 11px
       left 0px
       height 21px
-      width 2px
+      width 1px
       background #e7e7e7
     i
       top 2px

@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 19:50:31
+ * @Last Modified time: 2019-04-09 15:28:50
  */
 import axios from 'axios';
 import store from '../store';
@@ -28,7 +28,7 @@ Axios.interceptors.request.use(
       config.baseURL = 'https://api-gateway-pre.uoko.com/';
     } else {
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
-      // config.baseURL = 'http://192.168.200.44:7070/';
+      // config.baseURL = 'http://172.16.3.103:8008/';
       config.baseURL = 'http://api-gateway.testuoko.com/';
     }
 

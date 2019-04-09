@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 13:40:52
+ * @Last Modified time: 2019-04-09 13:52:19
  */
 
 
@@ -48,9 +48,10 @@ export default class ChoiceHouseList extends CommonMixins {
    * @author chenmo
    */
   private linkTo(house: any) {
-    if (house.handleStatus !== 1) {
-      this.$router.push('/myHouse?entrustId=' + house.entrustId);
-    }
+    this.$router.push({
+
+    });
+
   }
 
   /**
