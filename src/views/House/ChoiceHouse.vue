@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 18:00:48
+ * @Last Modified time: 2019-04-09 19:11:12
  */
 
 <template>
@@ -42,10 +42,12 @@ import api from '@/api';
 })
 // 类方式声明当前组件
 export default class ChoiceHouse extends CommonMixins {
+  private preUrl: string; // 上个页面地址
   private addHouseUrl: string = 'serviceHouseInfo'; // 新增房源跳转地址
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
+    this.preUrl = String(this.$route.query.preUrl);
     this.getHouseList(); // 获取房源列表
   }
 
@@ -76,7 +78,7 @@ export default class ChoiceHouse extends CommonMixins {
       this.$toast.clear();
     }
   }
-  
+
   /**
    * @description 选择房源
    * @returns void
@@ -84,6 +86,12 @@ export default class ChoiceHouse extends CommonMixins {
    */
   private clickItem(houseItem: any) {
     console.log(houseItem);
+    this.$router.push({
+      path: `/${this.preUrl}`,
+      query: {
+        entrustId: houseItem.entrustId
+      }
+    });
   }
 
   /**
