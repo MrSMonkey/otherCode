@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 20:06:45
+ * @Last Modified time: 2019-04-09 20:44:56
  */
 
 <template>
@@ -116,7 +116,7 @@ export default class ChoiceHouse extends CommonMixins {
    * @author chenmo
    */
   private addHouse() {
-    this.$router.push(this.addHouseUrl);
+    this.$router.push(this.addHouseUrl + window.location.href.split('?')[1]);
   }
 }
 </script>
