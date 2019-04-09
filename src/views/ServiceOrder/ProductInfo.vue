@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 15:15:58
+ * @Last Modified time: 2019-04-09 16:49:37
  */
 
 
@@ -160,7 +160,7 @@ export default class ProductInfo extends CommonMixins {
    * @author chenmo
    */
   private buy() {
-    this.$router.push(`/payment?productId=${this.productId}`);
+    this.$router.push(`/productPayment?productId=${this.productId}&entrustId=${this.entrustId}&pre=productInfo`);
   }
 
   private plotCancel() {

@@ -2,37 +2,25 @@
  * @Description: 支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 17:03:13
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-09 16:53:51
  */
 
 
 <template>
   <section >
     <div class="buy-dialog">
-      <!-- @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
-      @params typeId = 9 装修设计产品id -->
-      <div class="tips" v-if="data.productId === '118062916141300008' || data.productId === '118062916145800009' || data.cid === '118062916141300008' || data.cid === '118062916145800009'">
-        <p>{{tips}}</p>
-      </div>
-      <div class="tips" v-else-if="data.typeId === 9">
-        <p>{{tipsTwo}}</p>
-      </div>
       <div class="el-input">
         <van-field
           label="房源"
           required
           type="text"
-          input-align="right"
-          placeholder="请选择房源"
           readonly
           right-icon="arrow"
-          @click-right-icon="toHouse"
-          @click="toHouse"
-          v-if="pre !== 'productInfo'"
+          v-if="pre !== 'serviceInfo'"
         />
         <van-field
-          v-model="buyersName"
+          v-model="ownerName"
           required
           clearable
           label="联系人"
@@ -41,7 +29,7 @@
           type="text"
         />
         <van-field
-          v-model="buyersPhone"
+          v-model="ownerPhone"
           required
           clearable
           input-align="right"
@@ -60,7 +48,7 @@
         <div class="dec">
           <p>备&emsp;&emsp;注</p>
           <van-field
-            v-model="buyersRemarks"
+            v-model="remark"
             class="textarea"
             input-align="left"
             placeholder="请输入20字以内的备注"
@@ -78,13 +66,9 @@
         :isActive="!isActive"
       >
         <template slot="confirm">
-          <span>购买应付<span class="plot-price">¥{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2)}}</span></span>
+          <span>购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></span>
         </template>
       </confirmBtn>
-      <!-- <section class="plot-footer">
-        <van-button size="normal" type="default" @click="plotCancel">取消</van-button>
-        <van-button size="normal" type="default"  @click="clickBuy" :loading="loading" loading-text="购买中">购买应付<span class="plot-price">¥{{parseFloat(data.price).toFixed(2)}}</span></van-button>
-      </section> -->
     </div>
   </section>
 </template>
@@ -112,19 +96,17 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class Payment extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
-  private productId: string = ''; // 服务包ID
+  private serviceId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
-  private buyersName: string = ''; // 联系人
-  private buyersPhone: string = ''; // 手机号
-  private buyersRemarks: string = ''; // 备注
+  private ownerName: string = ''; // 联系人
+  private ownerPhone: string = ''; // 手机号
+  private remark: string = ''; // 备注
   private bugVisible: boolean = false; // 购买弹窗
   private loading: boolean = false; // 提交加载
   private showDialog: boolean = false; // 提交加载
   private isphoneErr: boolean = false;
   private isintroducePhoneErr: boolean = false;
   private introducePhone: string = ''; // 推荐人联系电话
-  private tips: string = TIPSONE;
-  private tipsTwo: string = TIPSTWO;
   private pre: string = ''; // 判断入口
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
@@ -133,11 +115,11 @@ export default class Payment extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
+    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
   }
 
   // Watch
-  @Watch('buyersPhone')
+  @Watch('ownerPhone')
   private handlerPhone(newVal: string) {
     if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
       this.isphoneErr = true;
@@ -158,30 +140,20 @@ export default class Payment extends CommonMixins {
   }
 
   private mounted() {
-    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
-    this.productId = String(this.$route.query.productId) === 'undefined' ? '' : String(this.$route.query.productId);
+    this.entrustId = String(this.$route.query.entrustId);
+    this.serviceId = String(this.$route.query.serviceId);
     this.pre = String(this.$route.query.pre);
-    this.getProductDetail(this.productId); // 获取服务包详情
+    this.getServiceDetils(this.serviceId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
   }
 
   /**
-   * @description 选择房源
-   * @params productId 服务产品id
-   * @returns void
-   * @author linyu
-   */
-  private toHouse() {
-    this.$router.push('/house?nextUrl=ServiceHouseInfo');
-  }
-
-  /**
-   * @description 获取服务产品详情
-   * @params productId 服务产品id
+   * @description 获取服务包详情
+   * @params serviceId 服务包id
    * @returns void
    * @author chenmo
    */
-  private async getProductDetail(productId: string) {
+  private async getServiceDetils(serviceId: string) {
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -189,23 +161,13 @@ export default class Payment extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
+      const res: any = await this.axios.get(api.getServiceDetils + `/${serviceId}`);
       if (res && res.code === '000') {
-        this.data = res.data || {};
-
-        /**
-         * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
-         * @params typeId = 9 装修设计产品id
-         */
-        // if (res.data.productId === '118062916141300008' || res.data.productId === '118062916145800009') {
-        //   this.tips = TIPSONE;
-        // } else if (res.data.typeId === 9) {
-        //   this.tips = TIPSTWO;
-        // }
-        this.buyersName = this.userInfo.realName;
-        this.buyersPhone = this.userInfo.username;
+        this.data = res.data || [];
+        this.ownerName = this.userInfo.realName;
+        this.ownerPhone = this.userInfo.username;
       } else {
-        this.$toast(`获取服务产品详情失败`);
+        this.$toast(`获取服务包详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -224,6 +186,25 @@ export default class Payment extends CommonMixins {
     return STATUS_NAME[status];
   }
 
+  /**
+   * @description 关闭dialog
+   * @returns string
+   * @author chenmo
+   */
+  private cancel() {
+    this.bugVisible = false;
+  }
+
+  /**
+   * @description 购买
+   * @returns string
+   * @author chenmo
+   */
+  private buy() {
+    this.bugVisible = true;
+    this.ownerName = this.userInfo.realName;
+    this.ownerPhone = this.userInfo.username;
+  }
 
   /**
    * @description 购买
@@ -231,15 +212,15 @@ export default class Payment extends CommonMixins {
    * @author chenmo
    */
   private clickBuy() {
-    if (!this.buyersName) {
+    if (!this.ownerName) {
       this.$toast('请输入联系人姓名');
       return false;
     }
-    if (!this.buyersPhone) {
+    if (!this.ownerPhone) {
       this.$toast('请输入联系人电话');
       return false;
     }
-    if (!/^1[345789]\d{9}$/.test(this.buyersPhone)) {
+    if (!/^1[345789]\d{9}$/.test(this.ownerPhone)) {
       this.$toast('请输入正确的联系人电话');
       return false;
     }
@@ -249,7 +230,7 @@ export default class Payment extends CommonMixins {
     //   return false;
     // }
 
-    this.submitData(this.buyersName, this.buyersPhone); // 提交数据
+    this.submitData(this.ownerName, this.ownerPhone); // 提交数据
   }
 
   /**
@@ -262,33 +243,28 @@ export default class Payment extends CommonMixins {
   private async submitData(name: string, phone: string) {
     const data: any = {
       entrustId: this.entrustId,
-      buyersName: name,
-      buyersPhone: phone,
-      productId: this.productId,
-      productName: this.data.productName,
-      buyersRemarks: this.buyersRemarks,
+      ownerName: name,
+      ownerPhone: phone,
+      productId: this.serviceId,
+      price: this.data.price,
+      title: this.data.serviceName,
+      remark: this.remark,
       introducePhone: this.introducePhone
     };
     this.loading = true;
     try {
-      const res: any = await this.axios.post(api.buyProduct, data);
+      const res: any = await this.axios.post(api.buyService, data);
       if (res && res.code === '000') {
-        if (this.data.typeId === 4) {
-          // 带看
-          this.$toast.success('购买成功');
-          setTimeout(() => {
-            this.bugVisible = false;
-            this.$router.push(`/productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=1`); // 跳转到订单详情
-          }, 2000);
-        } else {
-          // status === 1 表示是从支付进入详情，需要弹出发起服务弹窗?entrustId=${this.entrustId}&orderId=${res.data}&status=1
-          const status: string = this.data.typeId === 9 ? '2' : '1'; // 装修不需要发起服务
-          const data  = {
-            orderId: res.data,
-            returnURL: `${returnDomain()}productDetile?entrustId=${this.entrustId}&orderId=${res.data}&status=${status}`,
-          };
-          this.payment(data);
-        }
+        // this.$toast.success('购买成功');
+        // setTimeout(() => {
+        //   this.bugVisible = false;
+        //   this.$router.push(`/ServiceOrder?entrustId=${this.entrustId}`); // 跳转到房源列表
+        // }, 2000);
+        const data  = {
+          orderId: res.data,
+          returnURL: `${returnDomain()}serviceDetile?entrustId=${this.entrustId}&orderId=${res.data}`
+        };
+        this.payment(data);
       } else {
         this.$toast(res.msg || '购买失败，请重试');
       }
@@ -305,7 +281,7 @@ export default class Payment extends CommonMixins {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
+<style lang="stylus" rel="stylesheet/stylus">
 @import '../../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
@@ -333,7 +309,7 @@ export default class Payment extends CommonMixins {
         word-wrap break-word
         text-align justify
         width vw(240)
-        max-height vw(160)
+        max-height vw(100)
         overflow-y scroll
       img
         padding-bottom vw(20)
@@ -349,10 +325,11 @@ export default class Payment extends CommonMixins {
     height vw(300)
     .tips
       width 100%
-      // height vw(40)
+      height vw(40)
       background #FFF5F5
-      padding vw(5) vw(5) vw(5) vw(15)
+      padding vw(5) vw(15)
       p
+        line-height 2.5
         text-align left
         display inline-block
         font-size 12px

@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 15:50:15
+ * @Last Modified time: 2019-04-09 17:03:52
  */
 
 <template>
@@ -111,8 +111,8 @@ export default class Purchase extends CommonMixins {
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
 
   private mounted() {
-    this.entrustId = String(this.$route.query.entrustId);
-    this.cityId = String(this.$route.query.cityId);
+    this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
+    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
     this.getServiceList(this.cityId); // 获取服务包列表
   }
 
