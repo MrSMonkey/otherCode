@@ -3,13 +3,16 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-18 14:25:47
+ * @Last Modified time: 2019-04-09 13:43:48
  */
 
 <template>
   <section class="house" v-if="isData">
     <section v-if="tableData.length > 0">
-      <HouseList :tableData="tableData"></HouseList>
+      <ChoiceHouseList :tableData="tableData"></ChoiceHouseList>
+      <section class="house-add" @click="addHouse">
+        <img src="@/assets/images/icon_add.png" alt=""/><span>添加房源</span>
+      </section>
     </section>
     <section v-else>
       <NoHouseList url="entrust"/>
@@ -22,7 +25,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col } from 'vant';
-import HouseList from './components/HouseList.vue';
+import ChoiceHouseList from './components/ChoiceHouseList.vue';
 import NoHouseList from './components/NoHouseList.vue';
 import api from '@/api';
 
@@ -33,7 +36,7 @@ import api from '@/api';
     [Field.name]: Field,
     [Row.name]: Row,
     [Col.name]: Col,
-    HouseList,
+    ChoiceHouseList,
     NoHouseList
   }
 })
@@ -72,6 +75,17 @@ export default class ChoiceHouse extends CommonMixins {
       this.$toast.clear();
     }
   }
+
+  /**
+   * @description 选择房源
+   * @returns void
+   * @author chenmo
+   */
+  private addHouse() {
+    this.$router.push({
+
+    });
+  }
 }
 </script>
 
@@ -83,4 +97,23 @@ export default class ChoiceHouse extends CommonMixins {
       display inline-block
       width 100%
       vertical-align: top
+  .house-add
+    height vw(49)
+    line-height vw(47)
+    border 2px dashed $disabled-color
+    margin-left vw(10)
+    margin-right vw(10)
+    border-radius 4px
+    margin-bottom vw(20)
+    text-align center
+    color $main-color
+    img
+      display inline-block
+      vertical-align: middle
+      width vw(16)
+      margin-top -1px
+    span
+      display inline-block
+      font-size 16px
+      margin-left vw(10)
 </style>

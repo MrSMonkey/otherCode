@@ -9,7 +9,7 @@
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
-    <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
+    <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll" animated>
       <van-tab title="服务包">
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
