@@ -3,19 +3,19 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 13:43:48
+ * @Last Modified time: 2019-04-09 19:12:42
  */
 
 <template>
   <section class="house" v-if="isData">
     <section v-if="tableData.length > 0">
-      <ChoiceHouseList :tableData="tableData"></ChoiceHouseList>
+      <ChoiceHouseList :tableData="tableData" @click-item="clickItem"></ChoiceHouseList>
       <section class="house-add" @click="addHouse">
         <img src="@/assets/images/icon_add.png" alt=""/><span>添加房源</span>
       </section>
     </section>
     <section v-else>
-      <NoHouseList url="entrust"/>
+      <NoHouseList :url="addHouseUrl"/>
     </section>
   </section>
 </template>
@@ -42,6 +42,7 @@ import api from '@/api';
 })
 // 类方式声明当前组件
 export default class ChoiceHouse extends CommonMixins {
+  private addHouseUrl: string = 'serviceHouseInfo'; // 新增房源跳转地址
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
@@ -81,10 +82,17 @@ export default class ChoiceHouse extends CommonMixins {
    * @returns void
    * @author chenmo
    */
-  private addHouse() {
-    this.$router.push({
+  private clickItem(houseItem: any) {
+    console.log(houseItem);
+  }
 
-    });
+  /**
+   * @description 选择房源
+   * @returns void
+   * @author chenmo
+   */
+  private addHouse() {
+    this.$router.push(this.addHouseUrl);
   }
 }
 </script>

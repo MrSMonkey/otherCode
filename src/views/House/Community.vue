@@ -3,11 +3,11 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 12:40:20
+ * @Last Modified time: 2019-04-09 17:43:23
  */
 
 <template>
-  <section>
+  <section class="community">
     <section class="search">
       <van-field
         v-model="searchInputValue"
@@ -68,6 +68,7 @@ export default class Community extends CommonMixins {
   private plotAacive: number = -1;
   private communityId: string = '';
   private communityName: string = '';
+  private pushRouteName: string;
   private tableList: any[] = [];
   private isGetPlot: boolean = false; // 判断是否请求了小区
 
@@ -127,11 +128,9 @@ export default class Community extends CommonMixins {
           // 未选择
           this.$toast('请选择您爱屋所在的小区');
         } else {
-          console.log(this.communityId);
-          console.log(this.communityName);
           // 跳转至enturst页面
           this.$router.push({
-            name: 'entrust',
+            name: this.pushRouteName,
             params: {
               communityId: this.communityId,
               communityName: this.communityName
@@ -151,13 +150,16 @@ export default class Community extends CommonMixins {
   }
 
   private mounted() {
-    this.cityId = this.$route.params.cityId;
+    this.cityId = String(this.$route.query.cityId);
+    this.pushRouteName = String(this.$route.query.routeName);
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
+  .community
+    overflow auto
     .search
       height vw(55)
       background $global-background

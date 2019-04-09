@@ -2,8 +2,8 @@
  * @Description: 登陆页面
  * @Author: chenmo
  * @Date: 2019-02-15 13:42:19
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 15:58:52
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 14:23:59
  */
 <template>
   <section class="login">
@@ -169,7 +169,11 @@ export default class Bind extends CommonMixins {
     }
   }
   private mounted() {
-    this.redirectUrl = this.$route.params.redirectUrl || '/house';
+    if (this.$route.query.redirectUrl) {
+      this.redirectUrl = String(this.$route.query.redirectUrl);
+    } else {
+      this.redirectUrl = '/house';
+    }
   }
 }
 </script>

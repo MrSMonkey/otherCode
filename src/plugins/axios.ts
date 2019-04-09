@@ -2,8 +2,8 @@
  * @Description: axios网络请求库二次封装
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 15:28:50
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 16:26:56
  */
 import axios from 'axios';
 import store from '../store';
@@ -28,8 +28,9 @@ Axios.interceptors.request.use(
       config.baseURL = 'https://api-gateway-pre.uoko.com/';
     } else {
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
-      // config.baseURL = 'http://172.16.3.103:8008/';
+      // config.baseURL = 'http://192.168.200.44:7070/';
       config.baseURL = 'http://api-gateway.testuoko.com/';
+      // config.baseURL = 'http://172.16.3.103:8008';
     }
 
     /*登录授权, 登录接口修改 Authorization */
@@ -54,13 +55,7 @@ Axios.interceptors.response.use(
     if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
       localStorage.removeItem('siteToken'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
-      console.log(window.location);
-      router.push({
-        name: 'bind',
-        params: {
-          redirectUrl: window.location.href.split('#')[1]
-        }
-      });
+      router.push(`/bind?redirectUrl=${window.location.href.split('#')[1]}`);
     }
     return response.data;
   }, (error) => {

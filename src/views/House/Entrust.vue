@@ -2,8 +2,8 @@
  * @Description: 委托房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-04 13:57:46
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 14:52:19
  */
 
 <template>
@@ -123,19 +123,20 @@ export default class Entrust extends CommonMixins {
   private cityId: string = '510100';
   private code: string = '';
   private cityShow: boolean = false;
-  private cityList: string[] = [];
-  private active: number = 1;
+  private cityList: string[] = []; // 城市列表
+  private active: number = 1; // 装修信息选中索引值
   private houstFlow: any = HOUSTFLOW;
   private loading: boolean = false;
   private finished: boolean = false;
-  private isLogin: boolean = false;
+  private isLogin: boolean = false; // 当前用户登录状态，true表示已登录
   private communityId: string = '';
   private communityName: string = '';
-  private ownerName: string = '';
-  private ownerPhone: string = '';
+  private ownerName: string = ''; // 您的称呼
+  private ownerPhone: string = ''; // 联系方式
   private isphoneErr: boolean = false; // 校验手机号
   private isDisabledVerfiyCodeBtn: boolean = false; // 验证码是否发送
   private time: number = 60;
+  private routeName: string; // 保存当前页面路由的名字
   private varityCold: string = '';
   private isCodeErr: boolean = false; // 校验验证码
   private isGetPlot: boolean = false; // 判断是否请求了小区
@@ -148,6 +149,7 @@ export default class Entrust extends CommonMixins {
 
   private mounted() {
     this.sourceId = this.$route.query.sourceId;
+    this.routeName = String(this.$route.name);
     this.getCitys(); // 获取城市
     const token: string = String(localStorage.getItem('siteToken'));
     this.isLogin = !!localStorage.getItem('siteToken');
@@ -232,9 +234,10 @@ export default class Entrust extends CommonMixins {
 
   private toCommunity() {
     this.$router.push({
-      name: 'community',
-      params: {
-        cityId: this.cityId
+      path: '/community',
+      query: {
+        cityId: this.cityId,
+        routeName: this.routeName
       }
     });
   }

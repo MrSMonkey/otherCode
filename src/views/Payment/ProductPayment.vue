@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 17:17:22
+ * @Last Modified time: 2019-04-09 19:17:24
  */
 
 
@@ -23,9 +23,12 @@
           label="房源"
           required
           type="text"
-          readonly
           input-align="right"
+          placeholder="请选择房源"
+          readonly
           right-icon="arrow"
+          @click-right-icon="toHouse"
+          @click="toHouse"
           v-if="!(entrustId !== '' && pre === 'productInfo')"
         />
         <van-field
@@ -119,6 +122,7 @@ export default class ProductPayment extends CommonMixins {
   private tips: string = TIPSONE;
   private tipsTwo: string = TIPSTWO;
   private pre: string = ''; // 判断入口
+  private houseInfo: any = {}; // 房源信息
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
@@ -156,6 +160,42 @@ export default class ProductPayment extends CommonMixins {
     this.pre = String(this.$route.query.pre);
     this.getProductDetail(this.productId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
+    if (this.entrustId !== '') {
+      this.getHouserInfo(this.entrustId);
+    }
+  }
+
+  private activated() {
+    if (this.entrustId !== '') {
+      this.getHouserInfo(this.entrustId);
+    }
+  }
+  /**
+   * @description 获取服务类型
+   * @params entrustId 委托id
+   * @returns void
+   * @author chenmo
+   */
+  private async getHouserInfo(entrustId: string) {
+    try {
+      const res: any = await this.axios.get(api.getHouserInfo + `/${entrustId}`);
+      if (res && res.code === '000') {
+        this.houseInfo = res.data;
+      } else {
+        this.$toast(`获取服务房源失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+  /**
+   * @description 选择房源
+   * @params productId 服务产品id
+   * @returns void
+   * @author linyu
+   */
+  private toHouse() {
+    this.$router.push('/choiceHouse?nextUrl=ServiceHouseInfo');
   }
 
   /**
@@ -226,12 +266,6 @@ export default class ProductPayment extends CommonMixins {
       this.$toast('请输入正确的联系人电话');
       return false;
     }
-
-    // if (!/^1[345789]\d{9}$/.test(this.introducePhone)) {
-    //   this.$toast('请输入正确的推荐人电话');
-    //   return false;
-    // }
-
     this.submitData(this.buyersName, this.buyersPhone); // 提交数据
   }
 

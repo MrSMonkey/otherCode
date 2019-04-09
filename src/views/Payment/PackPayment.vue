@@ -2,8 +2,8 @@
  * @Description: 服务包支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 17:12:22
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 17:24:43
  */
 
 
@@ -17,6 +17,8 @@
           type="text"
           readonly
           right-icon="arrow"
+          @click-right-icon="toHouse"
+          @click="toHouse"
           v-if="!(entrustId !== '' && pre === 'serviceInfo')"
         />
         <van-field
@@ -145,6 +147,16 @@ export default class Payment extends CommonMixins {
     this.pre = String(this.$route.query.pre);
     this.getServiceDetils(this.serviceId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
+  }
+
+  /**
+   * @description 选择房源
+   * @params productId 服务产品id
+   * @returns void
+   * @author linyu
+   */
+  private toHouse() {
+    this.$router.push('/choiceHouse?nextUrl=ServiceHouseInfo');
   }
 
   /**

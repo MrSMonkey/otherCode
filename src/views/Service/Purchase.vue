@@ -2,8 +2,8 @@
  * @Description: 服务包列表
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 15:45:46
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-09 17:03:52
  */
 
 <template>
@@ -63,7 +63,7 @@
       <van-tab disabled>
         <div slot="title" @click="chooseCity" class="pisition-tab">
           <span class="pisition">
-            <van-icon :name="produciconLocationtName" size="16px"/> 成都
+            <van-icon :name="produciconLocationtName" size="16px"/> {{cityName}}
           </span>
         </div>
       </van-tab>
@@ -99,7 +99,8 @@ export default class Purchase extends CommonMixins {
   };
 
   private entrustId: string = ''; // 委托房源ID
-  private cityId: string = ''; // 城市ID默认成都
+  private cityId: string = '510100'; // 城市ID
+  private cityName: string = '成都';
   private tableData: any[] = []; // 服务包列表
   private productData: any[] = []; // 服务产品列表
   private isActive: number = 0; // 默认选择第一项
