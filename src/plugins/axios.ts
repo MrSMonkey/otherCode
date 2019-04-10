@@ -69,9 +69,7 @@ Axios.interceptors.response.use(
         message: `登录失效`
       });
       setTimeout(() => {
-        router.push({
-          path: '/bind'
-        });
+        router.push(`/bind?redirectUrl=${window.location.href.split('#')[1]}`);
       }, 3000);
     } else {
       Vue.prototype.$toast({

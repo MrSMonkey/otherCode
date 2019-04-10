@@ -188,6 +188,7 @@ export default class Bind extends CommonMixins {
     }
   }
   private mounted() {
+    console.log(this.$route.query.redirectUrl)
     if (this.$route.query.redirectUrl) {
       this.redirectUrl = String(this.$route.query.redirectUrl);
     } else {

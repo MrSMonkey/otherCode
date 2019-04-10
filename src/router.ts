@@ -50,31 +50,30 @@ const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', name: 'index', component: Home, meta: '星空业主服务号' },
-    { path: '/entrustPlan', name: 'entrustPlan', meta: '星级房屋托管计划', component: EntrustPlan},
-    { path: '/bind', name: 'bind', meta: '登录', component: Bind},
-    { path: '/entrust', name: 'entrust', meta: '在线委托', component: Entrust},
-    { path: '/perfect', name: 'perfect', meta: '完善房源信息', component: Perfect},
-    { path: '/house', name: 'house', meta: '我的房源列表', component: House},
-    { path: '/choiceHouse', name: 'choiceHouse', meta: '选择房源', component: ChoiceHouse},
-    { path: '/myHouse', name: 'myHouse', meta: '房源详情', component: MyHouse},
-    { path: '/serviceOrder', name: 'serviceOrder', meta: '服务订单', component: ServiceOrder},
-    { path: '/serviceDetile', name: 'serviceDetile', meta: '订单详情', component: ServiceDetile},
-    { path: '/productDetile', name: 'productDetile', meta: '订单详情', component: ProductDetile},
-    { path: '/purchase', name: 'purchase', meta: '购买服务包', component: Purchase},
-    { path: '/serviceInfo', name: 'serviceInfo', meta: '服务包详情', component: ServiceInfo},
-    { path: '/productInfo', name: 'productInfo', meta: '服务产品详情', component: ProductInfo},
-    { path: '/serviceType', name: 'serviceType', meta: '选择服务类型', component: ServiceType},
-    { path: '/startService', name: 'startService', meta: '发起服务', component: StartService},
-    { path: '/maintainChecked', name: 'maintainChecked', meta: '确认验收', component: MaintainChecked},
-    { path: '/serviceRecord', name: 'serviceRecord', meta: '服务记录', component: ServiceRecord},
-    { path: '/confirmPay', name: 'confirmPay', meta: '确认支付', component: ConfirmPay},
-    { path: '/serviceRecordLook', name: 'serviceRecordLook', meta: '服务记录', component: ServiceRecordLook},
-    { path: '/serviceOrderDetail', name: 'serviceOrderDetail', meta: '服务详情', component: ServiceOrderDetail},
-    { path: '/serviceOrderDetail', name: 'serviceOrderDetail', meta: '服务详情', component: ServiceOrderDetail},
-    { path: '/houseImages', name: 'houseImages', meta: '房源照片', component: HouseImages},
-    { path: '/productPayment', name: 'productPayment', meta: '购买信息', component: ProductPayment},
-    { path: '/packPayment', name: 'packPayment', meta: '购买信息', component: PackPayment},
+    { path: '/', name: 'index', meta: {title: '星空业主服务号', requireAuth: false}, component: Home },
+    { path: '/entrustPlan', name: 'entrustPlan', meta: {title: '星级房屋托管计划', requireAuth: false}, component: EntrustPlan},
+    { path: '/bind', name: 'bind', meta: {title: '登录', requireAuth: false}, component: Bind},
+    { path: '/entrust', name: 'entrust', meta: {title: '在线委托', requireAuth: false}, component: Entrust},
+    { path: '/perfect', name: 'perfect', meta: {title: '完善房源信息', requireAuth: true}, component: Perfect},
+    { path: '/house', name: 'house', meta: {title: '我的房源列表', requireAuth: true}, component: House},
+    { path: '/choiceHouse', name: 'choiceHouse', meta: {title: '选择房源', requireAuth: true}, component: ChoiceHouse},
+    { path: '/myHouse', name: 'myHouse', meta: {title: '房源详情', requireAuth: true}, component: MyHouse},
+    { path: '/serviceOrder', name: 'serviceOrder', meta: {title: '服务订单', requireAuth: true}, component: ServiceOrder},
+    { path: '/serviceDetile', name: 'serviceDetile', meta: {title: '订单详情', requireAuth: true}, component: ServiceDetile},
+    { path: '/productDetile', name: 'productDetile', meta: {title: '订单详情', requireAuth: true}, component: ProductDetile},
+    { path: '/purchase', name: 'purchase', meta: {title: '购买服务包', requireAuth: true}, component: Purchase},
+    { path: '/serviceInfo', name: 'serviceInfo', meta: {title: '服务包详情', requireAuth: true}, component: ServiceInfo},
+    { path: '/productInfo', name: 'productInfo', meta: {title: '服务产品详情', requireAuth: true}, component: ProductInfo},
+    { path: '/serviceType', name: 'serviceType', meta: {title: '选择服务类型', requireAuth: true}, component: ServiceType},
+    { path: '/startService', name: 'startService', meta: {title: '发起服务', requireAuth: true}, component: StartService},
+    { path: '/maintainChecked', name: 'maintainChecked', meta: {title: '确认验收', requireAuth: true}, component: MaintainChecked},
+    { path: '/serviceRecord', name: 'serviceRecord', meta: {title: '服务记录', requireAuth: true}, component: ServiceRecord},
+    { path: '/confirmPay', name: 'confirmPay', meta: {title: '确认支付', requireAuth: true}, component: ConfirmPay},
+    { path: '/serviceRecordLook', name: 'serviceRecordLook', meta: {title: '服务记录', requireAuth: true}, component: ServiceRecordLook},
+    { path: '/serviceOrderDetail', name: 'serviceOrderDetail', meta: {title: '服务详情', requireAuth: true}, component: ServiceOrderDetail},
+    { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
+    { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
+    { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',
@@ -84,16 +83,16 @@ router = new Router({
     //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
     //   ]
     // },
-    { path: '/community', name: 'community', meta: '选择小区', component: Community},
-    { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: '选择小区', component: ServiceHouseInfo},
-    { path: '/404', name: '404', meta: '404', component: NotFoundComp}
+    { path: '/community', name: 'community', meta: {title: '选择小区', requireAuth: false}, component: Community},
+    { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: {title: '新增房源', requireAuth: true},  component: ServiceHouseInfo},
+    { path: '/404', name: '404', meta: {title: '404', requireAuth: false}, component: NotFoundComp}
   ]
 });
 
 router.beforeEach((to: any, from: any, next: any) => {
   /* 路由发生变化修改页面title */
   if (to.meta) {
-    document.title = to.meta;
+    document.title = to.meta.title;
   }
 
   // 未匹配到任何页面, 跳转到404页面
@@ -104,34 +103,33 @@ router.beforeEach((to: any, from: any, next: any) => {
     next();
     return;
   }
-
-  const token: any = store.getters['global/getToken'];
-  if (!token) {
-    // 非登陆状态
-    if (to.path !== '/bind' && to.path !== '/entrust' && to.path !== '/entrustPlan' && to.path !== '/community' && to.path !== '/' ) {
-      // 除了登录页 && 在线委托页 && 星级房屋托管计划，其他将跳转到登陆页
-      if (to.path === 'purchase') {
-        router.push(`/bind?redirectUrl=${window.location.href.split('#')[1]}`);
-      } else {
-        router.push(`/bind`);
-      }
-    }
-    next();
-  } else {
-    // 登陆状态
-    const userInfo = store.getters['global/getUserInfo'];
-    if (!userInfo) {
-      // 不存在用户信息，查询用户信息
-      Vue.axios.get(api.getUserInfo).then((res: any) => {
-        if (res && res.code === '000') {
-          store.commit('global/updateUserInfo', res.data); // 设置用户信息
-        } else {
+  if (to.meta.requireAuth) {
+    // 判断该路由是否需要登录权限
+    const token: any = store.getters['global/getToken'];
+    if (token) {
+      // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+      const userInfo = store.getters['global/getUserInfo'];
+      if (!userInfo) {
+        // 不存在用户信息，查询用户信息
+        Vue.axios.get(api.getUserInfo).then((res: any) => {
+          if (res && res.code === '000') {
+            store.commit('global/updateUserInfo', res.data); // 设置用户信息
+          } else {
+            Vue.prototype.$toast(`获取用户信息失败`);
+          }
+        }).catch((err: any) => {
           Vue.prototype.$toast(`获取用户信息失败`);
-        }
-      }).catch((err: any) => {
-        Vue.prototype.$toast(`获取用户信息失败`);
+        });
+      }
+      next(); // 不要在next里面加"path:/",会陷入死循环
+    } else {
+      console.log(to)
+      next({
+        path: '/bind',
+        query: {redirectUrl: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
       });
     }
+  } else {
     next();
   }
 });

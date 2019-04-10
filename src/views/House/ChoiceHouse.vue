@@ -46,7 +46,7 @@ export default class ChoiceHouse extends CommonMixins {
   private preUrl: string; // 上个页面地址
   private serviceId: string; // 服务包ID
   private productId: string; // 服务产品ID
-  private addHouseUrl: string = '/serviceHouseInfo'; // 新增房源跳转地址
+  private addHouseUrl: string = 'serviceHouseInfo'; // 新增房源跳转地址
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
