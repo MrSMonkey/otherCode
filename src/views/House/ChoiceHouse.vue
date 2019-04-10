@@ -106,7 +106,7 @@ export default class ChoiceHouse extends CommonMixins {
    * @author chenmo
    */
   private clickItem(houseItem: any) {
-    if (this.serviceId) {
+    if (this.serviceId !== 'undefined') {
       this.$router.push({
         path: `/${this.preUrl}`,
         query: {

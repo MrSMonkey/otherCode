@@ -205,6 +205,7 @@ export default class ServiceHouseInfo extends CommonMixins {
       const res: any = await this.axios.post(api.pushEntrust, data);
       if (res && res.code === '000') {
         this.$router.push('/choiceHouse' + '?' + window.location.href.split('?')[1]);
+        this.$destroy();
       } else {
         this.$toast(res.msg || '委托失败，请重试！');
       }

@@ -171,6 +171,7 @@ export default class ProductPayment extends CommonMixins {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.productId = String(this.$route.query.productId) === 'undefined' ? '' : String(this.$route.query.productId);
     this.pre = String(this.$route.query.pre);
+    this.getProductDetail(this.productId); // 获取服务产品详情
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
@@ -188,7 +189,7 @@ export default class ProductPayment extends CommonMixins {
       if (res && res.code === '000') {
         this.houseName = res.data.houseName;
       } else {
-        this.$toast(`获取服务房源失败`);
+        this.$toast( res.msg || `获取服务房源失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -303,6 +304,7 @@ export default class ProductPayment extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.buyProduct, data);
       if (res && res.code === '000') {
+        this.$destroy();
         if (this.data.typeId === 4) {
           // 带看
           this.$toast.success('购买成功');

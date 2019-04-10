@@ -159,6 +159,7 @@ export default class Payment extends CommonMixins {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
     this.pre = String(this.$route.query.pre);
+    this.getServiceDetils(this.serviceId); // 获取服务包详情
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
@@ -306,6 +307,7 @@ export default class Payment extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.buyService, data);
       if (res && res.code === '000') {
+        this.$destroy();
         // this.$toast.success('购买成功');
         // setTimeout(() => {
         //   this.bugVisible = false;
