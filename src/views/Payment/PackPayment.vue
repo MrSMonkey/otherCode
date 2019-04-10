@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 11:50:23
+ * @Last Modified time: 2019-04-10 15:41:24
  */
 
 
@@ -169,6 +169,8 @@ export default class Payment extends CommonMixins {
       if (this.entrustId !== '') {
         this.getHouserInfo(this.entrustId);
       }
+    } else {
+      this.needActivated = true;
     }
   }
   /**

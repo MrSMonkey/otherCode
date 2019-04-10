@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 11:50:38
+ * @Last Modified time: 2019-04-10 15:41:12
  */
 
 
@@ -181,6 +181,8 @@ export default class ProductPayment extends CommonMixins {
       if (this.entrustId !== '') {
         this.getHouserInfo(this.entrustId);
       }
+    } else {
+      this.needActivated = true;
     }
   }
 
@@ -235,12 +237,10 @@ export default class ProductPayment extends CommonMixins {
       const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
       if (res && res.code === '000') {
         this.data = res.data || {};
-
         /**
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-       
       } else {
         this.$toast(`获取服务产品详情失败`);
       }
