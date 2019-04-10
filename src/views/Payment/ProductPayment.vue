@@ -234,11 +234,6 @@ export default class ProductPayment extends CommonMixins {
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-        // if (res.data.productId === '118062916141300008' || res.data.productId === '118062916145800009') {
-        //   this.tips = TIPSONE;
-        // } else if (res.data.typeId === 9) {
-        //   this.tips = TIPSTWO;
-        // }
         this.buyersName = this.userInfo.realName;
         this.buyersPhone = this.userInfo.username;
       } else {
