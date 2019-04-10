@@ -2,8 +2,8 @@
  * @Description: 购买服务包时，没有房源时，可跳转至此页面新增房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 20:21:53
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-09 20:51:29
  */
 
 <template>
@@ -202,12 +202,13 @@ export default class ServiceHouseInfo extends CommonMixins {
       source: typeof(this.sourceId) === undefined ? '' : this.sourceId
     };
     try {
-      const res: any = await this.axios.post(api.pushEntrust, data);
-      if (res && res.code === '000') {
-        this.$router.push('/choiceHouse');
-      } else {
-        this.$toast(res.msg || '委托失败，请重试！');
-      }
+      console.log(window.location.href.split('?')[1])
+      // const res: any = await this.axios.post(api.pushEntrust, data);
+      // if (res && res.code === '000') {
+      //   this.$router.push('/choiceHouse' + '?' + window.location.href.split('?')[1]);
+      // } else {
+      //   this.$toast(res.msg || '委托失败，请重试！');
+      // }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
