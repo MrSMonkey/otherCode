@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/views/Home/Home.vue';
+import store from '@/store';
+import api from '@/api';
+
 Vue.use(Router);
 
 let router!: any;
@@ -102,16 +105,36 @@ router.beforeEach((to: any, from: any, next: any) => {
     return;
   }
 
-  const token: any = localStorage.getItem('siteToken');
+  const token: any = store.getters['global/getToken'];
   if (!token) {
     // 非登陆状态
     if (to.path !== '/bind' && to.path !== '/entrust' && to.path !== '/entrustPlan' && to.path !== '/community' && to.path !== '/' ) {
       // 除了登录页 && 在线委托页 && 星级房屋托管计划，其他将跳转到登陆页
-      router.push('/bind');
+      if (to.path === 'purchase') {
+        router.push(`/bind?redirectUrl=${window.location.href.split('#')[1]}`);
+      } else {
+        router.push(`/bind`);
+      }
+    }
+    next();
+  } else {
+    // 登陆状态
+    const userInfo = store.getters['global/getUserInfo'];
+    if (!userInfo) {
+      // 不存在用户信息，查询用户信息
+      Vue.axios.get(api.getUserInfo).then((res: any) => {
+        if (res && res.code === '000') {
+          store.commit('global/updateUserInfo', res.data); // 设置用户信息
+          console.log(store.getters['global/getUserInfo']);
+        } else {
+          Vue.prototype.$toast(`获取用户信息失败`);
+        }
+      }).catch((err: any) => {
+        Vue.prototype.$toast(`获取用户信息失败`);
+      });
     }
     next();
   }
-  next();
 });
 
 export default router;

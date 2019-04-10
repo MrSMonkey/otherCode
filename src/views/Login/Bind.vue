@@ -75,6 +75,7 @@ export default class Bind extends CommonMixins {
   private redirectUrl: string = '';
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
+  @Mutation('updateUserInfo', { namespace }) private updateUserInfo: any;
 
   private phone: string = '';
   private code: string = '';
@@ -136,7 +137,7 @@ export default class Bind extends CommonMixins {
         handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
-        this.$router.push(this.redirectUrl); // 跳转
+        this.getUserInfo();
       } else {
         this.$toast(res.msg || '登录失败');
       }
@@ -144,6 +145,24 @@ export default class Bind extends CommonMixins {
       throw new Error(err || 'Unknow Error!');
     } finally {
       this.loading = false;
+    }
+  }
+
+  /**
+   * @description 获取用户信息
+   * @return void
+   * @author chenmo
+   */
+
+  private async getUserInfo() {
+    try {
+      const res: any = await this.axios.get(api.getUserInfo);
+      if (res && res.code === '000') {
+        this.updateUserInfo(res.data);  // 存储用户信息
+        this.$router.push(this.redirectUrl); // 跳转
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
     }
   }
   // Watch

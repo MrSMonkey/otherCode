@@ -117,7 +117,6 @@ export default class Payment extends CommonMixins {
   private houseName: string = ''; // 房源名称
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
-  @Action('getUserInfo', { namespace }) private getUserInfo: any;
   @Action('payment', { namespace }) private payment: any;
 
   // computed
@@ -151,7 +150,8 @@ export default class Payment extends CommonMixins {
     this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
     this.getServiceDetils(this.serviceId); // 获取服务包详情
-    this.getUserInfo(); // 获取用户信息
+    this.ownerName = this.userInfo.realName;
+    this.ownerPhone = this.userInfo.username;
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
@@ -160,7 +160,8 @@ export default class Payment extends CommonMixins {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
-    this.getUserInfo(); // 获取用户信息
+    this.ownerName = this.userInfo.realName;
+    this.ownerPhone = this.userInfo.username;
     this.getServiceDetils(this.serviceId); // 获取服务包详情
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
@@ -218,8 +219,6 @@ export default class Payment extends CommonMixins {
       const res: any = await this.axios.get(api.getServiceDetils + `/${serviceId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
-        this.ownerName = this.userInfo.realName;
-        this.ownerPhone = this.userInfo.username;
       } else {
         this.$toast(`获取服务包详情失败`);
       }

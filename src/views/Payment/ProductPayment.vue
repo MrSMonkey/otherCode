@@ -128,7 +128,6 @@ export default class ProductPayment extends CommonMixins {
   private houseName: string = ''; // 房源名称
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
-  @Action('getUserInfo', { namespace }) private getUserInfo: any;
   @Action('payment', { namespace }) private payment: any;
 
   // computed
@@ -162,7 +161,8 @@ export default class ProductPayment extends CommonMixins {
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
     this.getProductDetail(this.productId); // 获取服务包详情
-    this.getUserInfo(); // 获取用户信息
+    this.buyersName = this.userInfo.realName;
+    this.buyersPhone = this.userInfo.username;
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
@@ -172,6 +172,8 @@ export default class ProductPayment extends CommonMixins {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
+    this.buyersName = this.userInfo.realName;
+    this.buyersPhone = this.userInfo.username;
     this.getProductDetail(this.productId); // 获取服务产品详情
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
@@ -234,8 +236,7 @@ export default class ProductPayment extends CommonMixins {
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-        this.buyersName = this.userInfo.realName;
-        this.buyersPhone = this.userInfo.username;
+       
       } else {
         this.$toast(`获取服务产品详情失败`);
       }

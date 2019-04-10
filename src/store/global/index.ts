@@ -23,7 +23,7 @@ const getTokenFromLocal = () => {
 // state
 export const state: GlobalState = {
   token: getTokenFromLocal(),
-  userInfo: {},
+  userInfo: null,
   communityId: '',
   communityName: '',
   keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo',

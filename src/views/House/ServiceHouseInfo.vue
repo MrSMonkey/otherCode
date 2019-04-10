@@ -83,14 +83,11 @@ export default class ServiceHouseInfo extends CommonMixins {
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
   @Getter('getUserInfo', { namespace }) private userInfo: any;
-  @Action('getUserInfo', { namespace }) private getUserInfo: any;
 
   private mounted() {
     this.sourceId = this.$route.query.sourceId;
     this.routeName = String(this.$route.name);
     this.getCitys(); // 获取城市
-    const token: string = String(localStorage.getItem('siteToken'));
-    this.getUserInfo();
   }
 
   /**
