@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 20:44:56
+ * @Last Modified time: 2019-04-10 10:10:34
  */
 
 <template>
@@ -27,6 +27,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col } from 'vant';
 import ChoiceHouseList from './components/ChoiceHouseList.vue';
 import NoHouseList from './components/NoHouseList.vue';
+import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
 
 // 声明引入的组件
@@ -49,6 +50,22 @@ export default class ChoiceHouse extends CommonMixins {
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
+    // if (this.$route.query.serviceId || this.$route.query.productId) {
+    //   if (this.$route.query.serviceId) {
+    //     this.preUrl = 'packPayment';
+    //     this.serviceId = String(this.$route.query.serviceId);
+    //     handleWebStorage.setLocalData('serviceId', this.$route.query.serviceId, 'sessionStorage');
+    //   } else {
+    //     this.preUrl = 'productPayment';
+    //     this.productId = String(this.$route.query.productId);
+    //     handleWebStorage.setLocalData('productId', this.$route.query.serviceId, 'sessionStorage');
+    //   }
+    // } else {
+    //   if (handleWebStorage.getLocalData('serviceId', 'sessionStorage')) {
+    //   } else {
+    //   }
+    //   this.productId = String(this.$route.query.productId);
+    // }
     this.preUrl = String(this.$route.query.preUrl);
     this.serviceId = String(this.$route.query.serviceId);
     this.productId = String(this.$route.query.productId);
@@ -116,7 +133,7 @@ export default class ChoiceHouse extends CommonMixins {
    * @author chenmo
    */
   private addHouse() {
-    this.$router.push(this.addHouseUrl + window.location.href.split('?')[1]);
+    this.$router.push(this.addHouseUrl + '?' + window.location.href.split('?')[1]);
   }
 }
 </script>

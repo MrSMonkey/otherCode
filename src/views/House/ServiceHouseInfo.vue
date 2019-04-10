@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 20:21:53
+ * @Last Modified time: 2019-04-09 21:02:18
  */
 
 <template>
@@ -204,7 +204,8 @@ export default class ServiceHouseInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.pushEntrust, data);
       if (res && res.code === '000') {
-        this.$router.push('/choiceHouse');
+        this.$router.push('/choiceHouse?' + window.location.href.split('?')[1]);
+        this.$destroy();
       } else {
         this.$toast(res.msg || '委托失败，请重试！');
       }
