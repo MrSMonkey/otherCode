@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 13:42:19
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 14:23:59
+ * @Last Modified time: 2019-04-10 16:33:13
  */
 <template>
   <section class="login">
@@ -127,17 +127,18 @@ export default class Bind extends CommonMixins {
    */
   private async submitLogin() {
     try {
+      this.loading = true;
       const res: any = await this.axios.post(api.login, {
         mobile: this.phone,
         verificationCode: this.code,
         registerSource: 1
       });
-      this.loading = true;
       if (res && res.code === '000') {
         handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
-        this.getUserInfo();
+        await this.getUserInfo();
+        this.$router.push(this.redirectUrl); // 跳转
       } else {
         this.$toast(res.msg || '登录失败');
       }
@@ -159,7 +160,6 @@ export default class Bind extends CommonMixins {
       const res: any = await this.axios.get(api.getUserInfo);
       if (res && res.code === '000') {
         this.updateUserInfo(res.data);  // 存储用户信息
-        this.$router.push(this.redirectUrl); // 跳转
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -188,7 +188,7 @@ export default class Bind extends CommonMixins {
     }
   }
   private mounted() {
-    console.log(this.$route.query.redirectUrl)
+    console.log('redirectUrl', this.$route.query.redirectUrl);
     if (this.$route.query.redirectUrl) {
       this.redirectUrl = String(this.$route.query.redirectUrl);
     } else {

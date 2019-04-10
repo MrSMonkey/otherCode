@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 15:41:24
+ * @Last Modified time: 2019-04-10 16:28:35
  */
 
 
@@ -183,8 +183,7 @@ export default class Payment extends CommonMixins {
     this.$router.push({
       path: '/choiceHouse',
       query: {
-        preUrl: 'packPayment',
-        serviceId: this.serviceId
+        preUrl: 'packPayment'
       }
     });
   }
