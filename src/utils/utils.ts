@@ -91,7 +91,7 @@ export const handleWebStorage = {
       // 如果操作为默认的localStorge
       localStorage.setItem(key, value);
     } else if (type === 'sessionStorage') {
-      sessionStorage.setItem(key, value);
+      sessionStorage.setItem(key, JSON.stringify(value));
     } else {
       throw new Error('params "type" is Error, it must able of "localStorage" or "sessionStorage"');
     }
