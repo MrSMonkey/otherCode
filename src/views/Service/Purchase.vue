@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 11:53:24
+ * @Last Modified time: 2019-04-10 14:57:55
  */
 
 <template>
@@ -82,6 +82,7 @@ import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
+import { config } from '@vue/test-utils';
 
 // 声明引入的组件
 @Component({
@@ -106,20 +107,26 @@ export default class Purchase extends CommonMixins {
   private productData: any[] = []; // 服务产品列表
   private isActive: number = 0; // 默认选择第一项
   private isSlide: number = -1; // 默认不展开
+  private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
   private isActiveChildrenOne: number = 0; // 默认选择第一项
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
 
   private mounted() {
+    console.log('mounted');
+    this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
     this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
     this.getServiceList(this.cityId); // 获取服务包列表
   }
   private activated() {
-    this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
-    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
-    this.getServiceList(this.cityId); // 获取服务包列表
+    console.log('activated');
+    if (this.needActivated) {
+      this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
+      this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
+      this.getServiceList(this.cityId); // 获取服务包列表
+    }
   }
   /**
    * @description 获取服务包列表
