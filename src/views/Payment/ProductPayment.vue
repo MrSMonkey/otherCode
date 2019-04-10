@@ -172,6 +172,7 @@ export default class ProductPayment extends CommonMixins {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
+    this.getProductDetail(this.productId); // 获取服务产品详情
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
@@ -189,7 +190,7 @@ export default class ProductPayment extends CommonMixins {
       if (res && res.code === '000') {
         this.houseName = res.data.houseName;
       } else {
-        this.$toast(`获取服务房源失败`);
+        this.$toast( res.msg || `获取服务房源失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -233,11 +234,6 @@ export default class ProductPayment extends CommonMixins {
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-        // if (res.data.productId === '118062916141300008' || res.data.productId === '118062916145800009') {
-        //   this.tips = TIPSONE;
-        // } else if (res.data.typeId === 9) {
-        //   this.tips = TIPSTWO;
-        // }
         this.buyersName = this.userInfo.realName;
         this.buyersPhone = this.userInfo.username;
       } else {
@@ -303,6 +299,7 @@ export default class ProductPayment extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.buyProduct, data);
       if (res && res.code === '000') {
+        this.$destroy();
         if (this.data.typeId === 4) {
           // 带看
           this.$toast.success('购买成功');

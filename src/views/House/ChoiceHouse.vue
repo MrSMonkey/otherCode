@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 11:54:58
+ * @Last Modified time: 2019-04-10 12:01:41
  */
 
 <template>
@@ -92,25 +92,13 @@ export default class ChoiceHouse extends CommonMixins {
    * @author chenmo
    */
   private clickItem(houseItem: any) {
-    if (this.serviceId) {
-      this.$router.push({
-        path: `/${this.preUrl}`,
-        query: {
-          entrustId: houseItem.entrustId,
-          pre: 'choiceHouse',
-          serviceId: this.serviceId
-        }
-      });
-    } else {
-      this.$router.push({
-        path: `/${this.preUrl}`,
-        query:  {
-          entrustId: houseItem.entrustId,
-          pre: 'choiceHouse',
-          productId: this.productId
-        }
-      });
-    }
+    this.$router.push({
+      path: `/${this.preUrl}`,
+      query: {
+        entrustId: houseItem.entrustId,
+        pre: 'choiceHouse'
+      }
+    });
   }
 
   /**
