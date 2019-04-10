@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 16:26:56
+ * @Last Modified time: 2019-04-10 14:22:26
  */
 import axios from 'axios';
 import store from '../store';
@@ -52,6 +52,7 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   (response: any) => {
     // 这里可以做一些响应拦截的操作
+    console.log(window.location.href);
     if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
       localStorage.removeItem('siteToken'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
