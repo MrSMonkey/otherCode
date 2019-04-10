@@ -35,8 +35,8 @@ const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/vi
 const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ServiceRecord/ConfirmPay.vue');
 const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
 
-const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
-const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+// const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
+// const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
 
 // 服务产品支付
 const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/views/Payment/ProductPayment.vue');
@@ -72,15 +72,15 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: '房源照片', component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: '购买信息', component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: '购买信息', component: PackPayment},
-    {
-      path: '/houseAppraise',
-      name: 'houseAppraise',
-      meta: '房屋估价',
-      component: HouseAppraise,
-      children: [
-        {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
-      ]
-    },
+    // {
+    //   path: '/houseAppraise',
+    //   name: 'houseAppraise',
+    //   meta: '房屋估价',
+    //   component: HouseAppraise,
+    //   children: [
+    //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
+    //   ]
+    // },
     { path: '/community', name: 'community', meta: '选择小区', component: Community},
     { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: '选择小区', component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: '404', component: NotFoundComp}

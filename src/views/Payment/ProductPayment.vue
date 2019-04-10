@@ -133,7 +133,7 @@ export default class ProductPayment extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
+    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId;
   }
 
   // Watch
