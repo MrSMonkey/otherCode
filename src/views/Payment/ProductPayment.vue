@@ -2,8 +2,8 @@
  * @Description: 服务产品支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 19:47:39
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-09 20:11:58
  */
 
 
@@ -20,6 +20,7 @@
       </div>
       <div class="el-input">
         <van-field
+          v-model="houseName"
           label="房源"
           required
           type="text"
@@ -122,6 +123,8 @@ export default class ProductPayment extends CommonMixins {
   private tips: string = TIPSONE;
   private tipsTwo: string = TIPSTWO;
   private pre: string = ''; // 判断入口
+  private houseInfo: any = {}; // 房源信息
+  private houseName: string = ''; // 房源名称
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('getUserInfo', { namespace }) private getUserInfo: any;
@@ -159,6 +162,37 @@ export default class ProductPayment extends CommonMixins {
     this.pre = String(this.$route.query.pre);
     this.getProductDetail(this.productId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
+    if (this.entrustId !== '') {
+      this.getHouserInfo(this.entrustId);
+    }
+  }
+
+  private activated() {
+    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+    this.productId = String(this.$route.query.productId) === 'undefined' ? '' : String(this.$route.query.productId);
+    this.pre = String(this.$route.query.pre);
+    if (this.entrustId !== '') {
+      this.getHouserInfo(this.entrustId);
+    }
+  }
+
+  /**
+   * @description 获取服务房源信息
+   * @params entrustId 委托id
+   * @returns void
+   * @author chenmo
+   */
+  private async getHouserInfo(entrustId: string) {
+    try {
+      const res: any = await this.axios.get(api.getHouserInfo + `/${entrustId}`);
+      if (res && res.code === '000') {
+        this.houseName = res.data.houseName;
+      } else {
+        this.$toast(`获取服务房源失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
   }
 
   /**

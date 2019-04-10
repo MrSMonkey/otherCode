@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 10:10:34
+ * @Last Modified time: 2019-04-10 10:13:28
  */
 
 <template>
@@ -46,7 +46,7 @@ export default class ChoiceHouse extends CommonMixins {
   private preUrl: string; // 上个页面地址
   private serviceId: string; // 服务包ID
   private productId: string; // 服务产品ID
-  private addHouseUrl: string = 'serviceHouseInfo'; // 新增房源跳转地址
+  private addHouseUrl: string = '/serviceHouseInfo'; // 新增房源跳转地址
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
@@ -86,7 +86,7 @@ export default class ChoiceHouse extends CommonMixins {
     });
     this.isData = false;
     try {
-      const res: any = await this.axios.get(api.getHouseList);
+      const res: any = await this.axios.get(api.getHouseList + '/' + '510100');
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
