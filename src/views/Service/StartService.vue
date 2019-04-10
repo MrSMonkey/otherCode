@@ -168,18 +168,18 @@ export default class StartService extends CommonMixins {
         this.houseName = res.data.houseName;
         this.ownerName = res.data.assetName;
         this.ownerPhone = res.data.assetPhone;
-        if (res.data.houseType === 1) {
-          this.rooms = '整套';
-        } else {
-          // 遍历房间
-          const roomArr: any = res.data.rooms.map((item: any) => {
-            return {
-              text: item.roomName,
-              value: item.roomId
-            };
-          });
-          this.columns = roomArr;
-        }
+        // if (res.data.houseType === 1) {
+        //   this.rooms = '整套';
+        // } else {
+        //   // 遍历房间
+        //   const roomArr: any = res.data.rooms.map((item: any) => {
+        //     return {
+        //       text: item.roomName,
+        //       value: item.roomId
+        //     };
+        //   });
+        //   this.columns = roomArr;
+        // }
       } else {
         this.$toast(`获取服务类型失败`);
       }

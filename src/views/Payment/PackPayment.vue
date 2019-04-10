@@ -121,7 +121,7 @@ export default class Payment extends CommonMixins {
 
   // computed
   get isActive(): boolean {
-    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr);
+    return !this.ownerName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId;
   }
 
   // Watch
@@ -376,17 +376,6 @@ export default class Payment extends CommonMixins {
         color #fff
   .buy-dialog
     height vw(300)
-    .tips
-      width 100%
-      height vw(40)
-      background #FFF5F5
-      padding vw(5) vw(15)
-      p
-        line-height 2.5
-        text-align left
-        display inline-block
-        font-size 12px
-        color #FF5252
     .title
       display -webkit-flex
       display flex
