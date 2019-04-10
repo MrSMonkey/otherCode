@@ -117,13 +117,14 @@ router.beforeEach((to: any, from: any, next: any) => {
           } else {
             Vue.prototype.$toast(`获取用户信息失败`);
           }
+          next(); // 不要在next里面加"path:/",会陷入死循环
         }).catch((err: any) => {
           Vue.prototype.$toast(`获取用户信息失败`);
+          next(); // 不要在next里面加"path:/",会陷入死循环
         });
       }
-      next(); // 不要在next里面加"path:/",会陷入死循环
+      next();
     } else {
-      console.log(to)
       next({
         path: '/bind',
         query: {redirectUrl: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由

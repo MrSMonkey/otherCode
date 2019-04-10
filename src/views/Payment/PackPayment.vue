@@ -163,8 +163,8 @@ export default class Payment extends CommonMixins {
       this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
       this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
       this.pre = String(this.$route.query.pre);
-      this.ownerName = this.userInfo.realName;
-      this.ownerPhone = this.userInfo.username;
+      this.ownerName = this.userInfo && this.userInfo.realName;
+      this.ownerPhone = this.userInfo && this.userInfo.username;
       this.getServiceDetils(this.serviceId); // 获取服务包详情
       if (this.entrustId !== '') {
         this.getHouserInfo(this.entrustId);
