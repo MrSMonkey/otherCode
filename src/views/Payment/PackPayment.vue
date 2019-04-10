@@ -115,6 +115,7 @@ export default class Payment extends CommonMixins {
   private introducePhone: string = ''; // 推荐人联系电话
   private pre: string = ''; // 判断入口
   private houseName: string = ''; // 房源名称
+  private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('payment', { namespace }) private payment: any;
@@ -146,6 +147,7 @@ export default class Payment extends CommonMixins {
   }
 
   private mounted() {
+    this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
@@ -157,14 +159,16 @@ export default class Payment extends CommonMixins {
     }
   }
   private activated() {
-    this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
-    this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
-    this.pre = String(this.$route.query.pre);
-    this.ownerName = this.userInfo.realName;
-    this.ownerPhone = this.userInfo.username;
-    this.getServiceDetils(this.serviceId); // 获取服务包详情
-    if (this.entrustId !== '') {
-      this.getHouserInfo(this.entrustId);
+    if (this.needActivated) {
+      this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+      this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
+      this.pre = String(this.$route.query.pre);
+      this.ownerName = this.userInfo.realName;
+      this.ownerPhone = this.userInfo.username;
+      this.getServiceDetils(this.serviceId); // 获取服务包详情
+      if (this.entrustId !== '') {
+        this.getHouserInfo(this.entrustId);
+      }
     }
   }
   /**

@@ -125,7 +125,6 @@ router.beforeEach((to: any, from: any, next: any) => {
       Vue.axios.get(api.getUserInfo).then((res: any) => {
         if (res && res.code === '000') {
           store.commit('global/updateUserInfo', res.data); // 设置用户信息
-          console.log(store.getters['global/getUserInfo']);
         } else {
           Vue.prototype.$toast(`获取用户信息失败`);
         }

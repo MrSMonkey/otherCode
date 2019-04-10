@@ -114,14 +114,12 @@ export default class Purchase extends CommonMixins {
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
 
   private mounted() {
-    console.log('mounted');
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
     this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
     this.getServiceList(this.cityId); // 获取服务包列表
   }
   private activated() {
-    console.log('activated');
     if (this.needActivated) {
       this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
       this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
