@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 11:58:52
+ * @Last Modified time: 2019-04-10 17:45:59
  */
 
 <template>
@@ -204,7 +204,7 @@ export default class ServiceHouseInfo extends CommonMixins {
         this.$router.push('/choiceHouse' + '?' + window.location.href.split('?')[1]);
         this.$destroy();
       } else {
-        this.$toast(res.msg || '委托失败，请重试！');
+        this.$toast(res.msg || '新增失败，请重试！');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
