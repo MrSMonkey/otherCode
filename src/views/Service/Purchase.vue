@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 15:39:53
+ * @Last Modified time: 2019-04-10 17:10:00
  */
 
 <template>
@@ -124,6 +124,7 @@ export default class Purchase extends CommonMixins {
       this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
       this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
       this.getServiceList(this.cityId); // 获取服务包列表
+      this.getProductList(this.cityId); // 获取服务包列表
     } else {
       this.needActivated = true;
     }
