@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 20:09:44
+ * @Last Modified time: 2019-04-10 11:50:23
  */
 
 
@@ -86,6 +86,7 @@ import ImagePreview from '@/components/ImagePreview.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
+import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -147,7 +148,7 @@ export default class Payment extends CommonMixins {
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
-    this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
+    this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
     this.getServiceDetils(this.serviceId); // 获取服务包详情
     this.getUserInfo(); // 获取用户信息
@@ -157,7 +158,7 @@ export default class Payment extends CommonMixins {
   }
   private activated() {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
-    this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
+    this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);

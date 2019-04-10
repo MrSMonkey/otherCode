@@ -2,8 +2,8 @@
  * @Description: 购买服务产品
  * @Author: chenmo
  * @Date: 2019-03-15 15:05:49
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 16:49:37
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-10 11:47:02
  */
 
 
@@ -56,6 +56,7 @@ import ImagePreview from '@/components/ImagePreview.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
+import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -94,7 +95,7 @@ export default class ProductInfo extends CommonMixins {
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
-    this.productId = String(this.$route.query.productId);
+    this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
     this.getProductDetail(this.productId); // 获取服务包详情
   }
 
@@ -160,7 +161,7 @@ export default class ProductInfo extends CommonMixins {
    * @author chenmo
    */
   private buy() {
-    this.$router.push(`/productPayment?productId=${this.productId}&entrustId=${this.entrustId}&pre=productInfo`);
+    this.$router.push(`/productPayment?entrustId=${this.entrustId}&pre=productInfo`);
   }
 
   private plotCancel() {

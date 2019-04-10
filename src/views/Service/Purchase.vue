@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 17:03:52
+ * @Last Modified time: 2019-04-10 11:53:24
  */
 
 <template>
@@ -13,13 +13,13 @@
       <van-tab title="服务包">
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-            <router-link :to="'/serviceInfo?serviceId=' + item.serviceId + '&entrustId=' + entrustId">
+            <a @click="goodsClick('pack', item.serviceId)">
               <div class="purchase-left" v-lazy:background-image="item.imgUrls && item.imgUrls[0]">
                 <!-- <img :src="item.imgUrls[0]" alt=""/> -->
               </div>
               <p  class="purchase-title">{{item.serviceName|| 1}}</p>
               <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-            </router-link>
+            </a>
           </div>
         </section>
         <section v-else>
@@ -44,13 +44,13 @@
             <section v-if="productItemData.length > 0">
               <p class="product-name">{{productName}}</p>
               <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
-                <router-link :to="'/productInfo?productId=' + item.productId + '&entrustId=' + entrustId">
+                <a @click="goodsClick('product', item.productId)">
                   <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
                   </div>
                   <p  class="purchase-title">{{item.productName|| ''}}</p>
                   <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
                   <p class="purchase-money" v-else><span>{{item.price || 0}}</span>元</p>
-                </router-link>
+                </a>
               </div>
             </section>
             <section v-else class="list-no">
@@ -80,6 +80,7 @@ import NoData from '@/components/NoData.vue';
 import { getQueryString, addClass } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
+import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
 
 // 声明引入的组件
@@ -263,6 +264,26 @@ export default class Purchase extends CommonMixins {
       isFixed : true
     };
   }
+
+  /**
+   * @description 选中服务包或者服务产品回调事件
+   * @params serviceType  服务类型：product：服务产品；pack： 服务包
+   * @params goodsId  服务包或者服务产品id
+   * @returns null
+   * @author chenmo
+   */
+  private goodsClick(serviceType: string, goodsId: string) {
+    if (serviceType === 'pack') {
+      handleWebStorage.setLocalData('serviceId', goodsId, 'sessionStorage');
+      handleWebStorage.removeLocalData('productId', 'sessionStorage');
+      this.$router.push('/serviceInfo?entrustId=' + this.entrustId);
+    } else {
+      handleWebStorage.setLocalData('productId', goodsId, 'sessionStorage');
+      handleWebStorage.removeLocalData('serviceId', 'sessionStorage');
+      this.$router.push('/productInfo?entrustId=' + this.entrustId);
+    }
+  }
+
 }
 </script>
 

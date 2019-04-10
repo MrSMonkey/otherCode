@@ -2,8 +2,8 @@
  * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 16:56:42
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-10 11:47:55
  */
 
 <template>
@@ -47,6 +47,7 @@ import BuyModal from './components/BuyModal.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
+import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -71,7 +72,7 @@ export default class ServiceInfo extends CommonMixins {
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
-    this.serviceId = String(this.$route.query.serviceId) === 'undefined' ? '' : String(this.$route.query.serviceId);
+    this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
     this.getServiceDetils(this.serviceId); // 获取服务包详情
   }
 
@@ -118,7 +119,7 @@ export default class ServiceInfo extends CommonMixins {
    * @author chenmo
    */
   private buy() {
-    this.$router.push(`/packPayment?serviceId=${this.serviceId}&entrustId=${this.entrustId}&pre=serviceInfo`);
+    this.$router.push(`/packPayment?entrustId=${this.entrustId}&pre=serviceInfo`);
   }
 
 }

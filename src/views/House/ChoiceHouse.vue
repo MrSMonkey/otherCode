@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 10:13:28
+ * @Last Modified time: 2019-04-10 11:54:58
  */
 
 <template>
@@ -50,25 +50,11 @@ export default class ChoiceHouse extends CommonMixins {
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private mounted() {
-    // if (this.$route.query.serviceId || this.$route.query.productId) {
-    //   if (this.$route.query.serviceId) {
-    //     this.preUrl = 'packPayment';
-    //     this.serviceId = String(this.$route.query.serviceId);
-    //     handleWebStorage.setLocalData('serviceId', this.$route.query.serviceId, 'sessionStorage');
-    //   } else {
-    //     this.preUrl = 'productPayment';
-    //     this.productId = String(this.$route.query.productId);
-    //     handleWebStorage.setLocalData('productId', this.$route.query.serviceId, 'sessionStorage');
-    //   }
-    // } else {
-    //   if (handleWebStorage.getLocalData('serviceId', 'sessionStorage')) {
-    //   } else {
-    //   }
-    //   this.productId = String(this.$route.query.productId);
-    // }
-    this.preUrl = String(this.$route.query.preUrl);
-    this.serviceId = String(this.$route.query.serviceId);
-    this.productId = String(this.$route.query.productId);
+    if (handleWebStorage.getLocalData('serviceId', 'sessionStorage')) {
+      this.preUrl = 'packPayment';
+    } else {
+      this.preUrl = 'productPayment';
+    }
     this.getHouseList(); // 获取房源列表
   }
 
@@ -133,7 +119,7 @@ export default class ChoiceHouse extends CommonMixins {
    * @author chenmo
    */
   private addHouse() {
-    this.$router.push(this.addHouseUrl + '?' + window.location.href.split('?')[1]);
+    this.$router.push(this.addHouseUrl);
   }
 }
 </script>
