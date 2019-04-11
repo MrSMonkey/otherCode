@@ -4,7 +4,7 @@
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 13:48:13
+ * @Last Modified time: 2019-04-11 14:47:15
   */
 -->
 
@@ -51,6 +51,7 @@
     <van-dialog
       v-model="show"
       title="版本更新记录"
+      class="dialog"
     >
     <time-line :timeLineData="timeLineData"></time-line>
     </van-dialog>
@@ -82,7 +83,7 @@ import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
 export default class Home extends CommonMixins {
   private startHomeImg: any[] = START_HOME_IMG;
   private link: string = SMART_LOCK_LINK;
-  private show: boolean = true;
+  private show: boolean = false;
   private timeLineData: any = timeLineData;
   @State('version') private version: string;
 
@@ -163,4 +164,9 @@ export default class Home extends CommonMixins {
       font-size 10px /* no */
       color $next-text-color
       transform translateX(-50%)
+  .dialog
+    .van-dialog__header
+      padding-top 15px !important
+    .van-dialog__confirm, .van-dialog__confirm:active
+      color $main-color
 </style>

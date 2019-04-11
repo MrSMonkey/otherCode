@@ -4,7 +4,7 @@
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 14:27:54
+ * @Last Modified time: 2019-04-11 14:41:48
   */
 -->
 
@@ -56,7 +56,7 @@ export default class TimeLine extends Vue {
 .time-line
   width 100%
   padding vw(20) vw(20) 0
-  max-height vw(200)
+  max-height vw(300)
   overflow-x hidden
   overflow-y scroll
   .viewImg
@@ -87,7 +87,7 @@ export default class TimeLine extends Vue {
     .line-title
       font-weight 700
       color #000
-      font-size 15px
+      font-size 15pxq
     span
       color $disabled-color
       font-size 12px /* no */
