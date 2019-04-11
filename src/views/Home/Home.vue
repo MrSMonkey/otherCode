@@ -4,7 +4,7 @@
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 13:46:00
+ * @Last Modified time: 2019-04-11 13:48:13
   */
 -->
 
@@ -82,7 +82,7 @@ import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
 export default class Home extends CommonMixins {
   private startHomeImg: any[] = START_HOME_IMG;
   private link: string = SMART_LOCK_LINK;
-  private show: boolean = false;
+  private show: boolean = true;
   private timeLineData: any = timeLineData;
   @State('version') private version: string;
 
