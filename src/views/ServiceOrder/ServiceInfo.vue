@@ -2,8 +2,8 @@
  * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 11:47:55
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-11 17:44:13
  */
 
 <template>
@@ -126,7 +126,6 @@ export default class ServiceInfo extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
     width 100%
