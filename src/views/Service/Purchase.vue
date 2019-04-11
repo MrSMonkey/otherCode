@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 17:10:00
+ * @Last Modified time: 2019-04-11 14:43:20
  */
 
 <template>
@@ -156,7 +156,7 @@ export default class Purchase extends CommonMixins {
   }
 
   /**
-   * @description 获取服务包列表
+   * @description 获取服务产品列表
    * @params cityId 城市id
    * @returns void
    * @author chenmo
