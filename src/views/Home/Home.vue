@@ -3,8 +3,8 @@
   * @Description: 首页
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
-  * @Last Modified by: chenmo
-  * @Last Modified time: 2019-02-15 14:41:27
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-11 10:59:17
   */
 -->
 
@@ -48,16 +48,24 @@
           </p>
       </section>
     </main>
+    <van-dialog
+      v-model="show"
+      title="版本更新记录"
+    >
+    <time-line :timeLineData="timeLineData"></time-line>
+    </van-dialog>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Icon } from 'vant';
+import { Icon, Dialog } from 'vant';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import HrTitle from '@/components/HrTitle.vue';
 import UokoDetailPlant from '@/components/UokoDetailPlant.vue';
+import TimeLine from '@/components/TimeLine.vue';
+import timeLineData from '../../../data/versions';
 import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
 
 // 声明引入的组件
@@ -66,14 +74,18 @@ import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
   components: {
     [Icon.name]: Icon,
     HrTitle,
-    UokoDetailPlant
+    UokoDetailPlant,
+    TimeLine
   }
 })
 // 类方式声明当前组件
 export default class Home extends CommonMixins {
   private startHomeImg: any[] = START_HOME_IMG;
   private link: string = SMART_LOCK_LINK;
+  private show: boolean = false;
+  private timeLineData: any = timeLineData;
   @State('version') private version: string;
+
 }
 </script>
 

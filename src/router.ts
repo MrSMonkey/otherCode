@@ -122,8 +122,9 @@ router.beforeEach((to: any, from: any, next: any) => {
           Vue.prototype.$toast(`获取用户信息失败`);
           next(); // 不要在next里面加"path:/",会陷入死循环
         });
+      } else {
+        next();
       }
-      next();
     } else {
       next({
         path: '/bind',
