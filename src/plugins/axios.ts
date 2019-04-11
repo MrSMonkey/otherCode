@@ -3,11 +3,12 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 14:22:26
+ * @Last Modified time: 2019-04-11 16:27:01
  */
 import axios from 'axios';
 import store from '../store';
 import router from '../router';
+import { getRedirectUrl } from '@/utils/utils';
 import Vue from 'vue';
 const Axios = axios.create({
   timeout: 500000,
@@ -51,15 +52,16 @@ Axios.interceptors.request.use(
 // http response响应拦截器
 Axios.interceptors.response.use(
   (response: any) => {
+    const redirectUrl: string | null = getRedirectUrl();
     // 这里可以做一些响应拦截的操作
     if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
       localStorage.removeItem('siteToken'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
-      router.push(`/bind?redirectUrl=${window.location.href.split('#')[1]}`);
+      router.push(`/bind?redirectUrl=${redirectUrl}`);
     }
     return response.data;
   }, (error) => {
-    // const config: any = error.config;
+    const redirectUrl: string | null = getRedirectUrl();
     const status: any = error.response.status || 500;
     if (status === 401) {
       Vue.prototype.$toast({
@@ -68,7 +70,7 @@ Axios.interceptors.response.use(
         message: `登录失效`
       });
       setTimeout(() => {
-        router.push(`/bind?redirectUrl=${window.location.href.split('#')[1]}`);
+        router.push(`/bind?redirectUrl=${redirectUrl}`);
       }, 3000);
     } else {
       Vue.prototype.$toast({

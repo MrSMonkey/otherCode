@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-19 20:27:51
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-11 16:24:18
  */
 
 /* 首字母大写 */
@@ -186,11 +186,29 @@ export const handleDate = {
  */
 export function getQueryString(name: any) {
   const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-  const r = window.location.search.substr(1).match(reg);
+  const r = window.location.hash.split('?').length > 1
+    ? window.location.hash.split('?')[1].match(reg)
+    : null;
   if (r != null) {
     return unescape(r[2]);
   }
   return null;
+}
+
+/**
+ * @description 获取登录成功后回跳地址
+ * @param name 回跳地址的参数名称，默认名称为：redirectUrl
+ * @return redirectUrl
+ * @author linyu
+ */
+export function getRedirectUrl(name: string = 'redirectUrl'): string | null  {
+  let redirectUrl: string | null;
+  if (getQueryString(name)) {
+    redirectUrl = getQueryString(name);
+  } else {
+    redirectUrl = window.location.href.split('#')[1];
+  }
+  return redirectUrl;
 }
 
 /**
