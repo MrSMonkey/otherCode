@@ -4,7 +4,7 @@
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 11:32:38
+ * @Last Modified time: 2019-04-11 13:44:47
   */
 -->
 
@@ -49,18 +49,24 @@ ul.time-line
   overflow-y scroll
   li 
     .time-line-item-title 
-      .title 
-        margin-left 12px
+      .title
+        display inline-block
+        margin-left vw(14)
         font-weight: 700
+        font-size 14px
+        vertical-align top
       .title-icon
         display: inline-block;
-        width: 9px;
-        height: 9px;
-        border: 1px solid $main-color;
-        border-radius: 50%;
+        width 12px
+        height 12px
+        background-color $disabled-color
+        border-radius 50%
+    &:first-child
+      .title-icon
+        background-color $main-color
     .time-line-item-list 
       position relative
-      font-size 14px;
+      font-size 12px;
       width 100%
       height auto
       padding 15px 25px
@@ -68,7 +74,7 @@ ul.time-line
         display inline-block
         width: 1px
         height: 100%
-        border-left 1px solid #e5e5e5
+        border-left 1px dashed $border-color-light
         position absolute
         top: 0
         left 4px

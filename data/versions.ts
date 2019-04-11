@@ -3,12 +3,12 @@
  * @Author: chenmo
  * @Date: 2019-04-11 10:40:39
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 10:57:33
+ * @Last Modified time: 2019-04-11 13:42:48
  */
 
 export default [
   {
-    title: '2018年12月10日 完成基础语言重版本',
+    title: '2018年12月10日 完成基础语言重版本语言重版本语言重版本语言重版本语言重版本',
     content: [
       '完成框架基础语言从ECMAScript到TypeScript的重构改版',
       '根据UI设计为框架增加侧边栏菜单的动态多列显示布局，默认为多列布局',
