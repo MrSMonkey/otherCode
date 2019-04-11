@@ -4,7 +4,7 @@
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 10:54:23
+ * @Last Modified time: 2019-04-11 11:32:38
   */
 -->
 
@@ -41,7 +41,7 @@ export default class TimeLine extends Vue {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 @import '../assets/stylus/main.styl'
 ul.time-line
   max-height vw(200)

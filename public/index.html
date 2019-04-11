@@ -35,4 +35,11 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script type="text/javascript">
+    const u = navigator.userAgent;
+    const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (!isiOS) {
+      document.getElementById('app').style.overflow = 'auto';
+    }
+  </script>
 </html>
