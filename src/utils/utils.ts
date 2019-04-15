@@ -3,9 +3,9 @@
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 14:56:33
+ * @Last Modified time: 2019-04-15 16:00:40
  */
-
+import { Point } from '@/interface/utilInterface';
 /* 首字母大写 */
 export function firstUpperCase(str: string): string {
   return str.replace(/\b[a-z]/g, (s) => s.toUpperCase());
@@ -371,9 +371,12 @@ export function debounce(func: any, wait: number) {
  * @author chemo
  */
 const showPosition = (position: any) => {
-  const lat = position.coords.latitude; // 纬度
-  const lag = position.coords.longitude; // 经度
-  alert('纬度:' + lat + ',经度:' + lag);
+  const point: Point = {
+    lat: position.coords.latitude, // 纬度
+    lag: position.coords.longitude // 经度
+  };
+  console.log(point)
+  return point;
 };
 
 /**
@@ -383,6 +386,7 @@ const showPosition = (position: any) => {
  * @author chemo
  */
 const showError = (error: any) => {
+  console.log(error.code)
   switch (error.code) {
     case error.PERMISSION_DENIED:
     alert('定位失败,用户拒绝请求地理定位');
@@ -406,8 +410,12 @@ const showError = (error: any) => {
  */
 export function getLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, showError);
+    navigator.geolocation.getCurrentPosition(showPosition, showError, {
+      enableHighAccuracy: true, // 是否要求高精度的地理位置信息
+      timeout: 1000, // 对地理位置信息的获取操作做超时限制，如果再该事件内未获取到地理位置信息，将返回错误
+      maximumAge: 60 * 1000 // 设置缓存有效时间，在该时间段内，获取的地理位置信息还是设置此时间段之前的那次获得的信息，超过这段时间缓存的位置信息会被废弃
+    });
   } else {
-    alert('浏览器不支持地理定位。');
+    alert('您当前使用的浏览器不支持地理定位服务');
   }
 }

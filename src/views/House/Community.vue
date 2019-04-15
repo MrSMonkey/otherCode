@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 14:56:23
+ * @Last Modified time: 2019-04-15 15:27:14
  */
 
 <template>
@@ -159,21 +159,22 @@ export default class Community extends CommonMixins {
     this.$router.back();
   }
   private getBaiduLocation() {
-    this.$nextTick(() => {
-      MP(this.baiduAk).then((BMap: any) => {
-        const getlocation = new BMap.Geolocation();
-        getlocation.getCurrentPosition((r: any) => {
-         this.lon = r.point.lng;
-         this.lat = r.point.lat;
-         console.log(this.lon, this.lat);
-        });
+    MP(this.baiduAk).then((BMap: any) => {
+      const getlocation = new BMap.Geolocation();
+      getlocation.getCurrentPosition((r: any) => {
+        this.lon = r.point.lng;
+        this.lat = r.point.lat;
+        console.log(this.lon, this.lat);
       });
     });
   }
   private mounted() {
+    // this.getBaiduLocation();
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
-    this.getBaiduLocation();
+    
+    getLocation();
+    // console.log(ponint);
   }
 }
 </script>

@@ -2,8 +2,8 @@
  * @Description: 菜单列表数据
  * @Author: LiuZhen
  * @Date: 2019-01-18 11:20:52
- * @Last Modified by: LiuZhen
- * @Last Modified time: 2019-01-18 11:33:15
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-15 15:07:27
  */
 import { BaseInterface } from './base.interface';
 
