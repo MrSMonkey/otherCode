@@ -16,17 +16,36 @@
       />
     </section>
     <main class="main">
-      <ul class="list" v-if="tableList.length > 0">
-        <li v-for="item in tableList" :key="item.id" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
-          <span>{{item.communityName}}({{item.address}})</span>
-          <img src="@/assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
-        </li>
-      </ul>
+      <div class="list-panel">
+        <div class="text" v-if="tableList.length > 0">
+          <span>请选择小区名称</span>
+        </div>
+        <div class="list">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="getMorePlotList"
+            :immediate-check="true"
+          >
+            <van-cell
+              v-for="item in tableList"
+              :key="item.id"
+              :border="false"
+            >
+              <template>
+                <div v-for="item in tableList" :key="item.id" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
+                  <span class="community-name list-item">{{item.communityName}}</span>
+                  <span class="address list-item">{{item.address}}</span>
+                </div>
+              </template>
+            </van-cell>
+          </van-list>
+        </div>
+      </div>
       <div v-if="tableList.length === 0 && isGetPlot">
         <div class="noserch">
-          <p class="noserch-title">未找到您输入的小区</p>
-          <p class="tips">快速咨询，请点击拨打：10105288</p>
-          <a href="tel:10105288">快速委托</a>
+          <p class="noserch-title">未找到该小区，确认提交后工作人员会尽快为您处理！</p>
         </div>
       </div>
     </main>
@@ -47,7 +66,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { Field, Row, Col } from 'vant';
+import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { debounce } from '@/utils/utils';
 import api from '@/api';
@@ -59,6 +78,9 @@ import api from '@/api';
     [Field.name]: Field,
     [Row.name]: Row,
     [Col.name]: Col,
+    [Cell.name]: Cell,
+    [List.name]: List,
+    [PullRefresh.name]: PullRefresh,
     ConfirmBtn
   }
 })
@@ -70,7 +92,11 @@ export default class Community extends CommonMixins {
   private communityId: string = '';
   private communityName: string = '';
   private pushRouteName: string;
-  private tableList: any[] = [];
+  private refreshing: boolean = false;
+  private loading: boolean = false;
+  private error: boolean = false;
+  private finished: boolean = false;
+  private tableList: any = [];
   private isGetPlot: boolean = false; // 判断是否请求了小区
 
   @Watch('searchInputValue')
@@ -82,7 +108,7 @@ export default class Community extends CommonMixins {
       this.isGetPlot = false;
       this.tableList = []; // 清空查询
     }
-    }, 2000);
+    }, 200);
     console.log(temp);
     temp(newVal);
   }
@@ -99,8 +125,9 @@ export default class Community extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.searchInputValue}`);
       if (res && res.code === '000') {
-        this.tableList = res.data || [];
+        this.tableList.push(...res.data);
         this.isGetPlot = true; // 请求成功
+        console.log(this.tableList);
       } else {
         this.$toast(res.msg);
       }
@@ -108,7 +135,20 @@ export default class Community extends CommonMixins {
       throw new Error(err || 'Unknow Error!');
     }
   }
-
+  private async getMorePlotList() {
+    const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.searchInputValue}`);
+    if (res && res.code === '000') {
+      this.tableList.push(...res.data);
+      this.isGetPlot = true; // 请求成功
+      console.log(this.tableList);
+    } else {
+      this.$toast(res.msg);
+    }
+    this.loading = false;
+    if (this.tableList.length >= 40) {
+      this.finished = true;
+    }
+  }
   /**
    * @description 选择小区
    * @returns void
@@ -153,7 +193,9 @@ export default class Community extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
-
+  private onRefresh() {
+    console.log('referesh');
+  }
   private mounted() {
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
@@ -178,38 +220,19 @@ export default class Community extends CommonMixins {
       .van-field
         font-size 14px
     .main
-      margin-top vw(75)
+      margin-top vw(55)
       margin-bottom vw(70)
+      .text
+        height vw(40)
+        line-height vw(40)
+        padding 0 vw(15)
+        font-size 14px
+        color $tip-text-color
       .list
-        margin-top vw(20)
         height vw(520)
         overflow-y scroll
-        li
-          background #fff
-          height vw(45)
-          width 100%
-          line-height vw(45)
-          color $text-color
-          font-size 14px
-          padding 0 vw(15)
+        .van-cell
           border-bottom 1px solid #eee
-          display -webkit-flex
-          display flex
-          justify-content space-between
-          align-items center
-          span  
-            width vw(320)
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-          img 
-            display inline-block
-            text-align right
-            width vw(16)
-            vertical-align middle
-        .active
-          // background $bg-color-default
-          color $main-color
       .noserch
         margin-top vw(200)
         text-align center
