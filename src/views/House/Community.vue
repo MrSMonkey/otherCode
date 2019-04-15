@@ -2,8 +2,8 @@
  * @Description: 选择小区页面
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 17:43:23
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-15 14:56:23
  */
 
 <template>
@@ -49,7 +49,9 @@ import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
-import { debounce } from '@/utils/utils';
+import { debounce, getLocation } from '@/utils/utils';
+import { MP } from '@/utils/map';
+import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 
 // 声明引入的组件
@@ -72,6 +74,9 @@ export default class Community extends CommonMixins {
   private pushRouteName: string;
   private tableList: any[] = [];
   private isGetPlot: boolean = false; // 判断是否请求了小区
+  private lon: number = 0; // 当前位置经度
+  private lat: number = 0; // 当前位置纬度
+  private baiduAk: string = BAIDU_AK; // 百度地图key
 
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
@@ -153,10 +158,22 @@ export default class Community extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
-
+  private getBaiduLocation() {
+    this.$nextTick(() => {
+      MP(this.baiduAk).then((BMap: any) => {
+        const getlocation = new BMap.Geolocation();
+        getlocation.getCurrentPosition((r: any) => {
+         this.lon = r.point.lng;
+         this.lat = r.point.lat;
+         console.log(this.lon, this.lat);
+        });
+      });
+    });
+  }
   private mounted() {
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
+    this.getBaiduLocation();
   }
 }
 </script>
