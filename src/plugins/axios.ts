@@ -6,6 +6,7 @@
  * @Last Modified time: 2019-04-11 16:27:01
  */
 import axios from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import store from '../store';
 import router from '../router';
 import { getRedirectUrl } from '@/utils/utils';
@@ -16,10 +17,36 @@ const Axios = axios.create({
     'X-Requested-With': 'XMLHttpRequest'
   }
 });
+// 取消重复请求
+// let pending: Array<{
+//   url: string,
+//   cancel: () => void
+// }> = [];
+// const cancelToken = axios.CancelToken;
+// const removePending = (config: AxiosRequestConfig) => {
+//   if (pending && pending.length > 0) {
+//     pending = pending.filter( (value) => {
+//       if (value.url === config.url + '&request_type=' + config.method) {
+//         // 执行取消操作
+//         console.log('cancel');
+//         value.cancel();
+//         return false;
+//       }
+//       return true;
+//     });
+//   }
+//   console.log(pending);
+// };
 
 // http request请求拦截器(所有请求发送都要执行的操作)
 Axios.interceptors.request.use(
   (config: any) => {
+    // 取消重复请求
+    // removePending(config);
+    // config.cancelToken = new cancelToken((c) => {
+    //   console.log(config.url + '&request_type=' + config.method);
+    //   pending.push({ url: config.url + '&request_type=' + config.method, cancel: c });
+    // });
     // 根据环境设置baseURL
     if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'production') {  // 生产
       config.baseURL = 'https://api-gateway.uoko.com/';

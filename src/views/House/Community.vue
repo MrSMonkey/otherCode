@@ -49,6 +49,7 @@ import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import { debounce } from '@/utils/utils';
 import api from '@/api';
 
 // 声明引入的组件
@@ -74,12 +75,16 @@ export default class Community extends CommonMixins {
 
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    if (newVal !== '') {
+    const temp: any = debounce(() => {
+      if (newVal !== '') {
       this.getPlotList(); // 请求小区数据
     } else {
       this.isGetPlot = false;
       this.tableList = []; // 清空查询
     }
+    }, 2000);
+    console.log(temp);
+    temp(newVal);
   }
 
   /**

@@ -3,7 +3,7 @@
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 16:24:18
+ * @Last Modified time: 2019-04-11 17:56:01
  */
 
 /* 首字母大写 */
@@ -180,12 +180,12 @@ export const handleDate = {
 
 /**
  * @description 获取url参数
- * @param name string 参数名
+ * @param param string 参数名
  * @return 参数对应value
  * @author chenmo
  */
-export function getQueryString(name: any) {
-  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
+export function getQueryString(param: any) {
+  const reg = new RegExp('(^|&)' + param + '=([^&]*)(&|$)');
   const r = window.location.hash.split('?').length > 1
     ? window.location.hash.split('?')[1].match(reg)
     : null;
@@ -197,14 +197,14 @@ export function getQueryString(name: any) {
 
 /**
  * @description 获取登录成功后回跳地址
- * @param name 回跳地址的参数名称，默认名称为：redirectUrl
+ * @param param 回跳地址的参数名称，默认名称为：redirectUrl
  * @return redirectUrl
  * @author linyu
  */
-export function getRedirectUrl(name: string = 'redirectUrl'): string | null  {
+export function getRedirectUrl(param: string = 'redirectUrl'): string | null  {
   let redirectUrl: string | null;
-  if (getQueryString(name)) {
-    redirectUrl = getQueryString(name);
+  if (getQueryString(param)) {
+    redirectUrl = getQueryString(param);
   } else {
     redirectUrl = window.location.href.split('#')[1];
   }
@@ -318,4 +318,48 @@ export function getErrorMessage(e: any, defaultMsg?: string): string {
     // 占位 消除warning
   }
   return msg || '';
+}
+/**
+ * 节流
+ * @param  {function} func 处理函数
+ * @param  {number} delay 延迟时间
+ */
+export function throttle(func: any, delay: number) {
+  let timer: any = null;
+  let startTime: number = Date.now();
+  return (): void => {
+    const curTime: number = Date.now();
+    const remaining: number = delay - (curTime - startTime);
+    const args: IArguments = arguments;
+    clearTimeout(timer);
+    if (remaining <= 0) {
+      func(...args);
+      startTime = Date.now();
+    } else {
+      timer = setTimeout(() => {
+        func();
+      }, remaining);
+    }
+  };
+}
+/**
+ * 防抖
+ * @param  {function} func 处理函数
+ * @param  {number} delay 延迟时间
+ */
+export function debounce(func: any, wait: number) {
+  let timeout: any = null;
+  let timeout2: any = 111;
+  return () => {
+      console.log(timeout);
+      console.log(timeout2);
+      if (timeout !== null) {
+        clearTimeout(timeout);
+        console.log('timeout');
+      }
+      timeout = setTimeout(() => {
+        timeout2 = 4444;
+        func();
+      }, wait);
+  };
 }
