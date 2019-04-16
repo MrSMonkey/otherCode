@@ -22,7 +22,7 @@
           <span v-if="tableList.length > 0">请选择小区名称</span>
           <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
         </div>
-        <div class="list">
+        <div class="list" v-if="tableList.length > 0">
           <van-pull-refresh
             v-model="refreshing"
             @refresh="getCommunityList(1)"
@@ -57,17 +57,20 @@
         <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
       </div> -->
     </main>
-    <confirmBtn 
-      loadingText="保存中"
-      cancelText="返回"
-      @confirm="onOk"
-      @plotCancel="plotCancel"
-      :isActive="tableList.length > 0"
-    >
-      <template slot="confirm">
-        <span>确认</span>
-      </template>
-    </confirmBtn>
+    <section class="community-footer">
+      <confirmBtn 
+        loadingText="保存中"
+        cancelText="返回"
+        @confirm="onOk"
+        @plotCancel="plotCancel"
+        :isActive="isActive"
+      >
+        <template slot="confirm">
+          <span>确认</span>
+        </template>
+      </confirmBtn>
+    </section>
+  
   </section>
 </template>
 
@@ -120,15 +123,18 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    console.log(111);
+    this.communityId = '';
+    this.communityName = '';
+    this.plotAacive = -1;
     this.tableList = [];
-    console.log(this.tableList);
-    this.page = 1;
     if (newVal !== '') {
-      this.getKeyCommunityList(); // 请求小区数据
+      this.getCommunityList(1); // 请求小区数据
     }
   }
-
+  // computed
+  get isActive(): boolean {
+    return (this.tableList.length > 0 && this.communityId !== '') || (this.tableList.length <= 0 && this.searchInputValue !== '');
+  }
   private async mounted() {
     // this.getBaiduLocation();
     this.getLocation();
@@ -191,6 +197,10 @@ export default class Community extends CommonMixins {
     if (page) {
       this.page = page;
       this.tableList = [];
+      this.finished = false;
+      this.communityId = '';
+      this.communityName = '';
+      this.plotAacive = -1;
     }
     console.log(2222);
     if (this.searchInputValue === '') {
@@ -279,23 +289,19 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private onOk() {
-    if (this.searchInputValue === '') {
-      this.$toast('请输入您爱屋所在的小区');
-    } else {
-        if (this.communityId === '') {
-          // 未选择
-          this.$toast('请选择您爱屋所在的小区');
-        } else {
-          // 跳转至enturst页面
-          this.$router.push({
-            name: this.pushRouteName,
-            params: {
-              communityId: this.communityId,
-              communityName: this.communityName
-            }
-          });
-        }
+    if (this.tableList.length <= 0 && this.searchInputValue !== '') {
+      this.communityName = this.searchInputValue;
+    } else if (this.tableList.length > 0 && this.communityId !== '') {
+      this.$toast('请选择您爱屋所在的小区');
+      return;
     }
+    this.$router.push({
+      name: this.pushRouteName,
+      params: {
+        communityId: this.communityId,
+        communityName: this.communityName
+      }
+    });
   }
 
   /**
@@ -317,20 +323,24 @@ export default class Community extends CommonMixins {
   //     });
   //   });
   // }
-  
+
 }
 </script>
 
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
   .community
-    overflow auto
+    // overflow auto
+    display flex
+    flex-direction column
+    justify-content space-between 
     .search
+      flex-grow 1
       height vw(55)
       background $global-background
       padding-top vw(5)
       border-bottom 1px solid #eee
-      position absolute
+      position fixed
       top 0
       left 0
       width 100%
@@ -338,8 +348,9 @@ export default class Community extends CommonMixins {
       .van-field
         font-size 14px
     .main
+      flex-grow 2
       margin-top vw(55)
-      margin-bottom vw(46)
+      // margin-bottom vw(46)
       .text
         height vw(40)
         line-height vw(40)
@@ -347,7 +358,7 @@ export default class Community extends CommonMixins {
         font-size 14px
         color $tip-text-color
       .list
-        height vw(520)
+        // height vw(520)
         overflow-y scroll
         .van-cell
           border-bottom 1px solid #eee
@@ -389,6 +400,8 @@ export default class Community extends CommonMixins {
         padding 0 vw(15)
         font-size 14px
         color $tip-text-color
+    .community-footer
+      flex-grow 1
 </style>
 
 

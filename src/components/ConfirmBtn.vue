@@ -67,7 +67,7 @@ export default class ConfirmBtn extends Vue {
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../assets/stylus/main.styl'
 .plot-footer
-  position absolute
+  position fixed
   bottom 0
   left 0
   display -webkit-flex
