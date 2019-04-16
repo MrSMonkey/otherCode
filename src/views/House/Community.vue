@@ -120,21 +120,12 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-<<<<<<< HEAD
     this.communityId = '';
     this.communityName = '';
     this.plotAacive = -1;
     this.tableList = [];
     if (newVal !== '') {
       this.getCommunityList(1); // 请求小区数据
-=======
-    console.log(111);
-    this.tableList = [];
-    console.log(this.tableList);
-    this.page = 1;
-    if (newVal !== '') {
-      this.getKeyCommunityList(); // 请求小区数据
->>>>>>> d1c8454f3e6c4e9b62e52f4f1ad30117bc7f2fa7
     }
   }
   // computed
@@ -203,13 +194,10 @@ export default class Community extends CommonMixins {
     if (page) {
       this.page = page;
       this.tableList = [];
-<<<<<<< HEAD
       this.finished = false;
       this.communityId = '';
       this.communityName = '';
       this.plotAacive = -1;
-=======
->>>>>>> d1c8454f3e6c4e9b62e52f4f1ad30117bc7f2fa7
     }
     console.log(2222);
     if (this.searchInputValue === '') {
