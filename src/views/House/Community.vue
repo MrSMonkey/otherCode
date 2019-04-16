@@ -22,7 +22,7 @@
           <span v-if="tableList.length > 0">请选择小区名称</span>
           <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
         </div>
-        <div class="list">
+        <div class="list" >
           <van-pull-refresh
             v-model="refreshing"
             @refresh="getCommunityList(1)"
@@ -49,7 +49,6 @@
               </van-cell>
             </van-list>
           </van-pull-refresh>
-          
         </div>
       </div>
       <!-- <div v-if="tableList.length <= 0">
@@ -217,13 +216,14 @@ export default class Community extends CommonMixins {
       } else {
         this.$toast(res.msg);
       }
-      this.loading = false;
       this.refreshing = false;
       if (res.data.totalPage < this.page) {
         this.finished = true;
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -247,7 +247,7 @@ export default class Community extends CommonMixins {
       console.log(res);
       if (res && res.code === '000') {
         this.tableList.push(...res.data.list);
-        console.log(this.tableList);
+        // console.log(this.tableList);
       } else {
         this.$toast(res.msg);
       }
@@ -258,6 +258,8 @@ export default class Community extends CommonMixins {
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.loading = false;
     }
   }
   /**
@@ -349,7 +351,7 @@ export default class Community extends CommonMixins {
         overflow-y scroll
         .van-cell
           border-bottom 1px solid #eee
-          padding 0
+          padding 0 !important
           .list-item-panel
             height vw(60)
             width 100%
