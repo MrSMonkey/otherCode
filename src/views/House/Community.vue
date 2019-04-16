@@ -22,7 +22,7 @@
           <span v-if="tableList.length > 0">请选择小区名称</span>
           <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
         </div>
-        <div class="list" >
+        <div class="list" v-if="tableList.length > 0">
           <van-pull-refresh
             v-model="refreshing"
             @refresh="getCommunityList(1)"
@@ -118,10 +118,10 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    this.tableList = [];
-    this.page = 1;
     if (newVal !== '') {
-      this.getKeyCommunityList(); // 请求小区数据
+      this.getCommunityList(1); // 请求小区数据
+    } else {
+      this.tableList = [];
     }
   }
 
@@ -146,7 +146,7 @@ export default class Community extends CommonMixins {
           lon: String(position.coords.longitude) // 经度
         };
         this.point = point;
-        this.getCommunityList();
+        this.getCommunityList(1);
       }, (error: any) => {
         /**
          * @description 定位抛出异常
@@ -187,6 +187,7 @@ export default class Community extends CommonMixins {
     if (page) {
       this.page = page;
       this.tableList = [];
+      this.finished = false;
     }
     console.log(2222);
     if (this.searchInputValue === '') {
@@ -217,6 +218,7 @@ export default class Community extends CommonMixins {
         this.$toast(res.msg);
       }
       this.refreshing = false;
+      this.loading = false;
       if (res.data.totalPage < this.page) {
         this.finished = true;
       }
@@ -323,21 +325,21 @@ export default class Community extends CommonMixins {
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
   .community
-    overflow auto
+    display flex
+    flex-direction column
+    // overflow auto
     .search
       height vw(55)
       background $global-background
       padding-top vw(5)
       border-bottom 1px solid #eee
-      position absolute
-      top 0
-      left 0
       width 100%
       z-index 1000
       .van-field
         font-size 14px
     .main
-      margin-top vw(55)
+      flex 1 0 auto
+      // margin-top vw(55)
       // margin-bottom vw(70)
       .text
         height vw(40)
@@ -389,9 +391,6 @@ export default class Community extends CommonMixins {
         font-size 14px
         color $tip-text-color
     .plot-footer
-      position absolute
-      bottom 0
-      left 0
       display -webkit-flex
       display flex
       justify-content space-between
