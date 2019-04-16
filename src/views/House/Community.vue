@@ -57,17 +57,19 @@
         <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
       </div> -->
     </main>
-    <confirmBtn 
-      loadingText="保存中"
-      cancelText="返回"
-      @confirm="onOk"
-      @plotCancel="plotCancel"
-      :isActive="tableList.length > 0"
-    >
-      <template slot="confirm">
-        <span>确认</span>
-      </template>
-    </confirmBtn>
+    <section class="community-footer">
+      <confirmBtn 
+        loadingText="保存中"
+        cancelText="返回"
+        @confirm="onOk"
+        @plotCancel="plotCancel"
+        :isActive="tableList.length > 0"
+      >
+        <template slot="confirm">
+          <span>确认</span>
+        </template>
+      </confirmBtn>
+    </section>
   </section>
 </template>
 
@@ -324,13 +326,17 @@ export default class Community extends CommonMixins {
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
   .community
-    overflow auto
+    // overflow auto
+    display flex
+    flex-direction column
+    justify-content space-between 
     .search
+      flex-grow 1
       height vw(55)
       background $global-background
       padding-top vw(5)
       border-bottom 1px solid #eee
-      position absolute
+      position fixed
       top 0
       left 0
       width 100%
@@ -338,8 +344,9 @@ export default class Community extends CommonMixins {
       .van-field
         font-size 14px
     .main
+      flex-grow 2
       margin-top vw(55)
-      margin-bottom vw(46)
+      // margin-bottom vw(46)
       .text
         height vw(40)
         line-height vw(40)
@@ -347,7 +354,7 @@ export default class Community extends CommonMixins {
         font-size 14px
         color $tip-text-color
       .list
-        height vw(520)
+        // height vw(520)
         overflow-y scroll
         .van-cell
           border-bottom 1px solid #eee
@@ -389,6 +396,8 @@ export default class Community extends CommonMixins {
         padding 0 vw(15)
         font-size 14px
         color $tip-text-color
+    .community-footer
+      flex-grow 1
 </style>
 
 
