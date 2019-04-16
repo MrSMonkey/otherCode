@@ -56,10 +56,10 @@ export default {
   pushService: '/partner/owner/launch_service',
 
   /*根据当前地理位置获取附近小区*/
-  getNearCommunityList: '/partner/community/search/location',
+  getNearCommunityList: '/es/community/search/location',
 
   /*根据关键词获取小区*/
-  getKeyCommunityList: '/partner/community/search/name',
+  getKeyCommunityList: '/es/community/search/name',
 
   /*获取城市列表*/
   getCitys: '/partner/common/city',

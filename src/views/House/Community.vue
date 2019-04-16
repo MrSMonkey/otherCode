@@ -18,8 +18,9 @@
     </section>
     <main class="main">
       <div class="list-panel">
-        <div class="text" v-if="tableList.length > 0">
-          <span>请选择小区名称</span>
+        <div class="text">
+          <span v-if="tableList.length > 0">请选择小区名称</span>
+          <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
         </div>
         <div class="list">
           <van-pull-refresh
@@ -30,8 +31,9 @@
               v-model="loading"
               :finished="finished"
               finished-text="没有更多了"
-              @load="getNearCommunityList"
-              :immediate-check="true"
+              error-text="请求失败，点击重新加载"
+              @load="getCommunityList"
+              :immediate-check="false"
             >
               <van-cell
                 v-for="item in tableList"
@@ -50,9 +52,9 @@
           
         </div>
       </div>
-      <div v-if="tableList.length === 0">
+      <!-- <div v-if="tableList.length <= 0">
         <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
-      </div>
+      </div> -->
     </main>
     <confirmBtn 
       loadingText="保存中"
@@ -108,33 +110,18 @@ export default class Community extends CommonMixins {
   private baiduAk: string = BAIDU_AK; // 百度地图key
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
-
+  
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
+    console.log(111);
     this.tableList = [];
+    console.log(this.tableList)
     this.page = 1;
     if (newVal !== '') {
       this.getKeyCommunityList(); // 请求小区数据
     }
   }
-  private debounce(func: any, wait: number) {
-    let timeout: any = null;
-    let timeout2: any = 111;
-    return () => {
-        const args = arguments;
-        console.log(timeout);
-        console.log(timeout2);
-        if (timeout) {
-          clearTimeout(timeout);
-          console.log('timeout');
-        }
-        timeout = setTimeout(() => {
-          timeout2 = 4444;
-          func.apply(this, args);
-        }, wait);
-    };
-  }
-  
+
   /**
    * @description 获取小区
    * @returns void
@@ -145,12 +132,14 @@ export default class Community extends CommonMixins {
       this.page = page;
       this.tableList = [];
     }
+    console.log(2222);
     if (this.searchInputValue === '') {
       this.getNearCommunityList();
     } else {
       this.getKeyCommunityList();
     }
   }
+
   /**
    * @description 根据关键词获取小区
    * @returns void
@@ -158,17 +147,13 @@ export default class Community extends CommonMixins {
    */
   private async getKeyCommunityList() {
     try {
-      const res: any = await this.axios.post(api.getKeyCommunityList, {
+      const res: any =  await this.axios.post(api.getKeyCommunityList, {
         cityId: this.cityId,
         name: this.searchInputValue,
         page: this.page++,
         pageSize: 20
       });
       if (res && res.code === '000') {
-        res.data.list.map((value: any) => {
-          value.id += (String(Math.random() * 1000000000)).split('.')[0];
-          return value;
-        });
         this.tableList.push(...res.data.list);
         console.log(this.tableList);
       } else {
@@ -196,15 +181,12 @@ export default class Community extends CommonMixins {
         cityId: this.cityId,
         lat: '30.591175',
         lon: '104.06858',
-        page: this.page++,
+        page: this.page,
         pageSize: 20,
         scope: '2km'
       });
+      console.log(res);
       if (res && res.code === '000') {
-        res.data.list.map((value: any) => {
-          value.id += (String(Math.random() * 1000000000)).split('.')[0];
-          return value;
-        });
         this.tableList.push(...res.data.list);
         console.log(this.tableList);
       } else {
@@ -212,9 +194,10 @@ export default class Community extends CommonMixins {
       }
       this.loading = false;
       this.refreshing = false;
-      if (this.tableList.length >= 40) {
+      if (res.totalPage <= this.page) {
         this.finished = true;
       }
+      this.page ++; // 更新当前页
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -278,6 +261,7 @@ export default class Community extends CommonMixins {
     // this.getBaiduLocation();
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
+    this.getCommunityList();
   }
 }
 </script>
