@@ -73,12 +73,14 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import { State, Getter, Mutation, Action } from 'vuex-class';
 import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
-
+import { Point } from '@/interface/utilInterface';
+const namespace: string = 'global';
 // 声明引入的组件
 @Component({
   name: 'Community',
@@ -110,7 +112,10 @@ export default class Community extends CommonMixins {
   private baiduAk: string = BAIDU_AK; // 百度地图key
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
-
+  private point: any = {
+    lat: '',
+    lon: ''
+  };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
     console.log(111);
@@ -119,6 +124,59 @@ export default class Community extends CommonMixins {
     this.page = 1;
     if (newVal !== '') {
       this.getKeyCommunityList(); // 请求小区数据
+    }
+  }
+
+  private async mounted() {
+    // this.getBaiduLocation();
+    this.getLocation();
+    this.cityId = String(this.$route.query.cityId);
+    this.pushRouteName = String(this.$route.query.routeName);
+  }
+
+  /**
+   * @description 定位成功
+   * @params position 当前位置信息
+   * @return 当前位置经纬度
+   * @author chemo
+   */
+  private getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        const point: Point = {
+          lat: String(position.coords.latitude), // 纬度
+          lon: String(position.coords.longitude) // 经度
+        };
+        this.point = point;
+        this.getCommunityList();
+      }, (error: any) => {
+        /**
+         * @description 定位抛出异常
+         * @params error 错误信息
+         * @return nulll
+         * @author chemo
+         */
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+          alert('定位失败,用户拒绝请求地理定位');
+          break;
+          case error.POSITION_UNAVAILABLE:
+          alert('定位失败,位置信息是不可用');
+          break;
+          case error.TIMEOUT:
+          alert('定位失败,请求获取用户位置超时');
+          break;
+          case error.UNKNOWN_ERROR:
+          alert('定位失败,定位系统失效');
+          break;
+        }
+      }, {
+        enableHighAccuracy: true, // 是否要求高精度的地理位置信息
+        timeout: 1000, // 对地理位置信息的获取操作做超时限制，如果再该事件内未获取到地理位置信息，将返回错误
+        maximumAge: 60 * 1000 // 设置缓存有效时间，在该时间段内，获取的地理位置信息还是设置此时间段之前的那次获得的信息，超过这段时间缓存的位置信息会被废弃
+      });
+    } else {
+      alert('您当前使用的浏览器不支持地理定位服务');
     }
   }
 
@@ -181,8 +239,8 @@ export default class Community extends CommonMixins {
       // 104.06858,30.591175
       const res: any = await this.axios.post(api.getNearCommunityList, {
         cityId: this.cityId,
-        lat: '30.591175',
-        lon: '104.06858',
+        lat: this.point.lat || '',
+        lon: this.point.lon  || '',
         page: this.page ++,
         pageSize: 20,
         scope: '2km'
@@ -258,12 +316,7 @@ export default class Community extends CommonMixins {
   //     });
   //   });
   // }
-  private mounted() {
-    // this.getBaiduLocation();
-    this.cityId = String(this.$route.query.cityId);
-    this.pushRouteName = String(this.$route.query.routeName);
-    this.getCommunityList();
-  }
+  
 }
 </script>
 
@@ -285,7 +338,7 @@ export default class Community extends CommonMixins {
         font-size 14px
     .main
       margin-top vw(55)
-      margin-bottom vw(70)
+      // margin-bottom vw(70)
       .text
         height vw(40)
         line-height vw(40)

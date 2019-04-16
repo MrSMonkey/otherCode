@@ -12,7 +12,7 @@ import Vue from 'vue';
 import router from '@/router';
 import api from '@/api';
 import { handleWebStorage, openPostWindow } from '@/utils/utils';
-import { Point } from '@/interface/utilInterface';
+
 
 // 从本地获取token
 const getTokenFromLocal = () => {
@@ -119,9 +119,9 @@ export const actions: ActionTree<GlobalState, RootState> = {
     }
   },
   // 获取经纬度
-  getLocation({ commit }) {
+  async getLocation({ commit }) {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position: any) => {
+      await navigator.geolocation.getCurrentPosition((position: any) => {
         /**
          * @description 定位成功
          * @params position 当前位置信息
@@ -132,6 +132,7 @@ export const actions: ActionTree<GlobalState, RootState> = {
           lat: position.coords.latitude, // 纬度
           lag: position.coords.longitude // 经度
         };
+        console.log(point)
         commit('updatePoint', point); // 更新经纬度
         commit('updateIsGainPoint', true); // 经纬度获取成功
       }, (error: any) => {
