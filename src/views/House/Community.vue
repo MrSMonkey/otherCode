@@ -346,7 +346,7 @@ export default class Community extends CommonMixins {
     .main
       flex-grow 2
       margin-top vw(55)
-      // margin-bottom vw(46)
+      margin-bottom vw(46)
       .text
         height vw(40)
         line-height vw(40)
