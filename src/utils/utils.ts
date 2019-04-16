@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 17:56:01
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-15 14:56:33
  */
 
 /* 首字母大写 */
@@ -351,15 +351,64 @@ export function debounce(func: any, wait: number) {
   let timeout: any = null;
   let timeout2: any = 111;
   return () => {
+      const args = arguments;
       console.log(timeout);
       console.log(timeout2);
-      if (timeout !== null) {
+      if (timeout) {
         clearTimeout(timeout);
         console.log('timeout');
       }
       timeout = setTimeout(() => {
         timeout2 = 4444;
-        func();
+        func(...args);
       }, wait);
   };
+}
+
+/**
+ * @description 定位成功
+ * @params position 当前位置信息
+ * @return 当前位置经纬度
+ * @author chemo
+ */
+const showPosition = (position: any) => {
+  const lat = position.coords.latitude; // 纬度
+  const lag = position.coords.longitude; // 经度
+  alert('纬度:' + lat + ',经度:' + lag);
+};
+
+/**
+ * @description 定位成功
+ * @params error 错误信息
+ * @return 当前位置经纬度
+ * @author chemo
+ */
+const showError = (error: any) => {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+    alert('定位失败,用户拒绝请求地理定位');
+    break;
+    case error.POSITION_UNAVAILABLE:
+    alert('定位失败,位置信息是不可用');
+    break;
+    case error.TIMEOUT:
+    alert('定位失败,请求获取用户位置超时');
+    break;
+    case error.UNKNOWN_ERROR:
+    alert('定位失败,定位系统失效');
+    break;
+  }
+};
+
+/**
+ * @description 定位功能
+ * @return null
+ * @author chemo
+ */
+export function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+    alert('浏览器不支持地理定位。');
+  }
 }

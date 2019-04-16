@@ -2,8 +2,8 @@
  * @Description: 选择小区页面
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 17:43:23
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-15 14:56:23
  */
 
 <template>
@@ -12,6 +12,7 @@
       <van-field
         v-model="searchInputValue"
         placeholder="请输入您爱屋所在的小区" 
+        autofocus="true"
         clearable
       />
     </section>
@@ -21,32 +22,36 @@
           <span>请选择小区名称</span>
         </div>
         <div class="list">
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="getMorePlotList"
-            :immediate-check="true"
+          <van-pull-refresh
+            v-model="refreshing"
+            @refresh="getCommunityList(1)"
           >
-            <van-cell
-              v-for="item in tableList"
-              :key="item.id"
-              :border="false"
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="getNearCommunityList"
+              :immediate-check="true"
             >
-              <template>
-                <div v-for="item in tableList" :key="item.id" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
-                  <span class="community-name list-item">{{item.communityName}}</span>
-                  <span class="address list-item">{{item.address}}</span>
-                </div>
-              </template>
-            </van-cell>
-          </van-list>
+              <van-cell
+                v-for="item in tableList"
+                :key="item.id"
+                :border="false"
+              >
+                <template>
+                  <div class="list-item-panel" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
+                    <span class="community-name list-item">{{item.communityName}}</span>
+                    <span class="address list-item">{{item.address}}</span>
+                  </div>
+                </template>
+              </van-cell>
+            </van-list>
+          </van-pull-refresh>
+          
         </div>
       </div>
-      <div v-if="tableList.length === 0 && isGetPlot">
-        <div class="noserch">
-          <p class="noserch-title">未找到该小区，确认提交后工作人员会尽快为您处理！</p>
-        </div>
+      <div v-if="tableList.length === 0">
+        <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
       </div>
     </main>
     <confirmBtn 
@@ -68,7 +73,9 @@ import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
-import { debounce } from '@/utils/utils';
+import { getLocation } from '@/utils/utils';
+import { MP } from '@/utils/map';
+import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 
 // 声明引入的组件
@@ -97,56 +104,114 @@ export default class Community extends CommonMixins {
   private error: boolean = false;
   private finished: boolean = false;
   private tableList: any = [];
-  private isGetPlot: boolean = false; // 判断是否请求了小区
+  private lon: number = 0; // 当前位置经度
+  private lat: number = 0; // 当前位置纬度
+  private baiduAk: string = BAIDU_AK; // 百度地图key
+  private page: number = 1; // 当前请求页码
+  private pageSize: number = 20; // 每页条数
 
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    const temp: any = debounce(() => {
-      if (newVal !== '') {
-      this.getPlotList(); // 请求小区数据
-    } else {
-      this.isGetPlot = false;
-      this.tableList = []; // 清空查询
+    this.tableList = [];
+    this.page = 1;
+    if (newVal !== '') {
+      this.getKeyCommunityList(); // 请求小区数据
     }
-    }, 200);
-    console.log(temp);
-    temp(newVal);
   }
-
+  private debounce(func: any, wait: number) {
+    let timeout: any = null;
+    let timeout2: any = 111;
+    return () => {
+        const args = arguments;
+        console.log(timeout);
+        console.log(timeout2);
+        if (timeout) {
+          clearTimeout(timeout);
+          console.log('timeout');
+        }
+        timeout = setTimeout(() => {
+          timeout2 = 4444;
+          func.apply(this, args);
+        }, wait);
+    };
+  }
+  private getCommunityList(page?: number): void {
+    if (page) {
+      this.page = page;
+      this.tableList = [];
+    }
+    if (this.searchInputValue === '') {
+      this.getNearCommunityList();
+    } else {
+      this.getKeyCommunityList();
+    }
+  }
   /**
-   * @description 获取小区
+   * @description 获取小区(根据关键词)
    * @returns void
    * @author chenmo
    */
-  private async getPlotList() {
-    if (this.searchInputValue === '') {
-      return false;
-    }
+  private async getKeyCommunityList() {
     try {
-      const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.searchInputValue}`);
+      const res: any = await this.axios.post(api.getKeyCommunityList, {
+        cityId: this.cityId,
+        name: this.searchInputValue,
+        page: this.page++,
+        pageSize: 20
+      });
       if (res && res.code === '000') {
-        this.tableList.push(...res.data);
-        this.isGetPlot = true; // 请求成功
+        res.data.list.map((value: any) => {
+          value.id += (String(Math.random() * 1000000000)).split('.')[0];
+          return value;
+        });
+        this.tableList.push(...res.data.list);
         console.log(this.tableList);
       } else {
         this.$toast(res.msg);
+      }
+      this.loading = false;
+      this.refreshing = false;
+      if (this.tableList.length >= 40) {
+        this.finished = true;
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
   }
-  private async getMorePlotList() {
-    const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.searchInputValue}`);
-    if (res && res.code === '000') {
-      this.tableList.push(...res.data);
-      this.isGetPlot = true; // 请求成功
-      console.log(this.tableList);
-    } else {
-      this.$toast(res.msg);
-    }
-    this.loading = false;
-    if (this.tableList.length >= 40) {
-      this.finished = true;
+
+  /**
+   * @description 获取小区(根据当前定位)
+   * @returns void
+   * @author linyu
+   */
+  private async getNearCommunityList() {
+    try {
+      // 104.06858,30.591175
+      const res: any = await this.axios.post(api.getNearCommunityList, {
+        cityId: this.cityId,
+        lat: '30.591175',
+        lon: '104.06858',
+        page: this.page++,
+        pageSize: 20,
+        scope: '2km'
+      });
+      if (res && res.code === '000') {
+        res.data.list.map((value: any) => {
+          value.id += (String(Math.random() * 1000000000)).split('.')[0];
+          return value;
+        });
+        this.tableList.push(...res.data.list);
+        console.log(this.tableList);
+      } else {
+        this.$toast(res.msg);
+      }
+      this.loading = false;
+      this.refreshing = false;
+      if (this.tableList.length >= 40) {
+        this.finished = true;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
     }
   }
   /**
@@ -193,12 +258,23 @@ export default class Community extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
-  private onRefresh() {
-    console.log('referesh');
+  private getBaiduLocation() {
+    this.$nextTick(() => {
+      MP(this.baiduAk).then((BMap: any) => {
+        const getlocation = new BMap.Geolocation();
+        getlocation.getCurrentPosition((r: any) => {
+         this.lon = r.point.lng;
+         this.lat = r.point.lat;
+         console.log(this.lon, this.lat);
+        });
+      });
+    });
   }
   private mounted() {
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
+    console.log(this.$refs.searchInput);
+    this.getBaiduLocation();
   }
 }
 </script>
@@ -233,24 +309,44 @@ export default class Community extends CommonMixins {
         overflow-y scroll
         .van-cell
           border-bottom 1px solid #eee
+          padding 0
+          .list-item-panel
+            height vw(60)
+            width 100%
+            line-height vw(45)
+            color $text-color
+            font-size 14px
+            padding vw(10) vw(15)
+            display -webkit-flex
+            display flex
+            flex-direction column
+            align-items center
+            .list-item
+              flex 0 1 auto
+              overflow hidden
+              text-overflow ellipsis
+              white-space nowrap
+              width 100%
+            .community-name
+              color $text-color
+              height vw(23)
+              line-height vw(20)
+            .address
+              font-size 12px
+              height vw(17)
+              line-height vw(16)
+              color $tip-text-color
+          .active
+            background-color #fafafa
+            .community-name
+              color $main-color
       .noserch
-        margin-top vw(200)
-        text-align center
-        .noserch-title
-          font-size 16px
-          color $text-color
-        .tips
-          font-size 14px
-          color $tip-text-color
-          margin-top vw(20)
-        a
-          display inline-block
-          border 1px solid $main-color
-          color $main-color
-          font-size 14px
-          padding vw(5) vw(20)
-          border-radius vw(4)
-          margin-top vw(20)
+        margin-top vw(55)
+        height vw(40)
+        line-height vw(40)
+        padding 0 vw(15)
+        font-size 14px
+        color $tip-text-color
     .plot-footer
       position absolute
       bottom 0

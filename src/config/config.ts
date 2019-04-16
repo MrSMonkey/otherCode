@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-02 16:16:03
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-15 14:22:42
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -279,3 +279,6 @@ export const TIPSONE: string = `注：本次支付仅支付上门检测费，具
 // 维修购买提示
 export const TIPSTWO: string = `注：本次支付仅支付装修设计费，装修工程费用需在确认装修后支付！`;
 
+
+// 百度地图ak
+export const BAIDU_AK: string = `e0dzZmaImw9rUXxWyPBGgs78ZXoAfwhS`;

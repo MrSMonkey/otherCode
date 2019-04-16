@@ -10,4 +10,5 @@ declare global {
       [elem: string]: any;
     }
   }
+  interface Window { BMap: ((BMap: any) => any) | undefined; }
 }
