@@ -12,23 +12,49 @@
       <van-field
         v-model="searchInputValue"
         placeholder="请输入您爱屋所在的小区" 
+        autofocus="true"
         clearable
       />
     </section>
     <main class="main">
-      <ul class="list" v-if="tableList.length > 0">
-        <li v-for="item in tableList" :key="item.id" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
-          <span>{{item.communityName}}({{item.address}})</span>
-          <img src="@/assets/images/icon/icon_select.png" alt="" v-if="item.id === plotAacive"/>
-        </li>
-      </ul>
-      <div v-if="tableList.length === 0 && isGetPlot">
-        <div class="noserch">
-          <p class="noserch-title">未找到您输入的小区</p>
-          <p class="tips">快速咨询，请点击拨打：10105288</p>
-          <a href="tel:10105288">快速委托</a>
+      <div class="list-panel">
+        <div class="text">
+          <span v-if="tableList.length > 0">请选择小区名称</span>
+          <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
+        </div>
+        <div class="list">
+          <van-pull-refresh
+            v-model="refreshing"
+            @refresh="getCommunityList(1)"
+          >
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              error-text="请求失败，点击重新加载"
+              @load="getCommunityList"
+              :immediate-check="false"
+            >
+              <van-cell
+                v-for="item in tableList"
+                :key="item.id"
+                :border="false"
+              >
+                <template>
+                  <div class="list-item-panel" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
+                    <span class="community-name list-item">{{item.communityName}}</span>
+                    <span class="address list-item">{{item.address}}</span>
+                  </div>
+                </template>
+              </van-cell>
+            </van-list>
+          </van-pull-refresh>
+          
         </div>
       </div>
+      <!-- <div v-if="tableList.length <= 0">
+        <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
+      </div> -->
     </main>
     <confirmBtn 
       loadingText="保存中"
@@ -47,7 +73,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { Field, Row, Col } from 'vant';
+import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
@@ -60,6 +86,9 @@ import api from '@/api';
     [Field.name]: Field,
     [Row.name]: Row,
     [Col.name]: Col,
+    [Cell.name]: Cell,
+    [List.name]: List,
+    [PullRefresh.name]: PullRefresh,
     ConfirmBtn
   }
 })
@@ -71,48 +100,108 @@ export default class Community extends CommonMixins {
   private communityId: string = '';
   private communityName: string = '';
   private pushRouteName: string;
-  private tableList: any[] = [];
-  private isGetPlot: boolean = false; // 判断是否请求了小区
+  private refreshing: boolean = false;
+  private loading: boolean = false;
+  private error: boolean = false;
+  private finished: boolean = false;
+  private tableList: any = [];
   private lon: number = 0; // 当前位置经度
   private lat: number = 0; // 当前位置纬度
   private baiduAk: string = BAIDU_AK; // 百度地图key
-
+  private page: number = 1; // 当前请求页码
+  private pageSize: number = 20; // 每页条数
+  
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    const temp: any = debounce(() => {
-      if (newVal !== '') {
-      this.getPlotList(); // 请求小区数据
-    } else {
-      this.isGetPlot = false;
-      this.tableList = []; // 清空查询
+    console.log(111);
+    this.tableList = [];
+    console.log(this.tableList)
+    this.page = 1;
+    if (newVal !== '') {
+      this.getKeyCommunityList(); // 请求小区数据
     }
-    }, 2000);
-    console.log(temp);
-    temp(newVal);
   }
 
   /**
    * @description 获取小区
    * @returns void
+   * @author linyu
+   */
+  private getCommunityList(page?: number): void {
+    if (page) {
+      this.page = page;
+      this.tableList = [];
+    }
+    console.log(2222);
+    if (this.searchInputValue === '') {
+      this.getNearCommunityList();
+    } else {
+      this.getKeyCommunityList();
+    }
+  }
+
+  /**
+   * @description 根据关键词获取小区
+   * @returns void
    * @author chenmo
    */
-  private async getPlotList() {
-    if (this.searchInputValue === '') {
-      return false;
-    }
+  private async getKeyCommunityList() {
     try {
-      const res: any = await this.axios.get(api.getCommunityList + `/${this.cityId}/${this.searchInputValue}`);
+      const res: any =  await this.axios.post(api.getKeyCommunityList, {
+        cityId: this.cityId,
+        name: this.searchInputValue,
+        page: this.page++,
+        pageSize: 20
+      });
       if (res && res.code === '000') {
-        this.tableList = res.data || [];
-        this.isGetPlot = true; // 请求成功
+        this.tableList.push(...res.data.list);
+        console.log(this.tableList);
       } else {
         this.$toast(res.msg);
+      }
+      this.loading = false;
+      this.refreshing = false;
+      if (this.tableList.length >= 40) {
+        this.finished = true;
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
   }
 
+  /**
+   * @description 根据当前定位获取小区
+   * @returns void
+   * @author linyu
+   */
+  private async getNearCommunityList() {
+    try {
+      // 104.06858,30.591175
+      const res: any = await this.axios.post(api.getNearCommunityList, {
+        cityId: this.cityId,
+        lat: '30.591175',
+        lon: '104.06858',
+        page: this.page,
+        pageSize: 20,
+        scope: '2km'
+      });
+      console.log(res);
+      if (res && res.code === '000') {
+        this.tableList.push(...res.data.list);
+        console.log(this.tableList);
+      } else {
+        this.$toast(res.msg);
+      }
+      this.loading = false;
+      this.refreshing = false;
+      if (res.totalPage <= this.page) {
+        this.finished = true;
+      }
+      this.page ++; // 更新当前页
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
   /**
    * @description 选择小区
    * @returns void
@@ -172,6 +261,7 @@ export default class Community extends CommonMixins {
     // this.getBaiduLocation();
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
+    this.getCommunityList();
   }
 }
 </script>
@@ -193,56 +283,57 @@ export default class Community extends CommonMixins {
       .van-field
         font-size 14px
     .main
-      margin-top vw(75)
+      margin-top vw(55)
       margin-bottom vw(70)
+      .text
+        height vw(40)
+        line-height vw(40)
+        padding 0 vw(15)
+        font-size 14px
+        color $tip-text-color
       .list
-        margin-top vw(20)
         height vw(520)
         overflow-y scroll
-        li
-          background #fff
-          height vw(45)
-          width 100%
-          line-height vw(45)
-          color $text-color
-          font-size 14px
-          padding 0 vw(15)
+        .van-cell
           border-bottom 1px solid #eee
-          display -webkit-flex
-          display flex
-          justify-content space-between
-          align-items center
-          span  
-            width vw(320)
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-          img 
-            display inline-block
-            text-align right
-            width vw(16)
-            vertical-align middle
-        .active
-          // background $bg-color-default
-          color $main-color
+          padding 0
+          .list-item-panel
+            height vw(60)
+            width 100%
+            line-height vw(45)
+            color $text-color
+            font-size 14px
+            padding vw(10) vw(15)
+            display -webkit-flex
+            display flex
+            flex-direction column
+            align-items center
+            .list-item
+              flex 0 1 auto
+              overflow hidden
+              text-overflow ellipsis
+              white-space nowrap
+              width 100%
+            .community-name
+              color $text-color
+              height vw(23)
+              line-height vw(20)
+            .address
+              font-size 12px
+              height vw(17)
+              line-height vw(16)
+              color $tip-text-color
+          .active
+            background-color #fafafa
+            .community-name
+              color $main-color
       .noserch
-        margin-top vw(200)
-        text-align center
-        .noserch-title
-          font-size 16px
-          color $text-color
-        .tips
-          font-size 14px
-          color $tip-text-color
-          margin-top vw(20)
-        a
-          display inline-block
-          border 1px solid $main-color
-          color $main-color
-          font-size 14px
-          padding vw(5) vw(20)
-          border-radius vw(4)
-          margin-top vw(20)
+        margin-top vw(55)
+        height vw(40)
+        line-height vw(40)
+        padding 0 vw(15)
+        font-size 14px
+        color $tip-text-color
     .plot-footer
       position absolute
       bottom 0

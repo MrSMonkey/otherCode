@@ -351,15 +351,13 @@ export function debounce(func: any, wait: number) {
   let timeout: any = null;
   let timeout2: any = 111;
   return () => {
-      console.log(timeout);
-      console.log(timeout2);
-      if (timeout !== null) {
+      const args = arguments;
+      if (timeout) {
         clearTimeout(timeout);
-        console.log('timeout');
       }
       timeout = setTimeout(() => {
         timeout2 = 4444;
-        func();
+        func(...args);
       }, wait);
   };
 }
