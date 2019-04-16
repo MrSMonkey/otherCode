@@ -110,12 +110,12 @@ export default class Community extends CommonMixins {
   private baiduAk: string = BAIDU_AK; // 百度地图key
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
-  
+
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
     console.log(111);
     this.tableList = [];
-    console.log(this.tableList)
+    console.log(this.tableList);
     this.page = 1;
     if (newVal !== '') {
       this.getKeyCommunityList(); // 请求小区数据
@@ -161,7 +161,7 @@ export default class Community extends CommonMixins {
       }
       this.loading = false;
       this.refreshing = false;
-      if (this.tableList.length >= 40) {
+      if (res.data.totalPage < this.page) {
         this.finished = true;
       }
     } catch (err) {
@@ -175,13 +175,14 @@ export default class Community extends CommonMixins {
    * @author linyu
    */
   private async getNearCommunityList() {
+    console.log('page', this.page);
     try {
       // 104.06858,30.591175
       const res: any = await this.axios.post(api.getNearCommunityList, {
         cityId: this.cityId,
         lat: '30.591175',
         lon: '104.06858',
-        page: this.page,
+        page: this.page ++,
         pageSize: 20,
         scope: '2km'
       });
@@ -194,10 +195,9 @@ export default class Community extends CommonMixins {
       }
       this.loading = false;
       this.refreshing = false;
-      if (res.totalPage <= this.page) {
+      if (res.data.totalPage < this.page) {
         this.finished = true;
       }
-      this.page ++; // 更新当前页
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
