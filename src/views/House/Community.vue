@@ -315,7 +315,6 @@ export default class Community extends CommonMixins {
   //     });
   //   });
   // }
-  
 }
 </script>
 
