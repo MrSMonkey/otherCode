@@ -39,6 +39,7 @@
                 v-for="item in tableList"
                 :key="item.id"
                 :border="false"
+                class="list-cell"
               >
                 <template>
                   <div class="list-item-panel" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
@@ -338,7 +339,7 @@ export default class Community extends CommonMixins {
         font-size 14px
     .main
       margin-top vw(55)
-      // margin-bottom vw(70)
+      margin-bottom vw(70)
       .text
         height vw(40)
         line-height vw(40)
@@ -348,6 +349,7 @@ export default class Community extends CommonMixins {
       .list
         height vw(520)
         overflow-y scroll
+        
         .van-cell
           border-bottom 1px solid #eee
           padding 0 !important
