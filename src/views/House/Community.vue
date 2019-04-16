@@ -22,7 +22,7 @@
           <span v-if="tableList.length > 0">请选择小区名称</span>
           <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
         </div>
-        <div class="list">
+        <div class="list" v-if="tableList.length > 0">
           <van-pull-refresh
             v-model="refreshing"
             @refresh="getCommunityList(1)"
@@ -320,7 +320,7 @@ export default class Community extends CommonMixins {
   //     });
   //   });
   // }
-  
+
 }
 </script>
 
