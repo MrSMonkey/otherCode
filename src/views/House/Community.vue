@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 14:56:23
+ * @Last Modified time: 2019-04-15 15:27:14
  */
 
 <template>
@@ -73,8 +73,7 @@ import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
-import { getLocation } from '@/utils/utils';
-import { MP } from '@/utils/map';
+import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 
@@ -265,28 +264,20 @@ export default class Community extends CommonMixins {
     this.$router.back();
   }
 
-  /**
-   * @description 获取当前定位
-   * @returns void
-   * @author chenmo
-   */
-  private getBaiduLocation() {
-    this.$nextTick(() => {
-      MP(this.baiduAk).then((BMap: any) => {
-        const getlocation = new BMap.Geolocation();
-        getlocation.getCurrentPosition((r: any) => {
-         this.lon = r.point.lng;
-         this.lat = r.point.lat;
-         console.log(this.lon, this.lat);
-        });
-      });
-    });
-  }
+  // private getBaiduLocation() {
+  //   MP(this.baiduAk).then((BMap: any) => {
+  //     const getlocation = new BMap.Geolocation();
+  //     getlocation.getCurrentPosition((r: any) => {
+  //       this.lon = r.point.lng;
+  //       this.lat = r.point.lat;
+  //       console.log(this.lon, this.lat);
+  //     });
+  //   });
+  // }
   private mounted() {
+    // this.getBaiduLocation();
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
-    console.log(this.$refs.searchInput);
-    this.getBaiduLocation();
   }
 }
 </script>
