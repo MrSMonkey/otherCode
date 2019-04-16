@@ -344,30 +344,31 @@ export default class Entrust extends CommonMixins {
       ownerUserId: localStorage.getItem('userId'),
       source: typeof(this.sourceId) === undefined ? '' : this.sourceId
     };
-    try {
-      const res: any = await this.axios.post(api.pushEntrust, data);
-      if (res && res.code === '000') {
-        this.$dialog.confirm({
-            title: '提示',
-            confirmButtonText: '立即查看',
-            cancelButtonText: '暂不选择',
-            className: 'dialogTips',
-            message: `提交成功！资产管家会尽快与您联系，您可以在【我的房源】中选择资产管家`
-          }).then(() => {
-            // on confirm
-            this.$router.push(`/house`); // 跳转到房源列表
-          }).catch(() => {
-            // on cancel 取消
-            window.location.reload(); // 取消刷新页面
-          });
-      } else {
-        this.$toast(res.msg || '委托失败，请重试！');
-      }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.loading = false;
-    }
+    this.$dialog.confirm({
+          title: '提示',
+          confirmButtonText: '立即查看',
+          cancelButtonText: '暂不选择',
+          className: 'dialogTips',
+          message: `提交成功！资产管家会尽快与您联系，您可以在【我的房源】中选择资产管家`
+        }).then(() => {
+          // on confirm
+          this.$router.push(`/house`); // 跳转到房源列表
+        }).catch(() => {
+          // on cancel 取消
+          window.location.reload(); // 取消刷新页面
+        });
+    // try {
+    //   const res: any = await this.axios.post(api.pushEntrust, data);
+    //   if (res && res.code === '000') {
+       
+    //   } else {
+    //     this.$toast(res.msg || '委托失败，请重试！');
+    //   }
+    // } catch (err) {
+    //   throw new Error(err || 'Unknow Error!');
+    // } finally {
+    //   this.loading = false;
+    // }
   }
   // Watch
   @Watch('ownerPhone')
@@ -473,4 +474,7 @@ export default class Entrust extends CommonMixins {
   .bg-active
     background $disabled-color
     color #fff
+.dialogTips
+  .van-dialog__content
+    color #2C2D2E !important
 </style>
