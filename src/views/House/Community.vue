@@ -123,10 +123,6 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    this.communityId = '';
-    this.communityName = '';
-    this.plotAacive = -1;
-    this.tableList = [];
     if (newVal !== '') {
       this.getCommunityList(1); // 请求小区数据
     }
@@ -291,7 +287,7 @@ export default class Community extends CommonMixins {
   private onOk() {
     if (this.tableList.length <= 0 && this.searchInputValue !== '') {
       this.communityName = this.searchInputValue;
-    } else if (this.tableList.length > 0 && this.communityId !== '') {
+    } else if (this.tableList.length > 0 && this.communityId == '') {
       this.$toast('请选择您爱屋所在的小区');
       return;
     }
