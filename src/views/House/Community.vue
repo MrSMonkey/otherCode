@@ -49,8 +49,7 @@ import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
-import { debounce, getLocation } from '@/utils/utils';
-import { MP } from '@/utils/map';
+import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 
@@ -158,21 +157,21 @@ export default class Community extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
-  private getBaiduLocation() {
-    MP(this.baiduAk).then((BMap: any) => {
-      const getlocation = new BMap.Geolocation();
-      getlocation.getCurrentPosition((r: any) => {
-        this.lon = r.point.lng;
-        this.lat = r.point.lat;
-        console.log(this.lon, this.lat);
-      });
-    });
-  }
+
+  // private getBaiduLocation() {
+  //   MP(this.baiduAk).then((BMap: any) => {
+  //     const getlocation = new BMap.Geolocation();
+  //     getlocation.getCurrentPosition((r: any) => {
+  //       this.lon = r.point.lng;
+  //       this.lat = r.point.lat;
+  //       console.log(this.lon, this.lat);
+  //     });
+  //   });
+  // }
   private mounted() {
     // this.getBaiduLocation();
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
-    getLocation();
   }
 }
 </script>
