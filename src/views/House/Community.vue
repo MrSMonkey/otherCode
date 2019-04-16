@@ -153,6 +153,7 @@ export default class Community extends CommonMixins {
         page: this.page++,
         pageSize: 20
       });
+      console.log(res);
       if (res && res.code === '000') {
         this.tableList.push(...res.data.list);
         console.log(this.tableList);
