@@ -12,6 +12,6 @@ import { BaseInterface } from './base.interface';
  * lag  // 经度
  */
 export interface Point extends BaseInterface {
-  lat?: number;
-  lag?: number;
+  lat?: string;
+  lon?: string;
 }
