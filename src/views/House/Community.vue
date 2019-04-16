@@ -81,6 +81,7 @@ import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 import { Point } from '@/interface/utilInterface';
 const namespace: string = 'global';
+
 // 声明引入的组件
 @Component({
   name: 'Community',
@@ -118,9 +119,7 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    console.log(111);
     this.tableList = [];
-    console.log(this.tableList);
     this.page = 1;
     if (newVal !== '') {
       this.getKeyCommunityList(); // 请求小区数据
