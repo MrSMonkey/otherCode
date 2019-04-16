@@ -17,45 +17,39 @@
       />
     </section>
     <main class="main">
-      <div class="list-panel">
-        <div class="text">
-          <span v-if="tableList.length > 0">请选择小区名称</span>
-          <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
-        </div>
-        <div class="list" v-if="tableList.length > 0">
-          <van-pull-refresh
-            v-model="refreshing"
-            @refresh="getCommunityList(1)"
-          >
-            <van-list
-              v-model="loading"
-              :finished="finished"
-              finished-text="没有更多了"
-              error-text="请求失败，点击重新加载"
-              @load="getCommunityList"
-              :immediate-check="false"
-            >
-              <van-cell
-                v-for="item in tableList"
-                :key="item.id"
-                :border="false"
-                class="list-cell "
-              >
-                <template>
-                  <div class="list-item-panel" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
-                    <span class="community-name list-item">{{item.communityName}}</span>
-                    <span class="address list-item">{{item.address}}</span>
-                  </div>
-                </template>
-              </van-cell>
-            </van-list>
-          </van-pull-refresh>
-          
-        </div>
+      <div class="text">
+        <span v-if="tableList.length > 0">请选择小区名称</span>
+        <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
       </div>
-      <!-- <div v-if="tableList.length <= 0">
-        <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
-      </div> -->
+      <div class="list" v-if="tableList.length > 0">
+        <van-pull-refresh
+          v-model="refreshing"
+          @refresh="getCommunityList(1)"
+        >
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            error-text="请求失败，点击重新加载"
+            @load="getCommunityList"
+            :immediate-check="false"
+          >
+            <van-cell
+              v-for="item in tableList"
+              :key="item.id"
+              :border="false"
+              class="list-cell "
+            >
+              <template>
+                <div class="list-item-panel" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
+                  <span class="community-name list-item">{{item.communityName}}</span>
+                  <span class="address list-item">{{item.address}}</span>
+                </div>
+              </template>
+            </van-cell>
+          </van-list>
+        </van-pull-refresh>
+      </div>
     </main>
     <confirmBtn 
       loadingText="保存中"
@@ -327,22 +321,22 @@ export default class Community extends CommonMixins {
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
   .community
-    overflow auto
+    height 100%
+    display flex
+    flex-direction column
     .search
       height vw(55)
       background $global-background
       padding-top vw(5)
       border-bottom 1px solid #eee
-      position absolute
-      top 0
-      left 0
       width 100%
       z-index 1000
       .van-field
         font-size 14px
     .main
-      margin-top vw(55)
-      margin-bottom vw(46)
+      flex-grow 1
+      display flex
+      flex-direction column
       .text
         height vw(40)
         line-height vw(40)
@@ -350,7 +344,7 @@ export default class Community extends CommonMixins {
         font-size 14px
         color $tip-text-color
       .list
-        height vw(520)
+        flex-grow 1
         overflow-y scroll
         .van-cell
           border-bottom 1px solid #eee
@@ -385,13 +379,6 @@ export default class Community extends CommonMixins {
             background-color #fafafa
             .community-name
               color $main-color
-      .noserch
-        margin-top vw(55)
-        height vw(40)
-        line-height vw(40)
-        padding 0 vw(15)
-        font-size 14px
-        color $tip-text-color
 </style>
 
 
