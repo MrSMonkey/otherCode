@@ -60,7 +60,7 @@
       cancelText="返回"
       @confirm="onOk"
       @plotCancel="plotCancel"
-      :isActive="tableList.length > 0"
+      :isActive="isActive"
     >
       <template slot="confirm">
         <span>确认</span>
@@ -118,13 +118,18 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
+    this.communityId = '';
+    this.communityName = '';
+    this.plotAacive = -1;
+    this.tableList = [];
     if (newVal !== '') {
       this.getCommunityList(1); // 请求小区数据
-    } else {
-      this.tableList = [];
     }
   }
-
+  // computed
+  get isActive(): boolean {
+    return (this.tableList.length > 0 && this.communityId !== '') || (this.tableList.length <= 0 && this.searchInputValue !== '');
+  }
   private async mounted() {
     // this.getBaiduLocation();
     this.getLocation();
@@ -188,6 +193,9 @@ export default class Community extends CommonMixins {
       this.page = page;
       this.tableList = [];
       this.finished = false;
+      this.communityId = '';
+      this.communityName = '';
+      this.plotAacive = -1;
     }
     console.log(2222);
     if (this.searchInputValue === '') {
@@ -281,23 +289,19 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private onOk() {
-    if (this.searchInputValue === '') {
-      this.$toast('请输入您爱屋所在的小区');
-    } else {
-        if (this.communityId === '') {
-          // 未选择
-          this.$toast('请选择您爱屋所在的小区');
-        } else {
-          // 跳转至enturst页面
-          this.$router.push({
-            name: this.pushRouteName,
-            params: {
-              communityId: this.communityId,
-              communityName: this.communityName
-            }
-          });
-        }
+    if (this.tableList.length <= 0 && this.searchInputValue !== '') {
+      this.communityName = this.searchInputValue;
+    } else if (this.tableList.length > 0 && this.communityId !== '') {
+      this.$toast('请选择您爱屋所在的小区');
+      return;
     }
+    this.$router.push({
+      name: this.pushRouteName,
+      params: {
+        communityId: this.communityId,
+        communityName: this.communityName
+      }
+    });
   }
 
   /**
