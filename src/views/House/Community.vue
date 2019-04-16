@@ -135,6 +135,12 @@ export default class Community extends CommonMixins {
         }, wait);
     };
   }
+  
+  /**
+   * @description 获取小区
+   * @returns void
+   * @author linyu
+   */
   private getCommunityList(page?: number): void {
     if (page) {
       this.page = page;
@@ -147,7 +153,7 @@ export default class Community extends CommonMixins {
     }
   }
   /**
-   * @description 获取小区(根据关键词)
+   * @description 根据关键词获取小区
    * @returns void
    * @author chenmo
    */
@@ -180,7 +186,7 @@ export default class Community extends CommonMixins {
   }
 
   /**
-   * @description 获取小区(根据当前定位)
+   * @description 根据当前定位获取小区
    * @returns void
    * @author linyu
    */
@@ -258,6 +264,12 @@ export default class Community extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
+
+  /**
+   * @description 获取当前定位
+   * @returns void
+   * @author chenmo
+   */
   private getBaiduLocation() {
     this.$nextTick(() => {
       MP(this.baiduAk).then((BMap: any) => {
