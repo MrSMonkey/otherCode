@@ -172,9 +172,7 @@ export default class Community extends CommonMixins {
     // this.getBaiduLocation();
     this.cityId = String(this.$route.query.cityId);
     this.pushRouteName = String(this.$route.query.routeName);
-    
     getLocation();
-    // console.log(ponint);
   }
 }
 </script>

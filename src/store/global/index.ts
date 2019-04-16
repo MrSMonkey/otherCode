@@ -12,13 +12,13 @@ import Vue from 'vue';
 import router from '@/router';
 import api from '@/api';
 import { handleWebStorage, openPostWindow } from '@/utils/utils';
+import { Point } from '@/interface/utilInterface';
 
 // 从本地获取token
 const getTokenFromLocal = () => {
   const data: any = localStorage.getItem('siteToken');
   return data ? data : null;
 };
-
 
 // state
 export const state: GlobalState = {
@@ -27,6 +27,11 @@ export const state: GlobalState = {
   communityId: '',
   communityName: '',
   keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo',
+  point: {
+    lat: 0, // 经度
+    lag: 0  // 纬度
+  },
+  isGainPoint: false,
 };
 
 // getters
@@ -45,6 +50,12 @@ export const getters: GetterTree<GlobalState, RootState> = {
   },
   getKeepAlive(state: GlobalState): any {
     return state.keepAlive;
+  },
+  getPoint(state: GlobalState): any {
+    return state.point;
+  },
+  getIsGainPoint(state: GlobalState): any {
+    return state.isGainPoint;
   },
 };
 
@@ -65,6 +76,12 @@ export const mutations: MutationTree<GlobalState> = {
   },
   updateKeepAlive: (state, data: string) => {
     state.keepAlive = data;
+  },
+  updatePoint: (state, data: Point) => {
+    state.point = data;
+  },
+  updateIsGainPoint: (state, data: boolean) => {
+    state.isGainPoint = data;
   },
 };
 
@@ -99,6 +116,53 @@ export const actions: ActionTree<GlobalState, RootState> = {
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
+    }
+  },
+  // 获取经纬度
+  getLocation({ commit }) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        /**
+         * @description 定位成功
+         * @params position 当前位置信息
+         * @return 当前位置经纬度
+         * @author chemo
+         */
+        const point: Point = {
+          lat: position.coords.latitude, // 纬度
+          lag: position.coords.longitude // 经度
+        };
+        commit('updatePoint', point); // 更新经纬度
+        commit('updateIsGainPoint', true); // 经纬度获取成功
+      }, (error: any) => {
+        /**
+         * @description 定位抛出异常
+         * @params error 错误信息
+         * @return nulll
+         * @author chemo
+         */
+        commit('updateIsGainPoint', false); // 经纬度获取失败
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+          alert('定位失败,用户拒绝请求地理定位');
+          break;
+          case error.POSITION_UNAVAILABLE:
+          alert('定位失败,位置信息是不可用');
+          break;
+          case error.TIMEOUT:
+          alert('定位失败,请求获取用户位置超时');
+          break;
+          case error.UNKNOWN_ERROR:
+          alert('定位失败,定位系统失效');
+          break;
+        }
+      }, {
+        enableHighAccuracy: true, // 是否要求高精度的地理位置信息
+        timeout: 1000, // 对地理位置信息的获取操作做超时限制，如果再该事件内未获取到地理位置信息，将返回错误
+        maximumAge: 60 * 1000 // 设置缓存有效时间，在该时间段内，获取的地理位置信息还是设置此时间段之前的那次获得的信息，超过这段时间缓存的位置信息会被废弃
+      });
+    } else {
+      alert('您当前使用的浏览器不支持地理定位服务');
     }
   }
 };
