@@ -12,7 +12,7 @@ import Vue from 'vue';
 import router from '@/router';
 import api from '@/api';
 import { handleWebStorage, openPostWindow } from '@/utils/utils';
-
+import { Point } from '@/interface/utilInterface';
 
 // 从本地获取token
 const getTokenFromLocal = () => {
@@ -28,8 +28,8 @@ export const state: GlobalState = {
   communityName: '',
   keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo',
   point: {
-    lat: 0, // 经度
-    lag: 0  // 纬度
+    lat: '', // 经度
+    lon: ''  // 纬度
   },
   isGainPoint: false,
 };
@@ -129,10 +129,10 @@ export const actions: ActionTree<GlobalState, RootState> = {
          * @author chemo
          */
         const point: Point = {
-          lat: position.coords.latitude, // 纬度
-          lag: position.coords.longitude // 经度
+          lat: String(position.coords.latitude), // 纬度
+          lon: String(position.coords.longitude) // 经度
         };
-        console.log(point)
+        console.log(point);
         commit('updatePoint', point); // 更新经纬度
         commit('updateIsGainPoint', true); // 经纬度获取成功
       }, (error: any) => {
