@@ -325,21 +325,21 @@ export default class Community extends CommonMixins {
 <style lang="stylus" scoped>
 @import '../../assets/stylus/main.styl'
   .community
-    display flex
-    flex-direction column
-    // overflow auto
+    overflow auto
     .search
       height vw(55)
       background $global-background
       padding-top vw(5)
       border-bottom 1px solid #eee
+      position absolute
+      top 0
+      left 0
       width 100%
       z-index 1000
       .van-field
         font-size 14px
     .main
-      flex 1 0 auto
-      // margin-top vw(55)
+      margin-top vw(55)
       // margin-bottom vw(70)
       .text
         height vw(40)
@@ -391,6 +391,9 @@ export default class Community extends CommonMixins {
         font-size 14px
         color $tip-text-color
     .plot-footer
+      position absolute
+      bottom 0
+      left 0
       display -webkit-flex
       display flex
       justify-content space-between
