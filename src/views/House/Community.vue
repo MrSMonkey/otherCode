@@ -22,7 +22,7 @@
           <span v-if="tableList.length > 0">请选择小区名称</span>
           <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
         </div>
-        <div class="list" v-if="tableList.length > 0">
+        <div class="list">
           <van-pull-refresh
             v-model="refreshing"
             @refresh="getCommunityList(1)"
@@ -39,6 +39,7 @@
                 v-for="item in tableList"
                 :key="item.id"
                 :border="false"
+                class="list-cell "
               >
                 <template>
                   <div class="list-item-panel" @click="selectCommunity(item)" :class="item.id === plotAacive ? 'active' : ''">
@@ -49,6 +50,7 @@
               </van-cell>
             </van-list>
           </van-pull-refresh>
+          
         </div>
       </div>
       <!-- <div v-if="tableList.length <= 0">
@@ -118,12 +120,21 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
+<<<<<<< HEAD
     this.communityId = '';
     this.communityName = '';
     this.plotAacive = -1;
     this.tableList = [];
     if (newVal !== '') {
       this.getCommunityList(1); // 请求小区数据
+=======
+    console.log(111);
+    this.tableList = [];
+    console.log(this.tableList);
+    this.page = 1;
+    if (newVal !== '') {
+      this.getKeyCommunityList(); // 请求小区数据
+>>>>>>> d1c8454f3e6c4e9b62e52f4f1ad30117bc7f2fa7
     }
   }
   // computed
@@ -151,7 +162,7 @@ export default class Community extends CommonMixins {
           lon: String(position.coords.longitude) // 经度
         };
         this.point = point;
-        this.getCommunityList(1);
+        this.getCommunityList();
       }, (error: any) => {
         /**
          * @description 定位抛出异常
@@ -192,10 +203,13 @@ export default class Community extends CommonMixins {
     if (page) {
       this.page = page;
       this.tableList = [];
+<<<<<<< HEAD
       this.finished = false;
       this.communityId = '';
       this.communityName = '';
       this.plotAacive = -1;
+=======
+>>>>>>> d1c8454f3e6c4e9b62e52f4f1ad30117bc7f2fa7
     }
     console.log(2222);
     if (this.searchInputValue === '') {
@@ -218,22 +232,19 @@ export default class Community extends CommonMixins {
         page: this.page++,
         pageSize: 20
       });
-      console.log(res);
       if (res && res.code === '000') {
         this.tableList.push(...res.data.list);
         console.log(this.tableList);
       } else {
         this.$toast(res.msg);
       }
-      this.refreshing = false;
       this.loading = false;
+      this.refreshing = false;
       if (res.data.totalPage < this.page) {
         this.finished = true;
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.loading = false;
     }
   }
 
@@ -257,7 +268,7 @@ export default class Community extends CommonMixins {
       console.log(res);
       if (res && res.code === '000') {
         this.tableList.push(...res.data.list);
-        // console.log(this.tableList);
+        console.log(this.tableList);
       } else {
         this.$toast(res.msg);
       }
@@ -268,8 +279,6 @@ export default class Community extends CommonMixins {
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.loading = false;
     }
   }
   /**
@@ -323,6 +332,7 @@ export default class Community extends CommonMixins {
   //     });
   //   });
   // }
+  
 }
 </script>
 
@@ -344,7 +354,7 @@ export default class Community extends CommonMixins {
         font-size 14px
     .main
       margin-top vw(55)
-      // margin-bottom vw(70)
+      margin-bottom vw(46)
       .text
         height vw(40)
         line-height vw(40)
@@ -356,7 +366,7 @@ export default class Community extends CommonMixins {
         overflow-y scroll
         .van-cell
           border-bottom 1px solid #eee
-          padding 0 !important
+          padding 0
           .list-item-panel
             height vw(60)
             width 100%
@@ -394,30 +404,6 @@ export default class Community extends CommonMixins {
         padding 0 vw(15)
         font-size 14px
         color $tip-text-color
-    .plot-footer
-      position absolute
-      bottom 0
-      left 0
-      display -webkit-flex
-      display flex
-      justify-content space-between
-      width 100%
-      height vw(46)
-      align-items center
-      a
-        display inline-block
-        width 100%
-        font-size 14px
-        text-align center
-        height 100%
-        line-height vw(46)
-        &:nth-child(1)
-          background #fff
-          color $main-color
-        &:nth-child(2)
-          background $main-color
-          color #fff
-
 </style>
 
 
