@@ -90,7 +90,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { Field, Row, Col, Button, List, Cell, Dialog } from 'vant';
+import { Field, Row, Col, Button, List, Cell } from 'vant';
 import HrTitle from '@/components/HrTitle.vue';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import CityInput from '@/components/CityInput.vue';
@@ -113,7 +113,6 @@ const namespace: string = 'global';
     HouseDecorationInfo,
     [List.name]: List,
     [Cell.name]: Cell,
-    [Dialog .name]: Dialog,
     HrTitle,
     ConfirmBtn
   }
@@ -344,7 +343,10 @@ export default class Entrust extends CommonMixins {
       ownerUserId: localStorage.getItem('userId'),
       source: typeof(this.sourceId) === undefined ? '' : this.sourceId
     };
-    this.$dialog.confirm({
+    try {
+      const res: any = await this.axios.post(api.pushEntrust, data);
+      if (res && res.code === '000') {
+        this.$dialog.confirm({
           title: '提示',
           confirmButtonText: '立即查看',
           cancelButtonText: '暂不选择',
@@ -357,18 +359,14 @@ export default class Entrust extends CommonMixins {
           // on cancel 取消
           window.location.reload(); // 取消刷新页面
         });
-    // try {
-    //   const res: any = await this.axios.post(api.pushEntrust, data);
-    //   if (res && res.code === '000') {
-       
-    //   } else {
-    //     this.$toast(res.msg || '委托失败，请重试！');
-    //   }
-    // } catch (err) {
-    //   throw new Error(err || 'Unknow Error!');
-    // } finally {
-    //   this.loading = false;
-    // }
+      } else {
+        this.$toast(res.msg || '委托失败，请重试！');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.loading = false;
+    }
   }
   // Watch
   @Watch('ownerPhone')

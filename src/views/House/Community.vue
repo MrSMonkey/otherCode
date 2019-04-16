@@ -73,12 +73,13 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import { State, Getter, Mutation, Action } from 'vuex-class';
 import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
-
+const namespace: string = 'global';
 // 声明引入的组件
 @Component({
   name: 'Community',
@@ -110,7 +111,11 @@ export default class Community extends CommonMixins {
   private baiduAk: string = BAIDU_AK; // 百度地图key
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
-  
+
+  @Action('getLocation', { namespace }) private getLocation: void;
+  @Getter('getPoint', { namespace }) private point: any;
+  @Getter('getIsGainPoint', { namespace }) private isGainPoint: any;
+
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
     console.log(111);
@@ -120,6 +125,14 @@ export default class Community extends CommonMixins {
     if (newVal !== '') {
       this.getKeyCommunityList(); // 请求小区数据
     }
+  }
+
+  private mounted() {
+    // this.getBaiduLocation();
+    this.cityId = String(this.$route.query.cityId);
+    this.pushRouteName = String(this.$route.query.routeName);
+    this.getLocation();
+    this.getCommunityList();
   }
 
   /**
@@ -257,12 +270,7 @@ export default class Community extends CommonMixins {
   //     });
   //   });
   // }
-  private mounted() {
-    // this.getBaiduLocation();
-    this.cityId = String(this.$route.query.cityId);
-    this.pushRouteName = String(this.$route.query.routeName);
-    this.getCommunityList();
-  }
+  
 }
 </script>
 
@@ -284,7 +292,7 @@ export default class Community extends CommonMixins {
         font-size 14px
     .main
       margin-top vw(55)
-      margin-bottom vw(70)
+      // margin-bottom vw(70)
       .text
         height vw(40)
         line-height vw(40)
