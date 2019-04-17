@@ -161,7 +161,7 @@ export default class Entrust extends CommonMixins {
    */
   private activated() {
     // 获取小区信息
-    if (this.$route.params.communityId) {
+    if (this.$route.params.communityId || this.$route.params.communityName ) {
       this.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
     }
