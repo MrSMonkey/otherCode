@@ -208,25 +208,7 @@ export default class Community extends CommonMixins {
         page: this.page++,
         pageSize: 20
       });
-      if (page) {
-        this.page = page;
-        this.tableList = [];
-        this.finished = false;
-        this.communityId = '';
-        this.communityName = '';
-        this.plotAacive = -1;
-      }
-      if (res && res.code === '000') {
-        this.tableList.push(...res.data.list);
-        console.log(this.tableList);
-      } else {
-        this.$toast(res.msg);
-      }
-      this.loading = false;
-      this.refreshing = false;
-      if (res.data.totalPage < this.page) {
-        this.finished = true;
-      }
+      this.updateSomeDatas(res, page);
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -238,7 +220,7 @@ export default class Community extends CommonMixins {
    * @author linyu
    */
   private async getNearCommunityList(page?: number) {
-    console.log('page', this.page);
+    // console.log('page', this.page);
     try {
       // 104.06858,30.591175
       const res: any = await this.axios.post(api.getNearCommunityList, {
@@ -249,30 +231,42 @@ export default class Community extends CommonMixins {
         pageSize: 20,
         scope: '2km'
       });
-      if (page) {
-        this.page = page;
-        this.tableList = [];
-        this.finished = false;
-        this.communityId = '';
-        this.communityName = '';
-        this.plotAacive = -1;
-      }
-      console.log(res);
-      if (res && res.code === '000') {
-        this.tableList.push(...res.data.list);
-        console.log(this.tableList);
-      } else {
-        this.$toast(res.msg);
-      }
-      this.loading = false;
-      this.refreshing = false;
-      if (res.data.totalPage < this.page) {
-        this.finished = true;
-      }
+      this.updateSomeDatas(res, page);
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
   }
+
+  /**
+   * @description 请求完成后更新数据
+   * @params respData 必需，本次请求的响应结果
+   * @params page 非必需，当刷新页面或者下拉刷新或者是搜索关键词发生改变时应传1，反之则不传
+   * @returns void
+   * @author linyu
+   */
+  private updateSomeDatas(respData: any, page?: number) {
+    if (page) { // 如果是刷新页面或者下拉刷新或者是搜索关键词发生改变先重置data属性
+      this.page = page;
+      this.tableList = [];
+      this.finished = false;
+      this.communityId = '';
+      this.communityName = '';
+      this.plotAacive = -1;
+    }
+    // console.log(respData);
+    if (respData && respData.code === '000') {
+      this.tableList.push(...respData.data.list);
+      // console.log(this.tableList);
+    } else {
+      this.$toast(respData.msg);
+    }
+    this.loading = false;
+    this.refreshing = false;
+    if (respData.data.totalPage < this.page) {
+      this.finished = true;
+    }
+  }
+
   /**
    * @description 选择小区
    * @returns void
