@@ -18,8 +18,7 @@
     </section>
     <main class="main">
       <div class="text">
-        <span v-if="tableList.length > 0">请选择小区名称</span>
-        <span v-else>未找到该小区，确认提交后工作人员会尽快为您处理！</span>
+        <span>{{listTopTip}}</span>
       </div>
       <div class="list" v-if="tableList.length > 0">
         <van-pull-refresh
@@ -96,6 +95,7 @@ const namespace: string = 'global';
 
 export default class Community extends CommonMixins {
   private searchInputValue: string = ''; // 搜索关键词
+  private listTopTip: string = '请选择小区名称';
   private cityId: string = '';
   private plotAacive: number = -1; // 选中的样式激活的ID
   private communityId: string = '';
@@ -122,6 +122,7 @@ export default class Community extends CommonMixins {
       // 这里清空tableList不放在外面是为了防止出现清空tableList样式闪现的问题
       // searchInputValue不为空且发生变化时清空tableList的动作放在请求成功后更新数据的函数（updateSomeData）里
       this.tableList = [];
+      this.listTopTip = '未找到该小区，确认提交后工作人员会尽快为您处理！';
     }
   }
   // computed
@@ -157,6 +158,7 @@ export default class Community extends CommonMixins {
          * @return nulll
          * @author chemo
          */
+        this.listTopTip = '未找到附近小区';
         switch (error.code) {
           case error.PERMISSION_DENIED:
           alert('定位失败,用户拒绝请求地理定位');
@@ -208,6 +210,11 @@ export default class Community extends CommonMixins {
         pageSize: 20
       });
       this.updateSomeData(res, page);
+      if (this.tableList.length) {
+        this.listTopTip = '请选择小区名称';
+      } else {
+        this.listTopTip = '未找到该小区，确认提交后工作人员会尽快为您处理！';
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -231,6 +238,11 @@ export default class Community extends CommonMixins {
         scope: '2km'
       });
       this.updateSomeData(res, page);
+      if (this.tableList.length) {
+        this.listTopTip = '请选择小区名称';
+      } else {
+        this.listTopTip = '未找到附近小区';
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
