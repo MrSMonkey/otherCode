@@ -49,11 +49,7 @@
             </van-cell>
           </van-list>
         </van-pull-refresh>
-        
       </div>
-      <!-- <div v-if="tableList.length <= 0">
-        <div class="noserch">未找到该小区，确认提交后工作人员会尽快为您处理！</div>
-      </div> -->
     </main>
     <section class="community-footer">
       <confirmBtn 
@@ -99,17 +95,17 @@ const namespace: string = 'global';
 })
 
 export default class Community extends CommonMixins {
-  private searchInputValue: string = '';
+  private searchInputValue: string = ''; // 搜索关键词
   private cityId: string = '';
-  private plotAacive: number = -1;
+  private plotAacive: number = -1; // 选中的样式激活的ID
   private communityId: string = '';
   private communityName: string = '';
-  private pushRouteName: string;
-  private refreshing: boolean = false;
-  private loading: boolean = false;
-  private error: boolean = false;
-  private finished: boolean = false;
-  private tableList: any = [];
+  private pushRouteName: string; // 上一个页面的路由地址，即点击页面确认按钮以后回跳的页面
+  private refreshing: boolean = false; // 刷新请求是否完成，完成时值为false
+  private loading: boolean = false; // 加载更多请求是否完成，完成时值为false
+  private error: boolean = false; // 是否加载失败
+  private finished: boolean = false; // 是否还有下一页；有下一页时值为false
+  private tableList: any = []; // 小区列表
   private lon: number = 0; // 当前位置经度
   private lat: number = 0; // 当前位置纬度
   private baiduAk: string = BAIDU_AK; // 百度地图key
@@ -123,6 +119,10 @@ export default class Community extends CommonMixins {
   private handlerSearchInputValue(newVal: string) {
     if (newVal !== '') {
       this.getCommunityList(1); // 请求小区数据
+    } else {
+      // 这里清空tableList不放在外面是为了防止出现清空tableList样式闪现的问题
+      // searchInputValue不为空且发生变化时清空tableList的动作放在请求成功后更新数据的函数（updateSomeData）里
+      this.tableList = []; 
     }
   }
   // computed
@@ -208,7 +208,7 @@ export default class Community extends CommonMixins {
         page: this.page++,
         pageSize: 20
       });
-      this.updateSomeDatas(res, page);
+      this.updateSomeData(res, page);
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -231,7 +231,7 @@ export default class Community extends CommonMixins {
         pageSize: 20,
         scope: '2km'
       });
-      this.updateSomeDatas(res, page);
+      this.updateSomeData(res, page);
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -244,7 +244,7 @@ export default class Community extends CommonMixins {
    * @returns void
    * @author linyu
    */
-  private updateSomeDatas(respData: any, page?: number) {
+  private updateSomeData(respData: any, page?: number) {
     if (page) { // 如果是刷新页面或者下拉刷新或者是搜索关键词发生改变先重置data属性
       this.page = page;
       this.tableList = [];
