@@ -116,14 +116,7 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    if (newVal !== '') {
-      this.getCommunityList(1); // 请求小区数据
-    } else {
-      // 这里清空tableList不放在外面是为了防止出现清空tableList样式闪现的问题
-      // searchInputValue不为空且发生变化时清空tableList的动作放在请求成功后更新数据的函数（updateSomeData）里
-      this.tableList = [];
-      this.listTopTip = '未找到该小区，确认提交后工作人员会尽快为您处理！';
-    }
+    this.getCommunityList(1); // 请求小区数据
   }
   // computed
   get isActive(): boolean {
