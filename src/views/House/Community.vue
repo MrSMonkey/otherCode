@@ -103,7 +103,6 @@ export default class Community extends CommonMixins {
   private pushRouteName: string; // 上一个页面的路由地址，即点击页面确认按钮以后回跳的页面
   private refreshing: boolean = false; // 刷新请求是否完成，完成时值为false
   private loading: boolean = false; // 加载更多请求是否完成，完成时值为false
-  private error: boolean = false; // 是否加载失败
   private finished: boolean = false; // 是否还有下一页；有下一页时值为false
   private tableList: any = []; // 小区列表
   private lon: number = 0; // 当前位置经度
@@ -122,7 +121,7 @@ export default class Community extends CommonMixins {
     } else {
       // 这里清空tableList不放在外面是为了防止出现清空tableList样式闪现的问题
       // searchInputValue不为空且发生变化时清空tableList的动作放在请求成功后更新数据的函数（updateSomeData）里
-      this.tableList = []; 
+      this.tableList = [];
     }
   }
   // computed
