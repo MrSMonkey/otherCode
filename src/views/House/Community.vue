@@ -188,19 +188,10 @@ export default class Community extends CommonMixins {
    * @author linyu
    */
   private getCommunityList(page?: number): void {
-    if (page) {
-      this.page = page;
-      this.tableList = [];
-      this.finished = false;
-      this.communityId = '';
-      this.communityName = '';
-      this.plotAacive = -1;
-    }
-    console.log(2222);
     if (this.searchInputValue === '') {
-      this.getNearCommunityList();
+      this.getNearCommunityList(page);
     } else {
-      this.getKeyCommunityList();
+      this.getKeyCommunityList(page);
     }
   }
 
@@ -209,7 +200,7 @@ export default class Community extends CommonMixins {
    * @returns void
    * @author chenmo
    */
-  private async getKeyCommunityList() {
+  private async getKeyCommunityList(page?: number) {
     try {
       const res: any =  await this.axios.post(api.getKeyCommunityList, {
         cityId: this.cityId,
@@ -217,6 +208,14 @@ export default class Community extends CommonMixins {
         page: this.page++,
         pageSize: 20
       });
+      if (page) {
+        this.page = page;
+        this.tableList = [];
+        this.finished = false;
+        this.communityId = '';
+        this.communityName = '';
+        this.plotAacive = -1;
+      }
       if (res && res.code === '000') {
         this.tableList.push(...res.data.list);
         console.log(this.tableList);
@@ -238,7 +237,7 @@ export default class Community extends CommonMixins {
    * @returns void
    * @author linyu
    */
-  private async getNearCommunityList() {
+  private async getNearCommunityList(page?: number) {
     console.log('page', this.page);
     try {
       // 104.06858,30.591175
@@ -250,6 +249,14 @@ export default class Community extends CommonMixins {
         pageSize: 20,
         scope: '2km'
       });
+      if (page) {
+        this.page = page;
+        this.tableList = [];
+        this.finished = false;
+        this.communityId = '';
+        this.communityName = '';
+        this.plotAacive = -1;
+      }
       console.log(res);
       if (res && res.code === '000') {
         this.tableList.push(...res.data.list);
@@ -348,7 +355,6 @@ export default class Community extends CommonMixins {
         font-size 14px
         color $tip-text-color
       .list
-        // height vw(520)
         flex-grow 2
         overflow-y scroll
         .van-cell
