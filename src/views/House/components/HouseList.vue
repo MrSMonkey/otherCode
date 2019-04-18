@@ -15,7 +15,7 @@
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
-          <div class="next">您还可以点击此处<a :href="'/#/perfect?entrustId=' + house.entrustId"><span class="active"><img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
+          <div class="next">您还可以点击此处<a @click="linkTo(house)"><span class="active"><img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
         </div>
         <section v-else>
           <HouseAttribute :house="house"></HouseAttribute>
@@ -46,18 +46,6 @@ export default class HouseList extends CommonMixins {
   private tableData: any;
 
   /**
-   * @description 已上架的房源跳转到我的房源列表
-   * @params house 房源信息
-   * @returns null
-   * @author chenmo
-   */
-  private linkTo(house: any) {
-    if (house.handleStatus !== 1) {
-      this.$router.push('/myHouse?entrustId=' + house.entrustId);
-    }
-  }
-
-  /**
    * @description 过滤托管类型
    * @params type 类型
    * @returns string
@@ -75,6 +63,23 @@ export default class HouseList extends CommonMixins {
    */
   private getRentWay(status: number) {
     return RENT_WAY[status];
+  }
+  /**
+   * @description 判断房源详情
+   * @params type 类型
+   * @returns string
+   * @author chenmo
+   */
+  private linkTo(house: any) {
+    if (house.applyStatus === 1) {
+      this.$toast('小区审核中，暂无法修改!');
+      return;
+    } else if (house.applyStatus === 2) {
+      this.$toast('小区审核不通过，暂无法修改!');
+      return;
+    } else {
+      this.$router.push(`/perfect?entrustId=${house.entrustId}`);
+    }
   }
 }
 </script>
