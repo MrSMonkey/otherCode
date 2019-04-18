@@ -6,7 +6,7 @@ import store from './store';
 import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
-import FastClick from 'fastclick';
+// import FastClick from 'fastclick';
 // import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
 import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, Dialog } from 'vant';
@@ -30,12 +30,12 @@ Vue.use(Lazyload, {
 // Intersection Observer polyfill
 require('intersection-observer');
 
-// 解决点击延迟300ms的问题， 兼容 IOS
-if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', () => {
-    (FastClick as any).attach(document.body);
-  }, false);
-}
+// // 解决点击延迟300ms的问题， 兼容 IOS
+// if ('addEventListener' in document) {
+//   document.addEventListener('DOMContentLoaded', () => {
+//     (FastClick as any).attach(document.body);
+//   }, false);
+// }
 // (FastClick as any).attach(document.body);
 
 Vue.config.productionTip = false;
