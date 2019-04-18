@@ -120,7 +120,7 @@ export default class Community extends CommonMixins {
   }
   // computed
   get isActive(): boolean {
-    return (this.tableList.length > 0 && this.communityId !== '') || (this.tableList.length <= 0 && this.searchInputValue !== '');
+    return (this.searchInputValue === '' && this.communityId !== '') || this.searchInputValue !== '';
   }
   private mounted() {
     // this.getBaiduLocation();
@@ -290,19 +290,36 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private onOk() {
-    if (this.tableList.length <= 0 && this.searchInputValue !== '') {
-      this.communityName = this.searchInputValue;
-    } else if (this.tableList.length > 0 && this.communityId === '') {
-      this.$toast('请选择您爱屋所在的小区');
-      return;
-    }
-    this.$router.push({
-      name: this.pushRouteName,
-      params: {
-        communityId: this.communityId,
-        communityName: this.communityName
+    if (this.communityId === '') {
+      if (this.searchInputValue !== '' && this.tableList.length) {
+        this.communityName = this.searchInputValue;
+        this.$dialog.confirm({
+          title: '提示',
+          confirmButtonText: '是的',
+          cancelButtonText: ' 重新选',
+          className: 'dialogTips',
+          message: `您未选中任何目标，是否搜索结果中没有您想要的？`
+        }).then(() => {
+          this.$router.push({
+            name: this.pushRouteName,
+            params: {
+              communityId: this.communityId,
+              communityName: this.communityName
+            }
+          });
+        }).catch(() => {
+          this.$dialog.close();
+        });
       }
-    });
+    } else {
+        this.$router.push({
+        name: this.pushRouteName,
+        params: {
+          communityId: this.communityId,
+          communityName: this.communityName
+        }
+      });
+    }
   }
 
   /**
