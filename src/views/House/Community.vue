@@ -355,6 +355,7 @@ export default class Community extends CommonMixins {
       .list
         flex-grow 2
         overflow-y scroll
+        margin-bottom vw(46)
         .van-cell
           border-bottom 1px solid #eee
           padding 0
