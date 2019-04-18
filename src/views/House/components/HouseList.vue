@@ -71,10 +71,14 @@ export default class HouseList extends CommonMixins {
    * @author chenmo
    */
   private linkTo(house: any) {
+    /**
+     * @params applyStatus 1 待审核，2 审核通过，3 审核驳回
+     * @author chenmo
+     */
     if (house.applyStatus === 1) {
       this.$toast('小区审核中，暂无法修改!');
       return;
-    } else if (house.applyStatus === 2) {
+    } else if (house.applyStatus === 3) {
       this.$toast('小区审核不通过，暂无法修改!');
       return;
     } else {
