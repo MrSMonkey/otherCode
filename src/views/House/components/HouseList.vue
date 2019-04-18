@@ -10,7 +10,7 @@
 
 <template>
   <section class="house-list">
-    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
+    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkHouseInfoTo(house)">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
@@ -44,6 +44,18 @@ import HouseAttribute from './HouseAttribute.vue';
 export default class HouseList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any;
+
+  /**
+   * @description 已上架的房源跳转到我的房源列表
+   * @params house 房源信息
+   * @returns null
+   * @author chenmo
+   */
+  private linkHouseInfoTo(house: any) {
+    if (house.handleStatus !== 1) {
+      this.$router.push('/myHouse?entrustId=' + house.entrustId);
+    }
+  }
 
   /**
    * @description 过滤托管类型
