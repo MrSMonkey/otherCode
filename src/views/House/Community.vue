@@ -77,6 +77,7 @@ import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 import { Point } from '@/interface/utilInterface';
+import { config } from '@vue/test-utils';
 const namespace: string = 'global';
 
 // 声明引入的组件
@@ -143,6 +144,7 @@ export default class Community extends CommonMixins {
           lon: String(position.coords.longitude) // 经度
         };
         this.point = point;
+        // console.log(this.point);
         this.getCommunityList(1);
       }, (error: any) => {
         /**
@@ -290,29 +292,30 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private onOk() {
-    if (this.communityId === '') {
-      if (this.searchInputValue !== '' && this.tableList.length) {
-        this.communityName = this.searchInputValue;
-        this.$dialog.confirm({
-          title: '提示',
-          confirmButtonText: '是的',
-          cancelButtonText: ' 重新选',
-          className: 'dialogTips',
-          message: `您未选中任何目标，是否搜索结果中没有您想要的？`
-        }).then(() => {
-          this.$router.push({
-            name: this.pushRouteName,
-            params: {
-              communityId: this.communityId,
-              communityName: this.communityName
-            }
-          });
-        }).catch(() => {
-          this.$dialog.close();
-        });
-      }
-    } else {
+    if (this.searchInputValue !== '' && this.tableList.length && this.communityId === '') {
+      this.communityName = this.searchInputValue;
+      this.$dialog.confirm({
+        title: '提示',
+        confirmButtonText: '是的',
+        cancelButtonText: ' 重新选',
+        className: 'dialogTips',
+        message: `您未选中任何目标，是否搜索结果中没有您想要的？`
+      }).then(() => {
         this.$router.push({
+          name: this.pushRouteName,
+          params: {
+            communityId: this.communityId,
+            communityName: this.communityName
+          }
+        });
+      }).catch(() => {
+        this.$dialog.close();
+      });
+    } else {
+      if (this.searchInputValue !== '' && this.tableList.length <= 0) {
+        this.communityName = this.searchInputValue;
+      }
+      this.$router.push({
         name: this.pushRouteName,
         params: {
           communityId: this.communityId,

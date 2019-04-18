@@ -14,11 +14,11 @@
       <img src="../assets/images/404.png" alt="404"/>
     </div>
     <p>{{tip}}</p>
-    <div v-if="url" class="btn-box">
+    <!-- <div v-if="url" class="btn-box">
       <router-link class="inline-btn" :to="url">
         返回上一页
       </router-link>
-    </div>
+    </div> -->
   </section>
 </template>
 
