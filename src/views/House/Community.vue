@@ -122,7 +122,7 @@ export default class Community extends CommonMixins {
   get isActive(): boolean {
     return (this.tableList.length > 0 && this.communityId !== '') || (this.tableList.length <= 0 && this.searchInputValue !== '');
   }
-  private async mounted() {
+  private mounted() {
     // this.getBaiduLocation();
     this.getLocation();
     this.cityId = String(this.$route.query.cityId);
@@ -143,7 +143,7 @@ export default class Community extends CommonMixins {
           lon: String(position.coords.longitude) // 经度
         };
         this.point = point;
-        this.getCommunityList();
+        this.getCommunityList(1);
       }, (error: any) => {
         /**
          * @description 定位抛出异常
@@ -195,6 +195,9 @@ export default class Community extends CommonMixins {
    * @author chenmo
    */
   private async getKeyCommunityList(page?: number) {
+    if (page) { // 如果是下拉刷新或者是搜索关键词发生改变先重置page为1
+      this.page = page;
+    }
     try {
       const res: any =  await this.axios.post(api.getKeyCommunityList, {
         cityId: this.cityId,
@@ -219,7 +222,9 @@ export default class Community extends CommonMixins {
    * @author linyu
    */
   private async getNearCommunityList(page?: number) {
-    // console.log('page', this.page);
+    if (page) { // 如果是下拉刷新发生改变先重置page为1
+      this.page = page;
+    }
     try {
       // 104.06858,30.591175
       const res: any = await this.axios.post(api.getNearCommunityList, {
@@ -249,18 +254,15 @@ export default class Community extends CommonMixins {
    * @author linyu
    */
   private updateSomeData(respData: any, page?: number) {
-    if (page) { // 如果是刷新页面或者下拉刷新或者是搜索关键词发生改变先重置data属性
-      this.page = page;
+    if (page) { // 如果是下拉刷新或者是搜索关键词发生改变先重置data属性
       this.tableList = [];
       this.finished = false;
       this.communityId = '';
       this.communityName = '';
       this.plotAacive = -1;
     }
-    // console.log(respData);
     if (respData && respData.code === '000') {
       this.tableList.push(...respData.data.list);
-      // console.log(this.tableList);
     } else {
       this.$toast(respData.msg);
     }
@@ -318,7 +320,6 @@ export default class Community extends CommonMixins {
   //     getlocation.getCurrentPosition((r: any) => {
   //       this.lon = r.point.lng;
   //       this.lat = r.point.lat;
-  //       console.log(this.lon, this.lat);
   //     });
   //   });
   // }
