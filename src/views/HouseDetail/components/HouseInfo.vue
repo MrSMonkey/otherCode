@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 11:12:50
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-08 17:00:25
+ * @Last Modified time: 2019-04-19 15:35:49
  */
 /*
 
@@ -75,7 +75,7 @@ export default class HouseInfo extends CommonMixins {
    * @author chenmo
    */
   private getRentType(type: number) {
-    return RENT_TYPE[type];
+    return RENT_TYPE[type] || '未知';
   }
 
   /**
@@ -85,7 +85,7 @@ export default class HouseInfo extends CommonMixins {
    * @author chenmo
    */
   private getToward(toward: number) {
-    return TOWARDNAME[toward];
+    return TOWARDNAME[toward] || '未知';
   }
 }
 </script>
