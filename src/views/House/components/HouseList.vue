@@ -2,26 +2,32 @@
  * @Description: 首页表格组件
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-02-20 15:43:10
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-19 17:00:04
  */
 
 
 
 <template>
   <section class="house-list">
-    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkTo(house)">
+    <section class="list" v-for="house in tableData" :key="house.entrustId">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
-          <div class="next">您还可以点击此处<a @click="linkTo(house)"><span class="active"><img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息</span></a></div>
+          <div class="next">
+            <van-button @click="getStewards" size="mini" :class="['steward-choose-btn', active ? 'active' : '']" :disabled="active">{{active ? "已选择" : "选择管家"}}</van-button>
+            <div @click="linkTo(house)" class="add-info">
+              <img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息
+            </div>
+          </div>
         </div>
         <section v-else>
           <HouseAttribute :house="house"></HouseAttribute>
         </section>
       </div>
     </section>
+    <StewardChoose v-if="stewardList.length>0" :pickerShow="stewardChooseShow" :steward-list="stewardList" @steward-chagne="stewardChagne"></StewardChoose>
   </section>
 </template>
 
@@ -29,21 +35,29 @@
 import { Component, Vue, Prop, Emit  } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { RENT_WAY, RENT_TYPE } from '@/config/config';
+import { StewardItem } from '@/interface/configInterface.ts';
 import HouseTitle from './HouseTitle.vue';
 import HouseAttribute from './HouseAttribute.vue';
+import StewardChoose from './StewardChoose.vue';
+import api from '@/api';
 
 // 声明引入的组件
 @Component({
   name: 'HouseList',
   components: {
     HouseTitle,
-    HouseAttribute
+    HouseAttribute,
+    StewardChoose
   }
 })
 // 类方式声明当前组件
 export default class HouseList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any;
+
+  private stewardChooseShow: boolean = false; // 是否显示管家选择列表
+  private stewardList: StewardItem[] = [];
+  private active: boolean = false;
 
   /**
    * @description 过滤托管类型
@@ -85,6 +99,36 @@ export default class HouseList extends CommonMixins {
       this.$router.push(`/perfect?entrustId=${house.entrustId}`);
     }
   }
+  /**
+   * @description 资产管家选择确定按钮
+   * @params item 选中的资产管家信息
+   * @author linyu
+   */
+  private stewardChagne(item: StewardItem) {
+    console.log(item);
+  }
+  /**
+   * @description 获取管家列表
+   * @returns void
+   * @author linyu
+   */
+  private async getStewards() {
+    try {
+      this.stewardList = [
+        {stewardId: '111', stewardName: '张三'},
+        {stewardId: '222', stewardName: '李四'}
+      ];
+      this.stewardChooseShow = true;
+      // const res: any = await this.axios.get(api.getStewards);
+      // if (res && res.code === '000') {
+      //   this.stewardList = res.data;
+      // } else {
+      //   this.$toast(res.msg || '获取管家失败');
+      // }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
 }
 </script>
 
@@ -117,9 +161,27 @@ export default class HouseList extends CommonMixins {
         margin 0 vw(3)
       .next
         margin-top vw(6)
-        .active
-          display inline-block
+        .add-info
+          width auto
+          margin-right 80px
           color $main-color
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+        .steward-choose-btn
+          color #ffffff
+          float right
+          text-align center
+          border none
+          width 65px;
+          background $main-color
+          border-radius 3px
+          height 22px
+          line-height 22px
+          font-size 14px
+        .active
+          background $disabled-color
+          opacity 1
     .set
       display inline-block
       padding vw(14)

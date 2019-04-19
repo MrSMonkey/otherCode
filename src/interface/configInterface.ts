@@ -51,7 +51,16 @@ interface TypeListInterface {
 interface TowardListInterface {
   [index: number]: {value: number|string; text: string; };
 }
-
+/* 城市选择列表item */
+interface CityItem {
+  cityId: string;
+  cityName: string;
+}
+/* 管家选择列表item */
+interface StewardItem {
+  stewardId: string;
+  stewardName: string;
+}
 export {
   StartHomeImgInterface,
   EnumInterface,
@@ -62,5 +71,7 @@ export {
   ListInterface,
   HoustFlowInterface,
   TypeListInterface,
-  TowardListInterface
+  TowardListInterface,
+  CityItem,
+  StewardItem
 };
