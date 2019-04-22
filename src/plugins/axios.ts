@@ -55,9 +55,9 @@ Axios.interceptors.request.use(
     } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
       config.baseURL = 'https://api-gateway-pre.uoko.com/';
     } else {
-      config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
+      // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
       // config.baseURL = 'http://192.168.200.44:7070/';
-      // config.baseURL = 'http://api-gateway.testuoko.com/';
+      config.baseURL = 'http://api-gateway.testuoko.com/';
       // config.baseURL = 'http://172.16.3.103:8008';
     }
 

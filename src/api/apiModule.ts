@@ -2,8 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 21:02:05
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-19 15:27:25
  */
 
 export default {
@@ -116,5 +116,8 @@ export default {
   lookPrice: 'partner/house/pay/look/detail',
 
   /*创建装修订单*/
-  creatBuildOrder: 'partner/owner/product/service/build'
+  creatBuildOrder: 'partner/owner/product/service/build',
+
+  /*获取资产管家*/
+  getStewards: 'partner/owner/product/service/build'
 };
