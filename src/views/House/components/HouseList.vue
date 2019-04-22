@@ -10,7 +10,11 @@
 
 <template>
   <section class="house-list">
+<<<<<<< HEAD
     <section class="list" v-for="house in tableData" :key="house.entrustId">
+=======
+    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkHouseInfoTo(house)">
+>>>>>>> 2a29816792c87cd5276fc0eafda7ff673c678ef0
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
@@ -51,6 +55,18 @@ import api from '@/api';
 export default class HouseList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any;
+
+  /**
+   * @description 已上架的房源跳转到我的房源列表
+   * @params house 房源信息
+   * @returns null
+   * @author chenmo
+   */
+  private linkHouseInfoTo(house: any) {
+    if (house.handleStatus !== 1) {
+      this.$router.push('/myHouse?entrustId=' + house.entrustId);
+    }
+  }
 
   /**
    * @description 过滤托管类型

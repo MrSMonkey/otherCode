@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-09 13:36:57
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 13:37:28
+ * @Last Modified time: 2019-04-19 15:34:57
  */
 
 <template>
@@ -38,7 +38,7 @@ export default class HouseAttribute extends CommonMixins {
    * @author chenmo
    */
   private getRentType(type: number) {
-    return RENT_TYPE[type];
+    return RENT_TYPE[type] || '未知';
   }
 
   /**
@@ -48,7 +48,7 @@ export default class HouseAttribute extends CommonMixins {
    * @author chenmo
    */
   private getRentWay(status: number) {
-    return RENT_WAY[status];
+    return RENT_WAY[status] || '未知';
   }
 }
 </script>
