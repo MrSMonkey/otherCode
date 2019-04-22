@@ -2,38 +2,22 @@
  * @Description: 服务包列表
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 14:43:20
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-19 16:05:44
  */
 
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
     <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
-      <van-tab title="服务包">
-        <section v-if="tableData.length > 0">
-          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
-            <a @click="goodsClick('pack', item.serviceId)">
-              <div class="purchase-left" v-lazy:background-image="item.imgUrls && item.imgUrls[0]">
-                <!-- <img :src="item.imgUrls[0]" alt=""/> -->
-              </div>
-              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
-              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
-            </a>
-          </div>
-        </section>
-        <section v-else>
-          <NoData tip="暂无服务包" :url="'/myHouse?entrustId=' + entrustId"/>
-        </section>
-      </van-tab>
       <van-tab title="服务产品">
         <section class="tree">
           <div class="tree-left">
             <div v-for="(item, index) in productData" :key="index" class="tree-left-item">
-              <p :class="index === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(index, item)">{{item.name}}</p>
+              <p :class="index === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(index, item)">{{item.typeName}}</p>
               <transition name="uokodown">
                 <section v-if="index === isSlide" class="childrenItem" ref="childrenItem">
-                  <div v-for="(ctx, idx) in item.productDetails" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
+                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
                     <div><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
                   </div>
                 </section>
@@ -60,6 +44,23 @@
           </div>
         </section>
       </van-tab>
+      <van-tab title="服务包">
+        <section v-if="tableData.length > 0">
+          <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
+            <a @click="goodsClick('pack', item.serviceId)">
+              <div class="purchase-left" v-lazy:background-image="item.imgUrls && item.imgUrls[0]">
+                <!-- <img :src="item.imgUrls[0]" alt=""/> -->
+              </div>
+              <p  class="purchase-title">{{item.serviceName|| 1}}</p>
+              <p class="purchase-money"><span>{{item.price || 0}}</span>元</p>
+            </a>
+          </div>
+        </section>
+        <section v-else>
+          <NoData tip="暂无服务包" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section>
+      </van-tab>
+      
       <van-tab disabled>
         <div slot="title" @click="chooseCity" class="pisition-tab">
           <span class="pisition">
@@ -117,13 +118,13 @@ export default class Purchase extends CommonMixins {
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
     this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
-    this.getServiceList(this.cityId); // 获取服务包列表
+    this.getProductList(this.cityId); // 获取服务包列表
   }
   private activated() {
     if (this.needActivated) {
       this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
       this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
-      this.getServiceList(this.cityId); // 获取服务包列表
+      this.getProductList(this.cityId); // 获取服务包列表
     } else {
       this.needActivated = true;
     }
@@ -171,6 +172,7 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
+        console.log(res)
         this.productData = res.data.map((item: any) => {
           // const arr: any = item.productDetails.map((ctx: any) => {
           //   // 删除服务产品没有的情况
@@ -183,8 +185,8 @@ export default class Purchase extends CommonMixins {
         // console.log(this.productData)
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
-        this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].products : []; // 进入页面默认第一条
-        this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
+        // this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].products : []; // 进入页面默认第一条
+        // this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
       }
@@ -221,9 +223,9 @@ export default class Purchase extends CommonMixins {
    */
   private onClick(index: any) {
     if (index === 0) {
-      this.getServiceList(this.cityId); // 获取服务包
-    } else if (index === 1) {
       this.getProductList(this.cityId); // 获取服务产品
+    } else if (index === 1) {
+      this.getServiceList(this.cityId); // 获取服务包
     } else if (index === 2) {
       // this.getRentInfo(this.entrustId);
     }
