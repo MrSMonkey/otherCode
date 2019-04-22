@@ -16,7 +16,7 @@
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
           <div class="next">
-            <van-button @click="getStewards" size="mini" :class="['steward-choose-btn', active ? 'active' : '']" :disabled="active">{{active ? "已选择" : "选择管家"}}</van-button>
+            <van-button @click="getStewards" size="mini" :class="['steward-choose-btn', house.assetNum ? 'active' : '']" :disabled="house.assetNum ? true : false">{{house.assetNum ? "已选择" : "选择管家"}}</van-button>
             <div @click="linkTo(house)" class="add-info">
               <img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息
             </div>
@@ -27,7 +27,6 @@
         </section>
       </div>
     </section>
-    <StewardChoose v-if="stewardList.length>0" :pickerShow="stewardChooseShow" :steward-list="stewardList" @steward-chagne="stewardChagne"></StewardChoose>
   </section>
 </template>
 
@@ -38,7 +37,6 @@ import { RENT_WAY, RENT_TYPE } from '@/config/config';
 import { StewardItem } from '@/interface/configInterface.ts';
 import HouseTitle from './HouseTitle.vue';
 import HouseAttribute from './HouseAttribute.vue';
-import StewardChoose from './StewardChoose.vue';
 import api from '@/api';
 
 // 声明引入的组件
@@ -46,18 +44,13 @@ import api from '@/api';
   name: 'HouseList',
   components: {
     HouseTitle,
-    HouseAttribute,
-    StewardChoose
+    HouseAttribute
   }
 })
 // 类方式声明当前组件
 export default class HouseList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
   private tableData: any;
-
-  private stewardChooseShow: boolean = false; // 是否显示管家选择列表
-  private stewardList: StewardItem[] = [];
-  private active: boolean = false;
 
   /**
    * @description 过滤托管类型
@@ -99,35 +92,15 @@ export default class HouseList extends CommonMixins {
       this.$router.push(`/perfect?entrustId=${house.entrustId}`);
     }
   }
-  /**
-   * @description 资产管家选择确定按钮
-   * @params item 选中的资产管家信息
-   * @author linyu
-   */
-  private stewardChagne(item: StewardItem) {
-    console.log(item);
-  }
+
   /**
    * @description 获取管家列表
    * @returns void
    * @author linyu
    */
-  private async getStewards() {
-    try {
-      this.stewardList = [
-        {stewardId: '111', stewardName: '张三'},
-        {stewardId: '222', stewardName: '李四'}
-      ];
-      this.stewardChooseShow = true;
-      // const res: any = await this.axios.get(api.getStewards);
-      // if (res && res.code === '000') {
-      //   this.stewardList = res.data;
-      // } else {
-      //   this.$toast(res.msg || '获取管家失败');
-      // }
-    } catch (err) {
-      throw new Error(err || 'Unknow Error!');
-    }
+  @Emit()
+  private getStewards() {
+    return;
   }
 }
 </script>
