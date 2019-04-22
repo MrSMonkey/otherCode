@@ -10,11 +10,7 @@
 
 <template>
   <section class="house-list">
-<<<<<<< HEAD
     <section class="list" v-for="house in tableData" :key="house.entrustId">
-=======
-    <section class="list" v-for="house in tableData" :key="house.entrustId" @click="linkHouseInfoTo(house)">
->>>>>>> 2a29816792c87cd5276fc0eafda7ff673c678ef0
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
