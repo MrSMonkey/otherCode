@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 17:29:23
+ * @Last Modified time: 2019-04-23 14:04:34
  */
 
 <template>
@@ -49,7 +49,8 @@ export default class House extends CommonMixins {
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
   private stewardChooseShow: boolean = false; // 是否显示管家选择列表
-  private stewardList: StewardItem[] = [];
+  private stewardList: StewardItem[] = []; // 管家列表
+  private selectedTableDataIndex: number; // 选中房源的房源列表的索引
   private mounted() {
     this.getHouseList(); // 获取房源列表
   }
@@ -83,31 +84,38 @@ export default class House extends CommonMixins {
   }
 
   /**
-   * @description 获取管家列表
+   * @description 获取管家列表并保存选中房源的房源列表tableData中的索引
+   * @params id 房源ID
+   * @params selectedIndex 选中房源的房源列表的索引
    * @returns void
    * @author linyu
    */
-  private async getStewards() {
+  private async getStewards(id: string | number, selectedIndex: number) {
     try {
-      this.stewardList = [
-        {stewardId: '111', stewardName: '张三'},
-        {stewardId: '222', stewardName: '李四'}
-      ];
-      this.stewardChooseShow = true;
-      // const res: any = await this.axios.get(api.getStewards);
-      // if (res && res.code === '000') {
-      //   this.stewardList = res.data;
-      // } else {
-      //   this.$toast(res.msg || '获取管家失败');
-      // }
+      const res: any = await this.axios.get(`${api.getStewards}/${id}`);
+      if (res && res.code === '000') {
+        if (!res.data.length) {
+          this.$dialog.alert({
+            title: '提示',
+            confirmButtonText: '我知道了',
+            className: 'dialogTips',
+            message: '当前小区未分配资产管家！<br/>工作人员会尽快联系您'
+          });
+        } else {
+          this.stewardList = res.data;
+          this.selectedTableDataIndex = selectedIndex;
+          this.stewardChooseShow = true;
+        }
+      } else {
+        this.$toast(res.msg || '获取管家失败');
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
   }
 
   /**
-   * @description 资产管家选择确定按钮
-   * @params item 选中的资产管家信息
+   * @description 取消选择资产管家
    * @author linyu
    */
   private cancelChoose() {
@@ -116,12 +124,23 @@ export default class House extends CommonMixins {
 
   /**
    * @description 资产管家选择确定按钮
-   * @params item 选中的资产管家信息
+   * @params item 选中的资产管家信息item
    * @author linyu
    */
-  private stewardChange(item: StewardItem) {
-    this.stewardChooseShow = false;
-    console.log(item);
+  private async stewardChange(item: StewardItem) {
+    try {
+      const entrustId = this.tableData[this.selectedTableDataIndex].entrustId; // 房源ID
+      const res: any = await this.axios.get(`${api.setAgency}/${entrustId}/${item.assetUserId}`);
+      if (res && res.code === '000') {
+        this.tableData[this.selectedTableDataIndex].allotAgency = true;
+      } else {
+        this.$toast(res.msg || '设置资产代理管家失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.stewardChooseShow = false;
+    }
   }
 }
 </script>

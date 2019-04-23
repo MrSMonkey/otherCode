@@ -3,20 +3,23 @@
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-19 17:00:04
+ * @Last Modified time: 2019-04-23 14:06:10
  */
-
-
 
 <template>
   <section class="house-list">
-    <section class="list" v-for="house in tableData" :key="house.entrustId">
+    <section class="list" v-for="(house, index) in tableData" :key="house.entrustId">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
           <div class="next">
-            <van-button @click="getStewards" size="mini" :class="['steward-choose-btn', house.assetNum ? 'active' : '']" :disabled="house.assetNum ? true : false">{{house.assetNum ? "已选择" : "选择管家"}}</van-button>
+            <van-button 
+              @click="getStewards(house.entrustId, index)"
+              size="mini"
+              :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
+              :disabled="house.allotAgency ? true : false"
+            >{{house.allotAgency ? "已选择" : "选择管家"}}</van-button>
             <div @click="linkTo(house)" class="add-info">
               <img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息
             </div>
@@ -50,7 +53,7 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class HouseList extends CommonMixins {
   @Prop({ type: Array, default: () => [] })
-  private tableData: any;
+  private tableData: any; // 房源列表
 
   /**
    * @description 已上架的房源跳转到我的房源列表
@@ -83,6 +86,7 @@ export default class HouseList extends CommonMixins {
   private getRentWay(status: number) {
     return RENT_WAY[status];
   }
+
   /**
    * @description 判断房源详情
    * @params type 类型
@@ -107,11 +111,13 @@ export default class HouseList extends CommonMixins {
 
   /**
    * @description 获取管家列表
+   * @params id 房源ID
+   * @params selectedIndex 选中房源的房源列表tableData中的索引
    * @returns void
    * @author linyu
    */
   @Emit()
-  private getStewards() {
+  private getStewards(id: string | number, selectedIndex: number) {
     return;
   }
 }

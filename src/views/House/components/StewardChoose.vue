@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-19 14:19:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-19 16:39:57
+ * @Last Modified time: 2019-04-23 14:04:45
  */
 
 <template>
@@ -14,7 +14,7 @@
         :columns="stewardList"
         @confirm="stewardChange"
         @cancel="cancelChoose"
-        value-key="stewardName"
+        value-key="assetUserName"
         title="请选择您爱屋的资产管家"
       />
     </van-popup>
@@ -43,16 +43,18 @@ export default class StewardChoose extends CommonMixins {
     default: [],
     required: true
   })
-  private stewardList: StewardItem[];
+  private stewardList: StewardItem[];  // 管家列表
   @Prop({
     type: Boolean,
     default: false,
     required: true
   })
-  private pickerShow: boolean;
+  private pickerShow: boolean;  // 是否显示
 
   /**
-   * @description 选择城市确认
+   * @description 选择管家确认
+   * @params item 选中的管家信息item
+   * @index index item在stewardList中的索引
    * @returns void
    * @author linyu
    */
@@ -62,7 +64,7 @@ export default class StewardChoose extends CommonMixins {
   }
 
   /**
-   * @description 选择城市确认
+   * @description 选择管家取消
    * @returns void
    * @author linyu
    */

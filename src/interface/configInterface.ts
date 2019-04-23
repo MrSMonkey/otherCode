@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-02 15:23:08
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-02 16:16:03
+ * @Last Modified time: 2019-04-23 11:00:14
  */
 import { BaseInterface } from './base.interface';
 
@@ -58,8 +58,10 @@ interface CityItem {
 }
 /* 管家选择列表item */
 interface StewardItem {
-  stewardId: string;
-  stewardName: string;
+  assetUserId: string;
+  assetUserName: string;
+  assetUserPhone?: string;
+  houseNum?: number;
 }
 export {
   StartHomeImgInterface,
