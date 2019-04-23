@@ -25,14 +25,23 @@
             </div>
           </div>
           <div class="tree-right">
+            <section class="toast-box" v-if="showDialog">
+              <div class="toast-content">
+                <div class="toast-title">
+                  <span>全部分类</span>
+                  <img src="@/assets/images/buyservice_icon_close.png" alt="" class="meun-icon" @click="closeDialog"/>
+                </div>
+                <div class="toast-main">
+                <span v-for="(meum, idx) in productThreeMeum" :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''" @click="clickThreeMeum(meum, idx)">{{meum.typeName}}</span>
+                </div>
+              </div>
+            </section>
             <section v-if="productItemData.length > 0">
               <section class="product-name" v-if="productThreeMeum.length > 0">
                 <p>
-                  <span v-for="(meum, idx) in productThreeMeum" :key="idx" class="three-name">{{meum.typeName}}</span>
+                  <span v-for="(meum, idx) in productThreeMeum" :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''" @click="clickThreeMeum(meum, idx)">{{meum.typeName}}</span>
                 </p>
-                <img src="@/assets/images/buyservice_icon_more.png" alt="" class="meun-icon"/>
-                <!--   -->
-                <!-- <-->
+                <img src="@/assets/images/buyservice_icon_more.png" alt="" class="meun-icon" @click="openDialog"/>
               </section>
               <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
                 <a @click="goodsClick('product', item.productId)">
@@ -120,6 +129,8 @@ export default class Purchase extends CommonMixins {
   private productName: string = ''; // 当前选中的二级name
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
   private productThreeMeum: any[] = [];
+  private showDialog: boolean = false; // 弹窗显示
+  private isTreeMeumActive: number = -1; // 第三级菜单选中
 
   private mounted() {
     this.needActivated = false;
@@ -301,11 +312,40 @@ export default class Purchase extends CommonMixins {
     }
   }
 
+  /**
+   * @description 打开三级菜单dialog
+   * @returns null
+   * @author chenmo
+   */
+  private openDialog() {
+    this.showDialog = true;
+  }
+
+  /**
+   * @description 关闭三级菜单dialog
+   * @returns null
+   * @author chenmo
+   */
+  private closeDialog() {
+    this.showDialog = false;
+  }
+
+  /**
+   * @description 点击三级菜单
+   * @params item  当前选中的三级菜单
+   * @params idx 当前选中的三级菜单索引值
+   * @returns null
+   * @author chenmo
+   */
+  private clickThreeMeum(item: any, idx: number) {
+    this.isTreeMeumActive = idx;
+    this.productItemData = item.products || []; // 当前选中的产品
+    this.showDialog = false;
+  }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .purchase
   .purchase-item
     background $global-background
@@ -428,6 +468,51 @@ export default class Purchase extends CommonMixins {
       bottom 0
       margin-bottom vw(0)
       // background #fff
+      .toast-box
+        width 100%
+        height 100%
+        position fixed
+        top 0
+        left vw(80)
+        background rgba(0,0,0,0.3)
+        z-index 100
+        .toast-content
+          width 100% 
+          position absolute
+          top 44px
+          right 0
+          left 0
+          background-color #fff
+          .toast-title
+            width 80%
+            display flex
+            justify-content space-between
+            align-items center
+            span
+              font-size 15px
+              color #000
+              margin vw(10)
+            img 
+              display inline-block
+              width vw(15)
+              height 100%
+              margin-right vw(15)
+          .toast-main
+            width 80%
+            span
+              display inline-block
+              height vw(30)
+              line-height vw(30)
+              background #FAFAFA
+              color $tip-text-color
+              font-size 14px
+              margin vw(10) vw(10)
+              padding 0 vw(20)
+              border-radius 4px
+              text-align center
+            .three-active
+              background #FAF6F0
+              color $main-color
       .product-name
         background #fff
         padding vw(15) 0 vw(0)
@@ -440,11 +525,13 @@ export default class Purchase extends CommonMixins {
           white-space nowrap
           overflow-x auto
           display inline-block
-          .three-name
+          span
             font-size 15px
             display inline-block
             color $tip-text-color
             margin-right vw(15)
+          .three-active
+            color $main-color
         .meun-icon
           display inline-block
           width vw(15)
