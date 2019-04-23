@@ -1,50 +1,55 @@
-/*
- * @Description: 服务产品订单详情
- * @Author: chenmo
- * @Date: 2019-03-14 20:26:26
+<!--
+  /*
+  * @Description: 退款订单详情
+  * @Author: chenmo
+  * @Date: 2019-03-14 20:26:26
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-26 17:13:59
- */
+ * @Last Modified time: 2019-04-23 10:54:03
+  */
+-->
 
 <template>
   <section class="order-detils">
     <div class="order-info">
-      <div class="order-title"><h2>服务产品订单信息</h2><span>{{orderInfo.orderStatusName}}</span></div>
+      <div class="order-title"><h2>订单信息</h2></div>
       <div class='serviceName'>
-        <span>服务产品名称：{{orderInfo.productName || '无'}}</span>
+        <span>订单号：{{orderInfo.orderNum || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>服务产品订单号：{{orderInfo.orderNum || '无'}}</span>
+        <span>订单类型：{{orderInfo.decType || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>产品类型：{{orderInfo.orderTypeName || '无'}}</span>
+        <span>产品名称：{{orderInfo.productName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>下单时间：{{orderInfo.orderStartTime|| '无'}}</span>
+        <span>订单金额：{{orderInfo.orderAmount|| 0}}元</span>
       </div>
       <div class='serviceName'>
-        <span>实付款：{{orderInfo.orderAmount || 0 }}元</span>
+        <span>服务房源：{{orderInfo.productHouseName || '无' }}</span>
       </div>
     </div>
     <div class="order-info">
-      <div class="order-title"><h2>其他信息</h2></div>
+      <div class="order-title"><h2>退款信息</h2></div>
       <div class='serviceName'>
-        <span>服务房源：{{orderInfo.productHouseName || '无'}}</span>
+        <span>申请时间：{{orderInfo.productHouseName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>联系人：{{orderInfo.buyersName || '无'}}</span>
+        <span>处理完成时间：{{orderInfo.buyersName || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>联系电话：{{orderInfo.buyersPhone|| '无'}}</span>
+        <span>处理状态：{{orderInfo.buyersPhone|| '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>备      注：{{orderInfo.buyersRemarks }}</span>
+        <span>退款原因：{{orderInfo.buyersRemarks }}</span>
+      </div>
+      <div class='serviceName'>
+        <span>退款金额：{{orderInfo.buyersRemarks }}</span>
       </div>
     </div>
-    <section>
+    <!-- <section>
       <van-button slot="button" size="large" type="default" class="entrust-btn" @click="paymentData" v-if ="orderInfo.orderType!==4 && orderInfo.orderStatus === 1">继续支付</van-button>
       <van-button slot="button" size="large" type="default" class="entrust-btn" @click="pushRecord" v-else>查看服务历史</van-button>
-    </section>
+    </section> -->
   </section>
 </template>
 
@@ -60,10 +65,10 @@ const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
-  name: 'ProductDetile',
+  name: 'RefundDetail',
 })
 // 类方式声明当前组件
-export default class ProductDetile extends CommonMixins {
+export default class RefundDetail extends CommonMixins {
   private orderId: string = ''; // 订单id
   private entrustId: string = ''; // 房源id
   private orderInfo: any = {}; // 服务订单详情
@@ -90,25 +95,9 @@ export default class ProductDetile extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
+      const res: any = await this.axios.get(api.getRefundDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-        const status: string = String(this.$route.query.status).split('?')[0];
-        if (status === '1') {
-          // 1代表支付进入 2 代表从订单进入不需要弹窗
-          this.$dialog.confirm({
-            title: '提示',
-            confirmButtonText: '是',
-            cancelButtonText: '否',
-            className: 'dialogTips',
-            message: '是否立即发起本服务'
-          }).then(() => {
-            // on confirm
-            this.$router.push(`/startService?productId=${res.data.orderId}&entrustId=${this.entrustId}`); // 跳转到发起服务
-          }).catch(() => {
-            // on cancel 取消
-          });
-        }
       } else {
         this.$toast(`获取订单详情失败`);
       }

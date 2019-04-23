@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-19 16:05:44
+ * @Last Modified time: 2019-04-23 12:00:43
  */
 
 <template>
@@ -18,7 +18,7 @@
               <transition name="uokodown">
                 <section v-if="index === isSlide" class="childrenItem" ref="childrenItem">
                   <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
-                    <div><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
+                    <div><span :class="idx === isActiveChildrenOne ? 'circle-active' : ''"></span><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
                   </div>
                 </section>
               </transition>
@@ -26,7 +26,14 @@
           </div>
           <div class="tree-right">
             <section v-if="productItemData.length > 0">
-              <p class="product-name">{{productName}}</p>
+              <section class="product-name" v-if="productThreeMeum.length > 0">
+                <p>
+                  <span v-for="(meum, idx) in productThreeMeum" :key="idx" class="three-name">{{meum.typeName}}</span>
+                </p>
+                <img src="@/assets/images/buyservice_icon_more.png" alt="" class="meun-icon"/>
+                <!--   -->
+                <!-- <-->
+              </section>
               <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
                 <a @click="goodsClick('product', item.productId)">
                   <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
@@ -60,7 +67,6 @@
           <NoData tip="暂无服务包" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>
       </van-tab>
-      
       <van-tab disabled>
         <div slot="title" @click="chooseCity" class="pisition-tab">
           <span class="pisition">
@@ -113,6 +119,7 @@ export default class Purchase extends CommonMixins {
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
+  private productThreeMeum: any[] = [];
 
   private mounted() {
     this.needActivated = false;
@@ -172,20 +179,14 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
-        console.log(res)
         this.productData = res.data.map((item: any) => {
-          // const arr: any = item.productDetails.map((ctx: any) => {
-          //   // 删除服务产品没有的情况
-          //   if (!(ctx.products.length === 0)) {
-          //     return ctx;
-          //   }
-          // });
           return item;
         });
         // console.log(this.productData)
         this.isActive = 0; // 默认值
         this.isActiveChildrenOne = 0; // 默认值
-        // this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].products : []; // 进入页面默认第一条
+        this.isSlide = -1; // 收起
+        this.productItemData = res.data[0].products.length > 0 ? res.data[0].products : []; // 进入页面默认第一级全部
         // this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
@@ -241,13 +242,14 @@ export default class Purchase extends CommonMixins {
   private checkActive(index: any, item: any) {
     if (index === this.isSlide) {
       this.isSlide = -1; // 再次点击收起
+      this.productItemData = item.products.length > 0 ? item.products : []; // 当前选中的产品
       return false;
     } else {
       this.isSlide = index; // 展开
       this.isActive = index;
       this.isActiveChildrenOne = 0; // 默认第一个
-      this.productItemData = item.productDetails.length > 0 ? item.productDetails[0].products : []; // 当前选中的产品
-      this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
+      this.productItemData = item.children && item.children.length > 0 ? item.children[0].products : []; // 当前选中的产品
+      // this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
     }
   }
 
@@ -262,6 +264,8 @@ export default class Purchase extends CommonMixins {
     this.isActiveChildrenOne = ctx;
     this.productItemData = item.products; // 当前选中的产品
     this.productName = item.typeName;
+    this.productThreeMeum = item.children && item.children.length > 0 ? item.children : [];
+    console.log(this.productThreeMeum);
   }
 
   /**
@@ -332,7 +336,7 @@ export default class Purchase extends CommonMixins {
         font-size 18px
         font-weight bold
         display inline-block
-        padding-right 10px
+        padding-right vw(4)
     .purchase-left
       position absolute
       top vw(15)
@@ -396,15 +400,24 @@ export default class Purchase extends CommonMixins {
             display -webkit-flex
             display flex
             align-items center
+            span
+              display inline-block
+              width vw(5)
+              height vw(5)
+              border-radius 50%
+              background $disabled-color
+              margin-right vw(5)
+            .circle-active
+              background $main-color
             p
-              width vw(50)
+              width vw(60)
               // height vw(40)
               display -webkit-box
               -webkit-box-orient vertical
               -webkit-line-clamp 2
               overflow hidden
             .active
-              color $main-color
+              color $main-color       
     .tree-right
       max-height 100%
       overflow-y scroll
@@ -417,10 +430,26 @@ export default class Purchase extends CommonMixins {
       // background #fff
       .product-name
         background #fff
-        font-size 14px
         padding vw(15) 0 vw(0)
         padding-left vw(15)
-        color $tip-text-color
+        display flex
+        align-items center
+        // border-bottom 1px solid $tip-text-color
+        p
+          width vw(250)
+          white-space nowrap
+          overflow-x auto
+          display inline-block
+          .three-name
+            font-size 15px
+            display inline-block
+            color $tip-text-color
+            margin-right vw(15)
+        .meun-icon
+          display inline-block
+          width vw(15)
+          height 100%
+          margin-right vw(15)
       .list-no
         text-align center
         margin-top vw(100)
