@@ -36,15 +36,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import { CityItem } from '@/interface/configInterface.ts';
 import { Field, Row, Col } from 'vant';
 
-
-interface CityItem {
-  cityId: string;
-  cityName: string;
-}
 // 声明引入的组件
 @Component({
   name: 'CityInput',
