@@ -66,7 +66,6 @@ export default class HouseStatus extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .time-line-look
   width 100%
   padding vw(20) vw(20) 0

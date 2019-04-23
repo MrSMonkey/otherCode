@@ -2,8 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-03-26 21:02:05
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-04-23 10:49:59
  */
 
 export default {
@@ -116,5 +116,11 @@ export default {
   lookPrice: 'partner/house/pay/look/detail',
 
   /*创建装修订单*/
-  creatBuildOrder: 'partner/owner/product/service/build'
+  creatBuildOrder: 'partner/owner/product/service/build',
+
+  /*退款订单列表*/
+  getRefundOrderList: '/partner/owner/product/refund/list',
+
+  /*退款订单详情*/
+  getRefundDetail: '/partner/owner/product/refund/detail'
 };

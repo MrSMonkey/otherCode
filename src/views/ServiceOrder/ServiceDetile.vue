@@ -156,7 +156,6 @@ export default class ServiceDetile extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
 .order-detils
   height auto
   .order
