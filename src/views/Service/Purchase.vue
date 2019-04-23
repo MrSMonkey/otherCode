@@ -25,37 +25,46 @@
             </div>
           </div>
           <div class="tree-right">
-            <section class="toast-box" v-if="showDialog">
-              <div class="toast-content">
-                <div class="toast-title">
-                  <span>全部分类</span>
-                  <img src="@/assets/images/buyservice_icon_close.png" alt="" class="meun-icon" @click="closeDialog"/>
+            <transition name="van-slide-down">
+              <section class="toast-box" v-if="showDialog">
+                <div class="toast-content">
+                  <div class="toast-title">
+                    <span>全部分类</span>
+                    <img src="@/assets/images/buyservice_icon_close.png" alt="" class="meun-icon" @click="closeDialog"/>
+                  </div>
+                  <div class="toast-main">
+                  <span v-for="(meum, idx) in productThreeMeum" :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''" @click="clickMeum(meum, idx)">{{meum.typeName}}</span>
+                  </div>
                 </div>
-                <div class="toast-main">
-                <span v-for="(meum, idx) in productThreeMeum" :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''" @click="clickThreeMeum(meum, idx)">{{meum.typeName}}</span>
-                </div>
-              </div>
-            </section>
-            <section v-if="productItemData.length > 0">
+              </section>
+            </transition>
+            <section>
               <section class="product-name" v-if="productThreeMeum.length > 0">
-                <p>
-                  <span v-for="(meum, idx) in productThreeMeum" :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''" @click="clickThreeMeum(meum, idx)">{{meum.typeName}}</span>
-                </p>
+                <div ref="typePanel">
+                  <span
+                    v-for="(meum, idx) in productThreeMeum"
+                    :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''"
+                    @click="clickThreeMeum($event, meum, idx)"
+                    :ref="'type' + idx"
+                  >{{meum.typeName}}</span>
+                </div>
                 <img src="@/assets/images/buyservice_icon_more.png" alt="" class="meun-icon" @click="openDialog"/>
               </section>
-              <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
-                <a @click="goodsClick('product', item.productId)">
-                  <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
-                  </div>
-                  <p  class="purchase-title">{{item.productName|| ''}}</p>
-                  <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
-                  <p class="purchase-money" v-else><span>{{item.price || 0}}</span>元</p>
-                </a>
-              </div>
-            </section>
-            <section v-else class="list-no">
-              <img src="@/assets/images/404.png" alt=""/>
-              <p>暂无服务产品</p>
+              <section v-if="productItemData.length > 0">
+                <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
+                  <a @click="goodsClick('product', item.productId)">
+                    <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
+                    </div>
+                    <p  class="purchase-title">{{item.productName|| ''}}</p>
+                    <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
+                    <p class="purchase-money" v-else><span>{{item.price || 0}}</span>元</p>
+                  </a>
+                </div>
+              </section>
+              <section v-else class="list-no">
+                <img src="@/assets/images/404.png" alt=""/>
+                <p>暂无服务产品</p>
+              </section>
             </section>
           </div>
         </section>
@@ -114,6 +123,7 @@ export default class Purchase extends CommonMixins {
   public $refs!: {
     [key: string]: any,
     childrenItem: HTMLFormElement,
+    typePanel: HTMLFormElement
   };
 
   private entrustId: string = ''; // 委托房源ID
@@ -251,6 +261,8 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private checkActive(index: any, item: any) {
+    this.isTreeMeumActive = -1;
+    this.productThreeMeum = [];
     if (index === this.isSlide) {
       this.isSlide = -1; // 再次点击收起
       this.productItemData = item.products.length > 0 ? item.products : []; // 当前选中的产品
@@ -260,6 +272,7 @@ export default class Purchase extends CommonMixins {
       this.isActive = index;
       this.isActiveChildrenOne = 0; // 默认第一个
       this.productItemData = item.children && item.children.length > 0 ? item.children[0].products : []; // 当前选中的产品
+      this.productThreeMeum = item.children && item.children.length > 0 ? ((item.children[0].children &&  item.children[0].children.length > 0) ? item.children[0].children : []) : [];
       // this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
     }
   }
@@ -276,6 +289,7 @@ export default class Purchase extends CommonMixins {
     this.productItemData = item.products; // 当前选中的产品
     this.productName = item.typeName;
     this.productThreeMeum = item.children && item.children.length > 0 ? item.children : [];
+    this.isTreeMeumActive = -1;
     console.log(this.productThreeMeum);
   }
 
@@ -334,13 +348,39 @@ export default class Purchase extends CommonMixins {
    * @description 点击三级菜单
    * @params item  当前选中的三级菜单
    * @params idx 当前选中的三级菜单索引值
+   * @params e
    * @returns null
    * @author chenmo
    */
-  private clickThreeMeum(item: any, idx: number) {
+  private clickThreeMeum(e: any, item: any, idx: number) {
     this.isTreeMeumActive = idx;
     this.productItemData = item.products || []; // 当前选中的产品
     this.showDialog = false;
+  }
+
+  /**
+   * @description 点击三级菜单
+   * @params item  当前选中的三级菜单
+   * @params idx 当前选中的三级菜单索引值
+   * @params e
+   * @returns null
+   * @author chenmo
+   */
+  private clickMeum(item: any, idx: number) {
+    this.isTreeMeumActive = idx;
+    this.productItemData = item.products || []; // 当前选中的产品
+    this.showDialog = false;
+    this.scrollTo(this.$refs[`type${idx}`][0].offsetLeft - 15);
+  }
+
+  /**
+   * @description 滚动到某个位置
+   * @params offsetLeft  偏移量
+   * @returns null
+   * @author chenmo
+   */
+  private scrollTo(offsetLeft: number) {
+    this.$refs.typePanel.scrollTo(offsetLeft, 0);
   }
 }
 </script>
@@ -515,12 +555,12 @@ export default class Purchase extends CommonMixins {
               color $main-color
       .product-name
         background #fff
-        padding vw(15) 0 vw(0)
+        padding vw(15) 0 vw(15)
         padding-left vw(15)
         display flex
         align-items center
         // border-bottom 1px solid $tip-text-color
-        p
+        div
           width vw(250)
           white-space nowrap
           overflow-x auto
