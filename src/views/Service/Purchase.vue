@@ -2,8 +2,8 @@
  * @Description: 服务包列表
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-19 16:05:44
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-22 18:16:20
  */
 
 <template>
@@ -172,7 +172,7 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
-        console.log(res)
+        console.log(res);
         this.productData = res.data.map((item: any) => {
           // const arr: any = item.productDetails.map((ctx: any) => {
           //   // 删除服务产品没有的情况
