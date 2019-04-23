@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 15:47:43
+ * @Last Modified time: 2019-04-23 17:59:32
  */
 
 <template>
@@ -11,7 +11,7 @@
     <section class="list" v-for="(house, index) in tableData" :key="house.entrustId" @click="linkHouseInfoTo(house)">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
-        <div v-if="house.handleStatus === 1" class="item-dec-ok">
+        <section class="item-dec-ok" v-if="house.handleStatus === 1">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
           <div class="next">
             <van-button 
@@ -24,9 +24,20 @@
               <img class="call-icon" alt="waith" src="@/assets/images/icon/write.png"/>补充或修改房源信息
             </div>
           </div>
-        </div>
-        <section v-else>
-          <HouseAttribute :house="house"></HouseAttribute>
+        </section>
+        <section class="item-dec-ok" v-else>
+            <van-button 
+              @click.stop="getStewards(house.entrustId, index)"
+              size="mini"
+              :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
+              :disabled="house.allotAgency ? true : false"
+            >{{house.allotAgency ? "已选择" : "选择管家"}}</van-button>
+          <div class="set">
+            <span>{{getRentType(house.consociationType)}}</span> | 
+            <span>{{getRentWay(house.rentWay)}} </span> | 
+            <span v-if="house.rentWay === 2">{{house.rentRoom ? `${house.roomTotal}个房间 ${house.rentRoom}个已出租` : '待租中'}}</span>
+            <span v-else>{{house.rentRoom ? `已出租` : '待租中'}}</span>
+          </div>
         </section>
       </div>
     </section>
@@ -39,15 +50,13 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { RENT_WAY, RENT_TYPE } from '@/config/config';
 import { StewardItem } from '@/interface/configInterface.ts';
 import HouseTitle from './HouseTitle.vue';
-import HouseAttribute from './HouseAttribute.vue';
 import api from '@/api';
 
 // 声明引入的组件
 @Component({
   name: 'HouseList',
   components: {
-    HouseTitle,
-    HouseAttribute
+    HouseTitle
   }
 })
 // 类方式声明当前组件
@@ -124,7 +133,6 @@ export default class HouseList extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .list
   width 100%
   margin-bottom vw(15)
@@ -159,26 +167,11 @@ export default class HouseList extends CommonMixins {
           overflow hidden
           text-overflow ellipsis
           white-space nowrap
-        .steward-choose-btn
-          color #ffffff
-          float right
-          text-align center
-          border none
-          width 65px;
-          background $main-color
-          border-radius 3px
-          height 22px
-          line-height 22px
-          font-size 14px
-        .active
-          background $disabled-color
-          opacity 1
-    .set
-      display inline-block
-      padding vw(14)
-      color $next-text-color
-      font-size 13px
-      line-height 1.5
+      .set
+        margin-right 80px
+        color $next-text-color
+        font-size 13px
+        line-height 1.5
     .call-icon
       display inline-block
       width 18px
@@ -190,4 +183,18 @@ export default class HouseList extends CommonMixins {
       line-height 1.5
       color $main-color
       font-size 16px
+  .steward-choose-btn
+    color #ffffff
+    float right
+    text-align center
+    border none
+    width 65px;
+    background $main-color
+    border-radius 3px
+    height 22px
+    line-height 22px
+    font-size 14px
+  .active
+    background $disabled-color
+    opacity 1
 </style>
