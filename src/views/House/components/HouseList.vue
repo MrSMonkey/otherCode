@@ -3,19 +3,19 @@
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 14:06:10
+ * @Last Modified time: 2019-04-23 15:47:43
  */
 
 <template>
   <section class="house-list">
-    <section class="list" v-for="(house, index) in tableData" :key="house.entrustId">
+    <section class="list" v-for="(house, index) in tableData" :key="house.entrustId" @click="linkHouseInfoTo(house)">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <div v-if="house.handleStatus === 1" class="item-dec-ok">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
           <div class="next">
             <van-button 
-              @click="getStewards(house.entrustId, index)"
+              @click.stop="getStewards(house.entrustId, index)"
               size="mini"
               :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
               :disabled="house.allotAgency ? true : false"
