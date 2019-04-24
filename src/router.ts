@@ -50,8 +50,9 @@ const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
 // 星空财神(旧公众号)
-const Fortune = () => import(/* webpackChunkName: 'fortune' */ '@/views/Home/Fortune.vue');
-const FortuneResult = () => import(/* webpackChunkName: 'fortuneResult' */ '@/views/Home/FortuneResult.vue');
+const OldFortune = () => import(/* webpackChunkName: 'oldFortune' */ '@/views/Home/OldFortune.vue');
+const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */ '@/views/Home/OldFortuneResult.vue');
+const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
 
 router = new Router({
   base: process.env.BASE_URL,
@@ -83,8 +84,9 @@ router = new Router({
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
 
     // 老公众号
-    { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
-    { path: '/fortuneResult', name: 'fortuneResult', meta: {title: '星空财神', requireAuth: false}, component: FortuneResult},
+    { path: '/oldFortune', name: 'oldFortune', meta: {title: '星空财神', requireAuth: false}, component: OldFortune},
+    { path: '/oldFortuneResult', name: 'oldFortuneResult', meta: {title: '星空财神', requireAuth: false}, component: OldFortuneResult},
+    { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',

@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-24 13:52:27
+ * @Last Modified time: 2019-04-24 14:03:38
  */
 
 <template>
@@ -70,7 +70,7 @@ export default class Fortune extends CommonMixins {
     this.anim.addEventListener('complete', () => {
       this.anim.stop();
       this.$router.push({
-          path: '/fortuneResult',
+          path: '/oldFortuneResult',
           query: {
             money: this.incomeValue,
           }
@@ -110,7 +110,6 @@ export default class Fortune extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 
 .fortune
   .god-pic-box
@@ -129,7 +128,6 @@ export default class Fortune extends CommonMixins {
       color #A58D68
       font-size 18px /* no */
       font-weight 600
-  
   .words 
     font-size 16px /* no */
     color #c3aa82
@@ -150,13 +148,8 @@ export default class Fortune extends CommonMixins {
       margin 0 vw(5)
       display inline-block
       vertical-align middle
-  
-
-
   .income-input-box 
     padding: 0 vw(27.5);
-
-
   .income-input 
     padding vw(10) vw(5)
     font-size:15px /* no */
@@ -167,8 +160,6 @@ export default class Fortune extends CommonMixins {
     width 100%
     box-sizing border-box
     outline none
-
-
   .result-btn 
     display block
     width 100%
@@ -185,9 +176,6 @@ export default class Fortune extends CommonMixins {
     transition transform 0.05s ease
     &:active 
       transform: scale(0.98);
-    
-
-
   .anim-box 
     height: 100%
     position absolute
@@ -196,11 +184,7 @@ export default class Fortune extends CommonMixins {
     bottom 0
     top 0
     background: rgba(0, 0, 0, 0.7) url('../../assets/images/bg_light.png')  center/cover
-
     display: none
     &.show 
       display block
-    
-
-  
 </style>

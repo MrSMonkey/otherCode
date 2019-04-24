@@ -1,9 +1,9 @@
 /*
- * @Description: 星空财神 - 4321定律
+ * @Description: 星空财神 - 4321定律中间页
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-24 13:48:58
+ * @Last Modified time: 2019-04-24 14:05:07
  */
 
 <template>
@@ -42,7 +42,7 @@
           </p>
           <p class="p-desc">收入之10%用于个人/家庭保险</p>
         </div>
-        <router-link to="/fortune/law" class="p-center">
+        <router-link to="/oldFortuneLaw" class="p-center">
           4321定律
         </router-link>
       </div>
@@ -53,7 +53,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import * as Anim from '../../assets/json/fortune_anim.json';
 
 
 // 声明引入的组件
@@ -109,13 +108,13 @@ export default class FortuneResult extends CommonMixins {
       &:nth-of-type(2n+2)
         text-align right
     .p1
-      background-image: url('../../assets/images/p1.png')
+      background-image url('../../assets/images/p1.png')
     .p2 
-      background-image: url('../../assets/images/p2.png')
+      background-image url('../../assets/images/p2.png')
     .p3
-      background-image: url('../../assets/images/p3.png')
+      background-image url('../../assets/images/p3.png')
     .p4
-      background-image: url('../../assets/images/p4.png')
+      background-image url('../../assets/images/p4.png')
     .p-tit 
       font-size 18px /* no */
     .p-money 
@@ -125,7 +124,6 @@ export default class FortuneResult extends CommonMixins {
     .p-num 
       font-weight bold
       font-size 30px /* no */
-    
     .p-desc 
       font-size 14px /* no */
       text-align left
@@ -143,5 +141,5 @@ export default class FortuneResult extends CommonMixins {
       margin auto
       font-size 0
       &:active
-        transform:  scale(0.98);
+        transform  scale(0.98)
 </style>
