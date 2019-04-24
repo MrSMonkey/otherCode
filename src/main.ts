@@ -6,7 +6,7 @@ import store from './store';
 import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
-import lottie from 'vue-lottie';
+import Lottie from 'vue-lottie';
 // import FastClick from 'fastclick';
 // import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
@@ -14,7 +14,7 @@ import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, 
 import 'vant/lib/index.css';
 
 
-Vue.use(lottie);
+Vue.use(Lottie);
 Vue.use(Toast);
 Vue.use(Picker);
 Vue.use(Popup);
