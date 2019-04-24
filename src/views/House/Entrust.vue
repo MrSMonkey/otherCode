@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 14:52:19
+ * @Last Modified time: 2019-04-24 11:03:29
  */
 
 <template>
@@ -351,7 +351,7 @@ export default class Entrust extends CommonMixins {
           confirmButtonText: '立即查看',
           cancelButtonText: '暂不选择',
           className: 'dialogTips',
-          message: `提交成功！资产管家会尽快与您联系，您可以在【我的房源】中选择资产管家`
+          message: `委托成功！我们的工作人员会尽快联系您！`
         }).then(() => {
           // on confirm
           this.$router.push(`/house`); // 跳转到房源列表
