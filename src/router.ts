@@ -52,6 +52,21 @@ const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/
 // 星空财神
 const Fortune = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Home/Fortune.vue');
 
+// 旧公众号 我的房源
+const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
+
+// 旧公众号 我的账单
+const OldMyAccount = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyAccount.vue');
+
+// 旧公众号 账单详情
+const OldAccountDetail = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldAccountDetail.vue');
+
+// 旧公众号 账单详情
+const OldHouseContract = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHouseContract.vue');
+
+// 旧公众号 房源照片
+const OldHousePic = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHousePic.vue');
+
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
@@ -81,6 +96,11 @@ router = new Router({
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
     { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
+    { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: false}, component: OldMyHouse},
+    { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: false}, component: OldMyAccount},
+    { path: '/OldAccountDetail', name: 'OldAccountDetail', meta: {title: '账单详情', requireAuth: false}, component: OldAccountDetail},
+    { path: '/OldHouseContract', name: 'OldHouseContract', meta: {title: '房源合同', requireAuth: false}, component: OldHouseContract},
+    { path: '/OldHousePic', name: 'OldHousePic', meta: {title: '房源照片', requireAuth: false}, component: OldHousePic},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',
