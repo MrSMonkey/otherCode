@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 17:59:32
+ * @Last Modified time: 2019-04-24 09:44:31
  */
 
 <template>
@@ -14,7 +14,8 @@
         <section class="item-dec-ok" v-if="house.handleStatus === 1">
           <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
           <div class="next">
-            <van-button 
+            <van-button
+              v-show="false"
               @click.stop="getStewards(house.entrustId, index)"
               size="mini"
               :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
@@ -26,12 +27,13 @@
           </div>
         </section>
         <section class="item-dec-ok" v-else>
-            <van-button 
-              @click.stop="getStewards(house.entrustId, index)"
-              size="mini"
-              :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
-              :disabled="house.allotAgency ? true : false"
-            >{{house.allotAgency ? "已选择" : "选择管家"}}</van-button>
+          <van-button
+            v-show="false"
+            @click.stop="getStewards(house.entrustId, index)"
+            size="mini"
+            :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
+            :disabled="house.allotAgency ? true : false"
+          >{{house.allotAgency ? "已选择" : "选择管家"}}</van-button>
           <div class="set">
             <span>{{getRentType(house.consociationType)}}</span> | 
             <span>{{getRentWay(house.rentWay)}} </span> | 
