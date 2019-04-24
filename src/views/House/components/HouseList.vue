@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 09:44:31
+ * @Last Modified time: 2019-04-24 11:03:54
  */
 
 <template>
@@ -12,7 +12,7 @@
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <section class="item-dec-ok" v-if="house.handleStatus === 1">
-          <div>已经成功通知到<span class="assetNum">{{house.assetNum}}</span>个资产管家，请保持手机畅通。</div>
+          <div>委托成功，请保持手机畅通。</div>
           <div class="next">
             <van-button
               v-show="false"
