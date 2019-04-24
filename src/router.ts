@@ -49,6 +49,9 @@ const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/
 // 服务包购买
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
+// 星空财神
+const Fortune = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Home/Fortune.vue');
+
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
@@ -77,6 +80,7 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
+    { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',
