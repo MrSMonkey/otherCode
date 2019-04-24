@@ -87,7 +87,6 @@ export default class ServiceRecord extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .service-order-detail
   padding-bottom vw(70)
   .order,.log

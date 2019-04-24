@@ -24,6 +24,8 @@ const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/
 const ServiceOrder = () => import(/* webpackChunkName: 'serviceOrder' */ '@/views/ServiceOrder/ServiceOrder.vue');
 const ServiceDetile = () => import(/* webpackChunkName: 'serviceDetile' */ '@/views/ServiceOrder/ServiceDetile.vue');
 const ProductDetile = () => import(/* webpackChunkName: 'productDetile' */ '@/views/ServiceOrder/ProductDetile.vue');
+const RefundDetail = () => import(/* webpackChunkName: 'RefundDetile' */ '@/views/ServiceOrder/RefundDetail.vue');
+
 const ServiceOrderDetail = () => import(/* webpackChunkName: 'serviceOrderDetail' */ '@/views/ServiceOrder/ServiceOrderDetail.vue');
 const ServiceInfo = () => import(/* webpackChunkName: 'serviceInfo' */ '@/views/ServiceOrder/ServiceInfo.vue');
 const ProductInfo = () => import(/* webpackChunkName: 'productInfo' */ '@/views/ServiceOrder/ProductInfo.vue');
@@ -47,6 +49,9 @@ const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/
 // 服务包购买
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
+// 星空财神
+const Fortune = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Home/Fortune.vue');
+
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
@@ -64,6 +69,7 @@ router = new Router({
     { path: '/purchase', name: 'purchase', meta: {title: '购买服务包', requireAuth: true}, component: Purchase},
     { path: '/serviceInfo', name: 'serviceInfo', meta: {title: '服务包详情', requireAuth: true}, component: ServiceInfo},
     { path: '/productInfo', name: 'productInfo', meta: {title: '服务产品详情', requireAuth: true}, component: ProductInfo},
+    { path: '/refundDetail', name: 'refundDetail', meta: {title: '退款/售后详情', requireAuth: true}, component: RefundDetail},
     { path: '/serviceType', name: 'serviceType', meta: {title: '选择服务类型', requireAuth: true}, component: ServiceType},
     { path: '/startService', name: 'startService', meta: {title: '发起服务', requireAuth: true}, component: StartService},
     { path: '/maintainChecked', name: 'maintainChecked', meta: {title: '确认验收', requireAuth: true}, component: MaintainChecked},
@@ -74,6 +80,7 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
+    { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',

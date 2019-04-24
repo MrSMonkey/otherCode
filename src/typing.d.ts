@@ -5,6 +5,7 @@ declare module 'vue-lazyload';
 declare module '@xunlei/vue-lazy-component';
 declare module 'better-scroll';
 declare module 'js-base64';
+declare module 'vue-lottie';
 // use json into TypeScript
 declare module '*.json' {
   const value: any;

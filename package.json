@@ -1,6 +1,6 @@
 {
   "name": "uoko-fe-landlord-site",
-  "version": "1.0.4",
+  "version": "1.0.44",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -29,6 +29,7 @@
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
     "vue-class-component": "^6.3.2",
+    "vue-lottie": "^0.2.1",
     "vue-property-decorator": "^7.2.0",
     "vue-router": "^3.0.1",
     "vue-skeleton-webpack-plugin": "^1.2.2",

@@ -13,8 +13,11 @@
     <div class="order-list" :key="index" v-for="(order, index) in tableData">
       <div class="list-title-box" @click="pushDetile(order.servicePackageId)">
         <!-- <router-link :to="'/serviceDetile?servicePackageId=' + order.servicePackageId"> -->
-          <!-- <div class='list-title'><img src="../../../assets/images/icon/icon_order.png" alt=""/><span>{{order.houseName}}</span></div> -->
           <div>
+            <div class='list-title'>
+              <div><img src="@/assets/images/icon/icon_order.png" alt=""/><span>{{order.houseName}}</span></div>
+              <div><img src="@/assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
+            </div>
             <div class='serviceName'>
               <span>服务包名称：{{order.servicePackageName}}</span>
             </div>
@@ -22,7 +25,7 @@
               <span>服务包订单号：{{order.servicePackageOrderNo}}</span>
             </div>
           </div>
-          <div><img src="../../../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
+          <!--  -->
         <!-- </router-link> -->
       </div>
       <div class="list-main">
@@ -82,21 +85,26 @@ export default class ServiceList extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../../assets/stylus/main.styl'
 .order-list
   background #fff
-  margin-bottom 20px
+  margin-bottom vw(10)
   .list-title-box
     padding vw(15)
     border-bottom 1px solid $border-color-light
-    display -webkit-flex
-    display flex
-    justify-content space-between
-    align-items center
+    // display -webkit-flex
+    // display flex
+    // justify-content space-between
+    // align-items center
     .icon-right
       display inline-block
       width vw(10)
   .list-title
+    display flex
+    flex-direction row
+    flex-wrap nowrap
+    justify-content space-between
+    align-items center
+    margin-bottom vw(10)
     img
       display inline-block
       width vw(20)
@@ -105,6 +113,9 @@ export default class ServiceList extends CommonMixins {
       padding-left 12px
       font-weight bold
       color $text-color
+    .icon-right
+      display inline-block
+      width vw(8)
   .list-no
     display -webkit-flex /* Safari */
     display flex
@@ -112,14 +123,11 @@ export default class ServiceList extends CommonMixins {
     flex-wrap nowrap
     justify-content space-between
     align-items center
-    font-size 13px
+    font-size 15px
     color $tip-text-color
-    .icon-right
-      display inline-block
-      width 8px
     span
       display inline-block
-      padding 6px 0
+      padding vw(8) 0
   .serviceName
     font-size 16px
     color: #474747;
