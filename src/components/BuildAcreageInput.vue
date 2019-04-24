@@ -1,39 +1,37 @@
 /*
- * @Description: 小区选择输入框
+ * @Description: 房屋面积输入框
  * @Author: linyu
- * @Date: 2019-04-22 17:38:57
+ * @Date: 2019-04-23 16:06:09
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 15:25:29
+ * @Last Modified time: 2019-04-24 11:49:57
  */
 
 <template>
   <div class="input-panel">
     <div class="label">
-      <slot>小&emsp;&emsp;区*</slot>
+      <slot>面&emsp;&emsp;积</slot>
     </div>
     <div class="village">
       <van-field
-        v-model="communityName"
-        placeholder="请选择您爱屋所在的小区"
-        type="text"
-        readonly
-        right-icon="arrow"
-        :input-align="inputAlign"
-        @click-right-icon="toCommunity"
-        @click="toCommunity"
-      />
+        v-model="buildAcreage"
+        placeholder="请输入产权面积"
+        type="number"
+        input-align="right"
+      >
+        <span slot="button" >平米</span>
+      </van-field>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit, Watch } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Row, Col } from 'vant';
 
 // 声明引入的组件
 @Component({
-  name: 'CommunityInput',
+  name: 'BuildAcreageInput',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,
@@ -41,25 +39,26 @@ import { Field, Row, Col } from 'vant';
   }
 })
 // 类方式声明当前组件
-export default class CommunityInput extends CommonMixins {
+export default class BuildAcreageInput extends CommonMixins {
   @Prop({
     type: String,
     default: 'right'
   })
   private inputAlign: string;
-  @Prop({
-    type: String,
-    default: ''
-  })
-  private communityName: string;
+  private buildAcreage: string | number = '';
 
+  @Watch('buildAcreage', { immediate: true})
+  private onPersonChanged(val: string | number, oldVal: string | number) {
+    this.change(val);
+  }
   /**
-   * @description 选择城市确认
+   * @description 面积输入
+   * @params value 输入框当前值
    * @returns void
    * @author linyu
    */
   @Emit()
-  private toCommunity() {
+  private change(value: string | number) {
     return;
   }
 }

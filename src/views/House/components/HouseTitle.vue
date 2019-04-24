@@ -2,12 +2,9 @@
  * @Description: 房源列表标题
  * @Author: chenmo
  * @Date: 2019-04-09 13:36:28
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 13:36:28
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-23 14:11:43
  */
-
-
-
 
 <template>
   <section class="house-title">

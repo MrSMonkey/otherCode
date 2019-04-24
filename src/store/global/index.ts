@@ -2,8 +2,8 @@
  * @Description: Global模块主入口文件
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 19:36:26
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-23 15:32:48
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -26,7 +26,7 @@ export const state: GlobalState = {
   userInfo: null,
   communityId: '',
   communityName: '',
-  keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo',
+  keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo,AppraiseHouseInfo',
   point: {
     lat: '', // 经度
     lon: ''  // 纬度

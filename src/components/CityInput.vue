@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:39:25
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 12:40:47
+ * @Last Modified time: 2019-04-24 14:02:42
  */
 
 <template>
@@ -23,7 +23,7 @@
         />
       </div>
     </div>
-    <!-- 城市弹窗 -->
+    <!-- 城市picker -->
     <van-popup v-model="cityShow" position="bottom" :overlay="true">
       <van-picker
         show-toolbar
@@ -40,13 +40,9 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import { CityItem } from '@/interface/configInterface.ts';
 import { Field, Row, Col } from 'vant';
 
-
-interface CityItem {
-  cityId: string;
-  cityName: string;
-}
 // 声明引入的组件
 @Component({
   name: 'CityInput',

@@ -41,6 +41,7 @@ const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' 
 // 房屋估价
 const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
 const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+const AppraiseCommunity = () => import(/* webpackChunkName: 'appraiseCommunity' */ '@/views/HouseAppraise/AppraiseCommunity.vue');
 
 // 服务产品支付
 const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/views/Payment/ProductPayment.vue');
@@ -89,6 +90,7 @@ router = new Router({
       }
     },
     { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: false}, component: AppraiseHouseInfo},
+    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: false}, component: AppraiseCommunity},
     { path: '/community', name: 'community', meta: {title: '选择小区', requireAuth: false}, component: Community},
     { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: {title: '新增房源', requireAuth: true},  component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: {title: '404', requireAuth: false}, component: NotFoundComp}

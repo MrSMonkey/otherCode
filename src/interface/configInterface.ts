@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-02 15:23:08
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-02 16:16:03
+ * @Last Modified time: 2019-04-24 15:55:21
  */
 import { BaseInterface } from './base.interface';
 
@@ -51,6 +51,29 @@ interface TypeListInterface {
 interface TowardListInterface {
   [index: number]: {value: number|string; text: string; };
 }
+/* 定义城市picker的item接口 */
+interface CityItem {
+  cityId: string;
+  cityName: string;
+}
+/* 定义户型组件属性接口 */
+interface HouseTypeInputProp {
+  max: number;
+  show: boolean;
+}
+/* 定义户型组件内部户型参数接口 */
+interface HouseTypeInputOpts {
+  max: number;
+  show: boolean;
+  unit: string;
+  className: string;
+}
+/* 定义房屋估价户型选择结果 */
+interface HouseTypeResult {
+  roomNum: string | number;
+  toiletNum: string | number;
+  hallNum: string | number;
+}
 
 export {
   StartHomeImgInterface,
@@ -62,5 +85,9 @@ export {
   ListInterface,
   HoustFlowInterface,
   TypeListInterface,
-  TowardListInterface
+  TowardListInterface,
+  CityItem,
+  HouseTypeInputProp,
+  HouseTypeInputOpts,
+  HouseTypeResult
 };
