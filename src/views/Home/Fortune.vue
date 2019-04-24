@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-23 18:02:49
+ * @Last Modified time: 2019-04-24 13:52:27
  */
 
 <template>
@@ -34,7 +34,9 @@
           请财神星掐指一算
         </a>
         </div>
-        <!-- <lottie :options="defaultOptions" :height="200" :width="200" v-on:animCreated="handleAnimation" /> -->
+        <div :class="isStopped ? 'anim-box' : 'anim-box show'">
+          <Lottie :options="defaultOptions" v-on:animCreated="handleAnimation"  />
+        </div>
     </main>
   </section>
 </template>
@@ -42,8 +44,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { Field, Notify , } from 'vant';
-import * as animationData from '../../assets/json/fortune_anim.json';
+import { Field, Notify } from 'vant';
+import Lottie from 'vue-lottie';
+import * as Anim from '../../assets/json/fortune_anim.json';
 
 
 // 声明引入的组件
@@ -51,12 +54,29 @@ import * as animationData from '../../assets/json/fortune_anim.json';
   name: 'Fortune',
   components: {
     [Field.name]: Field,
-    [Notify.name]: Field,
+    [Notify.name]: Notify,
+    Lottie,
   }
 })
 // 类方式声明当前组件
 export default class Fortune extends CommonMixins {
   private incomeValue: string = '';
+  private isStopped: boolean = true;
+  private defaultOptions: any = { animationData: Anim.default, loop: false, autoplay: false};
+  private animationSpeed: number = 1;
+  private anim: any = {};
+
+  private mounted() {
+    this.anim.addEventListener('complete', () => {
+      this.anim.stop();
+      this.$router.push({
+          path: '/fortuneResult',
+          query: {
+            money: this.incomeValue,
+          }
+        });
+    });
+  }
 
   // 是否是正整数
   private isInteger(num: string) {
@@ -78,6 +98,13 @@ export default class Fortune extends CommonMixins {
     if (!this.isInteger(this.incomeValue)) {
       Notify('请输入大于0的数字!');
     }
+    this.isStopped = false;
+    this.anim.play();
+  }
+
+  // 计算
+  private handleAnimation(anim: any) {
+    this.anim = anim;
   }
 }
 </script>
@@ -87,14 +114,14 @@ export default class Fortune extends CommonMixins {
 
 .fortune
   .god-pic-box
-    height vh(650)
+    height vw(325)
     line-height 0
     position relative
     img 
       width 100%
     div
       position absolute
-      top 34px
+      top vw(17)
       left 0
       width 100%
       text-align center
@@ -120,18 +147,18 @@ export default class Fortune extends CommonMixins {
       background-size contain
       vertical-align middle
     .text 
-      margin 0 10px
+      margin 0 vw(5)
       display inline-block
       vertical-align middle
   
 
 
   .income-input-box 
-    padding: 0 45px;
+    padding: 0 vw(27.5);
 
 
   .income-input 
-    padding 10px 10px
+    padding vw(10) vw(5)
     font-size:15px /* no */
     border 1px solid #d8d8d8 /* no */
     border-radius 8px
@@ -152,7 +179,7 @@ export default class Fortune extends CommonMixins {
     border-radius 8px
     overflow hidden
     text-align center
-    margin-top:20px
+    margin-top vw(10)
     color #fff
     font-size 15px /* no */
     transition transform 0.05s ease

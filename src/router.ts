@@ -49,8 +49,9 @@ const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/
 // 服务包购买
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
-// 星空财神
-const Fortune = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Home/Fortune.vue');
+// 星空财神(旧公众号)
+const Fortune = () => import(/* webpackChunkName: 'fortune' */ '@/views/Home/Fortune.vue');
+const FortuneResult = () => import(/* webpackChunkName: 'fortuneResult' */ '@/views/Home/FortuneResult.vue');
 
 router = new Router({
   base: process.env.BASE_URL,
@@ -80,7 +81,10 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
+
+    // 老公众号
     { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
+    { path: '/fortuneResult', name: 'fortuneResult', meta: {title: '星空财神', requireAuth: false}, component: FortuneResult},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',
