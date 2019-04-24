@@ -171,7 +171,6 @@ export default class ProductInfo extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
     width 100%

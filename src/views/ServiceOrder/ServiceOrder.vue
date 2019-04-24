@@ -3,12 +3,20 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-14 16:54:51
+ * @Last Modified time: 2019-04-23 10:12:22
  */
 
 <template>
   <section class="service-order">
      <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
+      <van-tab title="服务产品订单">
+        <section class="background-tips" v-if="tableProductData.length === 0">
+          <NoData tip="暂无服务产品订单" :url="'/myHouse?entrustId=' + entrustId"/>
+        </section>
+        <section v-else>
+          <ProductOrderList :tableData="tableProductData" :entrustId="entrustId"></ProductOrderList>
+        </section>
+      </van-tab>
       <van-tab title="服务包订单">
         <section class="background-tips" v-if="tableData.length === 0">
           <NoData tip="暂无服务包订单" :url="'/myHouse?entrustId=' + entrustId"/>
@@ -17,12 +25,12 @@
           <ServiceList :tableData="tableData" :entrustId="entrustId"></ServiceList>
         </section>
       </van-tab>
-      <van-tab title="服务产品订单">
-        <section class="background-tips" v-if="tableProductData.length === 0">
-          <NoData tip="暂无服务产品订单" :url="'/myHouse?entrustId=' + entrustId"/>
+      <van-tab title="退款">
+        <section class="background-tips" v-if="tableRefundData.length === 0">
+          <NoData tip="暂无退款订单" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>
         <section v-else>
-          <ProductOrderList :tableData="tableProductData" :entrustId="entrustId"></ProductOrderList>
+          <RefundOrderList :tableData="tableRefundData" :entrustId="entrustId"></RefundOrderList>
         </section>
       </van-tab>
     </van-tabs>
@@ -36,6 +44,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import NoData from '@/components/NoData.vue';
 import ServiceList from './components/ServiceList.vue';
 import ProductOrderList from './components/ProductOrderList.vue';
+import RefundOrderList from './components/RefundOrderList.vue';
 import { getQueryString } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import api from '@/api';
@@ -48,7 +57,8 @@ import api from '@/api';
     [Tabs.name]: Tabs,
     NoData,
     ServiceList,
-    ProductOrderList
+    ProductOrderList,
+    RefundOrderList
   }
 })
 // 类方式声明当前组件
@@ -56,9 +66,10 @@ export default class ServiceOrder extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
   private tableData: any[] = []; // 服务订单列表
   private tableProductData: any[] = []; // 服务产品订单列表
+  private tableRefundData: any[] = []; // 退款订单列表
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
-    this.getServiceOrder(this.entrustId); // 获取订单列表
+    this.getProductOrderList(this.entrustId); // 获取订单列表
   }
 
   /**
@@ -116,6 +127,33 @@ export default class ServiceOrder extends CommonMixins {
   }
 
   /**
+   * @description 获取退款订单列表
+   * @params entrustId 委托id
+   * @returns void
+   * @author chenmo
+   */
+  private async getRefundOrderList(entrustId: string) {
+    this.$toast.loading({
+      duration: 0,
+      mask: true,
+      loadingType: 'spinner',
+      message: '加载中...'
+    });
+    try {
+      const res: any = await this.axios.get(api.getRefundOrderList + `/${entrustId}`);
+      if (res && res.code === '000') {
+        this.tableRefundData = res.data || [];
+      } else {
+        this.$toast(`获取退款订单列表失败`);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    } finally {
+      this.$toast.clear();
+    }
+  }
+
+  /**
    * @description tabs切换
    * @params index 当前tabs的索引值
    * @returns null
@@ -123,11 +161,11 @@ export default class ServiceOrder extends CommonMixins {
    */
   private onClick(index: any) {
     if (index === 0) {
-      this.getServiceOrder(this.entrustId); // 获取服务包订单列表
+      this.getProductOrderList(this.entrustId); // 获取服务包订单列表
     } else if (index === 1) {
-      this.getProductOrderList(this.entrustId); // 获取服务产品订单列表
+      this.getServiceOrder(this.entrustId); // 获取服务产品订单列表
     } else if (index === 2) {
-      // this.getRentInfo(this.entrustId);
+      this.getRefundOrderList(this.entrustId); // 退款
     }
   }
 
@@ -148,7 +186,6 @@ export default class ServiceOrder extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .background-tips
   position relative
   top 10px

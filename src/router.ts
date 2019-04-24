@@ -24,6 +24,8 @@ const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/
 const ServiceOrder = () => import(/* webpackChunkName: 'serviceOrder' */ '@/views/ServiceOrder/ServiceOrder.vue');
 const ServiceDetile = () => import(/* webpackChunkName: 'serviceDetile' */ '@/views/ServiceOrder/ServiceDetile.vue');
 const ProductDetile = () => import(/* webpackChunkName: 'productDetile' */ '@/views/ServiceOrder/ProductDetile.vue');
+const RefundDetail = () => import(/* webpackChunkName: 'RefundDetile' */ '@/views/ServiceOrder/RefundDetail.vue');
+
 const ServiceOrderDetail = () => import(/* webpackChunkName: 'serviceOrderDetail' */ '@/views/ServiceOrder/ServiceOrderDetail.vue');
 const ServiceInfo = () => import(/* webpackChunkName: 'serviceInfo' */ '@/views/ServiceOrder/ServiceInfo.vue');
 const ProductInfo = () => import(/* webpackChunkName: 'productInfo' */ '@/views/ServiceOrder/ProductInfo.vue');
@@ -49,6 +51,26 @@ const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/
 // 服务包购买
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
+// 星空财神(旧公众号)
+const OldFortune = () => import(/* webpackChunkName: 'oldFortune' */ '@/views/Home/OldFortune.vue');
+const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */ '@/views/Home/OldFortuneResult.vue');
+const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
+
+// 旧公众号 我的房源
+const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
+
+// 旧公众号 我的账单
+const OldMyAccount = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyAccount.vue');
+
+// 旧公众号 账单详情
+const OldAccountDetail = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldAccountDetail.vue');
+
+// 旧公众号 账单详情
+const OldHouseContract = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHouseContract.vue');
+
+// 旧公众号 房源照片
+const OldHousePic = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHousePic.vue');
+
 router = new Router({
   base: process.env.BASE_URL,
   routes: [
@@ -66,6 +88,7 @@ router = new Router({
     { path: '/purchase', name: 'purchase', meta: {title: '购买服务包', requireAuth: true}, component: Purchase},
     { path: '/serviceInfo', name: 'serviceInfo', meta: {title: '服务包详情', requireAuth: true}, component: ServiceInfo},
     { path: '/productInfo', name: 'productInfo', meta: {title: '服务产品详情', requireAuth: true}, component: ProductInfo},
+    { path: '/refundDetail', name: 'refundDetail', meta: {title: '退款/售后详情', requireAuth: true}, component: RefundDetail},
     { path: '/serviceType', name: 'serviceType', meta: {title: '选择服务类型', requireAuth: true}, component: ServiceType},
     { path: '/startService', name: 'startService', meta: {title: '发起服务', requireAuth: true}, component: StartService},
     { path: '/maintainChecked', name: 'maintainChecked', meta: {title: '确认验收', requireAuth: true}, component: MaintainChecked},
@@ -91,6 +114,17 @@ router = new Router({
     },
     { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: false}, component: AppraiseHouseInfo},
     { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: false}, component: AppraiseCommunity},
+    // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
+    { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: false}, component: OldMyHouse},
+    { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: false}, component: OldMyAccount},
+    { path: '/OldAccountDetail', name: 'OldAccountDetail', meta: {title: '账单详情', requireAuth: false}, component: OldAccountDetail},
+    { path: '/OldHouseContract', name: 'OldHouseContract', meta: {title: '房源合同', requireAuth: false}, component: OldHouseContract},
+    { path: '/OldHousePic', name: 'OldHousePic', meta: {title: '房源照片', requireAuth: false}, component: OldHousePic},
+
+    // 老公众号
+    { path: '/oldFortune', name: 'oldFortune', meta: {title: '星空财神', requireAuth: false}, component: OldFortune},
+    { path: '/oldFortuneResult', name: 'oldFortuneResult', meta: {title: '星空财神', requireAuth: false}, component: OldFortuneResult},
+    { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     { path: '/community', name: 'community', meta: {title: '选择小区', requireAuth: false}, component: Community},
     { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: {title: '新增房源', requireAuth: true},  component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: {title: '404', requireAuth: false}, component: NotFoundComp}

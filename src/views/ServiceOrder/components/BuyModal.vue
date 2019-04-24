@@ -83,7 +83,6 @@ export default class BuyModal extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .buy-dialog
   height vw(300)
   .title
