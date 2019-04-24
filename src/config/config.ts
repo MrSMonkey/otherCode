@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 14:22:42
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-24 16:16:56
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -26,6 +26,34 @@ export const START_HOME_IMG: confInterface.StartHomeImgInterface[] = [
     alt: '星空业主',
     src: require('../assets/images/starhome04.png')
   }
+];
+
+/* 定义我的名片列表图片 */
+export const START_MYCARD_IMG: confInterface.StartHomeImgInterface[] = [
+  {
+    alt: '名片1',
+    src: require('../assets/images/card_1.jpg')
+  },
+  {
+    alt: '名片2',
+    src: require('../assets/images/card_2.jpg')
+  },
+  {
+    alt: '名片3',
+    src: require('../assets/images/card_3.jpg')
+  },
+  {
+    alt: '名片4',
+    src: require('../assets/images/card_4.jpg')
+  },
+  {
+    alt: '名片5',
+    src: require('../assets/images/card_5.jpg')
+  },
+  {
+    alt: '名片6',
+    src: require('../assets/images/card_6.jpg')
+  },
 ];
 
  /* 定义购买链接 */
