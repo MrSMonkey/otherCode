@@ -50,6 +50,58 @@
           placeholder="请输入联系人电话"
           type="number"
         />
+        <!-- productUnitId === 1（次） housesUnitId === 1 （间）-->
+        <van-field
+          v-model="rooms"
+          required
+          clearable
+          input-align="right"
+          label="房间数"
+          placeholder="请输入房间数量"
+          type="text"
+          v-if="data.productUnitId === 1 && data.housesUnitId === 1"
+        >
+        <!-- <span slot="button" >㎡</span> -->
+        </van-field>
+        <!-- productUnitId === 2（面积） -->
+        <van-field
+          v-model="area"
+          required
+          clearable
+          input-align="right"
+          label="面积"
+          placeholder="请输入房屋面积"
+          type="text"
+          v-if="data.productUnitId === 2"
+        >
+        <span slot="button" >㎡</span>
+        </van-field>
+        <!-- productUnitId === 9（小时） -->
+        <van-field
+          v-model="area"
+          required
+          clearable
+          input-align="right"
+          label="服务时长"
+          placeholder="请输入服务时长（小时）"
+          type="text"
+          v-if="data.productUnitId === 9"
+        >
+        <!-- <span slot="button" >小时</span> -->
+        </van-field>
+        <!-- productUnitId === 7 || 项、台 -->
+        <van-field
+          v-model="area"
+          required
+          clearable
+          input-align="right"
+          label="购买数量"
+          placeholder="请输入购买数量"
+          type="text"
+          v-if="data.productUnitId === 7 || data.productUnitId === 8"
+        >
+        <!-- <span slot="button" >小时</span> -->
+        </van-field>
         <van-field
           v-model="introducePhone"
           clearable
@@ -126,6 +178,8 @@ export default class ProductPayment extends CommonMixins {
   private pre: string = ''; // 判断入口
   private houseInfo: any = {}; // 房源信息
   private houseName: string = ''; // 房源名称
+  private area: string = ''; // 房屋面积
+  private rooms: string = ''; // 房间数
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
