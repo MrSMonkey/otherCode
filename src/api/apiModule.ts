@@ -129,4 +129,7 @@ export default {
 
   /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
   getWechatConfig: '/partner/star/owner/get_config',
+
+  /* 通过code换取网页授权*/
+  getAccesstoken: '/partner/star/owner/get_token'
 };

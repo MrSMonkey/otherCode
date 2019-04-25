@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import Home from '@/views/Home/Home.vue';
 import store from '@/store';
 import api from '@/api';
-import { getRuntimeInfo, handleWebStorage, toAuth } from '@/utils/utils';
+import { getRuntimeInfo, handleWebStorage, toAuth, getQueryString } from '@/utils/utils';
 import { APP_TYPE } from '@/config/config';
 
 Vue.use(Router);
@@ -109,10 +109,10 @@ router = new Router({
       meta: {title: '房屋估价', requireAuth: false},
       component: HouseAppraise,
       beforeEnter: (to, from, next) => {
-        const token: any = store.getters['global/getToken'];
-        if (!token) {
-          next('/appraiseHouseInfo');
-        }
+        // const token: any = store.getters['global/getToken'];
+        // if (!token) {
+        //   next('/appraiseHouseInfo');
+        // }
         next();
       }
     },
@@ -163,25 +163,36 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   /* 跳转微信授权后端中转页 */
   /* 微信认证流程 */
   const runtime: any = getRuntimeInfo();
-  
+  // 获取微信access_token
+  const getAccesstoken = async (appId: string, code: string) => {
+    const res: any = await Vue.axios.get(api.getAccesstoken + `/${appId}/${code}`);
+    if (res && res.code === '000') {
+      /* 用code成功请求到 access_token后一起存在全局 */
+      handleWebStorage.setLocalData('uoko.fd.wx', Object.assign(res.data, { code })); // 本地存储appId
+      store.commit('global/updateWxOAuth', res.data); // 设置appId
+    }
+  };
+
   /* 如果不是微信环境 */
   if (runtime.appType === APP_TYPE.wechat) {
     /* 如果已缓存用户信息,进行验证 */
-    const wxConfig: any = handleWebStorage.getLocalData('uoko.fd.wx');
-    if (!wxConfig) {
-      const res: any = await Vue.axios.get(api.getWechatConfig);
-      if (res && res.code === '000') {
-        // store.commit('global/updateUserInfo', res.data); // 设置用户信息
-        console.log(res);
-        handleWebStorage.setLocalData('uoko.fd.wx', res.data); // 本地存储appId
-        const appId: string = 'wx5f11503947854020';
-        toAuth(appId, res.data.transferUrl, res.data.scope);
-      } else {
-        Vue.prototype.$toast(`获取微信认证失败`);
-      }
+    const appId: string = 'wx5f11503947854020';
+    const wxOAuth: any = store.getters['global/getWxOAuth'];
+    const code: any = getQueryString('code');
+    if (!wxOAuth) {
+      // const res: any = await Vue.axios.get(api.getWechatConfig);
+      // if (res && res.code === '000') {
+      //   // store.commit('global/updateUserInfo', res.data); // 设置用户信息
+      //   if (code) {
+      //     getAccesstoken(appId, code);
+      //   } else {
+      //     await toAuth(appId, res.data.transferUrl, res.data.scope);
+      //   }
+      // } else {
+      //   Vue.prototype.$toast(`获取微信认证失败`);
+      // }
     }
   }
-
   if (to.meta.requireAuth) {
     // 判断该路由是否需要登录权限
     const token: any = store.getters['global/getToken'];

@@ -432,9 +432,8 @@ export function getRuntimeInfo() {
  * @author chemo
  */
 export const toAuth = (appid: string, transferUrl: string, scope: string) => {
-  const cur: any = 'http://yz.testuoko.com';
-  console.log(window.location);
-  debugger
+  const cur: any = window.location;
   const url: string = `${transferUrl}?appid=${appid}&scope=${scope}&callback=${encodeURIComponent(cur)}`;
   return (window.location.href = url);
-}
+};
+

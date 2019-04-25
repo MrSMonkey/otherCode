@@ -43,6 +43,7 @@ export default class AppraiseLoading extends CommonMixins {
     &>div
       text-align center
     .loading-img
+      margin-top vw(-200)
       img
         width  vw(170)
         max-width 100px
