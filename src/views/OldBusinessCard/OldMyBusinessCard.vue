@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-25 14:34:22
+ * @Last Modified time: 2019-04-25 15:05:23
  */
 
 <template>
@@ -31,7 +31,7 @@
         <p>我为星空业主代言</p>
       </div>
       <div class="shot-avatar">
-        <img :src="userLogoUrl" alt="user avatar" />
+        <img crossorigin="anonymous" :src="userLogoUrl" alt="user avatar" />
       </div>
     </div>
   </section>
@@ -64,10 +64,10 @@ export default class OldMyBusinessCard extends CommonMixins {
   private index: number = 1;
   private show: boolean = false;
   private userName: string = '哈哈哈哈';
-  private userLogoUrl: string = 'https://826327700.github.io/vue-photo-preview/demo/1.jpg';
+  private userLogoUrl: string = 'https://826327700.github.io/vue-photo-preview/demo/1.jpg?any_string_is_ok';
 
   private mounted() {
-    html2canvas(document.querySelector('#card1'), { allowTaint: true }).then((canvas: any) => {
+    html2canvas(document.querySelector('#card1'), { useCORS: true }).then((canvas: any) => {
       this.onTransformEnd(canvas);
     });
   }
@@ -104,19 +104,17 @@ export default class OldMyBusinessCard extends CommonMixins {
 .my-card-main
   height 100%
   width 100%
+  overflow hidden
   .my-card
     background-color $bg-color-default
     width 100%
     height 100%
-    padding vw(15)
-    display -webkit-flex
-    display flex
-    flex-wrap wrap
-    justify-content space-between
+    padding vw(15) 0 vw(15) vw(15)
     .card-box
-      overflow hidden
-      height vw(277)
       position relative
+      width vw(105)
+      margin-right vw(15)
+      float left
       .card-img
         width vw(105)
         height vw(186)
@@ -129,6 +127,7 @@ export default class OldMyBusinessCard extends CommonMixins {
       color $text-color
       letter-spacing 0
       margin-top vw(5)
+      margin-bottom vw(15)
     .van-swipe__track
       ::before
         content '长按图片保存'
