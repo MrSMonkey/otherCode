@@ -7,6 +7,7 @@ import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
 import lottie from 'vue-lottie';
+import wx from 'weixin-js-sdk';
 // import FastClick from 'fastclick';
 // import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
