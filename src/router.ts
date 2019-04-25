@@ -180,17 +180,17 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     const wxOAuth: any = store.getters['global/getWxOAuth'];
     const code: any = getQueryString('code');
     if (!wxOAuth) {
-      // const res: any = await Vue.axios.get(api.getWechatConfig);
-      // if (res && res.code === '000') {
-      //   // store.commit('global/updateUserInfo', res.data); // 设置用户信息
-      //   if (code) {
-      //     getAccesstoken(appId, code);
-      //   } else {
-      //     await toAuth(appId, res.data.transferUrl, res.data.scope);
-      //   }
-      // } else {
-      //   Vue.prototype.$toast(`获取微信认证失败`);
-      // }
+      const res: any = await Vue.axios.get(api.getWechatConfig);
+      if (res && res.code === '000') {
+        // store.commit('global/updateUserInfo', res.data); // 设置用户信息
+        if (code) {
+          getAccesstoken(appId, code);
+        } else {
+          await toAuth(appId, res.data.transferUrl, res.data.scope);
+        }
+      } else {
+        Vue.prototype.$toast(`获取微信认证失败`);
+      }
     }
   }
   if (to.meta.requireAuth) {
