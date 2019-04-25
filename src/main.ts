@@ -6,6 +6,7 @@ import store from './store';
 import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
+import wx from 'weixin-js-sdk';
 import Lottie from 'vue-lottie';
 // import FastClick from 'fastclick';
 // import VueLazyload from 'vue-lazyload';

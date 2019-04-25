@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Home from '@/views/Home/Home.vue';
 import store from '@/store';
 import api from '@/api';
+import { getRuntimeInfo, handleWebStorage, toAuth } from '@/utils/utils';
+import { APP_TYPE } from '@/config/config';
 
 Vue.use(Router);
 
@@ -144,7 +146,7 @@ router = new Router({
   ]
 });
 
-router.beforeEach((to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, from: any, next: any) => {
   /* 路由发生变化修改页面title */
   if (to.meta) {
     document.title = to.meta.title;
@@ -158,6 +160,28 @@ router.beforeEach((to: any, from: any, next: any) => {
     next();
     return;
   }
+  /* 跳转微信授权后端中转页 */
+  /* 微信认证流程 */
+  const runtime: any = getRuntimeInfo();
+  
+  /* 如果不是微信环境 */
+  if (runtime.appType === APP_TYPE.wechat) {
+    /* 如果已缓存用户信息,进行验证 */
+    const wxConfig: any = handleWebStorage.getLocalData('uoko.fd.wx');
+    if (!wxConfig) {
+      const res: any = await Vue.axios.get(api.getWechatConfig);
+      if (res && res.code === '000') {
+        // store.commit('global/updateUserInfo', res.data); // 设置用户信息
+        console.log(res);
+        handleWebStorage.setLocalData('uoko.fd.wx', res.data); // 本地存储appId
+        const appId: string = 'wx5f11503947854020';
+        toAuth(appId, res.data.transferUrl, res.data.scope);
+      } else {
+        Vue.prototype.$toast(`获取微信认证失败`);
+      }
+    }
+  }
+
   if (to.meta.requireAuth) {
     // 判断该路由是否需要登录权限
     const token: any = store.getters['global/getToken'];
@@ -166,17 +190,13 @@ router.beforeEach((to: any, from: any, next: any) => {
       const userInfo = store.getters['global/getUserInfo'];
       if (!userInfo) {
         // 不存在用户信息，查询用户信息
-        Vue.axios.get(api.getUserInfo).then((res: any) => {
-          if (res && res.code === '000') {
-            store.commit('global/updateUserInfo', res.data); // 设置用户信息
-          } else {
-            Vue.prototype.$toast(`获取用户信息失败`);
-          }
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        }).catch((err: any) => {
+        const res: any = await Vue.axios.get(api.getUserInfo);
+        if (res && res.code === '000') {
+          store.commit('global/updateUserInfo', res.data); // 设置用户信息
+        } else {
           Vue.prototype.$toast(`获取用户信息失败`);
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        });
+        }
+        next(); // 不要在next里面加"path:/",会陷入死循环
       } else {
         next();
       }
@@ -188,28 +208,29 @@ router.beforeEach((to: any, from: any, next: any) => {
     }
   } else {
     const token: any = store.getters['global/getToken'];
-    if (token) {
-      // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
-      const userInfo = store.getters['global/getUserInfo'];
-      if (!userInfo) {
-        // 不存在用户信息，查询用户信息
-        Vue.axios.get(api.getUserInfo).then((res: any) => {
-          if (res && res.code === '000') {
-            store.commit('global/updateUserInfo', res.data); // 设置用户信息
-          } else {
-            Vue.prototype.$toast(`获取用户信息失败`);
-          }
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        }).catch((err: any) => {
-          Vue.prototype.$toast(`获取用户信息失败`);
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        });
-      } else {
-        next();
-      }
-    } else {
-      next();
-    }
+    next();
+    // if (token) {
+    //   // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+    //   const userInfo = store.getters['global/getUserInfo'];
+    //   if (!userInfo) {
+    //     // 不存在用户信息，查询用户信息
+    //     Vue.axios.get(api.getUserInfo).then((res: any) => {
+    //       if (res && res.code === '000') {
+    //         store.commit('global/updateUserInfo', res.data); // 设置用户信息
+    //       } else {
+    //         Vue.prototype.$toast(`获取用户信息失败`);
+    //       }
+    //       next(); // 不要在next里面加"path:/",会陷入死循环
+    //     }).catch((err: any) => {
+    //       Vue.prototype.$toast(`获取用户信息失败`);
+    //       next(); // 不要在next里面加"path:/",会陷入死循环
+    //     });
+    //   } else {
+    //     next();
+    //   }
+    // } else {
+    //   next();
+    // }
   }
 });
 

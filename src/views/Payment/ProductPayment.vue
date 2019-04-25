@@ -59,6 +59,7 @@
           label="房间数"
           placeholder="请输入房间数量"
           type="text"
+          @change="changeRooms"
           v-if="data.productUnitId === 1 && data.housesUnitId === 1"
         >
         <!-- <span slot="button" >㎡</span> -->
@@ -72,13 +73,14 @@
           label="面积"
           placeholder="请输入房屋面积"
           type="text"
+          @change="changeAcreage"
           v-if="data.productUnitId === 2"
         >
         <span slot="button" >㎡</span>
         </van-field>
         <!-- productUnitId === 9（小时） -->
         <van-field
-          v-model="area"
+          v-model="serviceHour"
           required
           clearable
           input-align="right"
@@ -148,6 +150,8 @@ import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
+import wx from 'weixin-js-sdk';
+import getWXConfig from '@/config/wxConfig';
 
 const namespace: string = 'global';
 
@@ -180,6 +184,7 @@ export default class ProductPayment extends CommonMixins {
   private houseName: string = ''; // 房源名称
   private area: string = ''; // 房屋面积
   private rooms: string = ''; // 房间数
+  private serviceHour: string = ''; // 服务时长
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
@@ -222,6 +227,15 @@ export default class ProductPayment extends CommonMixins {
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
+
+    // getWXConfig().then((res: any) => {
+    //   wx.getLocation({
+    //   type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+    //   success: (res: any) => {
+    //       console.log(1)
+    //     }
+    //   });
+    // });
   }
 
   private activated() {
@@ -384,6 +398,40 @@ export default class ProductPayment extends CommonMixins {
 
   private plotCancel() {
     history.back();
+  }
+
+  /**
+   * @description 房间数输入
+   * @returns void
+   * @author chenmo
+   */
+  private changeRooms() {
+    if (!this.rooms) {
+      this.$toast('请输入房间数量');
+      return false;
+    }
+
+    if (!(/^\d+$/.test(this.rooms))) {
+      this.$toast('房间数只能是正整数');
+      return false;
+    }
+  }
+
+  /**
+   * @description 面积输入
+   * @returns void
+   * @author chenmo
+   */
+  private changeAcreage() {
+    if (!this.area) {
+      this.$toast('请输入面积');
+      return false;
+    }
+
+    if (!(/^-?\d+\.?\d{0,2}$/.test(this.area))) {
+      this.$toast('面积保留两位小数');
+      return false;
+    }
   }
 }
 </script>
