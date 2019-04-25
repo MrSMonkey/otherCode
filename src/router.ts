@@ -40,8 +40,10 @@ const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/vi
 const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ServiceRecord/ConfirmPay.vue');
 const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
 
-// const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
-// const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+// 房屋估价
+const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
+const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+const AppraiseCommunity = () => import(/* webpackChunkName: 'appraiseCommunity' */ '@/views/HouseAppraise/AppraiseCommunity.vue');
 
 // 服务产品支付
 const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/views/Payment/ProductPayment.vue');
@@ -55,6 +57,21 @@ const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */
 const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
 const OldMyQRecode = () => import(/* webpackChunkName: 'oldMyQRecode' */ '@/views/OldBusinessCard/OldMyQRecode.vue');
 const OldMyBusinessCard = () => import(/* webpackChunkName: 'oldMyBusinessCard' */ '@/views/OldBusinessCard/OldMyBusinessCard.vue');
+
+// 旧公众号 我的房源
+const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
+
+// 旧公众号 我的账单
+const OldMyAccount = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyAccount.vue');
+
+// 旧公众号 账单详情
+const OldAccountDetail = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldAccountDetail.vue');
+
+// 旧公众号 账单详情
+const OldHouseContract = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHouseContract.vue');
+
+// 旧公众号 房源照片
+const OldHousePic = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHousePic.vue');
 
 router = new Router({
   base: process.env.BASE_URL,
@@ -84,6 +101,27 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
+    {
+      path: '/houseAppraise',
+      name: 'houseAppraise',
+      meta: {title: '房屋估价', requireAuth: false},
+      component: HouseAppraise,
+      beforeEnter: (to, from, next) => {
+        const token: any = store.getters['global/getToken'];
+        if (!token) {
+          next('/appraiseHouseInfo');
+        }
+        next();
+      }
+    },
+    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: false}, component: AppraiseHouseInfo},
+    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: false}, component: AppraiseCommunity},
+    // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
+    { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: false}, component: OldMyHouse},
+    { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: false}, component: OldMyAccount},
+    { path: '/OldAccountDetail', name: 'OldAccountDetail', meta: {title: '账单详情', requireAuth: false}, component: OldAccountDetail},
+    { path: '/OldHouseContract', name: 'OldHouseContract', meta: {title: '房源合同', requireAuth: false}, component: OldHouseContract},
+    { path: '/OldHousePic', name: 'OldHousePic', meta: {title: '房源照片', requireAuth: false}, component: OldHousePic},
 
     // 老公众号
     { path: '/oldFortune', name: 'oldFortune', meta: {title: '星空财神', requireAuth: false}, component: OldFortune},

@@ -10,8 +10,8 @@
   <section>
     <section class="entrust">
       <section class="area">
-        <CityInput @city-confirm="cityConfirm" :city-list="cityList"></CityInput>
-        <div class="city">
+        <CityInput @city-confirm="cityConfirm" :city-name="cityName" input-align="left" :city-list="cityList"></CityInput>
+        <div class="input-panel">
           <div class="label">小&emsp;&emsp;区*</div>
           <div class="village">
             <van-field
@@ -28,7 +28,7 @@
         <HouseDecorationInfo @on-change="selectItem"></HouseDecorationInfo>
       </section>
       <section class="area">
-        <div class="city">
+        <div class="input-panel">
           <div class="label">您的称呼*</div>
           <div class="village">
             <van-field
@@ -39,7 +39,7 @@
             />
           </div>
         </div>
-        <div class="city" v-if="!isLogin">
+        <div class="input-panel" v-if="!isLogin">
           <div class="label">联系方式*</div>
           <div class="village">
             <van-field
@@ -50,7 +50,7 @@
             />
           </div>
         </div>
-        <div class="city" v-if="!isLogin">
+        <div class="input-panel" v-if="!isLogin">
           <div class="label just">验证码*</div>
           <div class="village">
             <van-field
@@ -119,8 +119,8 @@ const namespace: string = 'global';
 })
 // 类方式声明当前组件
 export default class Entrust extends CommonMixins {
-  private cityName: string = '成都市';
-  private cityId: string = '510100';
+  private cityName: string = '';
+  private cityId: string = '';
   private code: string = '';
   private cityShow: boolean = false;
   private cityList: string[] = []; // 城市列表
@@ -173,8 +173,8 @@ export default class Entrust extends CommonMixins {
    * @author chenmo
    */
   private cityConfirm(item: any, index: number) {
-    this.cityName = item.text;
-    this.cityId = item.value;
+    this.cityName = item.cityName;
+    this.cityId = item.id;
     this.communityId = '';
     this.communityName = '';
     this.isGetPlot = false;
@@ -213,13 +213,8 @@ export default class Entrust extends CommonMixins {
   private async getCitys() {
     try {
       const res: any = await this.axios.get(api.getCitys);
-      if (res && res.code === '000') {
-        this.cityList = res.data && res.data.map((item: any) => {
-          return {
-            text: item.cityName,
-            value: item.id
-          };
-        });
+      if (res && res.code === '000' && res.data) {
+        this.cityList = res.data;
       } else {
         this.$toast(res.msg || '获取城市失败');
       }
@@ -390,7 +385,6 @@ export default class Entrust extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
 .entrust
   .area
     margin-bottom vw(10)
@@ -406,10 +400,10 @@ export default class Entrust extends CommonMixins {
         width 100%
     .just
       text-align justify
-    .city
+    .input-panel
       background $global-background
       height vw(55)
-      padding vw(20)
+      padding vw(15) vw(6) vw(20) vw(15)
       border-bottom 1px solid $bg-color-default
       display -webkit-flex
       display flex

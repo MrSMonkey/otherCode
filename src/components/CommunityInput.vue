@@ -1,51 +1,39 @@
 /*
- * @Description: 选择城市input组件
+ * @Description: 小区选择输入框
  * @Author: linyu
- * @Date: 2019-04-09 12:39:25
+ * @Date: 2019-04-22 17:38:57
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 14:02:42
+ * @Last Modified time: 2019-04-23 15:25:29
  */
 
 <template>
-  <section>
-    <div class="input-panel">
-      <div class="label">{{ star ? '城&emsp;&emsp;市' : '城&emsp;&emsp;市*' }}</div>
-      <div class="village">
-        <van-field
-          v-model="cityName"
-          :placeholder="placeholderText"
-          type="text"
-          right-icon="arrow"
-          readonly
-          :input-align="inputAlign"
-          @click="cityShow = true"
-          @click-right-icon="cityShow = true"
-        />
-      </div>
+  <div class="input-panel">
+    <div class="label">
+      <slot>小&emsp;&emsp;区*</slot>
     </div>
-    <!-- 城市picker -->
-    <van-popup v-model="cityShow" position="bottom" :overlay="true">
-      <van-picker
-        show-toolbar
-        :columns="cityList"
-        value-key="cityName"
-        @confirm="cityConfirm"
-        @cancel="cityShow = false"
-        title="选择城市"
+    <div class="village">
+      <van-field
+        v-model="communityName"
+        placeholder="请选择您爱屋所在的小区"
+        type="text"
+        readonly
+        right-icon="arrow"
+        :input-align="inputAlign"
+        @click-right-icon="toCommunity"
+        @click="toCommunity"
       />
-    </van-popup>
-  </section>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { CityItem } from '@/interface/configInterface.ts';
 import { Field, Row, Col } from 'vant';
 
 // 声明引入的组件
 @Component({
-  name: 'CityInput',
+  name: 'CommunityInput',
   components: {
     [Field.name]: Field,
     [Row.name]: Row,
@@ -53,34 +41,17 @@ import { Field, Row, Col } from 'vant';
   }
 })
 // 类方式声明当前组件
-export default class CityInput extends CommonMixins {
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  private star: boolean;
-  @Prop({
-    type: String,
-    default: '请选择您爱屋所在城市'
-  })
-  private placeholderText: string;
-  @Prop({
-    type: String,
-    default: ''
-  })
-  private cityName: string; // 默认城市名称
+export default class CommunityInput extends CommonMixins {
   @Prop({
     type: String,
     default: 'right'
   })
   private inputAlign: string;
   @Prop({
-    type: Array,
-    default: [],
-    required: true
+    type: String,
+    default: ''
   })
-  private cityList: CityItem[];
-  private cityShow: boolean = false;
+  private communityName: string;
 
   /**
    * @description 选择城市确认
@@ -88,8 +59,8 @@ export default class CityInput extends CommonMixins {
    * @author linyu
    */
   @Emit()
-  private cityConfirm(item: any, index: number) {
-    this.cityShow = false;
+  private toCommunity() {
+    return;
   }
 }
 </script>
@@ -126,7 +97,6 @@ export default class CityInput extends CommonMixins {
         .btn-active
           color $main-color
         .van-cell
-          // padding: 0 15px;
           padding vw(10) vw(0) vw(10) vw(10) !important
           input
             font-size 15px

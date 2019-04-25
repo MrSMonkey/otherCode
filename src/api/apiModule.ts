@@ -2,8 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-23 10:49:59
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-24 20:51:47
  */
 
 export default {
@@ -58,8 +58,11 @@ export default {
   /*根据当前地理位置获取附近小区*/
   getNearCommunityList: '/es/community/search/location',
 
-  /*根据关键词获取小区*/
+  /*根据关键词获取委托房源的小区*/
   getKeyCommunityList: '/es/community/search/name',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseCommunityList: '/es/appraiseCommunity/search/name',
 
   /*获取城市列表*/
   getCitys: '/partner/common/city',
