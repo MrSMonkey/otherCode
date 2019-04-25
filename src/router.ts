@@ -132,7 +132,7 @@ router = new Router({
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',
-    //   meta: '房屋估价',
+    //   meta: '房屋估价',git
     //   component: HouseAppraise,
     //   children: [
     //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
