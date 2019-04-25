@@ -22,6 +22,7 @@
     "echarts": "^4.2.0-rc.2",
     "fastclick": "^1.0.6",
     "highlight.js": "^9.12.0",
+    "html2canvas": "^1.0.0-rc.1",
     "intersection-observer": "^0.5.1",
     "js-base64": "^2.5.1",
     "register-service-worker": "^1.0.0",
@@ -35,7 +36,8 @@
     "vue-skeleton-webpack-plugin": "^1.2.2",
     "vuex": "^3.0.1",
     "vuex-class": "^0.3.1",
-    "vuex-persist": "^1.8.0"
+    "vuex-persist": "^1.8.0",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.47",

@@ -16,7 +16,13 @@ import { Point } from '@/interface/utilInterface';
 
 // 从本地获取token
 const getTokenFromLocal = () => {
-  const data: any = localStorage.getItem('siteToken');
+  const data: any = handleWebStorage.getLocalData('siteToken');
+  return data ? data : null;
+};
+
+// 从本地获取wx.fd
+const getWxFromLocal = () => {
+  const data: any = handleWebStorage.getLocalData('uoko.fd.wx');
   return data ? data : null;
 };
 
@@ -32,6 +38,7 @@ export const state: GlobalState = {
     lon: ''  // 纬度
   },
   isGainPoint: false,
+  wxOAuth: getWxFromLocal()
 };
 
 // getters
@@ -56,6 +63,9 @@ export const getters: GetterTree<GlobalState, RootState> = {
   },
   getIsGainPoint(state: GlobalState): any {
     return state.isGainPoint;
+  },
+  getWxOAuth(state: GlobalState): any {
+    return state.wxOAuth;
   },
 };
 
@@ -82,6 +92,9 @@ export const mutations: MutationTree<GlobalState> = {
   },
   updateIsGainPoint: (state, data: boolean) => {
     state.isGainPoint = data;
+  },
+  updateWxOAuth: (state, data: boolean) => {
+    state.wxOAuth = data;
   },
 };
 

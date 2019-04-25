@@ -125,5 +125,11 @@ export default {
   getRefundOrderList: '/partner/owner/product/refund/list',
 
   /*退款订单详情*/
-  getRefundDetail: '/partner/owner/product/refund/detail'
+  getRefundDetail: '/partner/owner/product/refund/detail',
+
+  /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
+  getWechatConfig: '/partner/star/owner/get_config',
+
+  /* 通过code换取网页授权*/
+  getAccesstoken: '/partner/star/owner/get_token'
 };

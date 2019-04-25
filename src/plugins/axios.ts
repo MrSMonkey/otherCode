@@ -58,7 +58,7 @@ Axios.interceptors.request.use(
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
       // config.baseURL = 'http://192.168.200.44:7070/';
       config.baseURL = 'http://api-gateway.testuoko.com/';
-      // config.baseURL = 'http://172.16.3.103:8008';
+      // config.baseURL = 'http://172.16.2.88:8008';
     }
 
     /*登录授权, 登录接口修改 Authorization */

@@ -75,6 +75,20 @@ interface HouseTypeResult {
   hallNum: string | number;
 }
 
+/* 定义运行环境 */
+interface AppType {
+  wechat?: string;
+  weibo?: string;
+  qq?: string;
+  unknown?: string;
+}
+
+/* 定义设备系统*/
+interface AppDevice {
+  android?: string;
+  ios?: string;
+  unknown?: string;
+}
 export {
   StartHomeImgInterface,
   EnumInterface,
@@ -89,5 +103,7 @@ export {
   CityItem,
   HouseTypeInputProp,
   HouseTypeInputOpts,
-  HouseTypeResult
+  HouseTypeResult,
+  AppType,
+  AppDevice
 };
