@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Home from '@/views/Home/Home.vue';
 import store from '@/store';
 import api from '@/api';
+import { getRuntimeInfo, handleWebStorage, toAuth } from '@/utils/utils';
+import { APP_TYPE } from '@/config/config';
 
 Vue.use(Router);
 
@@ -40,8 +42,10 @@ const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/vi
 const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ServiceRecord/ConfirmPay.vue');
 const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
 
-// const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
-// const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+// 房屋估价
+const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
+const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+const AppraiseCommunity = () => import(/* webpackChunkName: 'appraiseCommunity' */ '@/views/HouseAppraise/AppraiseCommunity.vue');
 
 // 服务产品支付
 const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/views/Payment/ProductPayment.vue');
@@ -49,8 +53,25 @@ const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/
 // 服务包购买
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
 
-// 星空财神
-const Fortune = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Home/Fortune.vue');
+// 星空财神(旧公众号)
+const OldFortune = () => import(/* webpackChunkName: 'oldFortune' */ '@/views/Home/OldFortune.vue');
+const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */ '@/views/Home/OldFortuneResult.vue');
+const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
+
+// 旧公众号 我的房源
+const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
+
+// 旧公众号 我的账单
+const OldMyAccount = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyAccount.vue');
+
+// 旧公众号 账单详情
+const OldAccountDetail = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldAccountDetail.vue');
+
+// 旧公众号 账单详情
+const OldHouseContract = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHouseContract.vue');
+
+// 旧公众号 房源照片
+const OldHousePic = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldHousePic.vue');
 
 router = new Router({
   base: process.env.BASE_URL,
@@ -80,23 +101,39 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
-    { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
-    // {
-    //   path: '/houseAppraise',
-    //   name: 'houseAppraise',
-    //   meta: '房屋估价',
-    //   component: HouseAppraise,
-    //   children: [
-    //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
-    //   ]
-    // },
+    {
+      path: '/houseAppraise',
+      name: 'houseAppraise',
+      meta: {title: '房屋估价', requireAuth: false},
+      component: HouseAppraise,
+      beforeEnter: (to, from, next) => {
+        const token: any = store.getters['global/getToken'];
+        if (!token) {
+          next('/appraiseHouseInfo');
+        }
+        next();
+      }
+    },
+    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: false}, component: AppraiseHouseInfo},
+    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: false}, component: AppraiseCommunity},
+    // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
+    { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: false}, component: OldMyHouse},
+    { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: false}, component: OldMyAccount},
+    { path: '/OldAccountDetail', name: 'OldAccountDetail', meta: {title: '账单详情', requireAuth: false}, component: OldAccountDetail},
+    { path: '/OldHouseContract', name: 'OldHouseContract', meta: {title: '房源合同', requireAuth: false}, component: OldHouseContract},
+    { path: '/OldHousePic', name: 'OldHousePic', meta: {title: '房源照片', requireAuth: false}, component: OldHousePic},
+
+    // 老公众号
+    { path: '/oldFortune', name: 'oldFortune', meta: {title: '星空财神', requireAuth: false}, component: OldFortune},
+    { path: '/oldFortuneResult', name: 'oldFortuneResult', meta: {title: '星空财神', requireAuth: false}, component: OldFortuneResult},
+    { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     { path: '/community', name: 'community', meta: {title: '选择小区', requireAuth: false}, component: Community},
     { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: {title: '新增房源', requireAuth: true},  component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: {title: '404', requireAuth: false}, component: NotFoundComp}
   ]
 });
 
-router.beforeEach((to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, from: any, next: any) => {
   /* 路由发生变化修改页面title */
   if (to.meta) {
     document.title = to.meta.title;
@@ -110,6 +147,28 @@ router.beforeEach((to: any, from: any, next: any) => {
     next();
     return;
   }
+  /* 跳转微信授权后端中转页 */
+  /* 微信认证流程 */
+  const runtime: any = getRuntimeInfo();
+  
+  /* 如果不是微信环境 */
+  if (runtime.appType === APP_TYPE.wechat) {
+    /* 如果已缓存用户信息,进行验证 */
+    const wxConfig: any = handleWebStorage.getLocalData('uoko.fd.wx');
+    if (!wxConfig) {
+      const res: any = await Vue.axios.get(api.getWechatConfig);
+      if (res && res.code === '000') {
+        // store.commit('global/updateUserInfo', res.data); // 设置用户信息
+        console.log(res);
+        handleWebStorage.setLocalData('uoko.fd.wx', res.data); // 本地存储appId
+        const appId: string = 'wx5f11503947854020';
+        toAuth(appId, res.data.transferUrl, res.data.scope);
+      } else {
+        Vue.prototype.$toast(`获取微信认证失败`);
+      }
+    }
+  }
+
   if (to.meta.requireAuth) {
     // 判断该路由是否需要登录权限
     const token: any = store.getters['global/getToken'];
@@ -118,17 +177,13 @@ router.beforeEach((to: any, from: any, next: any) => {
       const userInfo = store.getters['global/getUserInfo'];
       if (!userInfo) {
         // 不存在用户信息，查询用户信息
-        Vue.axios.get(api.getUserInfo).then((res: any) => {
-          if (res && res.code === '000') {
-            store.commit('global/updateUserInfo', res.data); // 设置用户信息
-          } else {
-            Vue.prototype.$toast(`获取用户信息失败`);
-          }
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        }).catch((err: any) => {
+        const res: any = await Vue.axios.get(api.getUserInfo);
+        if (res && res.code === '000') {
+          store.commit('global/updateUserInfo', res.data); // 设置用户信息
+        } else {
           Vue.prototype.$toast(`获取用户信息失败`);
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        });
+        }
+        next(); // 不要在next里面加"path:/",会陷入死循环
       } else {
         next();
       }
@@ -140,28 +195,29 @@ router.beforeEach((to: any, from: any, next: any) => {
     }
   } else {
     const token: any = store.getters['global/getToken'];
-    if (token) {
-      // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
-      const userInfo = store.getters['global/getUserInfo'];
-      if (!userInfo) {
-        // 不存在用户信息，查询用户信息
-        Vue.axios.get(api.getUserInfo).then((res: any) => {
-          if (res && res.code === '000') {
-            store.commit('global/updateUserInfo', res.data); // 设置用户信息
-          } else {
-            Vue.prototype.$toast(`获取用户信息失败`);
-          }
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        }).catch((err: any) => {
-          Vue.prototype.$toast(`获取用户信息失败`);
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        });
-      } else {
-        next();
-      }
-    } else {
-      next();
-    }
+    next();
+    // if (token) {
+    //   // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+    //   const userInfo = store.getters['global/getUserInfo'];
+    //   if (!userInfo) {
+    //     // 不存在用户信息，查询用户信息
+    //     Vue.axios.get(api.getUserInfo).then((res: any) => {
+    //       if (res && res.code === '000') {
+    //         store.commit('global/updateUserInfo', res.data); // 设置用户信息
+    //       } else {
+    //         Vue.prototype.$toast(`获取用户信息失败`);
+    //       }
+    //       next(); // 不要在next里面加"path:/",会陷入死循环
+    //     }).catch((err: any) => {
+    //       Vue.prototype.$toast(`获取用户信息失败`);
+    //       next(); // 不要在next里面加"path:/",会陷入死循环
+    //     });
+    //   } else {
+    //     next();
+    //   }
+    // } else {
+    //   next();
+    // }
   }
 });
 

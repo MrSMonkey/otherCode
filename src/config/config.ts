@@ -282,3 +282,18 @@ export const TIPSTWO: string = `注：本次支付仅支付装修设计费，装
 
 // 百度地图ak
 export const BAIDU_AK: string = `e0dzZmaImw9rUXxWyPBGgs78ZXoAfwhS`;
+
+/* 运行环境. */
+export const APP_TYPE: confInterface.AppType = {
+  wechat: 'wechat',
+  weibo: 'weibo',
+  qq: 'qq',
+  unknown: 'unknown'
+};
+
+// 设备系统
+export const APP_DEVICE: confInterface.AppDevice = {
+  android: 'android',
+  ios: 'ios',
+  unknown: 'unknown'
+};

@@ -2,8 +2,8 @@
  * @Description: 菜单列表数据
  * @Author: LiuZhen
  * @Date: 2019-01-18 11:20:52
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 15:07:27
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-24 15:23:29
  */
 import { BaseInterface } from './base.interface';
 
@@ -29,7 +29,7 @@ import { BaseInterface } from './base.interface';
 
 // 声明FormList接口类型
 export interface PerfectForm extends BaseInterface {
-  buildAcreage?: string;
+  buildAcreage?: string|number;
   building?: string;
   consociationType?: string;
   floorNum?: string;
@@ -48,7 +48,8 @@ export interface PerfectForm extends BaseInterface {
 export interface HouseAppraiseForm extends BaseInterface {
   cityName?: string;
   communityName?: string;
-  buildAcreage?: string;
+  communityId?: string;
+  buildAcreage: string|number;
   roomNum?: string;
   hallNum?: string;
   floorNum?: string;

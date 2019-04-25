@@ -5,6 +5,7 @@
  * @Last Modified by: chenmo
  * @Last Modified time: 2019-04-15 16:00:40
  */
+import { APP_TYPE, APP_DEVICE } from '@/config/config';
 
 /* 首字母大写 */
 export function firstUpperCase(str: string): string {
@@ -362,3 +363,78 @@ export function debounce(func: any, wait: number) {
   };
 }
 
+/**
+ * @description appType浏览器环境 deviceType设备系统
+ * @return appType浏览器环境 deviceType设备系统
+ * @author chemo
+ */
+export function getRuntimeInfo() {
+  const apptypeTest: any = {
+    qq(ua: any) {
+      return /QQ\/\d+\./.test(ua) && APP_TYPE.qq;
+    },
+    wechat(ua: any) {
+      return /MicroMessenger/.test(ua) && APP_TYPE.wechat;
+    },
+    weibo(ua: any) {
+      return /WeiBo/.test(ua) && APP_TYPE.weibo;
+    }
+  };
+
+  const deviceTypeTest: any = {
+    ios(ua: any) {
+      return /iphone|ipad|ipod/i.test(ua) && APP_DEVICE.ios;
+    },
+    android(ua: any) {
+      return /android/i.test(ua) && APP_DEVICE.android;
+    }
+  };
+
+  return {
+    appType: (() => {
+      const ua = navigator.userAgent;
+      let appType = APP_TYPE.unknown;
+
+      Object.keys(apptypeTest).some((k: any) => {
+        const result: any = apptypeTest[k](ua);
+        if (result) {
+          appType = result;
+        }
+        return result;
+      });
+
+      return appType;
+    })(),
+    deviceType: (() => {
+      const ua = navigator.userAgent;
+      let deviceType = APP_DEVICE.unknown;
+
+      Object.keys(deviceTypeTest).some((k: any) => {
+        const result: any = deviceTypeTest[k](ua);
+        if (result) {
+          deviceType = result;
+        }
+        return result;
+      });
+
+      return deviceType;
+    })(),
+    env: process.env.NODE_ENV
+  };
+}
+
+/**
+ * @description 微信认证
+ * @params appid 微信appid
+ * @params transferUrl 微信transferUrl
+ * @params scope 微信scope
+ * @return 微信登录授权页面
+ * @author chemo
+ */
+export const toAuth = (appid: string, transferUrl: string, scope: string) => {
+  const cur: any = 'http://yz.testuoko.com';
+  console.log(window.location);
+  debugger
+  const url: string = `${transferUrl}?appid=${appid}&scope=${scope}&callback=${encodeURIComponent(cur)}`;
+  return (window.location.href = url);
+}
