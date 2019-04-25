@@ -131,5 +131,5 @@ export default {
   getWechatConfig: '/partner/star/owner/get_config',
 
   /* 通过code换取网页授权*/
-  getAccesstoken: '/partner/star/owner/get_config'
+  getAccesstoken: '/partner/star/owner/get_token'
 };

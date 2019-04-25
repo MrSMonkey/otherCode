@@ -14,5 +14,6 @@ export interface GlobalState {
   keepAlive?: string;
   point?: Point;
   isGainPoint?: boolean;
+  wxOAuth?: any;
 }
 
