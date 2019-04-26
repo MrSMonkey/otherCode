@@ -46,7 +46,9 @@ import { Toast, ImagePreview } from 'vant';
 Vue.use(ImagePreview);
 Vue.use(Toast);
 
-
+const api = {
+  userInfo: '/star/owner/get_wechat_user_info/', // 无需登录
+};
 // 声明引入的组件
 @Component({
   name: 'OldMyBusinessCard',
@@ -68,6 +70,8 @@ export default class OldMyBusinessCard extends CommonMixins {
   private created() {
     // 111
     // this.getImage(this.userLogoUrl, 'userLogo');
+    this.getUserInfo();
+    console.log(this.$store.state);
   }
 
   private mounted() {
@@ -81,6 +85,22 @@ export default class OldMyBusinessCard extends CommonMixins {
   // 转换 - canvas
   private async getCanvas() {
     await this.getImage(this.userLogoUrl, 'userLogo');
+  }
+
+   // 获取 - 微信账号基本信息
+  private async getUserInfo() {
+    try {
+      const openId = this.$store.state.global.wxOAuth.openId;
+      const accessToken = this.$store.state.global.wxOAuth.accessToken;
+      const {data} = await this.axios.get(`${api.userInfo + openId}/${accessToken}`);
+      console.log(data, '用户微信信息');
+      if (data.code === '000') {
+        this.userName = data.data.nickName;
+        this.userLogoUrl = data.data.headImgUrl;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
   }
 
   private getCanvasDom() {
