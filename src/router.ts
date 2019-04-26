@@ -109,10 +109,10 @@ router = new Router({
       meta: {title: '房屋估价', requireAuth: false},
       component: HouseAppraise,
       beforeEnter: (to, from, next) => {
-        const token: any = store.getters['global/getToken'];
-        if (!token) {
-          next('/appraiseHouseInfo');
-        }
+        // const token: any = store.getters['global/getToken'];
+        // if (!token) {
+        //   next('/appraiseHouseInfo');
+        // }
         next();
       }
     },
