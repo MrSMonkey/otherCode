@@ -275,7 +275,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   };
   /* 如果是微信环境 */
   if (runtime.appType === APP_TYPE.wechat) {
-    getWxConfig(); // 判断是否微信授权
+    await getWxConfig(); // 判断是否微信授权
   } else {
     loginFun(); // 非微信环境路由拦截
   }

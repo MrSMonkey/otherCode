@@ -42,12 +42,11 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import {START_MYCARD_IMG} from '@/config/config';
 import html2canvas from 'html2canvas';
 import { config } from '@vue/test-utils';
-import { Toast, ImagePreview } from 'vant';
+import { ImagePreview } from 'vant';
 Vue.use(ImagePreview);
-Vue.use(Toast);
 
 const api = {
-  userInfo: '/star/owner/get_wechat_user_info/', // 无需登录
+  userInfo: '/partner/star/owner/get_wechat_user_info/', // 无需登录
 };
 // 声明引入的组件
 @Component({
@@ -65,19 +64,21 @@ export default class OldMyBusinessCard extends CommonMixins {
   private index: number = 1;
   private show: boolean = false;
   private userName: string = '哈哈哈哈';
-  private userLogoUrl: string = 'https://826327700.github.io/vue-photo-preview/demo/1.jpg?any_string_is_ok';
+  private userLogoUrl: string = require('@/assets/images/boy.png');
 
   private created() {
     // 111
     // this.getImage(this.userLogoUrl, 'userLogo');
     this.getUserInfo();
-    console.log(this.$store.state);
+    // console.log(this.$store.state);
   }
 
   private mounted() {
     this.getCanvas();
-    Toast.loading({
+    this.$toast.loading({
+      duration: 0,
       mask: true,
+      loadingType: 'spinner',
       message: '加载中...'
     });
   }
@@ -103,9 +104,10 @@ export default class OldMyBusinessCard extends CommonMixins {
     }
   }
 
-  private getCanvasDom() {
-    html2canvas(document.querySelector('#card1'), { useCORS: true }).then((canvas: any) => {
-      this.onTransformEnd(canvas);
+  private  getCanvasDom() {
+    html2canvas(document.querySelector('#card1'), { useCORS: true }).then(async (canvas: any) => {
+     await this.onTransformEnd(canvas);
+     this.$toast.clear();
     });
   }
 

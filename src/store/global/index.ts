@@ -16,7 +16,7 @@ import { Point } from '@/interface/utilInterface';
 
 // 从本地获取token
 const getTokenFromLocal = () => {
-  const data: any = handleWebStorage.getLocalData('siteToken');
+  const data: any = localStorage.getItem('siteToken');
   return data ? data : null;
 };
 
