@@ -1,12 +1,10 @@
-<!--
-  /*
-  * @Description: 退款订单详情
-  * @Author: chenmo
-  * @Date: 2019-03-14 20:26:26
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-23 10:54:03
-  */
--->
+/*
+ * @Description: 退款订单详情
+ * @Author: chenmo
+ * @Date: 2019-03-14 20:26:26
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-25 13:47:52
+ */
 
 <template>
   <section class="order-detils">

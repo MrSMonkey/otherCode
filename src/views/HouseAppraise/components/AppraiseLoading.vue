@@ -1,3 +1,11 @@
+/*
+ * @Description: 多个房屋估价结果展示组件
+ * @Author: linyu
+ * @Date: 2019-04-25 13:48:33
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-25 13:50:25
+ */
+
 <template>
   <section class="loading-panel">
     <div class="loading-img">

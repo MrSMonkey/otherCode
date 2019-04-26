@@ -2,8 +2,8 @@
  * @Description: 服务记录
  * @Author: zhegu
  * @Date: 2019-03-07 15:59:12
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-04-02 16:23:42
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-25 14:20:17
 */
 
 <template>
@@ -30,7 +30,8 @@
       <router-link v-if="data.orderInfo && data.orderInfo.orderType != 9  && data.orderInfo.orderType != 2 && (data.orderInfo.orderStatus === 1 || data.orderInfo.orderStatus === 10)" :to="'/confirmPay?orderId=' + orderId">去支付</router-link>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && data.orderInfo.orderStatus === 4 && data.orderInfo.decType === 1" size="normal" type="default" @click="createBuildOrder">确认装修并支付装修款</van-button>
       <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 9 && (data.orderInfo.orderStatus === 2 || data.orderInfo.orderStatus === 3 || data.orderInfo.orderStatus === 4) && data.orderInfo.decType === 2 && data.orderInfo.houseId" size="normal" type="default" @click="buildPass">确认验收</van-button>
-      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4"  size="normal" type="default" @click="cleanPass">去验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 2 && data.orderInfo.orderStatus === 4 "  size="normal" type="default" @click="cleanPass">去验收</van-button>
+      <van-button  v-if="data.orderInfo && data.orderInfo.orderType === 6 && data.orderInfo.orderStatus === 4 "  size="normal" type="default" @click="photoPass">去验收</van-button>
     </div> 
     <transition name="van-fade">
       <div class="mask" v-show="maskVisible" @click="changebuildPayVisible(false)"></div>
@@ -248,7 +249,39 @@ export default class ServiceRecord extends CommonMixins {
     }).catch(() => {
           // on cancel 取消
     });
-
+  }
+  /**
+   * @description 写真验收
+   * @returns void
+   * @author linyu
+   */
+  private async photoPass() {
+    this.$dialog.confirm({
+          title: '验收',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          className: 'dialogTips',
+          message: '确认验收通过吗？'
+    }).then(async () => {
+          // on confirm
+        try {
+          const res: any = await this.axios.put(api.photoPass + `/${this.orderId}`);
+          if (res && res.code === '000') {
+            this.$toast.success(`验收通过`);
+            this.getServiceRecord(this.orderId);
+          } else {
+            this.$toast(res.msg);
+          }
+        } catch (err) {
+          throw new Error(err || 'Unknow Error!');
+        } finally {
+          setTimeout(() => {
+            this.$toast.clear();
+          }, 1000);
+        }
+    }).catch(() => {
+          // on cancel 取消
+    });
   }
 }
 </script>
