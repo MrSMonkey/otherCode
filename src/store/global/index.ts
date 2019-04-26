@@ -23,13 +23,7 @@ const getTokenFromLocal = () => {
 // 从本地获取wx.fd
 const getWxFromLocal = () => {
   const data: any = handleWebStorage.getLocalData('uoko.fd.wx');
-  return data ? data : {
-    accessToken: '',
-    expiresIn: '',
-    openId: '',
-    refreshToken: '',
-    scope: ''
-  };
+  return data ? data : null;
 };
 
 // state
@@ -44,7 +38,13 @@ export const state: GlobalState = {
     lon: ''  // 纬度
   },
   isGainPoint: false,
-  wxOAuth: getWxFromLocal()
+  wxOAuth: getWxFromLocal() || {
+    appid: '',
+    accessToken: '',
+    openId: '',
+    refresh_token: '',
+    code: ''
+  }
 };
 
 // getters

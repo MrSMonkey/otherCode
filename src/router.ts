@@ -163,6 +163,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   /* 跳转微信授权后端中转页 */
   /* 微信认证流程 */
   const runtime: any = getRuntimeInfo();
+
   // 获取微信access_token
   const getAccesstoken = async (appId: string, code: string) => {
     const res: any = await Vue.axios.get(api.getAccesstoken + `/${appId}/${code}`);
@@ -173,26 +174,44 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     }
   };
 
+
+  // 微信认证
+  const getWxAuth = async (code: string, wxOAuth: any) => {
+    const res: any = await Vue.axios.get(api.getWechatConfig);
+    if (res && res.code === '000') {
+      store.commit('global/updateWxOAuth', res.data); // 设置appId
+      handleWebStorage.setLocalData('uoko.fd.wx', res.data);
+      if (code && wxOAuth.appId) {
+        getAccesstoken(wxOAuth.appId, code);
+      } else {
+        await toAuth(res.data.appId, res.data.transferUrl, res.data.scope);
+      }
+    } else {
+      Vue.prototype.$toast(`获取微信认证失败`);
+    }
+  };
+
   /* 如果不是微信环境 */
   if (runtime.appType === APP_TYPE.wechat) {
-    /* 如果已缓存用户信息,进行验证 */
-    const appId: string = 'wx5f11503947854020';
     const wxOAuth: any = store.getters['global/getWxOAuth'];
     const code: any = getQueryString('code');
     const { openId, accessToken } = wxOAuth;
-    console.log(openId, accessToken);
-    if (!(openId && accessToken)) {
-      const res: any = await Vue.axios.get(api.getWechatConfig);
+    // console.log(openId, accessToken);
+
+    /* 如果已缓存用户信息,进行验证 */
+    if (openId && accessToken) {
+      const res: any = await Vue.axios.get(api.checkAccessToken + `/${accessToken}/${openId}`);
       if (res && res.code === '000') {
-        // store.commit('global/updateUserInfo', res.data); // 设置用户信息
-        if (code) {
-          getAccesstoken(appId, code);
+        if (res.data) {
+          // 验证通过
         } else {
-          await toAuth(appId, res.data.transferUrl, res.data.scope);
+          getWxAuth(code, wxOAuth);
         }
       } else {
-        Vue.prototype.$toast(`获取微信认证失败`);
+        getWxAuth(code, wxOAuth);
       }
+    } else {
+      getWxAuth(code, wxOAuth);
     }
   }
   if (to.meta.requireAuth) {
