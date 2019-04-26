@@ -7,7 +7,7 @@
  */
 
 <template>
-  <section class="community">
+  <section class="appraise-community">
     <section class="search">
       <van-field
         v-model="searchInputValue"
@@ -63,7 +63,33 @@
         </template>
       </confirmBtn>
     </section>
-  
+    <van-dialog
+      v-model="dialogShow"
+      title="提示"
+      confirm-button-text="保存"
+      show-cancel-button
+      class="appraise-dialog"
+      @confirm="dialogConfirm"
+    >
+      <div class="dialog-content">
+        <div class="dialog-text-panel">您爱屋所在的小区名未找到，评估师将通过人工方式为您评估价格后反馈给您。</div>
+        <div class="form-panel">
+          <van-field
+            v-model="username"
+            label="称呼："
+            placeholder="请输入您的称呼"
+            autofocus
+          />
+          <van-field
+            v-model="phone"
+            type="tel"
+            label="电话："
+            placeholder="请输入您的联系方式"
+            autofocus
+          />
+        </div>
+      </div>
+    </van-dialog>
   </section>
 </template>
 
@@ -102,7 +128,10 @@ export default class AppraiseCommunity extends CommonMixins {
   private communityId: string = '';
   private communityName: string = '';
   private refreshing: boolean = false; // 刷新请求是否完成，完成时值为false
+  private username: string = ''; // 称呼
+  private phone: string = ''; // 电话
   private loading: boolean = false; // 加载更多请求是否完成，完成时值为false
+  private dialogShow: boolean = false; // 是否显示dialog
   private tableList: any = []; // 小区列表
   private lon: number = 0; // 当前位置经度
   private lat: number = 0; // 当前位置纬度
@@ -118,6 +147,14 @@ export default class AppraiseCommunity extends CommonMixins {
   // computed
   get isActive(): boolean {
     return (this.searchInputValue === '' && this.communityId !== '') || this.searchInputValue !== '';
+  }
+  get validForm(): boolean {
+    const usernamePattern = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/g;
+    const PhonePattern = /^(\d{11})|(\d{7,8})$/g;
+    if (usernamePattern.test(this.username)) {
+      return false;
+    }
+    return true;
   }
   /**
    * @description 获取小区
@@ -180,29 +217,10 @@ export default class AppraiseCommunity extends CommonMixins {
    * @author chenmo
    */
   private onOk() {
-    if (this.searchInputValue !== '' && this.tableList.length && this.communityId === '') {
-      this.communityName = this.searchInputValue;
-      this.$dialog.confirm({
-        title: '提示',
-        confirmButtonText: '是的',
-        cancelButtonText: ' 重新选',
-        className: 'dialogTips',
-        message: `您未选中任何目标，是否搜索结果中没有您想要的？`
-      }).then(() => {
-        this.$router.push({
-          name: 'appraiseHouseInfo',
-          params: {
-            communityId: this.communityId,
-            communityName: this.communityName
-          }
-        });
-      }).catch(() => {
-        this.$dialog.close();
-      });
+    if ((this.searchInputValue !== '' && this.tableList.length && this.communityId === '')
+      || (this.searchInputValue !== '' && this.tableList.length <= 0)) {
+        this.dialogShow = true;
     } else {
-      if (this.searchInputValue !== '' && this.tableList.length <= 0) {
-        this.communityName = this.searchInputValue;
-      }
       this.$router.push({
         name: 'appraiseHouseInfo',
         params: {
@@ -221,11 +239,22 @@ export default class AppraiseCommunity extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
+
+  /**
+   * @description dialog确认按钮事件
+   * @returns void
+   * @author linyu
+   */
+  private dialogConfirm() {
+    if (!this.username) {
+      this.$toast('称呼输入格式不正确');
+    }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .community
+  .appraise-community
     display flex
     flex-direction column
     height 100%
@@ -285,6 +314,24 @@ export default class AppraiseCommunity extends CommonMixins {
             background-color #fafafa
             .community-name
               color $main-color
+    .appraise-dialog
+      font-size 18px
+    .dialog-content
+      margin 0 vw(15)
+      .dialog-text-panel
+        margin vw(15) 0
+        color $text-color
+        font-size 14px
+        text-align center
+      .form-panel
+        border 1px solid $border-color-light
+        border-radius 5px
+        margin-bottom vw(10)
+        .van-cell.van-field
+          border-radius 5px
+        .van-cell:not(:last-child)::after
+          left 0
+          right 0
 </style>
 
 

@@ -1,9 +1,9 @@
 <template>
-  <article class="house-appraise">
-    <MultiHouseAppraise></MultiHouseAppraise>
-    <SingleHouseAppraise v-show="false"></SingleHouseAppraise>
-    <AppraiseLoading v-show="false"></AppraiseLoading>
-  </article>
+  <section class="house-appraise">
+    <!-- <MultiHouseAppraise v-show="false"></MultiHouseAppraise>
+    <SingleHouseAppraise v-show="false"></SingleHouseAppraise> -->
+    <AppraiseLoading></AppraiseLoading>
+  </section>
 </template>
 
 <script lang="ts">
@@ -38,6 +38,6 @@ export default class HouseAppraise extends CommonMixins {
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .house-appraise
-    min-height 100%
+    height 100%
 </style>
 
