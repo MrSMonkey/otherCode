@@ -52,6 +52,7 @@ interface TowardListInterface {
   [index: number]: {value: number|string; text: string; };
 }
 /* 定义城市picker的item接口 */
+/* 城市选择列表item */
 interface CityItem {
   cityId: string;
   cityName: string;
@@ -89,6 +90,13 @@ interface AppDevice {
   ios?: string;
   unknown?: string;
 }
+/* 管家选择列表item */
+interface StewardItem {
+  assetUserId: string;
+  assetUserName: string;
+  assetUserPhone?: string;
+  houseNum?: number;
+}
 export {
   StartHomeImgInterface,
   EnumInterface,
@@ -105,5 +113,6 @@ export {
   HouseTypeInputOpts,
   HouseTypeResult,
   AppType,
-  AppDevice
+  AppDevice,
+  StewardItem
 };

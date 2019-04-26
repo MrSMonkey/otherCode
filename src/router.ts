@@ -240,29 +240,32 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     }
   } else {
     const token: any = store.getters['global/getToken'];
+    if (to.patch === 'entrust') {
+      // 委托房源页面可登陆也可不
+      if (token) {
+        // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+        const userInfo = store.getters['global/getUserInfo'];
+        if (!userInfo) {
+          // 不存在用户信息，查询用户信息
+          Vue.axios.get(api.getUserInfo).then((res: any) => {
+            if (res && res.code === '000') {
+              store.commit('global/updateUserInfo', res.data); // 设置用户信息
+            } else {
+              Vue.prototype.$toast(`获取用户信息失败`);
+            }
+            next(); // 不要在next里面加"path:/",会陷入死循环
+          }).catch((err: any) => {
+            Vue.prototype.$toast(`获取用户信息失败`);
+            next(); // 不要在next里面加"path:/",会陷入死循环
+          });
+        } else {
+          next();
+        }
+      } else {
+        next();
+      }
+    }
     next();
-    // if (token) {
-    //   // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
-    //   const userInfo = store.getters['global/getUserInfo'];
-    //   if (!userInfo) {
-    //     // 不存在用户信息，查询用户信息
-    //     Vue.axios.get(api.getUserInfo).then((res: any) => {
-    //       if (res && res.code === '000') {
-    //         store.commit('global/updateUserInfo', res.data); // 设置用户信息
-    //       } else {
-    //         Vue.prototype.$toast(`获取用户信息失败`);
-    //       }
-    //       next(); // 不要在next里面加"path:/",会陷入死循环
-    //     }).catch((err: any) => {
-    //       Vue.prototype.$toast(`获取用户信息失败`);
-    //       next(); // 不要在next里面加"path:/",会陷入死循环
-    //     });
-    //   } else {
-    //     next();
-    //   }
-    // } else {
-    //   next();
-    // }
   }
 });
 
