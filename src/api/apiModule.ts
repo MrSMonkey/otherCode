@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 20:51:47
+ * @Last Modified time: 2019-04-25 17:07:03
  */
 
 export default {
@@ -109,6 +109,9 @@ export default {
   /*装修订单通过验收*/
   buildPass: '/partner/owner/product/service/renovation/passing',
 
+  /*写真订单通过验收*/
+  photoPass: '/partner//owner/product/service/passing',
+
   /*取消支付*/
   cancelPay: 'partner/owner/product/service/repair/cancel_pay',
 
@@ -131,5 +134,8 @@ export default {
   getWechatConfig: '/partner/star/owner/get_config',
 
   /* 通过code换取网页授权*/
-  getAccesstoken: '/partner/star/owner/get_token'
+  getAccesstoken: '/partner/star/owner/get_token',
+
+  /*旧公众号-获取房源合同详情*/
+  getContractInfo: '/partner/star/owner/get_landlord_contract'
 };
