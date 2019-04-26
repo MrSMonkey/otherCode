@@ -163,6 +163,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   /* 跳转微信授权后端中转页 */
   /* 微信认证流程 */
   const runtime: any = getRuntimeInfo();
+
   // 获取微信access_token
   const getAccesstoken = async (appId: string, code: string) => {
     const res: any = await Vue.axios.get(api.getAccesstoken + `/${appId}/${code}`);
@@ -173,24 +174,44 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     }
   };
 
+
+  // 微信认证
+  const getWxAuth = async (code: string, wxOAuth: any) => {
+    const res: any = await Vue.axios.get(api.getWechatConfig);
+    if (res && res.code === '000') {
+      store.commit('global/updateWxOAuth', res.data); // 设置appId
+      handleWebStorage.setLocalData('uoko.fd.wx', res.data);
+      if (code && wxOAuth.appId) {
+        getAccesstoken(wxOAuth.appId, code);
+      } else {
+        await toAuth(res.data.appId, res.data.transferUrl, res.data.scope);
+      }
+    } else {
+      Vue.prototype.$toast(`获取微信认证失败`);
+    }
+  };
+
   /* 如果不是微信环境 */
   if (runtime.appType === APP_TYPE.wechat) {
-    /* 如果已缓存用户信息,进行验证 */
-    const appId: string = 'wx5f11503947854020';
     const wxOAuth: any = store.getters['global/getWxOAuth'];
     const code: any = getQueryString('code');
-    if (!wxOAuth) {
-      // const res: any = await Vue.axios.get(api.getWechatConfig);
-      // if (res && res.code === '000') {
-      //   // store.commit('global/updateUserInfo', res.data); // 设置用户信息
-      //   if (code) {
-      //     getAccesstoken(appId, code);
-      //   } else {
-      //     await toAuth(appId, res.data.transferUrl, res.data.scope);
-      //   }
-      // } else {
-      //   Vue.prototype.$toast(`获取微信认证失败`);
-      // }
+    const { openId, accessToken } = wxOAuth;
+    // console.log(openId, accessToken);
+
+    /* 如果已缓存用户信息,进行验证 */
+    if (openId && accessToken) {
+      const res: any = await Vue.axios.get(api.checkAccessToken + `/${accessToken}/${openId}`);
+      if (res && res.code === '000') {
+        if (res.data) {
+          // 验证通过
+        } else {
+          getWxAuth(code, wxOAuth);
+        }
+      } else {
+        getWxAuth(code, wxOAuth);
+      }
+    } else {
+      getWxAuth(code, wxOAuth);
     }
   }
   if (to.meta.requireAuth) {
@@ -219,29 +240,32 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     }
   } else {
     const token: any = store.getters['global/getToken'];
+    if (to.patch === 'entrust') {
+      // 委托房源页面可登陆也可不
+      if (token) {
+        // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+        const userInfo = store.getters['global/getUserInfo'];
+        if (!userInfo) {
+          // 不存在用户信息，查询用户信息
+          Vue.axios.get(api.getUserInfo).then((res: any) => {
+            if (res && res.code === '000') {
+              store.commit('global/updateUserInfo', res.data); // 设置用户信息
+            } else {
+              Vue.prototype.$toast(`获取用户信息失败`);
+            }
+            next(); // 不要在next里面加"path:/",会陷入死循环
+          }).catch((err: any) => {
+            Vue.prototype.$toast(`获取用户信息失败`);
+            next(); // 不要在next里面加"path:/",会陷入死循环
+          });
+        } else {
+          next();
+        }
+      } else {
+        next();
+      }
+    }
     next();
-    // if (token) {
-    //   // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
-    //   const userInfo = store.getters['global/getUserInfo'];
-    //   if (!userInfo) {
-    //     // 不存在用户信息，查询用户信息
-    //     Vue.axios.get(api.getUserInfo).then((res: any) => {
-    //       if (res && res.code === '000') {
-    //         store.commit('global/updateUserInfo', res.data); // 设置用户信息
-    //       } else {
-    //         Vue.prototype.$toast(`获取用户信息失败`);
-    //       }
-    //       next(); // 不要在next里面加"path:/",会陷入死循环
-    //     }).catch((err: any) => {
-    //       Vue.prototype.$toast(`获取用户信息失败`);
-    //       next(); // 不要在next里面加"path:/",会陷入死循环
-    //     });
-    //   } else {
-    //     next();
-    //   }
-    // } else {
-    //   next();
-    // }
   }
 });
 

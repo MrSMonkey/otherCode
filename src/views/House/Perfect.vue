@@ -3,13 +3,13 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-02 16:29:55
+ * @Last Modified time: 2019-04-23 14:05:36
  */
 
 <template>
   <section class="perfect">
     <section class="area mr-b10">
-      <div class="perfect-input">
+      <div class="input-panel">
         <div class="label">运营类型</div>
         <div class="village">
           <van-field
@@ -26,7 +26,7 @@
       </div>
     </section>
     <section class="area">
-      <div class="perfect-input">
+      <div class="input-panel">
         <div class="label">门牌号码</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
@@ -51,12 +51,11 @@
               input-align="center"
             />
           </van-col>
-          <!--  -->
         </van-row>
       </div>
     </section>
     <section class="area">
-      <div class="perfect-input">
+      <div class="input-panel">
         <div class="label">楼&emsp;&emsp;层</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="6"><van-field
@@ -77,7 +76,7 @@
       </div>
     </section>
     <section class="area">
-      <div class="perfect-input">
+      <div class="input-panel">
         <div class="label">户&emsp;&emsp;型</div>
         <van-row type="flex" justify="end" class="village">
           <van-col span="4"><van-field
@@ -114,7 +113,7 @@
       </div>
     </section>
     <section class="area">
-      <div class="perfect-input">
+      <div class="input-panel">
         <div class="label">朝&emsp;&emsp;向</div>
         <div class="village">
           <van-field
@@ -131,7 +130,7 @@
       </div>
     </section>
     <section class="area">
-      <div class="perfect-input">
+      <div class="input-panel">
         <div class="label">面&emsp;&emsp;积</div>
         <div class="village">
           <van-field
@@ -360,7 +359,7 @@ export default class Perfect extends CommonMixins {
         width 100%
     .just
       text-align justify
-    .perfect-input
+    .input-panel
       background $global-background
       height vw(55)
       padding vw(15) vw(6) vw(20) vw(15)

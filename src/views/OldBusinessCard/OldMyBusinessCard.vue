@@ -20,7 +20,6 @@
         :images="myCardImgPre"
         :startPosition="index"
       >
-        <template v-slot:index>第{{ index }}页</template>
       </van-image-preview>
     </div>
     <div class="shot-box" id="card1" ref="card1">
@@ -31,7 +30,7 @@
         <p>我为星空业主代言</p>
       </div>
       <div class="shot-avatar">
-        <img crossorigin="anonymous" :src="userLogoUrl" alt="user avatar" />
+        <img crossorigin="anonymous" :src="userLogoUrl" id="userLogo"   alt="user avatar" />
       </div>
     </div>
   </section>
@@ -41,11 +40,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import {START_MYCARD_IMG} from '@/config/config';
-import { ImagePreview } from 'vant';
 import html2canvas from 'html2canvas';
 import { config } from '@vue/test-utils';
-
+import { Toast, ImagePreview } from 'vant';
 Vue.use(ImagePreview);
+Vue.use(Toast);
 
 
 // 声明引入的组件
@@ -58,7 +57,7 @@ export default class OldMyBusinessCard extends CommonMixins {
     [x: string]: any
   };
 
-
+  private bodyLoading: boolean = true;
   private myCardImg: any[] = START_MYCARD_IMG;
   private myCardImgPre: any[] = [];
   private index: number = 1;
@@ -66,14 +65,49 @@ export default class OldMyBusinessCard extends CommonMixins {
   private userName: string = '哈哈哈哈';
   private userLogoUrl: string = 'https://826327700.github.io/vue-photo-preview/demo/1.jpg?any_string_is_ok';
 
+  private created() {
+    // 111
+    // this.getImage(this.userLogoUrl, 'userLogo');
+  }
+
   private mounted() {
+    this.getCanvas();
+    Toast.loading({
+      mask: true,
+      message: '加载中...'
+    });
+  }
+
+  // 转换 - canvas
+  private async getCanvas() {
+    await this.getImage(this.userLogoUrl, 'userLogo');
+  }
+
+  private getCanvasDom() {
     html2canvas(document.querySelector('#card1'), { useCORS: true }).then((canvas: any) => {
       this.onTransformEnd(canvas);
     });
   }
 
+  // 转成 - blob文件
+  private getImage(url: string, imgId: string) {
+    const that = this;
+    const xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+        if (this.status === 200) {
+          const imgDom: any = document.getElementById(imgId);
+          imgDom.src =  URL.createObjectURL(this.response);
+          console.log(imgDom.src, '222222');
+          that.getCanvasDom();
+        }
+    };
+    xhr.send();
+  }
+
   // 图片- 预览
-  private showImagePreview(position: any, timer: any): void {
+  private showImagePreview(position: any): void {
     const images: any[] = this.myCardImg.map((item: any) => {
       return `${item.src}`;
     });

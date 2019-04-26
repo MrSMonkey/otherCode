@@ -3,7 +3,15 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
+<<<<<<< HEAD
  * @Last Modified time: 2019-04-25 17:07:03
+=======
+<<<<<<< HEAD
+ * @Last Modified time: 2019-04-24 20:51:47
+=======
+ * @Last Modified time: 2019-04-23 11:36:21
+>>>>>>> pre
+>>>>>>> 606da436e5cfa9d35039a9f46f01bfe6be742867
  */
 
 export default {
@@ -137,5 +145,14 @@ export default {
   getAccesstoken: '/partner/star/owner/get_token',
 
   /*旧公众号-获取房源合同详情*/
-  getContractInfo: '/partner/star/owner/get_landlord_contract'
+  getContractInfo: '/partner/star/owner/get_landlord_contract',
+
+  /* 如果已缓存用户信息,进行验证 */
+  checkAccessToken: '/partner/star/owner/check_token',
+
+  /*获取资产管家列表*/
+  getStewards: 'partner/owner/entrust/asset/list',
+
+  /*设置资产代理管家*/
+  setAgency: 'partner/owner/entrust/asset/agency'
 };

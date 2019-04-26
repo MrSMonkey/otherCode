@@ -38,7 +38,13 @@ export const state: GlobalState = {
     lon: ''  // 纬度
   },
   isGainPoint: false,
-  wxOAuth: getWxFromLocal()
+  wxOAuth: getWxFromLocal() || {
+    appid: '',
+    accessToken: '',
+    openId: '',
+    refresh_token: '',
+    code: ''
+  }
 };
 
 // getters
@@ -93,7 +99,7 @@ export const mutations: MutationTree<GlobalState> = {
   updateIsGainPoint: (state, data: boolean) => {
     state.isGainPoint = data;
   },
-  updateWxOAuth: (state, data: boolean) => {
+  updateWxOAuth: (state, data: any) => {
     state.wxOAuth = data;
   },
 };
