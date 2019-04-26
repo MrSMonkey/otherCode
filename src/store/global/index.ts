@@ -23,7 +23,13 @@ const getTokenFromLocal = () => {
 // 从本地获取wx.fd
 const getWxFromLocal = () => {
   const data: any = handleWebStorage.getLocalData('uoko.fd.wx');
-  return data ? data : null;
+  return data ? data : {
+    accessToken: '',
+    expiresIn: '',
+    openId: '',
+    refreshToken: '',
+    scope: ''
+  };
 };
 
 // state
@@ -93,7 +99,7 @@ export const mutations: MutationTree<GlobalState> = {
   updateIsGainPoint: (state, data: boolean) => {
     state.isGainPoint = data;
   },
-  updateWxOAuth: (state, data: boolean) => {
+  updateWxOAuth: (state, data: any) => {
     state.wxOAuth = data;
   },
 };

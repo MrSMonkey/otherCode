@@ -179,7 +179,9 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     const appId: string = 'wx5f11503947854020';
     const wxOAuth: any = store.getters['global/getWxOAuth'];
     const code: any = getQueryString('code');
-    if (!wxOAuth) {
+    const { openId, accessToken } = wxOAuth;
+    console.log(openId, accessToken);
+    if (!(openId && accessToken)) {
       const res: any = await Vue.axios.get(api.getWechatConfig);
       if (res && res.code === '000') {
         // store.commit('global/updateUserInfo', res.data); // 设置用户信息
