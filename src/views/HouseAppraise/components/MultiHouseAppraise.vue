@@ -1,3 +1,11 @@
+/*
+ * @Description: linyu
+ * @Author: linyu
+ * @Date: 2019-04-25 13:48:33
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-25 13:49:01
+ */
+
 <template>
   <section class="multi-house-appraise">
     <div class="appraise-item">

@@ -1,3 +1,11 @@
+/*
+ * @Description: 房屋估价信息录入
+ * @Author: linyu
+ * @Date: 2019-04-25 13:48:33
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-25 13:49:47
+ */
+
 <template>
   <section class="appraise">
     <section class="area">
