@@ -8,7 +8,7 @@
 <template>
   <section class="my-account">
     <div class="kefu">
-      <img src="../../assets/images/icon_empty.png">
+      <img src="../../assets/images/kefu.png">
     </div>
     <section class="total">
       <p>30套房屋，累计收入</p>

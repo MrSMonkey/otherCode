@@ -43,11 +43,10 @@ import {START_MYCARD_IMG} from '@/config/config';
 import html2canvas from 'html2canvas';
 import { config } from '@vue/test-utils';
 import { ImagePreview } from 'vant';
+import api from '@/api';
 Vue.use(ImagePreview);
 
-const api = {
-  userInfo: '/partner/star/owner/get_wechat_user_info/', // 无需登录
-};
+
 // 声明引入的组件
 @Component({
   name: 'OldMyBusinessCard',
@@ -93,7 +92,7 @@ export default class OldMyBusinessCard extends CommonMixins {
     try {
       const openId = this.$store.state.global.wxOAuth.openId;
       const accessToken = this.$store.state.global.wxOAuth.accessToken;
-      const {data} = await this.axios.get(`${api.userInfo + openId}/${accessToken}`);
+      const {data} = await this.axios.get(api.getWXUserInfo  + `/${openId}/${accessToken}`);
       console.log(data, '用户微信信息');
       if (data.code === '000') {
         this.userName = data.data.nickName;

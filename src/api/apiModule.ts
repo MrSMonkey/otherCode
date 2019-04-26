@@ -154,5 +154,10 @@ export default {
   getStewards: 'partner/owner/entrust/asset/list',
 
   /*设置资产代理管家*/
-  setAgency: 'partner/owner/entrust/asset/agency'
+  setAgency: 'partner/owner/entrust/asset/agency',
+
+  /*设置资产代理管家*/
+  getWXUserInfo: '/partner/star/owner/get_wechat_user_info',
+
+
 };
