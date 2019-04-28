@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-24 16:16:56
+ * @Last Modified time: 2019-04-28 11:55:27
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -66,6 +66,7 @@ export const RENT_TYPE: confInterface.EnumInterface = {
   1: '加盟托管',
   2: '非加盟托管',
   3: '自主管理',
+  4: '优客自营',
 };
 
 /* 定义租赁类型 */

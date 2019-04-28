@@ -2,14 +2,14 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: linyu
+ * @Last Modified by: LongWei
 <<<<<<< HEAD
  * @Last Modified time: 2019-04-25 17:07:03
 =======
 <<<<<<< HEAD
  * @Last Modified time: 2019-04-24 20:51:47
 =======
- * @Last Modified time: 2019-04-23 11:36:21
+ * @Last Modified time: 2019-04-28 13:36:49
 >>>>>>> pre
 >>>>>>> 606da436e5cfa9d35039a9f46f01bfe6be742867
  */
@@ -156,8 +156,11 @@ export default {
   /*设置资产代理管家*/
   setAgency: 'partner/owner/entrust/asset/agency',
 
-  /*设置资产代理管家*/
+  /*获取微信号基本信息*/
   getWXUserInfo: '/partner/star/owner/get_wechat_user_info',
+
+  /*获取聚合房源列表*/
+  getMergeHouses: '/partner/merge/owner/merge_houses',
 
 
 };

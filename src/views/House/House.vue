@@ -2,8 +2,8 @@
  * @Description: 提交房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 14:04:34
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 13:36:58
  */
 
 <template>
@@ -69,7 +69,7 @@ export default class House extends CommonMixins {
     });
     this.isData = false;
     try {
-      const res: any = await this.axios.get(api.getHouseList);
+      const res: any = await this.axios.get(api.getMergeHouses);
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {

@@ -2,8 +2,8 @@
  * @Description: 首页表格组件
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 11:03:54
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 12:01:05
  */
 
 <template>
@@ -74,6 +74,10 @@ export default class HouseList extends CommonMixins {
    */
   private linkHouseInfoTo(house: any) {
     if (house.handleStatus !== 1) {
+      if (house.consociationType === 4) { // 优客自营的房源跳转到旧业主的我的房源页面
+        this.$router.push('/oldMyHouse?houseId=' + house.houseId);
+        return;
+      }
       this.$router.push('/myHouse?entrustId=' + house.entrustId);
     }
   }
