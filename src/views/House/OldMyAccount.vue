@@ -2,8 +2,8 @@
  * @Description: 我的账单
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-04-24 15:26:51
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 17:24:05
  */
 <template>
   <section class="my-account">
@@ -11,24 +11,31 @@
       <img src="../../assets/images/kefu.png">
     </div>
     <section class="total">
-      <p>30套房屋，累计收入</p>
-      <p>￥336500.50</p>
+      <p>{{houseCount}}套房屋，累计收入</p>
+      <p>￥{{totalAmount}}</p>
     </section>
     <section class="tit">
       <span>已收账单</span>
     </section>
-    <section class="table">
-      <div class="tr">
-        <span>账单名称</span>
-        <span>实收款</span>
-        <span>实收款日期</span>
-      </div>
-      <div class="tr" v-for="(item,index) in list" :key="index">
-        <span>{{item.name}}</span>
-        <span>¥{{item.price}}</span>
-        <span>{{item.time}}</span>
-      </div>
-    </section>
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+      <section class="table">
+        <div class="tr">
+          <span>账单名称</span>
+          <span>实收款</span>
+          <span>实收款日期</span>
+        </div>
+        <div class="tr" v-for="(item,index) in list" :key="index" @click="toLink(item.id)">
+          <span>{{item.batchTitle}}</span>
+          <span>¥{{item.amountPaid}}</span>
+          <span>{{item.lastPayTime | dateFilter}}</span>
+        </div>
+      </section>
+    </van-list>
   </section>
 </template>
 
@@ -36,19 +43,89 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import api from '@/api';
+import { List } from 'vant';
+import { State, Getter, Mutation, Action } from 'vuex-class';
+import { config } from '@vue/test-utils';
+
+const namespace: string = 'global';
+
+Vue.use(List);
 
 // 声明引入的组件
 @Component({
   name: 'OldMyAccount',
-  components: {}
+  components: {},
+  filters: {
+    dateFilter(date: string) {
+      if (date) {
+        return date.slice(0, 10);
+      }
+    },
+  },
 })
 // 类方式声明当前组件
 export default class OldMyAccount extends CommonMixins {
-  private list: any[] = [
-    { name: '第四期房东账单', price: '2000.00', time: '2019-02-01' },
-    { name: '第四期房东账单', price: '2000.00', time: '2019-02-01' },
-    { name: '第四期房东账单', price: '2000.00', time: '2019-02-01' }
-  ]; // 房间详情
+  private hosueId: string = ''; // 房源id
+  private pageIndex: number = 1;
+  private pageSize: number = 10;
+  private finished: boolean = false;
+  private loading: boolean = false;
+  private list: any[] = []; // 房间详情
+  private userPhone: string = ''; // 房东电话
+  private houseCount: number = 0; // 房东房屋数
+  private totalAmount: number = 0; // 房东实际收入
+
+  private created() {
+    if (this.$route.query.houseId) {
+      this.hosueId = String(this.$route.query.houseId);
+    }
+    console.log(this.$route.query.houseId, '11111111111');
+    this.getAccountList();
+    this.getUserHousecount();
+  }
+
+  // 获取 - 房源基本信息
+  private async getAccountList() {
+    try {
+      const res: any = await this.axios.get(`${api.geLandlordBillList}/${this.hosueId}/${this.pageIndex}/10`);
+      if (res.code === '000') {
+        const data = res.data;
+        this.list = this.list.concat(data.items);
+        if (this.pageIndex === data.pageAmount) {
+          this.finished = true;
+        }
+        this.loading = false;
+      }
+      console.log(res, '房源基本信息');
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  // 获取 - 房间数和总收入
+  private async getUserHousecount() {
+    try {
+      const res: any = await this.axios.get(`${api.getHousecount}`);
+      if (res.code === '000') {
+        const data = res.data;
+        this.totalAmount = data.totalAmount;
+        this.houseCount = data.houseCount;
+      }
+      console.log(res, '房东房源数和账单收入');
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  // 滚到底部加载更多
+  private onLoad() {
+    this.pageIndex++;
+    this.getAccountList();
+  }
+
+  private toLink(id: string) {
+    this.$router.push(`/OldAccountDetail?id=${id}`);
+  }
 }
 </script>
 

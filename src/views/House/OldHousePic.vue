@@ -2,8 +2,8 @@
  * @Description: 房源照片
  * @Author: zhegu
  * @Date: 2019-04-24 15:31:41
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-04-24 17:41:41
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 18:13:47
  */
 <template>
   <section class="house-pic">
@@ -13,15 +13,15 @@
     </section>
     <p class="title">房源照片（装配前）</p>
     <div class="list">
-      <ImagePreview :imgagesArr="imgUrls" :isFold="true"/>
+      <ImagePreview :imgagesArr="beforImg" :isFold="true"/>
     </div>
     <p class="title">房源照片（装配后）</p>
     <div class="list">
-      <ImagePreview :imgagesArr="imgUrls" :isFold="true"/>
+      <ImagePreview :imgagesArr="afterImg" :isFold="true"/>
     </div>
     <p class="title">房东合同照片</p>
-    <div class="list">
-      <ImagePreview :imgagesArr="imgUrls" :isFold="true"/>
+    <div class="list constractImg">
+      <ImagePreview :imgagesArr="contactImg" :isFold="true"/>
     </div>
   </section>
 </template>
@@ -31,6 +31,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from '@/components/ImagePreview.vue';
 import api from '@/api';
+import { State, Getter, Mutation, Action } from 'vuex-class';
+
+const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
@@ -40,13 +43,37 @@ import api from '@/api';
   }
 })
 export default class OldHousePic extends CommonMixins {
-  private imgUrls: any[] = [
-    'http://www.youtu9.com/pic/uploadimg/2019-3/201931220263134659.jpg',
-    'http://www.youtu9.com/pic/uploadimg/2019-3/201931220263134659.jpg',
-    'http://www.youtu9.com/pic/uploadimg/2019-3/201931220263134659.jpg',
-    'http://www.youtu9.com/pic/uploadimg/2019-3/201931220263134659.jpg',
-    'http://www.youtu9.com/pic/uploadimg/2019-3/201931220263134659.jpg'
-  ]; // 照片
+  @Getter('getOldHouseBaseInfo', { namespace }) private oldHouseBaseInfo: any;
+  private houseId: string = ''; // 房源id
+  private contractId: string = ''; // 合同id
+
+  private afterImg: any[] = []; // 装修后照片
+  private beforImg: any[] = []; // 装修前照片
+  private contactImg: any[] = []; // 合同照片
+
+  private created() {
+    this.houseId = this.oldHouseBaseInfo.houseId;
+    this.contractId = this.oldHouseBaseInfo.contractId;
+  }
+
+  private mounted() {
+    this.getPicture();
+  }
+
+  // 获取 - 房间图片信息
+  private async getPicture() {
+    try {
+      const res: any = await this.axios.get(`${api.getHousePictures}/${this.houseId}/${this.contractId}`);
+      if (res.code === '000') {
+        const data = res.data;
+        this.contactImg = data.contactImg;
+        this.afterImg = data.afterImg;
+        this.beforImg = data.beforImg;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
 }
 </script>
 
@@ -77,9 +104,19 @@ export default class OldHousePic extends CommonMixins {
   }
 
   .list {
-    padding: vw(15);
+    padding: vw(15) 0 vw(15) vw(15);
     background-color: #fff;
     color: $text-color;
+    .img-box {
+      width: vw(105);
+      height: vw(105);
+      margin-right: vw(15);
+    }
+    .constractImg {
+      .van-image-preview__image {
+        transform: rotate(-90deg);
+      }
+    }
   }
 
   .title {

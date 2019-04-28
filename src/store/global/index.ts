@@ -2,8 +2,8 @@
  * @Description: Global模块主入口文件
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 15:32:48
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 16:31:18
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -44,7 +44,8 @@ export const state: GlobalState = {
     openId: '',
     refresh_token: '',
     code: ''
-  }
+  },
+  oldHouseBaseInfo: {}, // 旧业主的房源基础信息
 };
 
 // getters
@@ -72,6 +73,9 @@ export const getters: GetterTree<GlobalState, RootState> = {
   },
   getWxOAuth(state: GlobalState): any {
     return state.wxOAuth;
+  },
+  getOldHouseBaseInfo(state: GlobalState): any {
+    return state.oldHouseBaseInfo;
   },
 };
 
@@ -101,6 +105,9 @@ export const mutations: MutationTree<GlobalState> = {
   },
   updateWxOAuth: (state, data: any) => {
     state.wxOAuth = data;
+  },
+  updateOldHouseBaseInfo: (state, data: any) => {
+    state.oldHouseBaseInfo = data;
   },
 };
 
