@@ -93,7 +93,6 @@
         </div>
       </van-tab>
     </van-tabs>
-    
   </section>
 </template>
 
@@ -134,7 +133,7 @@ export default class Purchase extends CommonMixins {
   private isActive: number = 0; // 默认选择第一项
   private isSlide: number = -1; // 默认不展开
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
-  private isActiveChildrenOne: number = 0; // 默认选择第一项
+  private isActiveChildrenOne: number = -1; // 无默认选择
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
@@ -200,14 +199,19 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
-        this.productData = res.data.map((item: any) => {
-          return item;
+        let firstProducts: any[] = []; // 初始化全部的服务产品
+        this.productData = res.data;
+        firstProducts = await this.traversal(res.data);
+        this.productData.unshift({
+          typeName: '全部',
+          typeId: 0,
+          products: firstProducts,
+          children: []
         });
         // console.log(this.productData)
         this.isActive = 0; // 默认值
-        this.isActiveChildrenOne = 0; // 默认值
         this.isSlide = -1; // 收起
-        this.productItemData = res.data[0].products.length > 0 ? res.data[0].products : []; // 进入页面默认第一级全部
+        this.productItemData = firstProducts; // 进入页面默认第一级全部
         // this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
@@ -217,6 +221,22 @@ export default class Purchase extends CommonMixins {
     } finally {
       this.$toast.clear();
     }
+  }
+
+  /**
+   * @description 循环递归取出全部服务产品
+   * @params arr 传入的数组
+   * @returns array
+   * @author chenmo
+   */
+  private traversal(arr: any[]) {
+    const product: any[] = [];
+    for (const item of arr) {
+     if (item.products.length > 0) {
+      product.unshift(...item.products);
+     }
+    }
+    return product;
   }
 
   /**
@@ -261,19 +281,25 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private checkActive(index: any, item: any) {
-    this.isTreeMeumActive = -1;
-    this.productThreeMeum = [];
-    if (index === this.isSlide) {
-      this.isSlide = -1; // 再次点击收起
-      this.productItemData = item.products.length > 0 ? item.products : []; // 当前选中的产品
-      return false;
-    } else {
+    this.isTreeMeumActive = -1; // 重置
+    this.productThreeMeum = []; // 重置
+    this.isActiveChildrenOne = -1; // 重置
+    if (index === 0) {
+      // 全部
       this.isSlide = index; // 展开
       this.isActive = index;
-      this.isActiveChildrenOne = 0; // 默认第一个
-      this.productItemData = item.children && item.children.length > 0 ? item.children[0].products : []; // 当前选中的产品
-      this.productThreeMeum = item.children && item.children.length > 0 ? ((item.children[0].children &&  item.children[0].children.length > 0) ? item.children[0].children : []) : [];
-      // this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
+      this.productItemData = item.products;
+    } else {
+      if (index === this.isSlide) {
+        this.isSlide = -1; // 再次点击收起
+        this.productItemData = item.products.length > 0 ? item.products : []; // 当前选中的产品
+        return false;
+      } else {
+        this.isSlide = index; // 展开
+        this.isActive = index;
+        this.productItemData = item.products && item.products.length > 0 ? item.products : []; // 当前选中的产品
+        // this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
+      }
     }
   }
 

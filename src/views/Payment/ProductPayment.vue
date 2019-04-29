@@ -60,7 +60,7 @@
           placeholder="请输入房间数量"
           type="text"
           @change="changeRooms"
-          v-if="data.productUnitId === 1 && data.housesUnitId === 1"
+          v-if="data.productUnitId === '1' && data.housesUnitId === '1'"
         >
         <!-- <span slot="button" >㎡</span> -->
         </van-field>
@@ -74,7 +74,7 @@
           placeholder="请输入房屋面积"
           type="text"
           @change="changeAcreage"
-          v-if="data.productUnitId === 2"
+          v-if="data.productUnitId === '2'"
         >
         <span slot="button" >㎡</span>
         </van-field>
@@ -87,7 +87,7 @@
           label="服务时长"
           placeholder="请输入服务时长（小时）"
           type="text"
-          v-if="data.productUnitId === 9"
+          v-if="data.productUnitId === '9'"
         >
         <!-- <span slot="button" >小时</span> -->
         </van-field>
@@ -100,7 +100,7 @@
           label="购买数量"
           placeholder="请输入购买数量"
           type="text"
-          v-if="data.productUnitId === 7 || data.productUnitId === 8"
+          v-if="data.productUnitId === '7' || data.productUnitId === '8'"
         >
         <!-- <span slot="button" >小时</span> -->
         </van-field>
@@ -133,7 +133,14 @@
         :isActive="!isActive"
       >
         <template slot="confirm">
-          <span>购买应付<span class="plot-price">¥{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2)}}</span></span>
+          <span>购买应付
+            <!-- 带看 -->
+            <span class="plot-price" v-if="data.typeId === 4">¥0.00</span>
+            <span class="plot-price" v-else>
+              <span v-if ="data.productUnitId === '1' && data.housesUnitId === '0'"> ¥{{parseFlost(data.price).tofixed(2)}}</span>
+              <span v-else>¥{{productPrice}}</span>
+            </span>
+          </span>
         </template>
       </confirmBtn>
     </div>
@@ -186,13 +193,15 @@ export default class ProductPayment extends CommonMixins {
   private rooms: string = ''; // 房间数
   private serviceHour: string = ''; // 服务时长
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
+  private productPrice: string = '0.00'; // 服务产品购买价格
+  private isAreaErr: boolean = false;
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('payment', { namespace }) private payment: any;
 
   // computed
   get isActive(): boolean {
-    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId;
+    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId || !this.isAreaErr;
   }
 
   // Watch
@@ -202,6 +211,16 @@ export default class ProductPayment extends CommonMixins {
       this.isphoneErr = true;
     } else {
       this.isphoneErr = false;
+      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
+    }
+  }
+
+  @Watch('area')
+  private handlerArea(newVal: string) {
+    if (newVal && /^-?\d+\.?\d{0,2}$/.test(newVal)) {
+      this.isAreaErr = true;
+    } else {
+      this.isAreaErr = false;
       // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
     }
   }
@@ -401,6 +420,22 @@ export default class ProductPayment extends CommonMixins {
   }
 
   /**
+   * @description 计算产品价格
+   * @params 参数
+   * @returns void
+   * @author chenmo
+   */
+  private async countPrice(params: any ) {
+    try {
+      const res: any = await this.axios.post(api.countPrice, params);
+      if (res && res.code === '000') {
+        this.productPrice = res.data;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+  /**
    * @description 房间数输入
    * @returns void
    * @author chenmo
@@ -410,11 +445,20 @@ export default class ProductPayment extends CommonMixins {
       this.$toast('请输入房间数量');
       return false;
     }
+    if (this.rooms === '0') {
+      this.$toast('输入房间数量不能为0');
+      return false;
+    }
 
     if (!(/^\d+$/.test(this.rooms))) {
       this.$toast('房间数只能是正整数');
       return false;
     }
+    const params: any = {
+      productId: this.productId,
+      roomQuantity: this.rooms
+    };
+    this.countPrice(params);
   }
 
   /**
@@ -428,10 +472,19 @@ export default class ProductPayment extends CommonMixins {
       return false;
     }
 
+    if (this.area === '0') {
+      this.$toast('输入面积不能为0');
+      return false;
+    }
     if (!(/^-?\d+\.?\d{0,2}$/.test(this.area))) {
       this.$toast('面积保留两位小数');
       return false;
     }
+    const params: any = {
+      productId: this.productId,
+      acreage: this.area
+    };
+    this.countPrice(params);
   }
 }
 </script>

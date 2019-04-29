@@ -3,15 +3,6 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: LongWei
-<<<<<<< HEAD
- * @Last Modified time: 2019-04-25 17:07:03
-=======
-<<<<<<< HEAD
- * @Last Modified time: 2019-04-24 20:51:47
-=======
- * @Last Modified time: 2019-04-28 17:59:18
->>>>>>> pre
->>>>>>> 606da436e5cfa9d35039a9f46f01bfe6be742867
  */
 
 export default {
@@ -79,7 +70,7 @@ export default {
   pushEntrust: '/partner/owner/entrust',
 
   /*获取服务产品列表*/
-  getProductList: '/partner/owner/product/list',
+  getProductList: '/partner/owner/product/list2',
 
   /*获取服务产品订单列表*/
   getProductOrderList: '/partner/owner/product/order/list',
@@ -137,6 +128,9 @@ export default {
 
   /*退款订单详情*/
   getRefundDetail: '/partner/owner/product/refund/detail',
+
+  /*服务产品--计算产品价格*/
+  countPrice: '/partner/owner/product/amount',
 
   /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
   getWechatConfig: '/partner/star/owner/get_config',
