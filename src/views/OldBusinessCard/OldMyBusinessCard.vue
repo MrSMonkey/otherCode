@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-25 15:05:23
+ * @Last Modified time: 2019-04-29 11:19:44
  */
 
 <template>
@@ -30,7 +30,7 @@
         <p>我为星空业主代言</p>
       </div>
       <div class="shot-avatar">
-        <img crossorigin="anonymous" :src="userLogoUrl" id="userLogo"   alt="user avatar" />
+        <img crossorigin="anonymous"  id="userLogo"   alt="user avatar" />
       </div>
     </div>
   </section>
@@ -44,7 +44,10 @@ import html2canvas from 'html2canvas';
 import { config } from '@vue/test-utils';
 import { ImagePreview } from 'vant';
 import api from '@/api';
+import { State, Getter, Mutation, Action } from 'vuex-class';
 Vue.use(ImagePreview);
+
+const namespace: string = 'global';
 
 
 // 声明引入的组件
@@ -56,58 +59,54 @@ export default class OldMyBusinessCard extends CommonMixins {
   public $refs: {
     [x: string]: any
   };
+  @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
 
   private bodyLoading: boolean = true;
   private myCardImg: any[] = START_MYCARD_IMG;
   private myCardImgPre: any[] = [];
   private index: number = 1;
   private show: boolean = false;
-  private userName: string = '哈哈哈哈';
-  private userLogoUrl: string = require('@/assets/images/boy.png');
+  private userName: string = '哈哈哈哈111';
+  // private userLogoUrl: string = require('@/assets/images/boy.png');
+  private userLogoUrl: string = '';
 
   private created() {
-    // 111
-    // this.getImage(this.userLogoUrl, 'userLogo');
-    this.getUserInfo();
-    // console.log(this.$store.state);
+    // 222
   }
 
   private mounted() {
-    this.getCanvas();
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
+    this.getUserInfo();
+    // this.$toast.loading({
+    //   duration: 0,
+    //   mask: true,
+    //   loadingType: 'spinner',
+    //   message: '加载中...'
+    // });
   }
 
-  // 转换 - canvas
-  private async getCanvas() {
-    await this.getImage(this.userLogoUrl, 'userLogo');
-  }
-
-   // 获取 - 微信账号基本信息
+  // 获取 - 微信账号基本信息
   private async getUserInfo() {
+    this.userName = '222222233';
     try {
-      const openId = this.$store.state.global.wxOAuth.openId;
-      const accessToken = this.$store.state.global.wxOAuth.accessToken;
-      const {data} = await this.axios.get(api.getWXUserInfo  + `/${openId}/${accessToken}`);
-      console.log(data, '用户微信信息');
-      if (data.code === '000') {
-        this.userName = data.data.nickName;
-        this.userLogoUrl = data.data.headImgUrl;
+      const openId = this.wxOAuth.openId || 'oI4Vdw5WOPIPSLMOrgvuLmnw61dM';
+      const accessToken = this.wxOAuth.accessToken || '21_nzg6OHk2pP0tsWvfeezLcUblVafEKOf3M5528_YDn5PKFt7Pr4sZNKk6fkokiaMqDpFPKZwaytpr9mHGM80U0w';
+      this.userName = '2222222331';
+      const res: any = await this.axios.get(`${api.getWXUserInfo}/${openId}/${accessToken}`);
+      this.userName = '2222222334';
+      if (res.code === '000') {
+        const data = res.data;
+        console.log(data);
+        this.userName = data.nickName || '1111';
+        this.userLogoUrl = data.headImgUrl || 'http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epfpR8zqicEhU4KiaXiaLciaGo7icaMezib33C6iaJxWwVFHE2Zl0OJnMlKPFibZRSRY1kYY6Tthj38ObLnjQ/132';
+        // this.$nextTick(() => {
+        this.getImage(this.userLogoUrl, 'userLogo');
+        // this.getCanvasDom();
+        // });
       }
     } catch (err) {
+      this.userName = '2222222332';
       throw new Error(err || 'Unknow Error!');
     }
-  }
-
-  private  getCanvasDom() {
-    html2canvas(document.querySelector('#card1'), { useCORS: true }).then(async (canvas: any) => {
-     await this.onTransformEnd(canvas);
-     this.$toast.clear();
-    });
   }
 
   // 转成 - blob文件
@@ -120,11 +119,19 @@ export default class OldMyBusinessCard extends CommonMixins {
         if (this.status === 200) {
           const imgDom: any = document.getElementById(imgId);
           imgDom.src =  URL.createObjectURL(this.response);
-          console.log(imgDom.src, '222222');
           that.getCanvasDom();
         }
     };
     xhr.send();
+  }
+
+  private  getCanvasDom() {
+    const imgDom: any = document.getElementById('userLogo');
+    imgDom.src =  this.userLogoUrl;
+    html2canvas(document.querySelector('#card1'), { useCORS: true, allowTaint: false  }).then((canvas: any) => {
+      this.onTransformEnd(canvas);
+      this.$toast.clear();
+    });
   }
 
   // 图片- 预览

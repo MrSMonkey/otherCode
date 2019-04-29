@@ -3,15 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
-<<<<<<< HEAD
- * @Last Modified time: 2019-04-25 17:07:03
-=======
-<<<<<<< HEAD
- * @Last Modified time: 2019-04-24 20:51:47
-=======
- * @Last Modified time: 2019-04-29 13:56:51
->>>>>>> pre
->>>>>>> 606da436e5cfa9d35039a9f46f01bfe6be742867
+ * @Last Modified time: 2019-04-29 14:17:01
  */
 
 export default {
@@ -170,6 +162,9 @@ export default {
 
   /*获取房源账单列表（旧业主）*/
   geLandlordBillList: '/partner/star/owner/get_landlord_bill_paged_result',
+
+  /*获取房东账单列表（旧业主）*/
+  getLandlordList: '/partner/star/owner/get_my_bill',
 
   /*获取房源账单详情（旧业主）*/
   getAccountDetail: '/partner/star/owner/get_landlord_bill',
