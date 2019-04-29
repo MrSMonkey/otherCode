@@ -113,6 +113,7 @@ router = new Router({
         // if (!token) {
         //   next('/appraiseHouseInfo');
         // }
+        // alert('111222');
         next();
       }
     },

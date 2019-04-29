@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 14:17:01
+ * @Last Modified time: 2019-04-29 16:02:58
  */
 
 export default {
@@ -176,10 +176,10 @@ export default {
   getHousePictures: '/partner/star/owner/get_landlord_contract_img',
 
   /*单套房屋估价结果*/
-  getSingleHouseValuation: '/facing/pricing/house/valuation_name',
+  getSingleHouseValuation: 'price/facing/pricing/house/valuation_name',
 
   /*根据关键词获取房屋估价的小区*/
-  getAppraiseCommunityList: '/partner/facing/pricing/community',
+  getAppraiseCommunityList: 'price/facing/pricing/community',
 
 
 };

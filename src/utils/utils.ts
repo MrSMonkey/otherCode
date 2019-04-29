@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 15:33:40
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-29 15:52:34
  */
 import { APP_TYPE, APP_DEVICE } from '@/config/config';
 

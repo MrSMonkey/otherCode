@@ -3,14 +3,14 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-25 13:49:47
+ * @Last Modified time: 2019-04-29 17:58:04
  */
 
 <template>
   <section class="appraise">
     <section class="area">
-      <CityInput @city-confirm="cityConfirm" :city-name="form.cityName" :star="true" :city-list="cityList"></CityInput>
-      <CommunityInput :community-name="form.communityName" @to-community="toCommunity">小区名称</CommunityInput>
+      <CityInput @city-confirm="cityConfirm" :city-name="cityName" :star="true" :city-list="cityList"></CityInput>
+      <CommunityInput :community-name="communityName" @to-community="toCommunity">小区名称</CommunityInput>
       <BuildAcreageInput @change="buildAcreageChange"></BuildAcreageInput>
       <HouseTypeInput
         :house-type-value="houseTypeValue"
@@ -23,14 +23,12 @@
           <van-col span="6"><van-field
             v-model="floorNum"
             placeholder="第几层"
-            type="number"
             input-align="center"
           /></van-col>
           <van-col span="6" class="house-info">
             <van-field
               v-model="floorTotality"
               placeholder="总楼层"
-              type="number"
               input-align="center"
             />
           </van-col>
@@ -41,9 +39,9 @@
       <div class="submit-btn-panel">
           <van-button
           size="large" 
-          class="submit-btn"
+          :class="['submit-btn', isActive ? 'disabled-btn' : '']"
           @click="submitData"
-          :isActive="isActive"
+          :disabled="isActive"
         >查看评估结果</van-button>
       </div>
     </section>
@@ -87,38 +85,34 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private towardShow: boolean = false;
   private loading: boolean = false;
   private houseTypeValue: string = ''; // 户型选择结果
-  private floorNum: number = NaN;
-  private floorTotality: number = NaN;
+  private floorNum: string = '';  // 楼层
+  private hallNum: string = ''; // 厅数
+  private roomNum: string = ''; // 房间数
+  private toiletNum: string = ''; // 房间数
+  private communityName: string = '123';  // 小区名称
+  private floorTotality: string = '';  // 总楼层
+  private cityId: string = '510100';
+  private cityName: string = '成都';
   private cityList: object[] = [
       {cityId: '510100', cityName: '成都'},
       {cityId: '', cityName: '敬请期待', disabled: true}
   ];
   private form: any = {
     buildAcreage: '', // 房屋建筑面积@
-    cityId: '510100', // 城市id
-    communityName: '', // 小区名称
     communityId: '', // 小区id
-    cityName: '成都', // 城市
-    floorNum: '',  // 楼层
-    floorTotality: '', // 总楼层
-    hallNum: '', // 厅数
-    roomNum: '', // 房间数
-    toiletNum: '', // 卫生间数
   };
   // computed : 是否激活confirmBtn
   get isActive(): boolean {
-    // console.log(this.form.buildAcreage, Boolean(this.form.buildAcreage));
-    // console.log(this.form.floorNum, Boolean(this.form.floorNum));
-    // console.log(this.form.floorTotality, Boolean(this.form.floorTotality));
-    // console.log(this.form.hallNum, Boolean(this.form.hallNum));
-    // console.log(this.form.roomNum, Boolean(this.form.roomNum===''));
-    // console.log(this.form.toiletNum, Boolean(this.form.toiletNum));
-    return Boolean(this.form.buildAcreage)
-      && Boolean(this.form.floorNum)
-      && Boolean(this.form.floorTotality)
-      && (this.form.hallNum === 0 || Boolean(this.form.hallNum))
-      && (this.form.roomNum === 0 || Boolean(this.form.roomNum))
-      && (this.form.toiletNum === 0 || Boolean(this.form.toiletNum));
+    const result: boolean =  Boolean(this.form.buildAcreage)
+      && Boolean(this.communityName)
+      && Boolean(this.floorNum)
+      && Boolean(this.floorTotality)
+      && Boolean(this.houseTypeValue);
+    return !result;
+  }
+  @Watch('floorNum')
+  private onFloorNumChange (val: string, oldVal: string) {
+    return 1;
   }
   // computed : 校验楼层数和总楼层
   get isFloorErr(): boolean {
@@ -133,7 +127,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
     // 获取小区信息
     if (this.$route.params.communityName || this.$route.params.communityId) {
       this.form.communityId = this.$route.params.communityId;
-      this.form.communityName = this.$route.params.communityName;
+      this.communityName = this.$route.params.communityName;
     }
   }
 
@@ -145,8 +139,8 @@ export default class AppraiseHouseInfo extends CommonMixins {
    * @author linyu
    */
   private cityConfirm(item: any, index: number) {
-    this.form.cityName = item.cityName;
-    this.form.cityId = item.id;
+    this.cityName = item.cityName;
+    this.cityId = item.id;
   }
 
   /**
@@ -190,11 +184,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
    * @author linyu
    */
   private houseTypeConfirm(houseTypeResult: any, items: string[], indexs: number[]) {
-    for (const x in houseTypeResult) {
-      if (houseTypeResult.hasOwnProperty(x)) {
-        this.form[x] = houseTypeResult[x];
-      }
-    }
+    this.hallNum = houseTypeResult.hallNum;
+    this.roomNum = houseTypeResult.roomNum;
+    this.toiletNum = houseTypeResult.toiletNum;
     this.houseTypeValue = items.join('');
   }
 
@@ -205,37 +197,29 @@ export default class AppraiseHouseInfo extends CommonMixins {
    */
   private async submitData() {
     const data = this.form;
-    if (this.form.toiletNum === 0 && this.form.hallNum === 0 && this.form.roomNum === 0) {
+    console.log(data);
+    if (Number(this.toiletNum) === 0 && Number(this.hallNum) === 0 && Number(this.roomNum) === 0) {
       this.$toast('户型选择不正确');
       return false;
     }
-    if (this.isFloorErr) {
-        this.$toast(`楼层数不能大于总楼层数`);
-        return false;
+    if (Math.abs(Number(this.floorNum)) >= Math.abs(Number(this.floorTotality))) {
+      this.$toast('楼层输入有误');
+      return false;
     }
-    if (this.form.communityId === '') {
-      this.$dialog.confirm({
-        confirmButtonText: '保存',
-        cancelButtonText: '提交',
-        className: 'dialogTips',
-        message: `提交成功！资产管家会尽快与您联系，您可以在【我的房源】中选择资产管家`
-      }).then(() => {
-        // on confirm
-        this.$router.push(`/house`); // 跳转到房源列表
-      }).catch(() => {
-        // on cancel 取消
-        window.location.reload(); // 取消刷新页面
-      });
-    }
+    // if (this.isFloorErr) {
+    //   this.$toast(`楼层数不能大于总楼层数`);
+    //   return false;
+    // }
     this.loading = true;
     try {
-      const res: any = await this.axios.put(api.getHouseInfo, data);
+      const res: any = await this.axios.post(api.getSingleHouseValuation, data);
       if (res && res.code === '000') {
-        setTimeout(() => {
-          window.location.href = '/#/houseApppraise';
-        }, 2000);
+        this.$router.push({
+          name: 'houseAppraise',
+          params: res.data || {}
+        });
       } else {
-        this.$toast(res.msg);
+        this.$toast(res.msg || '房屋估价获取失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -323,4 +307,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
         border-radius 5px
         background $main-color
         color #ffffff
+      .disabled-btn
+        opacity 1
+        background $disabled-color  
 </style>

@@ -14,6 +14,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import MultiHouseAppraise from '@/views/HouseAppraise/components/MultiHouseAppraise.vue';
 import SingleHouseAppraise from '@/views/HouseAppraise/components/SingleHouseAppraise.vue';
 import AppraiseLoading from '@/views/HouseAppraise/components/AppraiseLoading.vue';
+import { debounce } from '@/utils/utils.ts';
 import api from '@/api';
 
 // 声明引入的组件
@@ -28,10 +29,16 @@ import api from '@/api';
 
 // 类方式声明当前组件
 export default class HouseAppraise extends CommonMixins {
-  private loading: boolean = true; // 请求接口过程中为true
+  private loading: boolean = false; // 请求接口过程中为true
   private appraiseResult: any = {}; // 估价结果
   private async mounted() {
-    this.getHouseValuation();
+    console.log(this.$route);
+    if (this.$route.name === 'houseAppraise') {
+      this.appraiseResult = this.$route.params;
+      console.log(this.$route.params);
+    } else {
+      this.getHouseValuation();
+    }
   }
   /**
    * @description 刷新按钮触发事件
@@ -45,14 +52,24 @@ export default class HouseAppraise extends CommonMixins {
   private async getHouseValuation() {
     try {
       this.loading = true;
-      const res: any = await this.axios.get(api.getSingleHouseValuation);
+      let houseLength: number = 0; // 用户房源数量
+      let res: any = await this.axios.get(api.getMergeHouses);
       if (res && res.code === '000') {
-        this.appraiseResult = res;
-        this.loading = false;
-        console.log(res);
+        houseLength = res.data.length || 0;
       } else {
-        this.loading = true;
+        this.$toast(`获取房源失败`);
       }
+      if (!houseLength) {
+        return;
+      }
+      res = await this.axios.get(api.getSingleHouseValuation);
+      // if (res && res.code === '000') {
+      //   this.appraiseResult = res;
+      //   this.loading = false;
+      //   console.log(res);
+      // } else {
+      //   this.loading = true;
+      // }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
