@@ -7,8 +7,7 @@
  */
  <template>
   <section class="customer-main" ref="customerMain" id="customerMain">
-    <!-- <script type="text/javascript" src="https://dl.ntalker.com/js/xn6/ntkfstat.js?siteid=kf_9452" charset="utf-8"></script> -->
-    <!-- 我的客服 -->
+    {{window.NTKF}}
   </section>
 </template>
 
@@ -42,6 +41,15 @@ export default class CustomerService extends CommonMixins {
   private uid: string = '';
   private siteId: string = '';
   private settingId: string = '';
+  private NTKF: any = {};
+  private str: string = '11111111222';
+  @Watch('window.NTKF')
+  private search() {
+    if (!window.NTKF) {
+      return;
+    }
+    this.getUserInfo();
+  }
 
   private  created() {
     if (!window.NTKF) {
@@ -53,11 +61,12 @@ export default class CustomerService extends CommonMixins {
   }
 
   // 加载 - 第三方插件
-  private async loadScript() {
+  private loadScript() {
     const script: any = document.createElement('script');
     const head =  document.getElementsByTagName('head')[0];
-    const me = this;
     script.src = this.url;
+    script.type = 'text/javascript';
+    script.charset = 'utf-8';
     head.insertBefore(script, head.lastChild);
   }
 
@@ -99,8 +108,11 @@ export default class CustomerService extends CommonMixins {
           userlevel: '0',    // 网站自定义会员级别，0-N，可根据选择判断，取值显示到小能客户端上
           erpparam: '',       // erpparam为erp功能的扩展字段，可选，购买erp功能后用于erp功能集成
         };
+        this.str = '2222222222222';
         window.NTKF_PARAM = NTKF_PARAM;
+        
         window.NTKF.im_openInPageChat(this.settingId);
+        this.str = '33333333333';
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

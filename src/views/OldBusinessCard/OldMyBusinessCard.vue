@@ -66,17 +66,13 @@ export default class OldMyBusinessCard extends CommonMixins {
   private myCardImgPre: any[] = [];
   private index: number = 1;
   private show: boolean = false;
-  private userName: string = '哈哈哈哈111';
-  // private userLogoUrl: string = require('@/assets/images/boy.png');
+  private userName: string = '';
   private userLogoUrl: string = '';
   @Watch('userLogoUrl')
   private search(): void {
-    console.log('2222222222222222222222222222');
-    this.getCanvasDom();
-  }
-
-  private created() {
-    // 222
+    if (this.userLogoUrl) {
+      this.getCanvasDom();
+    }
   }
 
   private  mounted() {
@@ -92,60 +88,26 @@ export default class OldMyBusinessCard extends CommonMixins {
 
   // 获取 - 微信账号基本信息
   private async getUserInfo() {
-    this.userName = '222222233';
     try {
       const openId = this.wxOAuth.openId || 'oI4Vdw5WOPIPSLMOrgvuLmnw61dM';
       const accessToken = this.wxOAuth.accessToken || '21_nzg6OHk2pP0tsWvfeezLcUblVafEKOf3M5528_YDn5PKFt7Pr4sZNKk6fkokiaMqDpFPKZwaytpr9mHGM80U0w';
-      this.userName = '2222222331';
       const res: any = await this.axios.get(`${api.getWXUserInfo}/${openId}/${accessToken}`);
-      this.userName = '2222222334';
       if (res.code === '000') {
         const data = res.data;
         console.log(data);
-        this.userName = data.nickName || '1111';
-        this.userLogoUrl = data.headImgUrl || 'http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epfpR8zqicEhU4KiaXiaLciaGo7icaMezib33C6iaJxWwVFHE2Zl0OJnMlKPFibZRSRY1kYY6Tthj38ObLnjQ/132';
-        // this.$nextTick(() => {
-        this.getImage(this.userLogoUrl, 'userLogo');
-        // this.getCanvasDom();
-        // });
-        // this.downImage(this.userLogoUrl);
+        this.userName = data.nickName;
+        this.userLogoUrl = data.headImgUrl;
+        this.$nextTick(() => {
+          this.getCanvasDom();
+        });
       }
     } catch (err) {
-      this.userName = '2222222332';
       throw new Error(err || 'Unknow Error!');
     }
   }
 
-
-  private downImage(url: string) {
-    const Img: any = document.getElementById('userLogo');
-    Img.crossOrigin = 'anonymous';
-    Img.src = url;
-    this.getCanvasDom();
-    // Img.onload = () => {
-    //   this.$toast.clear();
-    //   this.getCanvasDom();
-    // };
-  }
-  // 转成 - blob文件
-  private async getImage(url: string, imgId: string) {
-    const that = this;
-    const xhr = new XMLHttpRequest();
-    xhr.open('get', url, true);
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
-        if (this.status === 200) {
-          // const imgDom: any = document.getElementById(imgId);
-          // imgDom.src =  URL.createObjectURL(this.response);
-          that.userLogoUrl = URL.createObjectURL(this.response);
-        }
-    };
-    xhr.send();
-  }
-
+  // 转换 - canvas
   private  getCanvasDom() {
-    // const imgDom: any = document.getElementById('userLogo');
-    // imgDom.src =  this.userLogoUrl;
     html2canvas(document.getElementById('card1'), { useCORS: true, allowTaint: false  }).then((canvas: any) => {
       this.onTransformEnd(canvas);
       this.$toast.clear();
