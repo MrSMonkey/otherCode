@@ -186,5 +186,8 @@ export default {
   /*获取房间图片信息（旧业主）*/
   getHousePictures: '/partner/star/owner/get_landlord_contract_img',
 
+  /*获取星空业主号效能客服SDK（旧业主）*/
+  getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
+
 
 };

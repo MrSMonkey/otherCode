@@ -59,6 +59,7 @@ const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */
 const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
 const OldMyQRecode = () => import(/* webpackChunkName: 'oldMyQRecode' */ '@/views/OldBusinessCard/OldMyQRecode.vue');
 const OldMyBusinessCard = () => import(/* webpackChunkName: 'oldMyBusinessCard' */ '@/views/OldBusinessCard/OldMyBusinessCard.vue');
+const CustomerService = () => import(/* webpackChunkName: 'customerService' */ '@/views/Customer/CustomerService.vue');
 
 // 旧公众号 我的房源
 const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
@@ -131,6 +132,7 @@ router = new Router({
     { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     { path: '/oldMyQRecode', name: 'oldMyQRecode', meta: {title: '我的二维码', requireAuth: false}, component: OldMyQRecode},
     { path: '/oldMyBusinessCard', name: 'oldMyBusinessCard', meta: {title: '我的名片', requireAuth: false}, component: OldMyBusinessCard},
+    { path: '/customerService', name: 'customerService', meta: {title: '客服', requireAuth: false}, component: CustomerService},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',

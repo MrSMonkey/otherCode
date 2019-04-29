@@ -30,14 +30,14 @@
         <p>我为星空业主代言</p>
       </div>
       <div class="shot-avatar">
-        <img crossorigin="anonymous"  id="userLogo"   alt="user avatar" />
+        <img crossOrigin="anonymous" :src="userLogoUrl" id="userLogo"   alt="user avatar" />
       </div>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import {START_MYCARD_IMG} from '@/config/config';
 import html2canvas from 'html2canvas';
@@ -69,19 +69,25 @@ export default class OldMyBusinessCard extends CommonMixins {
   private userName: string = '哈哈哈哈111';
   // private userLogoUrl: string = require('@/assets/images/boy.png');
   private userLogoUrl: string = '';
+  @Watch('userLogoUrl')
+  private search(): void {
+    console.log('2222222222222222222222222222');
+    this.getCanvasDom();
+  }
 
   private created() {
     // 222
   }
 
-  private mounted() {
+  private  mounted() {
     this.getUserInfo();
-    // this.$toast.loading({
-    //   duration: 0,
-    //   mask: true,
-    //   loadingType: 'spinner',
-    //   message: '加载中...'
-    // });
+    // this.getCanvasDom();
+    this.$toast.loading({
+      duration: 0,
+      mask: true,
+      loadingType: 'spinner',
+      message: '加载中...'
+    });
   }
 
   // 获取 - 微信账号基本信息
@@ -102,6 +108,7 @@ export default class OldMyBusinessCard extends CommonMixins {
         this.getImage(this.userLogoUrl, 'userLogo');
         // this.getCanvasDom();
         // });
+        // this.downImage(this.userLogoUrl);
       }
     } catch (err) {
       this.userName = '2222222332';
@@ -109,26 +116,37 @@ export default class OldMyBusinessCard extends CommonMixins {
     }
   }
 
+
+  private downImage(url: string) {
+    const Img: any = document.getElementById('userLogo');
+    Img.crossOrigin = 'anonymous';
+    Img.src = url;
+    this.getCanvasDom();
+    // Img.onload = () => {
+    //   this.$toast.clear();
+    //   this.getCanvasDom();
+    // };
+  }
   // 转成 - blob文件
-  private getImage(url: string, imgId: string) {
+  private async getImage(url: string, imgId: string) {
     const that = this;
     const xhr = new XMLHttpRequest();
     xhr.open('get', url, true);
     xhr.responseType = 'blob';
     xhr.onload = function() {
         if (this.status === 200) {
-          const imgDom: any = document.getElementById(imgId);
-          imgDom.src =  URL.createObjectURL(this.response);
-          that.getCanvasDom();
+          // const imgDom: any = document.getElementById(imgId);
+          // imgDom.src =  URL.createObjectURL(this.response);
+          that.userLogoUrl = URL.createObjectURL(this.response);
         }
     };
     xhr.send();
   }
 
   private  getCanvasDom() {
-    const imgDom: any = document.getElementById('userLogo');
-    imgDom.src =  this.userLogoUrl;
-    html2canvas(document.querySelector('#card1'), { useCORS: true, allowTaint: false  }).then((canvas: any) => {
+    // const imgDom: any = document.getElementById('userLogo');
+    // imgDom.src =  this.userLogoUrl;
+    html2canvas(document.getElementById('card1'), { useCORS: true, allowTaint: false  }).then((canvas: any) => {
       this.onTransformEnd(canvas);
       this.$toast.clear();
     });
