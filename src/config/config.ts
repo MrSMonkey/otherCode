@@ -137,30 +137,141 @@ export const STEP: confInterface.StepInterface = [
   }
 ];
 
-/* 表格 */
-export const TABLES: confInterface.TablesInterface = [
+/* 加盟托管表格 */
+export const JMTG_TABLES: any = [
   {
-    title: '租前及租中费用承担表',
     data: [
-      { name: '装修费用', owner: false, uoko: true },
-      { name: '改造费', owner: false, uoko: true },
-      { name: '家电采购费', owner: false, uoko: true },
-      { name: '软装费', owner: false, uoko: true },
-      { name: '招租带看签约服务', owner: false, uoko: true }
+      [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
+      ['租金保底', '租金保底']
     ]
   },
   {
-    title: '租后费用承担表',
+    title: '加盟优客逸家，出租快，租金高',
     data: [
-      { name: '物业费', owner: false, uoko: true },
-      { name: '水电气', owner: false, uoko: true },
-      { name: '保洁', owner: false, uoko: true },
-      { name: '非甲方原因维修', owner: false, uoko: true },
-      { name: '租客服务', owner: false, uoko: true },
-      { name: '招租退租', owner: false, uoko: true }
+      ['装修标准', {text: '优客逸家提供租金溢价最高的装修方案及装修标准', rowspan: 2}],
+      ['改造标准'],
+      ['家电配置标准'],
+      ['软装标准']
+    ],
+    extra: true
+  },
+  {
+    title: '托管给星空，业主省心，更放心',
+    data: [
+      ['房屋写真', {text: '全部托管，业主很省心', rowspan: 9}],
+      ['租客审核'],
+      ['带看签约'],
+      ['费用催缴'],
+      ['专人管家'],
+      ['定期保洁'],
+      ['24小时维修'],
+      ['租后服务'],
+      ['退租服务']
     ]
   }
 ];
+
+/* 租务托管表格 */
+export const ZWTG_TABLES: any = [
+  {
+    data: [
+      [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
+      ['租金保底', '租金保底']
+    ]
+  },
+  {
+    title: '什么样的装修能出租最快？租金最高？',
+    data: [
+      ['改造费', {text: '优客逸家提供租金溢价最高的装修方案及装修标准', rowspan: 2}],
+      ['家电增配费']
+    ],
+    extra: true
+  },
+  {
+    title: '托管给星空，业主省心，更放心',
+    data: [
+      ['房屋写真', {text: '全部托管，业主很省心', rowspan: 9}],
+      ['租客审核'],
+      ['带看签约'],
+      ['费用催缴'],
+      ['专人管家'],
+      ['定期保洁'],
+      ['24小时维修'],
+      ['租后服务'],
+      ['退租服务']
+    ]
+  }
+];
+
+/* 自主管理表格 */
+export const ZZGL_TABLES: any = [
+  {
+    title: '平台保障业主权益',
+    data: [
+      ['一件招租', {text: '在线一键采购，业主更安心', rowspan: 11}],
+      ['一键带看'],
+      ['一键拍照'],
+      ['一键装修'],
+      ['一键装配'],
+      ['一键保洁'],
+      ['一键维修'],
+      ['一键跑腿'],
+      ['一键搬家'],
+      ['一键贷款'],
+      ['一键采购智能门锁']
+    ]
+  }
+];
+
+/* 加盟托管服务介绍 */
+export const JMTG_DESC: any = {
+  title: '加盟托管',
+  titleDesc: '加盟优客逸家 托管全部租务',
+  questions: [
+    {
+      question: 'Q：什么房屋适合加盟托管？',
+      answer: 'A：毛坯房、简单装修房'
+    },
+    {
+      question: 'Q：什么业主适合加盟托管？',
+      answer: 'A：房源自持几年后售卖增值，平常无暇打理，但希望有租金收入'
+    }
+  ],
+  linkText: '加盟品牌：优客逸家'
+};
+
+/* 租务托管服务介绍 */
+export const ZWTG_DESC: any = {
+  title: '租务托管',
+  titleDesc: '保持房屋原貌 托管全服务',
+  questions: [
+    {
+      question: 'Q：什么房屋适合加盟托管？',
+      answer: 'A：已装修房'
+    },
+    {
+      question: 'Q：什么业主适合租务托管？',
+      answer: 'A：已自费装修房屋，但无暇打理繁杂租务'
+    }
+  ],
+  linkText: '托管品牌：星空好房'
+};
+
+/* 自主管理服务介绍 */
+export const ZZGL_DESC: any = {
+  title: '自主管理',
+  titleDesc: '业主自己当房东 按需轻松采集服务',
+  questions: [
+    {
+      question: 'Q：什么房屋适合自主管理？',
+      answer: 'A：北京、成都、武汉、杭州所有类型房屋'
+    },
+    {
+      question: 'Q：什么业主适合自主管理？',
+      answer: 'A：有时间有精力，通过采购服务，可随时应对租客的各种难题'
+    }
+  ]
+};
 
 export const COLUMNS: confInterface.ColumnsInterface = [
   {

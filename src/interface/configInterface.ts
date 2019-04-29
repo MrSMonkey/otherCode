@@ -20,12 +20,14 @@ interface EnumInterface {
 interface StepInterface {
   [index: number]: {src: string; text: string};
 }
-/* 表格规范 */
-interface TablesDataInterface {
-  [index: number]: {name: string; owner: boolean; uoko: boolean};
+/* Td规范 */
+interface TdInterface {
+  rowspan: number;
+  text: string;
 }
+/* Tables规范 */
 interface TablesInterface {
-  [index: number]: {title: string; data: TablesDataInterface};
+  [index: number]: { title?: string; data: [any]; };
 }
 /* COLUMNS规范 */
 interface ColumnsInterface {

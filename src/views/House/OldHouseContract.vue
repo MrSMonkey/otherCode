@@ -236,7 +236,7 @@ export default class OldHouseContract extends CommonMixins {
     try {
       const res: any = await this.axios.get(`${api.getContractInfo}/${contractId}`);
       if (res && res.code === '000') {
-        this.contractInfo = res.data;
+        this.contractInfo = res.data || {};
         console.log(this.contractInfo);
       } else {
         this.$toast(res.msg || '合同详情获取失败，请重试！');
