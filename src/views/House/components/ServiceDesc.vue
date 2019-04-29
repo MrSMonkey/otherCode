@@ -63,11 +63,16 @@
       justify-content flex-start
       align-items flex-end
       span:first-child
+        width vw(88)
         font-size vw(21)
         font-weight 600
       span:last-child
+        word-wrap normal
+        text-overflow ellipsis
+        white-space nowrap
+        overflow hidden
         font-size vw(14)
-        margin-left vw(15)
+        margin-left vw(10)
     .info-body
       padding vw(20)
       border-radius 8px/* no */
