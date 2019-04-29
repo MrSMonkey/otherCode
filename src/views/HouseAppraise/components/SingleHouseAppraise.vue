@@ -43,10 +43,10 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 // 类方式声明当前组件
 export default class SingleHouseAppraise extends CommonMixins {
   @Prop({
-    type: Boolean,
-    default: false
+    type: Object,
+    default: {}
   })
-  private star: boolean;
+  private appraiseInfo: any;
   private imgUrl: string = require('@/assets/images/bg_result.png');
 }
 </script>
