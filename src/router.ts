@@ -106,7 +106,7 @@ router = new Router({
     {
       path: '/houseAppraise',
       name: 'houseAppraise',
-      meta: {title: '房屋估价', requireAuth: false},
+      meta: {title: '房屋估价', requireAuth: true},
       component: HouseAppraise,
       beforeEnter: (to, from, next) => {
         // const token: any = store.getters['global/getToken'];
@@ -116,8 +116,8 @@ router = new Router({
         next();
       }
     },
-    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: false}, component: AppraiseHouseInfo},
-    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: false}, component: AppraiseCommunity},
+    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: true}, component: AppraiseHouseInfo},
+    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: true}, component: AppraiseCommunity},
     // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
     { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: false}, component: OldMyHouse},
     { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: false}, component: OldMyAccount},
@@ -131,15 +131,6 @@ router = new Router({
     { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     { path: '/oldMyQRecode', name: 'oldMyQRecode', meta: {title: '我的二维码', requireAuth: false}, component: OldMyQRecode},
     { path: '/oldMyBusinessCard', name: 'oldMyBusinessCard', meta: {title: '我的名片', requireAuth: false}, component: OldMyBusinessCard},
-    // {
-    //   path: '/houseAppraise',
-    //   name: 'houseAppraise',
-    //   meta: '房屋估价',git
-    //   component: HouseAppraise,
-    //   children: [
-    //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
-    //   ]
-    // },
     { path: '/community', name: 'community', meta: {title: '选择小区', requireAuth: false}, component: Community},
     { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: {title: '新增房源', requireAuth: true},  component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: {title: '404', requireAuth: false}, component: NotFoundComp}

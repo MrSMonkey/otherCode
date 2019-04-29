@@ -232,7 +232,7 @@ import api from '@/api';
 export default class OldHouseContract extends CommonMixins {
   private contractInfo: any = {};
   private async mounted() {
-    const contractId: string = this.$route.query.contractId ? String(this.$route.query.contractId) : 'DCBD8FFA3D724F3C97E6E354B5ECE730';
+    const contractId: string = String(this.$route.query.contractId);
     try {
       const res: any = await this.axios.get(`${api.getContractInfo}/${contractId}`);
       if (res && res.code === '000') {

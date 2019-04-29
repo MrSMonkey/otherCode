@@ -1,12 +1,11 @@
-<!--
-  /*
-  * @Description: 星级房屋托管计划
-  * @Author: chenmo
-  * @Date: 2018-09-17 17:20:01
+/*
+ * @Description: 星级房屋托管计划
+ * @Author: chenmo
+ * @Date: 2019-04-29 11:05:14
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-28 15:00:48
-  */
--->
+ * @Last Modified time: 2019-04-29 11:37:00
+ */
+
 
 <template>
   <section class="entrust-plan">

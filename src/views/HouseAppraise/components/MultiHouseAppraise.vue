@@ -50,10 +50,10 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 // 类方式声明当前组件
 export default class MultiHouseAppraise extends CommonMixins {
   @Prop({
-    type: Boolean,
-    default: false
+    type: Object,
+    default: {}
   })
-  private star: boolean;
+  private appraiseInfo: any;
 }
 </script>
 

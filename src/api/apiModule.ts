@@ -2,14 +2,14 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: LongWei
+ * @Last Modified by: linyu
 <<<<<<< HEAD
  * @Last Modified time: 2019-04-25 17:07:03
 =======
 <<<<<<< HEAD
  * @Last Modified time: 2019-04-24 20:51:47
 =======
- * @Last Modified time: 2019-04-28 17:59:18
+ * @Last Modified time: 2019-04-29 13:56:51
 >>>>>>> pre
 >>>>>>> 606da436e5cfa9d35039a9f46f01bfe6be742867
  */
@@ -68,9 +68,6 @@ export default {
 
   /*根据关键词获取委托房源的小区*/
   getKeyCommunityList: '/es/community/search/name',
-
-  /*根据关键词获取房屋估价的小区*/
-  getAppraiseCommunityList: '/es/appraiseCommunity/search/name',
 
   /*获取城市列表*/
   getCitys: '/partner/common/city',
@@ -182,6 +179,12 @@ export default {
 
   /*获取房间图片信息（旧业主）*/
   getHousePictures: '/partner/star/owner/get_landlord_contract_img',
+
+  /*单套房屋估价结果*/
+  getSingleHouseValuation: '/facing/pricing/house/valuation_name',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseCommunityList: '/partner/facing/pricing/community',
 
 
 };
