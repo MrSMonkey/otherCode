@@ -2,8 +2,8 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 16:00:40
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 15:33:40
  */
 import { APP_TYPE, APP_DEVICE } from '@/config/config';
 
@@ -435,5 +435,54 @@ export const toAuth = (appid: string, transferUrl: string, scope: string) => {
   const cur: any = window.location;
   const url: string = `${transferUrl}?appid=${appid}&scope=${scope}&callback=${encodeURIComponent(cur)}`;
   return (window.location.href = url);
+};
+
+/**
+ * @description 计算年龄
+ * @params 出生年月
+ * @return 返回年龄
+ * @author chemo
+ */
+export const getAge = (date: string) => {
+  if (!date) {
+    return;
+  }
+  let returnAge;
+  const dateArr = date.split('-');
+  const birthYear = Number(dateArr[0]);
+  const birthMonth = Number(dateArr[1]);
+  const birthDay = Number(dateArr[2]);
+
+  const d = new Date();
+  const nowYear = d.getFullYear();
+  const nowMonth = d.getMonth() + 1;
+  const nowDay = d.getDate();
+
+  if (nowYear === birthYear) {
+    returnAge = 0; // 同年 则为0岁
+  } else {
+    const ageDiff = nowYear - birthYear ; // 年之差
+    if (ageDiff > 0) {
+      if (nowMonth === birthMonth) {
+        const dayDiff = nowDay - birthDay; // 日之差
+        if (dayDiff < 0) {
+          returnAge = ageDiff - 1;
+        } else {
+          returnAge = ageDiff ;
+        }
+      } else {
+        const monthDiff = nowMonth - birthMonth; // 月之差
+        if (monthDiff < 0) {
+          returnAge = ageDiff - 1;
+        } else {
+          returnAge = ageDiff;
+        }
+      }
+    } else {
+      returnAge = false; // 返回-1 表示出生日期输入错误 晚于今天
+    }
+  }
+
+  return returnAge; // 返回周岁年龄
 };
 

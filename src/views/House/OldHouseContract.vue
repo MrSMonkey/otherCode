@@ -2,8 +2,8 @@
  * @Description: 房源合同
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-25 17:06:56
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 17:48:48
  */
 <template>
   <section class="house-contract">
@@ -279,8 +279,12 @@ export default class OldHouseContract extends CommonMixins {
       border-bottom 1px solid #eee
     .detail
       font-family: PingFangSC-Regular;
+      
       p
         padding-top vw(15)
         &:last-child
           padding-bottom vw(15)
+        span
+          font-size vw(15)
+          color $text-color
 </style>

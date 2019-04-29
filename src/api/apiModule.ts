@@ -2,14 +2,14 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: linyu
+ * @Last Modified by: LongWei
 <<<<<<< HEAD
  * @Last Modified time: 2019-04-25 17:07:03
 =======
 <<<<<<< HEAD
  * @Last Modified time: 2019-04-24 20:51:47
 =======
- * @Last Modified time: 2019-04-23 11:36:21
+ * @Last Modified time: 2019-04-28 17:59:18
 >>>>>>> pre
 >>>>>>> 606da436e5cfa9d35039a9f46f01bfe6be742867
  */
@@ -154,5 +154,34 @@ export default {
   getStewards: 'partner/owner/entrust/asset/list',
 
   /*设置资产代理管家*/
-  setAgency: 'partner/owner/entrust/asset/agency'
+  setAgency: 'partner/owner/entrust/asset/agency',
+
+  /*获取微信号（旧业主）基本信息*/
+  getWXUserInfo: '/partner/star/owner/get_wechat_user_info',
+
+  /*获取聚合房源列表*/
+  getMergeHouses: '/partner/merge/owner/merge_houses',
+
+  /*获取优客自营（旧业主）基本房源信息*/
+  getOldHouseInfo: '/partner/star/owner/get_house_detail',
+
+  /*获取优客自营（旧业主）基本房源信息 - 房间信息*/
+  getOldHouseRoomsInfo: '/partner/star/owner/get_rooms',
+
+  /*获取房源账单累计收入（旧业主）*/
+  getHouseTotalAccount: '/partner/star/owner/get_house_total_amount',
+
+  /*获取房源账单列表（旧业主）*/
+  geLandlordBillList: '/partner/star/owner/get_landlord_bill_paged_result',
+
+  /*获取房源账单详情（旧业主）*/
+  getAccountDetail: '/partner/star/owner/get_landlord_bill',
+
+  /*获取业主房间数和总收入（旧业主）*/
+  getHousecount: '/partner/star/owner/get_total_amount',
+
+  /*获取房间图片信息（旧业主）*/
+  getHousePictures: '/partner/star/owner/get_landlord_contract_img',
+
+
 };

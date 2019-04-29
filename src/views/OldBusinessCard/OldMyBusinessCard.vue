@@ -42,9 +42,9 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import {START_MYCARD_IMG} from '@/config/config';
 import html2canvas from 'html2canvas';
 import { config } from '@vue/test-utils';
-import { Toast, ImagePreview } from 'vant';
+import { ImagePreview } from 'vant';
+import api from '@/api';
 Vue.use(ImagePreview);
-Vue.use(Toast);
 
 
 // 声明引入的组件
@@ -63,17 +63,21 @@ export default class OldMyBusinessCard extends CommonMixins {
   private index: number = 1;
   private show: boolean = false;
   private userName: string = '哈哈哈哈';
-  private userLogoUrl: string = 'https://826327700.github.io/vue-photo-preview/demo/1.jpg?any_string_is_ok';
+  private userLogoUrl: string = require('@/assets/images/boy.png');
 
   private created() {
     // 111
     // this.getImage(this.userLogoUrl, 'userLogo');
+    this.getUserInfo();
+    // console.log(this.$store.state);
   }
 
   private mounted() {
     this.getCanvas();
-    Toast.loading({
+    this.$toast.loading({
+      duration: 0,
       mask: true,
+      loadingType: 'spinner',
       message: '加载中...'
     });
   }
@@ -83,9 +87,26 @@ export default class OldMyBusinessCard extends CommonMixins {
     await this.getImage(this.userLogoUrl, 'userLogo');
   }
 
-  private getCanvasDom() {
-    html2canvas(document.querySelector('#card1'), { useCORS: true }).then((canvas: any) => {
-      this.onTransformEnd(canvas);
+   // 获取 - 微信账号基本信息
+  private async getUserInfo() {
+    try {
+      const openId = this.$store.state.global.wxOAuth.openId;
+      const accessToken = this.$store.state.global.wxOAuth.accessToken;
+      const {data} = await this.axios.get(api.getWXUserInfo  + `/${openId}/${accessToken}`);
+      console.log(data, '用户微信信息');
+      if (data.code === '000') {
+        this.userName = data.data.nickName;
+        this.userLogoUrl = data.data.headImgUrl;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  private  getCanvasDom() {
+    html2canvas(document.querySelector('#card1'), { useCORS: true }).then(async (canvas: any) => {
+     await this.onTransformEnd(canvas);
+     this.$toast.clear();
     });
   }
 

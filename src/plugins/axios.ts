@@ -2,8 +2,8 @@
  * @Description: axios网络请求库二次封装
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 20:51:59
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 14:18:52
  */
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios';
