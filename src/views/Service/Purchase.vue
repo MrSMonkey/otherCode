@@ -316,7 +316,7 @@ export default class Purchase extends CommonMixins {
     this.productName = item.typeName;
     this.productThreeMeum = item.children && item.children.length > 0 ? item.children : [];
     this.isTreeMeumActive = -1;
-    console.log(this.productThreeMeum);
+    // console.log(this.productThreeMeum);
   }
 
   /**

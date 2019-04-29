@@ -168,6 +168,9 @@ export default {
   /*获取房源账单列表（旧业主）*/
   geLandlordBillList: '/partner/star/owner/get_landlord_bill_paged_result',
 
+  /*获取房东账单列表（旧业主）*/
+  getLandlordList: '/partner/star/owner/get_my_bill',
+
   /*获取房源账单详情（旧业主）*/
   getAccountDetail: '/partner/star/owner/get_landlord_bill',
 
@@ -176,6 +179,9 @@ export default {
 
   /*获取房间图片信息（旧业主）*/
   getHousePictures: '/partner/star/owner/get_landlord_contract_img',
+
+  /*获取JsSDK配置*/
+  getJssdkConfig: `/partner/star/owner/get_jssdk_config`,
 
 
 };

@@ -99,6 +99,13 @@ interface StewardItem {
   assetUserPhone?: string;
   houseNum?: number;
 }
+
+interface ShareData {
+  title?: string;
+  link?: string;
+  desc?: string;
+  imgUrl?: string;
+}
 export {
   StartHomeImgInterface,
   EnumInterface,
@@ -116,5 +123,6 @@ export {
   HouseTypeResult,
   AppType,
   AppDevice,
-  StewardItem
+  StewardItem,
+  ShareData
 };

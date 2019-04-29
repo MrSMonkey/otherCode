@@ -87,19 +87,21 @@
           label="服务时长"
           placeholder="请输入服务时长（小时）"
           type="text"
+          @change="changeHour"
           v-if="data.productUnitId === '9'"
         >
         <!-- <span slot="button" >小时</span> -->
         </van-field>
         <!-- productUnitId === 7 || 项、台 -->
         <van-field
-          v-model="area"
+          v-model="serviceCount"
           required
           clearable
           input-align="right"
           label="购买数量"
           placeholder="请输入购买数量"
           type="text"
+          @change="changeCount"
           v-if="data.productUnitId === '7' || data.productUnitId === '8'"
         >
         <!-- <span slot="button" >小时</span> -->
@@ -157,8 +159,6 @@ import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
-import wx from 'weixin-js-sdk';
-import getWXConfig from '@/config/wxConfig';
 
 const namespace: string = 'global';
 
@@ -192,16 +192,22 @@ export default class ProductPayment extends CommonMixins {
   private area: string = ''; // 房屋面积
   private rooms: string = ''; // 房间数
   private serviceHour: string = ''; // 服务时长
+  private serviceCount: string = ''; // 购买数量
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
   private productPrice: string = '0.00'; // 服务产品购买价格
   private isAreaErr: boolean = false;
+  private isHourErr: boolean = false;
+  private isserviceCountErr: boolean = false;
+  private isRoomsErr: boolean = false;
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('payment', { namespace }) private payment: any;
 
   // computed
   get isActive(): boolean {
-    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId || !this.isAreaErr;
+    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId || ((this.data.productUnitId === '2') && !this.isAreaErr)
+    || ((this.data.productUnitId === '9') && !this.isHourErr) || ((this.data.productUnitId === '7' || this.data.productUnitId === '8') && !this.isserviceCountErr) ||
+    ((this.data.productUnitId === '1' && this.data.housesUnitId === '1') && !this.isRoomsErr);
   }
 
   // Watch
@@ -217,11 +223,37 @@ export default class ProductPayment extends CommonMixins {
 
   @Watch('area')
   private handlerArea(newVal: string) {
-    if (newVal && /^-?\d+\.?\d{0,2}$/.test(newVal)) {
+    if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/.test(newVal)) {
       this.isAreaErr = true;
     } else {
       this.isAreaErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
+    }
+  }
+
+  @Watch('serviceHour')
+  private handlerServiceHour(newVal: string) {
+    if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,1})?$/.test(newVal)) {
+      this.isHourErr = true;
+    } else {
+      this.isHourErr = false;
+    }
+  }
+
+  @Watch('serviceCount')
+  private handlerServiceCount(newVal: string) {
+    if (newVal && /^(0|[1-9][0-9]*)$/.test(newVal)) {
+      this.isserviceCountErr = true;
+    } else {
+      this.isserviceCountErr = false;
+    }
+  }
+
+  @Watch('rooms')
+  private handlerRooms(newVal: string) {
+    if (newVal && /^(0|[1-9][0-9]*)$/.test(newVal)) {
+      this.isRoomsErr = true;
+    } else {
+      this.isRoomsErr = false;
     }
   }
 
@@ -231,7 +263,6 @@ export default class ProductPayment extends CommonMixins {
       this.isintroducePhoneErr = true;
     } else {
       this.isintroducePhoneErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
     }
   }
 
@@ -246,15 +277,6 @@ export default class ProductPayment extends CommonMixins {
     if (this.entrustId !== '') {
       this.getHouserInfo(this.entrustId);
     }
-
-    // getWXConfig().then((res: any) => {
-    //   wx.getLocation({
-    //   type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-    //   success: (res: any) => {
-    //       console.log(1)
-    //     }
-    //   });
-    // });
   }
 
   private activated() {
@@ -382,7 +404,11 @@ export default class ProductPayment extends CommonMixins {
       productId: this.productId,
       productName: this.data.productName,
       buyersRemarks: this.buyersRemarks,
-      introducePhone: this.introducePhone
+      introducePhone: this.introducePhone,
+      roomQuantity: (this.data.productUnitId === '1' && this.data.housesUnitId === '1') ? this.rooms : null,
+      hour: this.data.productUnitId === '9' ? this.serviceHour : null,
+      purchaseQuantity: (this.data.productUnitId === '7' || this.data.productUnitId === '8') ? this.serviceCount : null,
+      acreage: this.data.productUnitId === '2' ? this.area : null,
     };
     this.loading = true;
     try {
@@ -430,6 +456,8 @@ export default class ProductPayment extends CommonMixins {
       const res: any = await this.axios.post(api.countPrice, params);
       if (res && res.code === '000') {
         this.productPrice = res.data;
+      } else {
+        this.$toast(res.msg || '获取数据失败');
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -473,7 +501,12 @@ export default class ProductPayment extends CommonMixins {
     }
 
     if (this.area === '0') {
-      this.$toast('输入面积不能为0');
+      this.$toast('请输入正确的面积');
+      return false;
+    }
+
+    if (!(/^(?!(0[0-9]{0,}$))[0-9]{1,}[.]{0,}[0-9]{0,}$/).test(this.area)) {
+      this.$toast('请输入正数');
       return false;
     }
     if (!(/^-?\d+\.?\d{0,2}$/.test(this.area))) {
@@ -483,6 +516,59 @@ export default class ProductPayment extends CommonMixins {
     const params: any = {
       productId: this.productId,
       acreage: this.area
+    };
+    this.countPrice(params);
+  }
+
+  /**
+   * @description 服务时长输入
+   * @returns void
+   * @author chenmo
+   */
+  private changeHour() {
+    if (!this.serviceHour) {
+      this.$toast('请输入服务时长');
+      return false;
+    }
+
+    if (this.serviceHour === '0') {
+      this.$toast('请输入正确的服务时长');
+      return false;
+    }
+
+    if (!(/^(?!(0[0-9]{0,}$))[0-9]{1,}[.]{0,}[0-9]{0,}$/).test(this.serviceHour)) {
+      this.$toast('请输入正数');
+      return false;
+    }
+    if (!(/^-?\d+\.?\d{0,1}$/.test(this.serviceHour))) {
+      this.$toast('服务时长保留一位小数');
+      return false;
+    }
+    const params: any = {
+      productId: this.productId,
+      hour: this.serviceHour
+    };
+    this.countPrice(params);
+  }
+
+  private changeCount() {
+    if (!this.serviceCount) {
+      this.$toast('请输入购买数量');
+      return false;
+    }
+    if (this.serviceCount === '0') {
+      this.$toast('请输入正确的购买数量');
+      return false;
+    }
+
+    if (!(/^(0|[1-9][0-9]*)$/).test(this.serviceCount)) {
+      this.$toast('请输入正整数');
+      return false;
+    }
+
+    const params: any = {
+      productId: this.productId,
+      purchaseQuantity: this.serviceCount
     };
     this.countPrice(params);
   }

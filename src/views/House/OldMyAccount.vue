@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 17:24:05
+ * @Last Modified time: 2019-04-29 09:57:59
  */
 <template>
   <section class="my-account">
@@ -74,11 +74,9 @@ export default class OldMyAccount extends CommonMixins {
   private userPhone: string = ''; // 房东电话
   private houseCount: number = 0; // 房东房屋数
   private totalAmount: number = 0; // 房东实际收入
+  private url: string = ''; // api地址
 
   private created() {
-    if (this.$route.query.houseId) {
-      this.hosueId = String(this.$route.query.houseId);
-    }
     console.log(this.$route.query.houseId, '11111111111');
     this.getAccountList();
     this.getUserHousecount();
@@ -86,8 +84,14 @@ export default class OldMyAccount extends CommonMixins {
 
   // 获取 - 房源基本信息
   private async getAccountList() {
+    if (this.$route.query.houseId) { // 房源账单列表
+      this.hosueId = String(this.$route.query.houseId);
+      this.url = `${api.geLandlordBillList}/${this.hosueId}/${this.pageIndex}/${this.pageSize}`;
+    } else { // 房东账单列表
+      this.url = `${api.getLandlordList}/${this.pageIndex}/${this.pageSize}`;
+    }
     try {
-      const res: any = await this.axios.get(`${api.geLandlordBillList}/${this.hosueId}/${this.pageIndex}/10`);
+      const res: any = await this.axios.get(this.url);
       if (res.code === '000') {
         const data = res.data;
         this.list = this.list.concat(data.items);

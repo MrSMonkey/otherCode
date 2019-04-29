@@ -437,3 +437,14 @@ export const APP_DEVICE: confInterface.AppDevice = {
   ios: 'ios',
   unknown: 'unknown'
 };
+
+// 微信分享接口
+export const SHARE_API_LIST: string[] = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone'];
+
+// 微信分享内容
+export const FORTUNE_SHARE_DATA: confInterface.ShareData = {
+  title: '星空财神',
+  link: `${window.location.protocol}//${window.location.host}/fortune`,
+  desc: '财富自由第一定律,财神星马上告诉您',
+  imgUrl: 'http://ooydngjcf.bkt.clouddn.com/WaterElectricGas.22AF1BA1.wechat_img_left.png'
+};

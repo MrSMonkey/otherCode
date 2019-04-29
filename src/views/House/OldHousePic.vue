@@ -3,13 +3,13 @@
  * @Author: zhegu
  * @Date: 2019-04-24 15:31:41
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 18:13:47
+ * @Last Modified time: 2019-04-29 10:02:28
  */
 <template>
   <section class="house-pic">
     <section class="header">
-      <h1>天香 2栋3单元33楼3302号</h1>
-      <span>2017-04-17 至 2019-04-16</span>
+      <h1>{{oldHouseBaseInfo.communityName}} {{oldHouseBaseInfo.houseNumber}}</h1>
+      <span>{{oldHouseBaseInfo.startDate | dateFilter}} 至 {{oldHouseBaseInfo.endDate | dateFilter}}</span>
     </section>
     <p class="title">房源照片（装配前）</p>
     <div class="list">
@@ -40,7 +40,14 @@ const namespace: string = 'global';
   name: 'OldHousePic',
   components: {
     ImagePreview
-  }
+  },
+  filters: {
+    dateFilter(date: string) {
+      if (date) {
+        return date.slice(0, 10);
+      }
+    },
+  },
 })
 export default class OldHousePic extends CommonMixins {
   @Getter('getOldHouseBaseInfo', { namespace }) private oldHouseBaseInfo: any;
