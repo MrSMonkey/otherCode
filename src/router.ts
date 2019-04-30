@@ -59,6 +59,7 @@ const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */
 const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
 const OldMyQRecode = () => import(/* webpackChunkName: 'oldMyQRecode' */ '@/views/OldBusinessCard/OldMyQRecode.vue');
 const OldMyBusinessCard = () => import(/* webpackChunkName: 'oldMyBusinessCard' */ '@/views/OldBusinessCard/OldMyBusinessCard.vue');
+const CustomerService = () => import(/* webpackChunkName: 'customerService' */ '@/views/Customer/CustomerService.vue');
 
 // 旧公众号 我的房源
 const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
@@ -89,7 +90,7 @@ router = new Router({
     { path: '/serviceOrder', name: 'serviceOrder', meta: {title: '服务订单', requireAuth: true}, component: ServiceOrder},
     { path: '/serviceDetile', name: 'serviceDetile', meta: {title: '订单详情', requireAuth: true}, component: ServiceDetile},
     { path: '/productDetile', name: 'productDetile', meta: {title: '订单详情', requireAuth: true}, component: ProductDetile},
-    { path: '/purchase', name: 'purchase', meta: {title: '购买服务包', requireAuth: true}, component: Purchase},
+    { path: '/purchase', name: 'purchase', meta: {title: '购买服务包', requireAuth: false}, component: Purchase},
     { path: '/serviceInfo', name: 'serviceInfo', meta: {title: '服务包详情', requireAuth: true}, component: ServiceInfo},
     { path: '/productInfo', name: 'productInfo', meta: {title: '服务产品详情', requireAuth: true}, component: ProductInfo},
     { path: '/refundDetail', name: 'refundDetail', meta: {title: '退款/售后详情', requireAuth: true}, component: RefundDetail},
@@ -132,6 +133,16 @@ router = new Router({
     { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     { path: '/oldMyQRecode', name: 'oldMyQRecode', meta: {title: '我的二维码', requireAuth: false}, component: OldMyQRecode},
     { path: '/oldMyBusinessCard', name: 'oldMyBusinessCard', meta: {title: '我的名片', requireAuth: false}, component: OldMyBusinessCard},
+    { path: '/customerService', name: 'customerService', meta: {title: '客服', requireAuth: false}, component: CustomerService},
+    // {
+    //   path: '/houseAppraise',
+    //   name: 'houseAppraise',
+    //   meta: '房屋估价',git
+    //   component: HouseAppraise,
+    //   children: [
+    //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
+    //   ]
+    // },
     { path: '/community', name: 'community', meta: {title: '选择小区', requireAuth: false}, component: Community},
     { path: '/serviceHouseInfo', name: 'serviceHouseInfo', meta: {title: '新增房源', requireAuth: true},  component: ServiceHouseInfo},
     { path: '/404', name: '404', meta: {title: '404', requireAuth: false}, component: NotFoundComp}

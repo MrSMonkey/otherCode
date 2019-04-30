@@ -46,8 +46,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Field, Notify } from 'vant';
 import Lottie from 'vue-lottie';
+import getWXConfig from '@/config/wxConfig';
+import wxShareConfig from '@/config/wxShareConfig';
 import * as Anim from '../../assets/json/fortune_anim.json';
-
+import { SHARE_API_LIST, FORTUNE_SHARE_DATA } from '@/config/config';
 
 // 声明引入的组件
 @Component({
@@ -65,7 +67,8 @@ export default class Fortune extends CommonMixins {
   private defaultOptions: any = { animationData: Anim.default, loop: false, autoplay: false};
   private animationSpeed: number = 1;
   private anim: any = {};
-
+  private shareList: any[] = SHARE_API_LIST;
+  private shareData: any = FORTUNE_SHARE_DATA;
   private mounted() {
     this.anim.addEventListener('complete', () => {
       this.anim.stop();
@@ -75,6 +78,10 @@ export default class Fortune extends CommonMixins {
             money: this.incomeValue,
           }
         });
+    });
+
+    getWXConfig(this.shareList).then((res: any) => {
+      wxShareConfig(this.shareData);
     });
   }
 

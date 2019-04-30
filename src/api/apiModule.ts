@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 09:31:37
+ * @Last Modified time: 2019-04-30 14:55:51
  */
 
 export default {
@@ -68,7 +68,7 @@ export default {
   pushEntrust: '/partner/owner/entrust',
 
   /*获取服务产品列表*/
-  getProductList: '/partner/owner/product/list',
+  getProductList: '/partner/owner/product/list2',
 
   /*获取服务产品订单列表*/
   getProductOrderList: '/partner/owner/product/order/list',
@@ -127,6 +127,9 @@ export default {
   /*退款订单详情*/
   getRefundDetail: '/partner/owner/product/refund/detail',
 
+  /*服务产品--计算产品价格*/
+  countPrice: '/partner/owner/product/amount',
+
   /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
   getWechatConfig: '/partner/star/owner/get_config',
 
@@ -174,6 +177,12 @@ export default {
 
   /*获取房间图片信息（旧业主）*/
   getHousePictures: '/partner/star/owner/get_landlord_contract_img',
+
+  /*获取JsSDK配置*/
+  getJssdkConfig: `/partner/star/owner/get_jssdk_config`,
+
+  /*获取星空业主号效能客服SDK（旧业主）*/
+  getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
 
   /*单套房屋估价结果*/
   getSingleHouseValuation: 'price/facing/pricing/house/valuation_name',
