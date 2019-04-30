@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 17:58:04
+ * @Last Modified time: 2019-04-30 14:50:09
  */
 
 <template>
@@ -17,23 +17,7 @@
         :kitchen="{show: false}"
         @house-type-confirm="houseTypeConfirm"
       ></HouseTypeInput>
-      <div class="input-panel">
-        <div class="label">楼&emsp;&emsp;层</div>
-        <van-row type="flex" justify="end" class="village">
-          <van-col span="6"><van-field
-            v-model="floorNum"
-            placeholder="第几层"
-            input-align="center"
-          /></van-col>
-          <van-col span="6" class="house-info">
-            <van-field
-              v-model="floorTotality"
-              placeholder="总楼层"
-              input-align="center"
-            />
-          </van-col>
-        </van-row>
-      </div>
+      <FloorInfoInput @floor-num-change="floorNumChange" @floor-totality-change="floorTotalityChange"></FloorInfoInput>
     </section>
     <section class="other">
       <div class="submit-btn-panel">
@@ -58,9 +42,11 @@ import CityInput from '@/components/CityInput.vue';
 import CommunityInput from '@/components/CommunityInput.vue';
 import BuildAcreageInput from '@/components/BuildAcreageInput.vue';
 import HouseTypeInput from '@/components/HouseTypeInput.vue';
+import FloorInfoInput from '@/components/FloorInfoInput.vue';
 import { TYPELIST, TOWARDLIST} from '@/config/config';
 // import { HouseAppraiseForm } from '@/interface/perfectInterface';
 import api from '@/api';
+import { returnDomain } from '../../utils/utils';
 const namespace: string = 'global';
 // 声明引入的组件
 @Component({
@@ -74,7 +60,8 @@ const namespace: string = 'global';
     CityInput,
     CommunityInput,
     BuildAcreageInput,
-    HouseTypeInput
+    HouseTypeInput,
+    FloorInfoInput
   }
 })
 // 类方式声明当前组件
@@ -85,12 +72,12 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private towardShow: boolean = false;
   private loading: boolean = false;
   private houseTypeValue: string = ''; // 户型选择结果
-  private floorNum: string = '';  // 楼层
   private hallNum: string = ''; // 厅数
   private roomNum: string = ''; // 房间数
   private toiletNum: string = ''; // 房间数
   private communityName: string = '123';  // 小区名称
   private floorTotality: string = '';  // 总楼层
+  private floorNum: string = '';  // 楼层
   private cityId: string = '510100';
   private cityName: string = '成都';
   private cityList: object[] = [
@@ -110,14 +97,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
       && Boolean(this.houseTypeValue);
     return !result;
   }
-  @Watch('floorNum')
-  private onFloorNumChange (val: string, oldVal: string) {
-    return 1;
-  }
-  // computed : 校验楼层数和总楼层
-  get isFloorErr(): boolean {
-    return true;
-  }
   /**
    * @description keep-alive缓存载入钩子函数
    * @returns void
@@ -130,7 +109,22 @@ export default class AppraiseHouseInfo extends CommonMixins {
       this.communityName = this.$route.params.communityName;
     }
   }
-
+  /**
+   * @description 房屋所在楼层变化触发事件
+   * @returns void
+   * @author linyu
+   */
+  private floorNumChange(floorNum: string): void {
+    this.floorNum = floorNum;
+  }
+  /**
+   * @description 总楼层变化触发事件
+   * @returns void
+   * @author linyu
+   */
+  private floorTotalityChange(floorTotality: string): void {
+    this.floorTotality = floorTotality;
+  }
   /**
    * @description 选择城市确认
    * @params item 选择的数
@@ -191,6 +185,37 @@ export default class AppraiseHouseInfo extends CommonMixins {
   }
 
   /**
+   * @description 表单验证
+   * @returns void
+   * @author linyu
+   */
+  private validForm() {
+    const acreagePattern: any = /(^[1-9](\d+)?(\.\d{1,2})?$)|(^(0){1}$)|(^\d\.\d(\d)?$)/;
+    const digitPattern: any = /^\d{1,2}$/;
+    if (!acreagePattern.test(this.form.buildAcreage)) {
+      this.$toast('面积格式输入有误！');
+      return false;
+    }
+    if (Number(this.toiletNum) === 0 && Number(this.hallNum) === 0 && Number(this.roomNum) === 0) {
+      this.$toast('户型选择不正确');
+      return false;
+    }
+    if (!digitPattern.test(this.floorNum)) {
+      this.$toast('楼层输入格式有误');
+      return false;
+    }
+    if (!digitPattern.test(this.floorTotality)) {
+      this.$toast('总层数不能大于100');
+      return false;
+    }
+    if (Math.abs(Number(this.floorNum)) > Math.abs(Number(this.floorTotality))) {
+      this.$toast('房屋所在楼层数不能大于总楼层数');
+      return false;
+    }
+    return true;
+  }
+
+  /**
    * @description 提交完善房源数据
    * @returns void
    * @author chenmo
@@ -198,18 +223,10 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private async submitData() {
     const data = this.form;
     console.log(data);
-    if (Number(this.toiletNum) === 0 && Number(this.hallNum) === 0 && Number(this.roomNum) === 0) {
-      this.$toast('户型选择不正确');
-      return false;
+    console.log(this.validForm());
+    if (!this.validForm()) {
+      return;
     }
-    if (Math.abs(Number(this.floorNum)) >= Math.abs(Number(this.floorTotality))) {
-      this.$toast('楼层输入有误');
-      return false;
-    }
-    // if (this.isFloorErr) {
-    //   this.$toast(`楼层数不能大于总楼层数`);
-    //   return false;
-    // }
     this.loading = true;
     try {
       const res: any = await this.axios.post(api.getSingleHouseValuation, data);

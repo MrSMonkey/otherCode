@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 16:02:58
+ * @Last Modified time: 2019-04-30 09:31:37
  */
 
 export default {
@@ -180,6 +180,9 @@ export default {
 
   /*根据关键词获取房屋估价的小区*/
   getAppraiseCommunityList: 'price/facing/pricing/community',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseList: '/partner/facingpricing/house_valuation',
 
 
 };
