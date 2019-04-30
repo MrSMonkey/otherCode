@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-26 15:25:38
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 14:12:36
+ * @Last Modified time: 2019-04-29 14:41:20
  */
 
 <template>
@@ -93,7 +93,7 @@ export default class ServiceTabsTitle extends CommonMixins {
       this.tabIsFixed = true;
     }
     this.$nextTick(() => {
-      const tabsHeight: any = this.$refs.tabsPanel1.clientHeight + transformVwToPx(0.04);
+      const tabsHeight: any = this.$refs.tabsPanel1[0].clientHeight + transformVwToPx(0.05);
       this.style1.paddingTop = tabsHeight + 'px';
     });
   }

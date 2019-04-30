@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-23 16:06:09
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 11:49:57
+ * @Last Modified time: 2019-04-30 16:12:29
  */
 
 <template>
@@ -52,7 +52,7 @@ export default class BuildAcreageInput extends CommonMixins {
     this.change(val);
   }
   /**
-   * @description 面积输入
+   * @description 面积值变化触发事件
    * @params value 输入框当前值
    * @returns void
    * @author linyu

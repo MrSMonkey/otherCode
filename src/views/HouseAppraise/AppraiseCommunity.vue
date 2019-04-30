@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 15:36:24
+ * @Last Modified time: 2019-04-29 15:55:48
  */
 
 <template>
@@ -99,7 +99,6 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import { Field, Row, Col, Cell, List, PullRefresh  } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
-import { debounce } from '@/utils/utils';
 import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 import { Point } from '@/interface/utilInterface';
@@ -132,16 +131,15 @@ export default class AppraiseCommunity extends CommonMixins {
   private phone: string = ''; // 电话
   private loading: boolean = false; // 加载更多请求是否完成，完成时值为false
   private dialogShow: boolean = false; // 是否显示dialog
+  private timeout: any = null;
   private tableList: any = []; // 小区列表
-  private lon: number = 0; // 当前位置经度
-  private lat: number = 0; // 当前位置纬度
-  private baiduAk: string = BAIDU_AK; // 百度地图key
   private point: any = {
     lat: '', // 维度
     lon: ''  // 经度
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
+    console.log(this.searchInputValue);
     this.getCommunityList(); // 请求小区数据
   }
   // computed
@@ -164,10 +162,7 @@ export default class AppraiseCommunity extends CommonMixins {
   private async getCommunityList() {
     if (this.searchInputValue !== '') {
       try {
-        const res: any =  await this.axios.post(api.getKeyCommunityList, {
-          cityId: this.cityId,
-          name: this.searchInputValue
-        });
+        const res: any =  await this.axios.get(`${api.getAppraiseCommunityList}/${this.searchInputValue}/20`);
         this.updateSomeData(res);
       } catch (err) {
         throw new Error(err || 'Unknow Error!');
@@ -187,7 +182,7 @@ export default class AppraiseCommunity extends CommonMixins {
     this.communityName = '';
     this.plotAacive = -1;
     if (respData && respData.code === '000') {
-      this.tableList.push(...respData.data.list);
+      this.tableList.push(...respData.data);
       if (this.tableList.length) {
         this.listTopTip = '请选择小区名称';
       } else {

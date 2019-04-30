@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-25 13:50:17
+ * @Last Modified time: 2019-04-29 18:03:52
  */
 
 <template>
@@ -13,19 +13,19 @@
     </div>
     <div class="result-panel">
       <div class="result-top">
-        <p class="price price-one">299.8</p>
+        <p class="price price-one">{{appraiseInfo.price}}</p>
         <p class="top-desc">出售估价参考（万元）</p>
       </div>
       <div class="result-middle">
         <p>可贷款金额参考（万元）</p>
-        <p class="price price-two">520.8</p>
+        <p class="price price-two">{{appraiseInfo.loanSum}}</p>
         <p>(最终可贷金额以银行审批结果为准)</p>
       </div>
       <div class="result-bottom">
         <ul>
-          <li>小区名称：保利星座</li>
-          <li>房屋均价：14838元/平</li>
-          <li>估价参考范围：280万-310万</li>
+          <li>小区名称：{{appraiseInfo.projectName}}</li>
+          <li>房屋均价：{{appraiseInfo.unitPrice}}</li>
+          <li>估价参考范围：{{(parseFloat(appraiseInfo.loanSum)*0.95).toFixed(2)}}万-{{(parseFloat(appraiseInfo.loanSum)*1.05).toFixed(2)}}万</li>
         </ul>
       </div>
     </div>

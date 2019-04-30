@@ -2,12 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
-<<<<<<< HEAD
- * @Last Modified by: LongWei
-=======
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 14:17:01
->>>>>>> d58dddc1091bb14497a580ebf35957890626fae5
+ * @Last Modified time: 2019-04-30 14:55:51
  */
 
 export default {
@@ -189,10 +185,13 @@ export default {
   getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
 
   /*单套房屋估价结果*/
-  getSingleHouseValuation: '/facing/pricing/house/valuation_name',
+  getSingleHouseValuation: 'price/facing/pricing/house/valuation_name',
 
   /*根据关键词获取房屋估价的小区*/
-  getAppraiseCommunityList: '/partner/facing/pricing/community',
+  getAppraiseCommunityList: 'price/facing/pricing/community',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseList: '/partner/facingpricing/house_valuation',
 
 
 };

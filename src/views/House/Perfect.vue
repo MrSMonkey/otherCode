@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 14:05:36
+ * @Last Modified time: 2019-04-30 16:14:55
  */
 
 <template>
@@ -55,62 +55,13 @@
       </div>
     </section>
     <section class="area">
-      <div class="input-panel">
-        <div class="label">楼&emsp;&emsp;层</div>
-        <van-row type="flex" justify="end" class="village">
-          <van-col span="6"><van-field
-            v-model="form.floorNum"
-            placeholder="第几层"
-            type="number"
-            input-align="center"
-          /></van-col>
-          <van-col span="6" class="house-info">
-            <van-field
-              v-model="form.floorTotality"
-              placeholder="总楼层"
-              type="number"
-              input-align="center"
-            />
-          </van-col>
-        </van-row>
-      </div>
+      <FloorInfoInput @floor-num-change="floorNumChange" @floor-totality-change="floorTotalityChange"></FloorInfoInput>
     </section>
     <section class="area">
-      <div class="input-panel">
-        <div class="label">户&emsp;&emsp;型</div>
-        <van-row type="flex" justify="end" class="village">
-          <van-col span="4"><van-field
-            v-model="form.roomNum"
-            placeholder="几室"
-            type="number"
-            input-align="center"
-          /></van-col>
-          <van-col span="4" class="house-info">
-            <van-field
-              v-model="form.hallNum"
-              placeholder="几厅"
-              type="number"
-              input-align="center"
-            />
-          </van-col>
-          <van-col span="4" class="house-info">
-            <van-field
-              v-model="form.kitchenNum"
-              placeholder="几厨"
-              type="number"
-              input-align="center"
-            />
-          </van-col>
-          <van-col span="4" class="house-info">
-            <van-field
-              v-model="form.toiletNum"
-              placeholder="几卫"
-              type="number"
-              input-align="center"
-            />
-          </van-col>
-        </van-row>
-      </div>
+      <HouseTypeInput
+        :house-type-value="houseTypeText"
+        @house-type-confirm="houseTypeConfirm"
+      ></HouseTypeInput>
     </section>
     <section class="area">
       <div class="input-panel">
@@ -130,19 +81,7 @@
       </div>
     </section>
     <section class="area">
-      <div class="input-panel">
-        <div class="label">面&emsp;&emsp;积</div>
-        <div class="village">
-          <van-field
-            v-model="form.buildAcreage"
-            placeholder="请输入产权面积"
-            type="number"
-            input-align="right"
-          >
-          <span slot="button" >平米</span>
-          </van-field>
-        </div>
-      </div>
+      <BuildAcreageInput @change="buildAcreageChange"></BuildAcreageInput>
     </section>
     <confirmBtn 
       loadingText="保存中"
@@ -185,15 +124,18 @@
 </template>
 
 <script lang="ts">
+import CommonMixins from '@/utils/mixins/commonMixins';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
-import CommonMixins from '@/utils/mixins/commonMixins';
-import { Field, Row, Col, Button } from 'vant';
-import HrTitle from '@/components/HrTitle.vue';
-import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { TYPELIST, TOWARDLIST} from '@/config/config';
 import { PerfectForm } from '@/interface/perfectInterface';
 import { TypeListInterface, TowardListInterface } from '@/interface/configInterface';
+import { Field, Row, Col, Button } from 'vant';
+import HrTitle from '@/components/HrTitle.vue';
+import ConfirmBtn from '@/components/ConfirmBtn.vue';
+import FloorInfoInput from '@/components/FloorInfoInput.vue';
+import HouseTypeInput from '@/components/HouseTypeInput.vue';
+import BuildAcreageInput from '@/components/BuildAcreageInput.vue';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -202,12 +144,15 @@ const namespace: string = 'global';
 @Component({
   name: 'Perfect',
   components: {
-    [Field.name]: Field,
-    [Row.name]: Row,
-    [Col.name]: Col,
-    [Button.name]: Button,
+    Field,
+    Row,
+    Col,
+    Button,
     HrTitle,
-    ConfirmBtn
+    ConfirmBtn,
+    FloorInfoInput,
+    HouseTypeInput,
+    BuildAcreageInput
   }
 })
 // 类方式声明当前组件
@@ -218,6 +163,7 @@ export default class Perfect extends CommonMixins {
   private cityShow: boolean = false;
   private towardShow: boolean = false;
   private loading: boolean = false;
+  private houseTypeText: string = ''; // 户型选择结果
   private isFloorErr: boolean = false; // 校验楼层数和楼层
   private typeList: TypeListInterface = TYPELIST;
   private entrustId: string = ''; // 委托房源ID
@@ -250,6 +196,36 @@ export default class Perfect extends CommonMixins {
     this.entrustId =  String(this.$route.query.entrustId); // 获取委托Id
   }
   /**
+   * @description 房屋所在楼层变化触发事件
+   * @returns void
+   * @author linyu
+   */
+  private floorNumChange(floorNum: string): void {
+    this.form.floorNum = floorNum;
+  }
+  /**
+   * @description 总楼层变化触发事件
+   * @returns void
+   * @author linyu
+   */
+  private floorTotalityChange(floorTotality: string): void {
+    this.form.floorTotality = floorTotality;
+  }
+  /**
+   * @description 户型选择确定触发事件
+   * @params items Array 选中的item数组
+   * @params houseType 户型选择结果
+   * @returns void
+   * @author linyu
+   */
+  private houseTypeConfirm(houseType: any, items: string[]): void {
+    this.form.hallNum = houseType.hallNum;
+    this.form.kitchenNum = houseType.kitchenNum;
+    this.form.roomNum = houseType.roomNum;
+    this.form.toiletNum = houseType.toiletNum;
+    this.houseTypeText = items.join('');
+  }
+  /**
    * @description 选择运营类型确认
    * @params item 选择的数
    * @params index 索引值
@@ -273,6 +249,16 @@ export default class Perfect extends CommonMixins {
     this.form.toward = item.value;
     this.form.towardName = item.text;
     this.towardShow = false;
+  }
+
+  /**
+   * @description 面积值变化触发事件
+   * @params value 输入框当前值
+   * @returns void
+   * @author linyu
+   */
+  private buildAcreageChange(value: string | number): void {
+    this.form.buildAcreage = value;
   }
 
   /**
@@ -314,31 +300,6 @@ export default class Perfect extends CommonMixins {
   private plotCancel() {
     window.location.href = '/#/house';
   }
-
-  // // Watch
-  // @Watch('form.floorNum')
-  // private handlerFloorNum(newVal: string) {
-  //   if (newVal && this.form.floorTotality) {
-  //     if (parseFloat(newVal) > parseFloat(this.form.floorTotality)) {
-  //       this.$toast(`楼层数不能大于总楼层数`);
-  //       this.isFloorErr = true;
-  //     } else {
-  //       this.isFloorErr = false;
-  //     }
-  //   }
-  // }
-
-  // @Watch('form.floorTotality')
-  // private handlerFloorTotality(newVal: string) {
-  //   if (newVal && this.form.floorNum) {
-  //     if (parseFloat(newVal) < parseFloat(this.form.floorNum)) {
-  //       this.$toast(`楼层数不能大于总楼层数`);
-  //       this.isFloorErr = true;
-  //     } else {
-  //       this.isFloorErr = false;
-  //     }
-  //   }
-  // }
 }
 </script>
 
