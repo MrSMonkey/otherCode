@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-30 14:51:24
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 14:51:24
+ * @Last Modified time: 2019-04-30 15:15:19
  */
  
 <template>
@@ -55,7 +55,7 @@ export default class FloorInfoInput extends CommonMixins {
   private floorNum: string = '';  // 楼层
   private floorNumText: string = ''; // 楼层文本总楼层文本
   private floorTotalityText: string = ''; // 总楼层文本
-  
+
   @Watch('floorNumText')
   private onFloorNumChange(val: string, oldVal: string) {
     setTimeout(() => {
@@ -106,7 +106,7 @@ export default class FloorInfoInput extends CommonMixins {
 </script>
 
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
+<style lang="stylus" rel="stylesheet/stylus">
   .label
     display inline-block
     width 83px
@@ -130,12 +130,18 @@ export default class FloorInfoInput extends CommonMixins {
       align-items center
       .village
         width 90%
-        .code-btn
-          border 0
-          font-size 15px
-          color $tip-text-color
-        .btn-active
-          color $main-color
+        .house-info
+          position: relative;
+          &::before
+            content ''
+            width 1px
+            height 15px
+            border-left 1px solid $disabled-color
+            position absolute
+            top 14px
+            left 6px
+            z-index 1
+            display block
         .van-cell
           padding vw(10) vw(0) vw(10) vw(10) !important
           input

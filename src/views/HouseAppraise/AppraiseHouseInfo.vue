@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 14:50:09
+ * @Last Modified time: 2019-04-30 16:12:43
  */
 
 <template>
@@ -13,7 +13,7 @@
       <CommunityInput :community-name="communityName" @to-community="toCommunity">小区名称</CommunityInput>
       <BuildAcreageInput @change="buildAcreageChange"></BuildAcreageInput>
       <HouseTypeInput
-        :house-type-value="houseTypeValue"
+        :house-type-value="houseTypeText"
         :kitchen="{show: false}"
         @house-type-confirm="houseTypeConfirm"
       ></HouseTypeInput>
@@ -71,11 +71,11 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private cityShow: boolean = false;
   private towardShow: boolean = false;
   private loading: boolean = false;
-  private houseTypeValue: string = ''; // 户型选择结果
+  private houseTypeText: string = ''; // 户型选择结果
   private hallNum: string = ''; // 厅数
   private roomNum: string = ''; // 房间数
   private toiletNum: string = ''; // 房间数
-  private communityName: string = '123';  // 小区名称
+  private communityName: string = '';  // 小区名称
   private floorTotality: string = '';  // 总楼层
   private floorNum: string = '';  // 楼层
   private cityId: string = '510100';
@@ -94,7 +94,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
       && Boolean(this.communityName)
       && Boolean(this.floorNum)
       && Boolean(this.floorTotality)
-      && Boolean(this.houseTypeValue);
+      && Boolean(this.houseTypeText);
     return !result;
   }
   /**
@@ -160,28 +160,27 @@ export default class AppraiseHouseInfo extends CommonMixins {
   }
 
   /**
-   * @description 输入面积
+   * @description 面积值变化触发事件
    * @params value 输入框当前值
    * @returns void
    * @author linyu
    */
-  private buildAcreageChange(value: string | number) {
+  private buildAcreageChange(value: string | number): void {
     this.form.buildAcreage = value;
   }
 
   /**
-   * @description 户型选择确定时间
-   * @params items 选中的item数组
-   * @params indexs 选中的索引index数组
-   * @params houseTypeResult 户型结果
+   * @description 户型选择确定触发事件
+   * @params items Array 选中的item数组
+   * @params houseType 户型选择结果
    * @returns void
    * @author linyu
    */
-  private houseTypeConfirm(houseTypeResult: any, items: string[], indexs: number[]) {
-    this.hallNum = houseTypeResult.hallNum;
-    this.roomNum = houseTypeResult.roomNum;
-    this.toiletNum = houseTypeResult.toiletNum;
-    this.houseTypeValue = items.join('');
+  private houseTypeConfirm(houseType: any, items: string[]): void {
+    this.hallNum = houseType.hallNum;
+    this.roomNum = houseType.roomNum;
+    this.toiletNum = houseType.toiletNum;
+    this.houseTypeText = items.join('');
   }
 
   /**
@@ -222,8 +221,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
    */
   private async submitData() {
     const data = this.form;
-    console.log(data);
-    console.log(this.validForm());
     if (!this.validForm()) {
       return;
     }
@@ -257,63 +254,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
   color red
   cursor pointer
 .appraise
-  .area
-    .label
-      display inline-block
-      width 83px
-      font-size 15px
-      color $text-color
-      padding-top vw(18)
-      &::after
-        content ''
-        display inline-block
-        width 100%
-    .just
-      text-align justify
-    .input-panel
-      background $global-background
-      height vw(55)
-      padding vw(15) vw(6) vw(20) vw(15)
-      border-bottom 1px solid $bg-color-default
-      display -webkit-flex
-      display flex
-      justify-content space-around
-      align-items center
-      .village
-        width 90%
-        .code-btn
-          border 0
-          font-size 15px
-          color $tip-text-color
-        .btn-active
-          color $main-color
-        .house-info
-          position: relative;
-          &::before
-            content ''
-            width 1px
-            height 15px
-            border-left 1px solid $disabled-color
-            position absolute
-            top 14px
-            left 6px
-            z-index 1
-            display block
-      .van-field
-        padding vw(10) vw(0) vw(10) vw(10) !important
-        input
-          font-size 15px
-          color $text-color
-          &::-webkit-input-placeholder
-            color $disabled-color
-        .van-field__label
-          text-align justify
-          span 
-            display inline-block
-            width 100%
-            text-align justify
-            color $text-color
-            font-size 15px
   .other
     margin-top 15px
     .submit-btn-panel

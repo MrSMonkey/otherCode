@@ -2,8 +2,8 @@
  * @Description: 客服
  * @Author: LongWei
  * @Date: 2019-04-29 14:55:35
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-29 15:10:05
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-30 15:06:18
  */
  <template>
   <section class="customer-main" ref="customerMain" id="customerMain">
@@ -110,7 +110,6 @@ export default class CustomerService extends CommonMixins {
         };
         this.str = '2222222222222';
         window.NTKF_PARAM = NTKF_PARAM;
-        
         window.NTKF.im_openInPageChat(this.settingId);
         this.str = '33333333333';
       }

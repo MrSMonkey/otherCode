@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:39:25
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 15:31:50
+ * @Last Modified time: 2019-04-30 16:05:54
  */
 
 <template>
@@ -58,7 +58,7 @@ export default class HouseTypeInput extends CommonMixins {
     type: Object,
     default: () => {
       return {
-        max: 10,
+        max: 9,
         show: true
       };
     }
@@ -114,61 +114,64 @@ export default class HouseTypeInput extends CommonMixins {
   private pickerShow: boolean = false;
 
   private mounted() {
-    console.log(this.room);
     if (this.room.show) {
-      const roomOptions = Object.assign({}, {max: 10, show: true, unit: '室', className: 'room'}, this.room);
+      const roomOptions = Object.assign({}, {show: true, max: 9, unit: '室', className: 'room'}, this.room);
       this.houseType.push(roomOptions);
     }
     if (this.hall.show) {
-      const hallOptions = Object.assign({}, {max: 10, show: true, unit: '厅', className: 'room'}, this.room);
+      const hallOptions = Object.assign({}, {show: true, max: 5, unit: '厅', className: 'hall'}, this.hall);
       this.houseType.push(hallOptions);
     }
     if (this.kitchen.show) {
-      const kitchenOptions = Object.assign({}, {max: 10, show: true, unit: '厨', className: 'room'}, this.room);
+      const kitchenOptions = Object.assign({}, {show: true, max: 5, unit: '厨', className: 'kitchen'}, this.kitchen);
       this.houseType.push(kitchenOptions);
     }
     if (this.toilet.show) {
-      const toiletOptions = Object.assign({}, {max: 10, show: true, unit: '卫', className: 'room'}, this.room);
+      const toiletOptions = Object.assign({}, {show: true, max: 5, unit: '卫', className: 'toilet'}, this.toilet);
       this.houseType.push(toiletOptions);
     }
-    console.log(this.houseType);
-    this.houseTypeCloumns =  this.houseType.map((value, index) => {
-      return this.createOptions(value);
-    });
-    console.log(this.houseTypeCloumns);
-  }
-  private createOptions(typeOpts: HouseTypeInputOpts) {
-    const options = {
-      values: Array.from({length: typeOpts.max + 1}).map((value, index) => {
-        return `${index}${typeOpts.unit}`;
-      }),
-      className: typeOpts.className
-    };
-    return options;
+    this.createCloumns();
   }
   /**
-   * @description 选择城市确认
-   * @returns void
+   * @description Picker选项对象生成函数
+   * @author linyu
+   */
+  private createCloumns() {
+    this.houseTypeCloumns = this.houseType.map((pValue, index) => {
+      const options = {
+        values: Array.from({length: pValue.max + 1}).map((cValue, index) => {
+          return `${index}${pValue.unit}`;
+        }),
+        className: pValue.className
+      };
+      return options;
+    });
+  }
+  /**
+   * @description 户型选择确定触发事件
+   * @params items Array 选中的item数组
+   * @params indexs Array 选中的索引index数组
+   * @returns houseType 户型选择结果的文本内容
    * @author linyu
    */
   @Emit()
-  private houseTypeConfirm(item: any, index: number[]) {
-    const houseTypeResult: any = {};
+  private houseTypeConfirm(items: any, indexs: number[]) {
+    const houseType: any = {};
     let ind: number = 0;
     if (this.room.show) {
-      houseTypeResult.roomNum = index[ind++];
+      houseType.roomNum = indexs[ind++];
     }
     if (this.hall.show) {
-      houseTypeResult.hallNum = index[ind++];
+      houseType.hallNum = indexs[ind++];
     }
     if (this.kitchen.show) {
-      houseTypeResult.kitchenNum = index[ind++];
+      houseType.kitchenNum = indexs[ind++];
     }
     if (this.toilet.show) {
-      houseTypeResult.toiletNum = index[ind++];
+      houseType.toiletNum = indexs[ind++];
     }
     this.pickerShow = false;
-    return houseTypeResult;
+    return houseType;
   }
 }
 </script>
