@@ -97,6 +97,7 @@ export default class OldMyBusinessCard extends CommonMixins {
         console.log(data);
         this.userName = data.nickName;
         this.userLogoUrl = data.headImgUrlBase64;
+        this.$toast.clear();
         this.$nextTick(() => {
           this.getCanvasDom();
         });
