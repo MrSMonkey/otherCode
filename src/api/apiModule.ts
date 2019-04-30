@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 14:55:51
+ * @Last Modified time: 2019-04-30 17:30:48
  */
 
 export default {
@@ -185,13 +185,13 @@ export default {
   getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
 
   /*单套房屋估价结果*/
-  getSingleHouseValuation: 'price/facing/pricing/house/valuation_name',
+  getSingleHouseValuation: 'price/facing/pricing/house/valuation_ID',
 
   /*根据关键词获取房屋估价的小区*/
   getAppraiseCommunityList: 'price/facing/pricing/community',
 
   /*根据关键词获取房屋估价的小区*/
-  getAppraiseList: '/partner/facingpricing/house_valuation',
+  getAppraiseList: '/partner/facingpricing/house_valuation'
 
 
 };

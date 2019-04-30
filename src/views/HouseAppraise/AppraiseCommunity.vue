@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 15:55:48
+ * @Last Modified time: 2019-04-30 17:47:16
  */
 
 <template>
@@ -189,6 +189,7 @@ export default class AppraiseCommunity extends CommonMixins {
         this.listTopTip = '未找到该小区，确认提交后工作人员会尽快为您处理！';
       }
     } else {
+      console.log(respData);
       this.$toast(respData.msg);
     }
     this.loading = false;

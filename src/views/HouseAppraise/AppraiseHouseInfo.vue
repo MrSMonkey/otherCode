@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 16:12:43
+ * @Last Modified time: 2019-04-30 18:00:22
  */
 
 <template>
@@ -249,7 +249,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .pointer
   color red
   cursor pointer
