@@ -139,7 +139,7 @@
             <!-- 带看 -->
             <span class="plot-price" v-if="data.typeId === 4">¥0.00</span>
             <span class="plot-price" v-else>
-              <span v-if ="data.productUnitId === '1' && data.housesUnitId === '0'"> ¥{{parseFlost(data.price).tofixed(2)}}</span>
+              <span v-if ="data.productUnitId === '1' && data.housesUnitId === '0'"> ¥{{(data.price).toFixed(2)}}</span>
               <span v-else>¥{{productPrice}}</span>
             </span>
           </span>

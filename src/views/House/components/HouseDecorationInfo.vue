@@ -52,7 +52,6 @@ export default class HouseDecorationInfo extends CommonMixins {
 
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../../assets/stylus/main.styl'
 .area
   margin-bottom vw(10)
   .label

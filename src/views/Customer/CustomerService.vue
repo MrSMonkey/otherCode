@@ -36,6 +36,7 @@ export default class CustomerService extends CommonMixins {
 
   @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
   @Getter('getUserInfo', { namespace }) private userInfo: any;
+
   private url: string = 'https://dl.ntalker.com/js/xn6/ntkfstat.js?siteid=kf_9452';
   private uname: string = '';
   private uid: string = '';
@@ -110,7 +111,6 @@ export default class CustomerService extends CommonMixins {
         };
         this.str = '2222222222222';
         window.NTKF_PARAM = NTKF_PARAM;
-        
         window.NTKF.im_openInPageChat(this.settingId);
         this.str = '33333333333';
       }
