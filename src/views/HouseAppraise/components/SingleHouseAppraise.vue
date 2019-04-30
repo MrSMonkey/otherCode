@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 18:03:52
+ * @Last Modified time: 2019-04-30 16:34:49
  */
 
 <template>
@@ -23,8 +23,8 @@
       </div>
       <div class="result-bottom">
         <ul>
-          <li>小区名称：{{appraiseInfo.projectName}}</li>
-          <li>房屋均价：{{appraiseInfo.unitPrice}}</li>
+          <li>小区名称：{{appraiseInfo.communityName}}</li>
+          <li>房屋均价：{{appraiseInfo.unitPrice}}元/平</li>
           <li>估价参考范围：{{(parseFloat(appraiseInfo.loanSum)*0.95).toFixed(2)}}万-{{(parseFloat(appraiseInfo.loanSum)*1.05).toFixed(2)}}万</li>
         </ul>
       </div>
