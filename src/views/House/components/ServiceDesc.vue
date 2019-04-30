@@ -19,7 +19,7 @@
       </li>
     </ul>
     <div class="info-footer" v-if="serviceDescData.linkText">
-      <span>{{serviceDescData.title}}</span>
+      <span>{{serviceDescData.linkText}}</span>
       <span>
         <img :src="require('@/assets/images/icon/icon_arrow2.png')"/>
         <img :src="require('@/assets/images/icon/icon_arrow2.png')"/>

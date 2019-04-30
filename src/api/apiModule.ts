@@ -2,7 +2,12 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
+<<<<<<< HEAD
  * @Last Modified by: LongWei
+=======
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-29 14:17:01
+>>>>>>> d58dddc1091bb14497a580ebf35957890626fae5
  */
 
 export default {
@@ -59,9 +64,6 @@ export default {
 
   /*根据关键词获取委托房源的小区*/
   getKeyCommunityList: '/es/community/search/name',
-
-  /*根据关键词获取房屋估价的小区*/
-  getAppraiseCommunityList: '/es/appraiseCommunity/search/name',
 
   /*获取城市列表*/
   getCitys: '/partner/common/city',
@@ -182,6 +184,15 @@ export default {
 
   /*获取JsSDK配置*/
   getJssdkConfig: `/partner/star/owner/get_jssdk_config`,
+
+  /*获取星空业主号效能客服SDK（旧业主）*/
+  getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
+
+  /*单套房屋估价结果*/
+  getSingleHouseValuation: '/facing/pricing/house/valuation_name',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseCommunityList: '/partner/facing/pricing/community',
 
 
 };

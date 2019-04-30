@@ -59,6 +59,7 @@ const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */
 const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
 const OldMyQRecode = () => import(/* webpackChunkName: 'oldMyQRecode' */ '@/views/OldBusinessCard/OldMyQRecode.vue');
 const OldMyBusinessCard = () => import(/* webpackChunkName: 'oldMyBusinessCard' */ '@/views/OldBusinessCard/OldMyBusinessCard.vue');
+const CustomerService = () => import(/* webpackChunkName: 'customerService' */ '@/views/Customer/CustomerService.vue');
 
 // 旧公众号 我的房源
 const OldMyHouse = () => import(/* webpackChunkName: 'packPayment' */ '@/views/House/OldMyHouse.vue');
@@ -106,7 +107,7 @@ router = new Router({
     {
       path: '/houseAppraise',
       name: 'houseAppraise',
-      meta: {title: '房屋估价', requireAuth: false},
+      meta: {title: '房屋估价', requireAuth: true},
       component: HouseAppraise,
       beforeEnter: (to, from, next) => {
         // const token: any = store.getters['global/getToken'];
@@ -116,8 +117,8 @@ router = new Router({
         next();
       }
     },
-    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: false}, component: AppraiseHouseInfo},
-    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: false}, component: AppraiseCommunity},
+    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: true}, component: AppraiseHouseInfo},
+    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: true}, component: AppraiseCommunity},
     // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
     { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: false}, component: OldMyHouse},
     { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: false}, component: OldMyAccount},
@@ -131,6 +132,7 @@ router = new Router({
     { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
     { path: '/oldMyQRecode', name: 'oldMyQRecode', meta: {title: '我的二维码', requireAuth: false}, component: OldMyQRecode},
     { path: '/oldMyBusinessCard', name: 'oldMyBusinessCard', meta: {title: '我的名片', requireAuth: false}, component: OldMyBusinessCard},
+    { path: '/customerService', name: 'customerService', meta: {title: '客服', requireAuth: false}, component: CustomerService},
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',

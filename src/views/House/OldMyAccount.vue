@@ -3,12 +3,14 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-29 09:57:59
+ * @Last Modified time: 2019-04-29 15:05:43
  */
 <template>
   <section class="my-account">
     <div class="kefu">
-      <img src="../../assets/images/kefu.png">
+      <router-link to="/customerService">
+        <img src="../../assets/images/kefu.png">
+      </router-link>
     </div>
     <section class="total">
       <p>{{houseCount}}套房屋，累计收入</p>

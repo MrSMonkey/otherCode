@@ -3,22 +3,21 @@
  * @Author: linyu
  * @Date: 2019-04-26 15:25:38
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-26 17:00:41
+ * @Last Modified time: 2019-04-29 14:12:36
  */
 
 <template>
-  <section class="service-tabs-title">
+  <section class="service-tabs-title" ref="serviceTabsTitle">
     <van-tabs
       v-model="active"
       :line-width="lineWidth"
       :line-height="4"
       sticky
       :style="[style1]"
-      @change="tabChange"
       @scroll="stickChange"
     >
       <van-tab v-for="(item, index) in tabsTitleData" :key="index">
-        <div slot="title">
+        <div slot="title" :ref="'tabsPanel' + index">
           <div :class="['title-panel', active == index ? 'title-panel-active' : '', tabIsFixed ? 'tab-fixed' : '']">
             <div class="title-logo">
               <img :src="item.img"/>
@@ -54,6 +53,10 @@ import api from '@/api';
 })
 // 类方式声明当前组件
 export default class ServiceTabsTitle extends CommonMixins {
+  public $refs!: {
+    [key: string]: any
+  };
+
   @Prop({
     type: Array,
     default: []
@@ -62,12 +65,19 @@ export default class ServiceTabsTitle extends CommonMixins {
   private active: number = 0; // 当前选中标签的索引
   private lineWidth: number = 0; // 激活样式的底部条宽度
   private tabIsFixed: boolean = false; // tabs菜单是否吸顶
+  private tabsOffsetTop: number = 0; // 获取tab菜单距页面顶部的高度
   private style1: any = {
     paddingTop: '181px'
   };
 
   private mounted() {
     this.lineWidth = transformVwToPx(0.84) / 3;
+    this.$nextTick(() => {
+      setTimeout(() => {
+        const serviceTabsTitle = this.$refs.serviceTabsTitle;
+        this.tabsOffsetTop = serviceTabsTitle.offsetTop - 1;
+      }, 1000);
+    });
   }
 
   /**
@@ -78,14 +88,14 @@ export default class ServiceTabsTitle extends CommonMixins {
    * @author linyu
    */
   private stickChange(v: any): void {
-    // console.log(v);
     this.tabIsFixed = v.isFixed;
-    if (v.scrollTop === 625) {
+    if (v.scrollTop === this.tabsOffsetTop) {
       this.tabIsFixed = true;
     }
-  }
-  private tabChange(v: any): void {
-    // console.log(this.tabIsFixed)
+    this.$nextTick(() => {
+      const tabsHeight: any = this.$refs.tabsPanel1.clientHeight + transformVwToPx(0.04);
+      this.style1.paddingTop = tabsHeight + 'px';
+    });
   }
 }
 </script>
