@@ -365,4 +365,17 @@ export default class Perfect extends CommonMixins {
             text-align justify
             color $text-color
             font-size 15px
+    .other
+      margin-top 15px
+      .submit-btn-panel
+        padding 0 vw(7.3)
+        .submit-btn
+          font-size 17px
+          border-radius 5px
+          background $main-color
+          color #ffffff
+        .disabled-btn
+          opacity 1
+          background $disabled-color  
+</style>
 </style>

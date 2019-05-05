@@ -18,7 +18,7 @@
         v-else 
       ></MultiHouseAppraise>
       <div class="submit-btn-panel" v-if="appraiseResult.length !== 0">
-          <van-button
+        <van-button
           size="large" 
           class="submit-btn"
           @click="toAppraiseHouseInfo"
