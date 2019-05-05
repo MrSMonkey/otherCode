@@ -165,4 +165,5 @@ export default class EntrustPlan extends CommonMixins {
     left 0
     background $main-color
     color #fff
+    z-index: 100;
 </style>
