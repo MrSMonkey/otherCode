@@ -28,7 +28,6 @@ export default class HouseTitle extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .house-title
   h2 
     font-size 16px

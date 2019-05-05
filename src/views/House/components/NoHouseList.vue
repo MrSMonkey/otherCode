@@ -31,7 +31,6 @@ export default class NoHouseList extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .no-house
   text-align center
   img 

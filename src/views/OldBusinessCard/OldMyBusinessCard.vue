@@ -94,7 +94,7 @@ export default class OldMyBusinessCard extends CommonMixins {
       const res: any = await this.axios.get(`${api.getWXUserInfo}/${openId}/${accessToken}`);
       if (res.code === '000') {
         const data = res.data;
-        console.log(data);
+        // console.log(data);
         this.userName = data.nickName;
         this.userLogoUrl = data.headImgUrlBase64;
         this.$toast.clear();
@@ -126,7 +126,7 @@ export default class OldMyBusinessCard extends CommonMixins {
   }
 
   private onTransformEnd(canvas: any) {
-    console.log(canvas);
+    // console.log(canvas);
     let canvasUrl;
     try {
       canvasUrl = canvas.toDataURL('image/jpg');

@@ -36,6 +36,7 @@ export default class CustomerService extends CommonMixins {
 
   @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
   @Getter('getUserInfo', { namespace }) private userInfo: any;
+
   private url: string = 'https://dl.ntalker.com/js/xn6/ntkfstat.js?siteid=kf_9452';
   private uname: string = '';
   private uid: string = '';
