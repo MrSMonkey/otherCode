@@ -1,15 +1,29 @@
 <template>
   <section class="house-appraise">
     <AppraiseLoading v-show="loading" @refresh="refresh"></AppraiseLoading>
-    <section v-show="!loading">
+    <section class="result-panel" v-show="!loading">
+      <div class="zero-result" v-if="appraiseResult.length === 0">
+        <div>
+          你所在小区房屋暂时无法估价，请敬请期待！
+          <br/>
+          <span @click="toAppraiseHouseInfo">点击查看</span> 其它房源估价
+        </div>
+      </div>
       <SingleHouseAppraise
-        v-if="isFromAppraiseHOuseInfo || appraiseResult.length <= 1"
+        v-if="isFromAppraiseHOuseInfo || appraiseResult.length === 1"
         :appraise-info="appraiseResult"
       ></SingleHouseAppraise>
       <MultiHouseAppraise
         :appraise-info="appraiseResult"
         v-else 
       ></MultiHouseAppraise>
+      <div class="submit-btn-panel" v-if="appraiseResult.length !== 0">
+          <van-button
+          size="large" 
+          class="submit-btn"
+          @click="toAppraiseHouseInfo"
+        >查看其它房屋估价</van-button>
+      </div>
     </section>
   </section>
 </template>
@@ -17,6 +31,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import { Button } from 'vant';
 import MultiHouseAppraise from '@/views/HouseAppraise/components/MultiHouseAppraise.vue';
 import SingleHouseAppraise from '@/views/HouseAppraise/components/SingleHouseAppraise.vue';
 import AppraiseLoading from '@/views/HouseAppraise/components/AppraiseLoading.vue';
@@ -27,6 +42,7 @@ import api from '@/api';
 @Component({
   name: 'HouseAppraise',
   components: {
+    Button,
     MultiHouseAppraise,
     SingleHouseAppraise,
     AppraiseLoading
@@ -56,6 +72,11 @@ export default class HouseAppraise extends CommonMixins {
     this.getHouseValuation();
   }
 
+  /**
+   * @description 已有房源直接获取估价结果
+   * @returns void
+   * @author linyu
+   */
   private async getHouseValuation() {
     try {
       this.loading = true;
@@ -67,6 +88,8 @@ export default class HouseAppraise extends CommonMixins {
           } else {
             this.appraiseResult = res.data.valuationDetail;
           }
+        } else {
+          this.appraiseResult = [];
         }
         this.loading = false;
         console.log(res);
@@ -79,6 +102,15 @@ export default class HouseAppraise extends CommonMixins {
       this.loading = false;
     }
   }
+
+  /**
+   * @description 跳转到录入房屋估价信息页面
+   * @returns void
+   * @author linyu
+   */
+  private toAppraiseHouseInfo() {
+    this.$router.push('/appraiseHouseInfo');
+  }
 }
 </script>
 
@@ -87,5 +119,27 @@ export default class HouseAppraise extends CommonMixins {
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .house-appraise
     height 100%
+    .result-panel
+      height 100%
+      .zero-result
+        height 100%
+        display flex
+        align-items center
+        justify-content center
+        line-height 24px
+        text-align center
+        color $next-text-color
+        font-size vw(14)
+        span 
+          color $main-color
+    .submit-btn-panel
+      margin-top 15px
+      padding 0 vw(7.3)
+      .submit-btn
+        font-size 17px
+        border-radius 5px
+        background $main-color
+        color #ffffff
+</style>
 </style>
 

@@ -256,7 +256,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
   .other
     margin-top 15px
     .submit-btn-panel
-    np
       padding 0 vw(7.3)
       .submit-btn
         font-size 17px
