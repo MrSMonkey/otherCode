@@ -54,6 +54,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { handleWebStorage } from '@/utils/utils';
 import { Field, Row, Col, Button } from 'vant';
 import api from '@/api';
+import { config } from '@vue/test-utils';
 // global vuex
 const namespace: string = 'global';
 // 声明引入的组件
@@ -76,6 +77,7 @@ export default class Bind extends CommonMixins {
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
   @Mutation('updateUserInfo', { namespace }) private updateUserInfo: any;
+  @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
 
   private phone: string = '';
   private code: string = '';
@@ -128,8 +130,9 @@ export default class Bind extends CommonMixins {
   private async submitLogin() {
     try {
       this.loading = true;
-      const res: any = await this.axios.post(api.login, {
+      const res: any = await this.axios.post(api.newLogin, {
         mobile: this.phone,
+        openId: this.wxOAuth.openId,
         verificationCode: this.code,
         registerSource: 1
       });
