@@ -63,7 +63,7 @@ Axios.interceptors.request.use(
     }
 
     /*登录授权, 登录接口修改 Authorization */
-    if (config.url.indexOf('/auth/asset/register_login/web/mobile') > -1
+    if (config.url.indexOf('/auth/asset/register_login/web/mobile2wechat') > -1
       || config.url.indexOf('/verification_code') > -1) {
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2';
     } else {
