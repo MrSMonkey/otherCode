@@ -16,6 +16,9 @@ export default {
   /*登录*/
   login: '/auth/asset/register_login/web/mobile',
 
+  /*注册登录(一体接口)*/
+  newLogin: '/auth/asset/register_login/web/mobile2wechat',
+
   /*获取房源信息*/
   getHouseInfo: '/partner/owner/entrust',
 

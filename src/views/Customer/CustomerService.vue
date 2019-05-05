@@ -7,7 +7,6 @@
  */
  <template>
   <section class="customer-main" ref="customerMain" id="customerMain">
-    {{window.NTKF}}
   </section>
 </template>
 
@@ -43,19 +42,20 @@ export default class CustomerService extends CommonMixins {
   private siteId: string = '';
   private settingId: string = '';
   private NTKF: any = {};
-  private str: string = '11111111222';
+  private str: string = '11111111';
   @Watch('window.NTKF')
   private search() {
-    if (!window.NTKF) {
-      return;
-    }
+    // if (!window.NTKF) {
+    //   return;
+    // }
     this.getUserInfo();
   }
 
   private  created() {
-    if (!window.NTKF) {
-      this.loadScript();
-    }
+    // if (!window.NTKF) {
+    //   this.loadScript();
+    // }
+    this.loadScript();
   }
   private  mounted() {
     this.getUserInfo();
@@ -64,11 +64,12 @@ export default class CustomerService extends CommonMixins {
   // 加载 - 第三方插件
   private loadScript() {
     const script: any = document.createElement('script');
-    const head =  document.getElementsByTagName('head')[0];
+    // const head =  document.getElementsByTagName('head')[0];
     script.src = this.url;
     script.type = 'text/javascript';
     script.charset = 'utf-8';
-    head.insertBefore(script, head.lastChild);
+    document.body.insertBefore(script, document.body.firstChild);
+    // head.insertBefore(script, head.lastChild);
   }
 
   // 获取 - 微信账号基本信息
@@ -103,16 +104,14 @@ export default class CustomerService extends CommonMixins {
         const NTKF_PARAM: any = {
           siteid: this.siteId,                // 企业ID，为固定值，必填
           settingid: this.settingId,  // 接待组ID，为固定值，必填
-          uid: this.uid,  // 用户ID，未登录可以为空，但不能给null，uid赋予的值显示到小能客户端上
-          uname: this.uname,      // 用户名，未登录可以为空，但不能给null，uname赋予的值显示到小能客户端上
+          uid: this.uid || '',  // 用户ID，未登录可以为空，但不能给null，uid赋予的值显示到小能客户端上
+          uname: this.uname || '',      // 用户名，未登录可以为空，但不能给null，uname赋予的值显示到小能客户端上
           isvip: '0',        // 是否为vip用户，0代表非会员，1代表会员，取值显示到小能客户端上
           userlevel: '0',    // 网站自定义会员级别，0-N，可根据选择判断，取值显示到小能客户端上
           erpparam: '',       // erpparam为erp功能的扩展字段，可选，购买erp功能后用于erp功能集成
         };
-        this.str = '2222222222222';
         window.NTKF_PARAM = NTKF_PARAM;
-        window.NTKF.im_openInPageChat(this.settingId);
-        this.str = '33333333333';
+        window.NTKF.im_openInPageChat(data.settingId);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');

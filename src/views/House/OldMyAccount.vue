@@ -19,25 +19,31 @@
     <section class="tit">
       <span>已收账单</span>
     </section>
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
+    
       <section class="table">
         <div class="tr">
           <span>账单名称</span>
           <span>实收款</span>
           <span>实收款日期</span>
         </div>
-        <div class="tr" v-for="(item,index) in list" :key="index" @click="toLink(item.id)">
-          <span>{{item.batchTitle}}</span>
-          <span>¥{{item.amountPaid}}</span>
-          <span>{{item.lastPayTime | dateFilter}}</span>
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+          v-show="list && list.length" 
+        >
+          <div class="tr" v-for="(item,index) in list" :key="index" @click="toLink(item.id)">
+            <span>{{item.batchTitle}}</span>
+            <span>¥{{item.amountPaid}}</span>
+            <span>{{item.lastPayTime | dateFilter}}</span>
+          </div>
+        </van-list>
+        <div v-show="list && list.length===0" class="no-account">
+          暂无账单数据
         </div>
       </section>
-    </van-list>
+   
   </section>
 </template>
 
@@ -114,8 +120,8 @@ export default class OldMyAccount extends CommonMixins {
       const res: any = await this.axios.get(`${api.getHousecount}`);
       if (res.code === '000') {
         const data = res.data;
-        this.totalAmount = data.totalAmount;
-        this.houseCount = data.houseCount;
+        this.totalAmount = data ? data.totalAmount : 0;
+        this.houseCount = data ? data.houseCount : 0;
       }
       console.log(res, '房东房源数和账单收入');
     } catch (err) {
@@ -150,7 +156,12 @@ export default class OldMyAccount extends CommonMixins {
       height: vw(60);
     }
   }
-
+  .no-account {
+    text-align : center;
+    padding :  vw(15) 0;
+    font-size : 12px;
+    color: $next-text-color;
+  }
   .total {
     display: flex;
     flex-direction: column;
