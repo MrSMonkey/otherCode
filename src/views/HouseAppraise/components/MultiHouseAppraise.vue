@@ -62,6 +62,7 @@ export default class MultiHouseAppraise extends CommonMixins {
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .multi-house-appraise
     .appraise-item
+      margin-bottom vw(10)
       padding 15px 0
       background #ffffff
       .item-header
