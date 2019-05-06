@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 17:48:48
+ * @Last Modified time: 2019-05-06 11:59:01
  */
 <template>
   <section class="house-contract">
@@ -223,6 +223,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import api from '@/api';
+import { Loading } from '@/utils/decorators';
 
 // 声明引入的组件
 @Component({
@@ -231,7 +232,14 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class OldHouseContract extends CommonMixins {
   private contractInfo: any = {};
+
   private async mounted() {
+    this.getContractInfo();
+  }
+
+  // 获取合同详情
+  @Loading()
+  private async getContractInfo() {
     const contractId: string = String(this.$route.query.contractId);
     try {
       const res: any = await this.axios.get(`${api.getContractInfo}/${contractId}`);

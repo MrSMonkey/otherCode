@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 15:31:41
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-29 10:02:28
+ * @Last Modified time: 2019-05-06 11:59:12
  */
 <template>
   <section class="house-pic">
@@ -32,6 +32,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import ImagePreview from '@/components/ImagePreview.vue';
 import api from '@/api';
 import { State, Getter, Mutation, Action } from 'vuex-class';
+import { Loading } from '@/utils/decorators';
 
 const namespace: string = 'global';
 
@@ -68,6 +69,7 @@ export default class OldHousePic extends CommonMixins {
   }
 
   // 获取 - 房间图片信息
+  @Loading()
   private async getPicture() {
     try {
       const res: any = await this.axios.get(`${api.getHousePictures}/${this.houseId}/${this.contractId}`);

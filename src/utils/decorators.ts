@@ -2,8 +2,8 @@
  * @Description: 通用的装饰器集合
  * @Author: zhegu
  * @Date: 2019-04-02 15:58:51
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-04-02 15:58:51
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 11:58:17
  */
 
 import Vue from 'vue';
@@ -13,13 +13,13 @@ import { getErrorMessage } from './utils';
  * 给异步方法添加loading效果
  * @param  {any} options
  */
-export function Loading(options: any) {
+export function Loading(options?: any) {
   return (target: any, name: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
     const originalCb = descriptor.value;
     descriptor.value = function() {
       return new Promise(async (resolve, reject) => {
         Vue.prototype.$toast.loading({
-          duration: 200,
+          duration: 0,
           mask: true,
           loadingType: 'spinner',
           message: '加载中...'
@@ -29,7 +29,7 @@ export function Loading(options: any) {
         } catch (e) {
           reject(e);
         } finally {
-          // Vue.prototype.$toast.clear();
+          Vue.prototype.$toast.clear();
         }
       });
     };
