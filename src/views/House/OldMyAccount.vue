@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-29 15:05:43
+ * @Last Modified time: 2019-05-06 11:58:25
  */
 <template>
   <section class="my-account">
@@ -20,7 +20,7 @@
       <span>已收账单</span>
     </section>
     
-      <section class="table">
+      <section class="table" id="myAccountMain">
         <div class="tr">
           <span>账单名称</span>
           <span>实收款</span>
@@ -51,9 +51,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import api from '@/api';
-import { List } from 'vant';
+import { List, Locale } from 'vant';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import { config } from '@vue/test-utils';
+import { Loading } from '@/utils/decorators';
 
 const namespace: string = 'global';
 
@@ -75,7 +76,7 @@ Vue.use(List);
 export default class OldMyAccount extends CommonMixins {
   private hosueId: string = ''; // 房源id
   private pageIndex: number = 1;
-  private pageSize: number = 10;
+  private pageSize: number = 20;
   private finished: boolean = false;
   private loading: boolean = false;
   private list: any[] = []; // 房间详情
@@ -91,6 +92,7 @@ export default class OldMyAccount extends CommonMixins {
   }
 
   // 获取 - 房源基本信息
+  @Loading()
   private async getAccountList() {
     if (this.$route.query.houseId) { // 房源账单列表
       this.hosueId = String(this.$route.query.houseId);

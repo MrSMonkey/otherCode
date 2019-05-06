@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-29 11:19:44
+ * @Last Modified time: 2019-05-06 11:49:42
  */
 
 <template>
@@ -171,7 +171,7 @@ export default class OldMyBusinessCard extends CommonMixins {
       letter-spacing 0
       margin-top vw(5)
       margin-bottom vw(15)
-    .van-swipe__track
+    .van-swipe__track 
       ::before
         content '长按图片保存'
         position absolute
