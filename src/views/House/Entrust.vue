@@ -145,13 +145,14 @@ export default class Entrust extends CommonMixins {
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
   @Getter('getUserInfo', { namespace }) private userInfo: any;
+  @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
 
   private mounted() {
     this.sourceId = this.$route.query.sourceId;
     this.routeName = String(this.$route.name);
     this.getCitys(); // 获取城市
-    const token: string = String(localStorage.getItem('siteToken'));
-    this.isLogin = !!localStorage.getItem('siteToken');
+    const token: string = String(localStorage.getItem('access_token'));
+    this.isLogin = !!localStorage.getItem('access_token');
   }
 
   /**
@@ -304,14 +305,15 @@ export default class Entrust extends CommonMixins {
    */
   private async submitLogin() {
     try {
-      const res: any = await this.axios.post(api.login, {
+      const res: any = await this.axios.post(api.newLogin, {
         mobile: this.ownerPhone,
+        openId: this.wxOAuth.openId,
         verificationCode: this.varityCold,
         registerSource: 1
       });
       this.loading = true;
       if (res && res.code === '000') {
-        handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
+        handleWebStorage.setLocalData('access_token', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
         this.submitData(); // 登录后提交房源信息

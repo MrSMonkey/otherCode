@@ -137,7 +137,7 @@ export default class Bind extends CommonMixins {
         registerSource: 1
       });
       if (res && res.code === '000') {
-        handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
+        handleWebStorage.setLocalData('access_token', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
         await this.getUserInfo();
@@ -191,7 +191,7 @@ export default class Bind extends CommonMixins {
     }
   }
   private mounted() {
-    console.log('redirectUrl', this.$route.query.redirectUrl);
+    // console.log('redirectUrl', this.$route.query.redirectUrl);
     if (this.$route.query.redirectUrl) {
       this.redirectUrl = String(this.$route.query.redirectUrl);
     } else {

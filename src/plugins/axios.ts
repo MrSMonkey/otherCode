@@ -67,7 +67,7 @@ Axios.interceptors.request.use(
       || config.url.indexOf('/verification_code') > -1) {
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2';
     } else {
-      const token: string | null = localStorage.getItem('siteToken');
+      const token: string | null = localStorage.getItem('access_token');
       config.headers.Authorization = token !== null ? `Bearer ${ token}` : '';
     }
 
@@ -83,7 +83,7 @@ Axios.interceptors.response.use(
     const redirectUrl: string | null = getRedirectUrl();
     // 这里可以做一些响应拦截的操作
     if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
-      localStorage.removeItem('siteToken'); // 清除token
+      localStorage.removeItem('access_token'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
       router.push(`/bind?redirectUrl=${redirectUrl}`);
     }

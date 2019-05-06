@@ -50,7 +50,7 @@ export function ErrorMsg(defaultMsg?: string) {
         try {
           resolve(await originalCb.apply(this, arguments));
         } catch (e) {
-          Vue.prototype.$toast(getErrorMessage(e, defaultMsg));
+          Vue.prototype.$Notify(getErrorMessage(e, defaultMsg));
           reject(e);
         }
       });
