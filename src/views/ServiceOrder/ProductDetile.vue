@@ -2,8 +2,8 @@
  * @Description: 服务产品订单详情
  * @Author: chenmo
  * @Date: 2019-03-14 20:26:26
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-26 17:13:59
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:48:23
  */
 
 <template>
@@ -55,6 +55,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { getQueryString, returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
+import {Loading, ErrorMsg} from '@/utils/decorators';
 const namespace: string = 'global';
 
 
@@ -82,13 +83,9 @@ export default class ProductDetile extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取订单详情失败')
   private async getServiceOrder(orderId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getProductOrderDetail + `/${orderId}`);
       if (res && res.code === '000') {
@@ -109,13 +106,11 @@ export default class ProductDetile extends CommonMixins {
             // on cancel 取消
           });
         }
-      } else {
-        this.$toast(`获取订单详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 

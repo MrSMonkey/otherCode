@@ -2,8 +2,8 @@
  * @Description: 服务订单列表
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-23 10:12:22
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:45:11
  */
 
 <template>
@@ -48,6 +48,7 @@ import RefundOrderList from './components/RefundOrderList.vue';
 import { getQueryString } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import api from '@/api';
+import {Loading, ErrorMsg} from '@/utils/decorators';
 
 // 声明引入的组件
 @Component({
@@ -78,24 +79,18 @@ export default class ServiceOrder extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取服务包订单列表失败')
   private async getServiceOrder(entrustId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getServiceOrder + `/${entrustId}`);
       if (res && res.code === '000') {
         this.tableData = res.data || [];
-      } else {
-        this.$toast(`获取服务包订单列表失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
@@ -105,24 +100,18 @@ export default class ServiceOrder extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取服务产品订单列表失败')
   private async getProductOrderList(entrustId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getProductOrderList + `/${entrustId}`);
       if (res && res.code === '000') {
         this.tableProductData = res.data || [];
-      } else {
-        this.$toast(`获取服务产品订单列表失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
@@ -132,24 +121,18 @@ export default class ServiceOrder extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取退款订单列表失败')
   private async getRefundOrderList(entrustId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getRefundOrderList + `/${entrustId}`);
       if (res && res.code === '000') {
         this.tableRefundData = res.data || [];
-      } else {
-        this.$toast(`获取退款订单列表失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 

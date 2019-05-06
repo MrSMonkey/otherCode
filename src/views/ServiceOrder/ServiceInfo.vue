@@ -2,8 +2,8 @@
  * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 17:44:13
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:49:16
  */
 
 <template>
@@ -48,6 +48,7 @@ import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
+import {Loading, ErrorMsg} from '@/utils/decorators';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -82,24 +83,18 @@ export default class ServiceInfo extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取服务包详情失败')
   private async getServiceDetils(serviceId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getServiceDetils + `/${serviceId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
-      } else {
-        this.$toast(`获取服务包详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
