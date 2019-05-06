@@ -69,7 +69,7 @@
       confirm-button-text="保存"
       show-cancel-button
       class="appraise-dialog"
-      @confirm="dialogConfirm"
+      :before-close="beforeClose"
     >
       <div class="dialog-content">
         <div class="dialog-text-panel">您爱屋所在的小区名未找到，评估师将通过人工方式为您评估价格后反馈给您。</div>
@@ -241,9 +241,57 @@ export default class AppraiseCommunity extends CommonMixins {
    * @returns void
    * @author linyu
    */
-  private dialogConfirm() {
-    if (!this.username) {
-      this.$toast('称呼输入格式不正确');
+  // private dialogConfirm(action: any, done: any) {
+  //  // console.log(action, done)
+  //   if (!this.username) {
+  //     this.$toast('称呼输入格式不正确');
+  //   }
+  // }
+
+  private async beforeClose(action: any, done: any) {
+    if (action === 'confirm') {
+      // setTimeout(done, 1000);
+      if (!this.username) {
+        this.$toast('请输入称呼');
+        done(false);
+        return false;
+      }
+      if (!this.phone) {
+        this.$toast('请输入手机号');
+        done(false);
+        return false;
+      }
+      await this.postMail();
+      done();
+    } else {
+      done();
+    }
+  }
+
+  /**
+   * @description 为找到小区发送email
+   * @returns void
+   * @author chenmo
+   */
+  private async postMail() {
+    try {
+      const res: any = await this.axios.post(api.sendMail, {
+        cityId: '278',
+        cityName: '成都市',
+        communityName: this.searchInputValue,
+        ownerName: this.username,
+        ownerPhone: this.phone,
+        remark: '',
+        source: '星空业主服务号'
+      });
+      if (res && res.code === '000') {
+        this.username = '';
+        this.phone = '';
+      } else {
+        this.$toast(res.msg);
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
     }
   }
 }

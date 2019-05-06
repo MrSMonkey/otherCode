@@ -194,7 +194,8 @@ export default {
   getAppraiseCommunityList: 'price/facing/pricing/community',
 
   /*根据关键词获取房屋估价的小区*/
-  getAppraiseList: '/partner/facingpricing/house_valuation'
+  getAppraiseList: '/partner/facingpricing/house_valuation',
 
-
+  /*房屋估价小区未找到email通知*/
+  sendMail: '/partner/merge/owner/send_email'
 };
