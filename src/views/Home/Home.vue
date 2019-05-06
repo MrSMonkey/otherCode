@@ -3,17 +3,34 @@
   * @Description: 首页
   * @Author: chenmo
   * @Date: 2018-09-17 17:20:01
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 14:47:15
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 15:55:15
   */
 -->
 
 <template>
   <section class="home">
     <main class="home-comp_list">
-      <section class="header-img">
+      <!-- <section class="header-img">
         <img src="@/assets/images/home_bg.png" alt=""/>
-      </section>
+        <div class="home-msg">
+          <p class="asset-title">星空业主总资产（元）</p>
+          <p class="asset-num">
+            {{TotalAmount ? TotalAmount : '0'}}
+          </p>
+          <p class="house-title">当月新增资产</p>
+          <p class="house-num">
+           {{MonthTotalAmount ? MonthTotalAmount : '0'}}
+          </p>
+        </div>
+        <div class="home-logoInfo">
+           <div class="home-logo">
+            <img src="@/assets/images/starhome_yezhu.png" alt="" v-if="!userLogoUrl"/>
+            <img :src="userLogoUrl" alt="" v-else/>
+          </div>
+          <span>{{ nikeName ? nikeName : '星空房东'}}</span>
+        </div>
+      </section> -->
       <hr-title title="星空产品服务群"></hr-title>
       <section class="star-home">
         <img v-for="img in startHomeImg" :key="img.alt" alt="img.alt" :src="img.src"/>
@@ -68,6 +85,9 @@ import UokoDetailPlant from '@/components/UokoDetailPlant.vue';
 import TimeLine from '@/components/TimeLine.vue';
 import timeLineData from '../../../data/versions';
 import {START_HOME_IMG, SMART_LOCK_LINK} from '@/config/config';
+import api from '@/api';
+
+const namespace: string = 'global';
 
 // 声明引入的组件
 @Component({
@@ -85,7 +105,47 @@ export default class Home extends CommonMixins {
   private link: string = SMART_LOCK_LINK;
   private show: boolean = false;
   private timeLineData: any = timeLineData;
+  private TotalAmount: number = 0; // 业主总资产
+  private MonthTotalAmount: number = 0; // 当月新增资产
+  private nikeName: string = ''; // 房东姓名
+  private userLogoUrl: string = ''; // 房东头像
   @State('version') private version: string;
+  @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
+
+  private mounted() {
+    // this.getUserInfo();
+    // this.getUserAccountInfo();
+  }
+
+  // 获取 - 微信账号基本信息
+  private async getUserInfo() {
+    try {
+      const openId = this.wxOAuth.openId || 'oI4Vdw5WOPIPSLMOrgvuLmnw61dM';
+      const accessToken = this.wxOAuth.accessToken || '21_nzg6OHk2pP0tsWvfeezLcUblVafEKOf3M5528_YDn5PKFt7Pr4sZNKk6fkokiaMqDpFPKZwaytpr9mHGM80U0w';
+      const res: any = await this.axios.get(`${api.getWXUserInfo}/${openId}/${accessToken}`);
+      if (res.code === '000') {
+        const data = res.data;
+        this.nikeName = data.nickName;
+        this.userLogoUrl = data.headImgUrl;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  // 获取 - 房东累计收入
+  private async getUserAccountInfo() {
+    try {
+      const res: any = await this.axios.get(`${api.getHousecount}`);
+      if (res.code === '000') {
+        const data = res.data;
+        this.TotalAmount = data && data.totalAmount;
+        this.MonthTotalAmount = data && data.monthTotalAmount;
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
 
 }
 </script>
@@ -95,9 +155,57 @@ export default class Home extends CommonMixins {
 
 .home
   .header-img
+    position relative
     img 
       display inline-block
       width 100%
+    .home-msg
+      position relative
+      height auto
+      top vw(-150)
+      z-index 1000
+      color $border-color-light
+      p
+        position absolute
+        left vw(30)
+        letter-spacing 1px /* no */
+      .asset-title 
+        top vw(-6)
+        font-size 12px /* no */
+      .asset-num 
+        top vw(20)
+        font-size 32px /* no */
+        font-weight lighter
+      .house-title 
+        top vw(70)
+        font-size 12px /* no */
+      .house-num 
+        top vw(90)
+        font-size 12px /* no */
+    .home-logoInfo
+      position absolute
+      right vw(60)
+      bottom vw(40)
+      .home-logo
+        width vw(38)
+        height vw(38)
+        border-radius 50%
+        overflow hidden
+        text-align center
+        transform translateX(-50%)
+        position relative
+        top vw(10)
+        img
+          width 100%
+          height 100%
+          vertical-align middle 
+      span 
+        position relative
+        top vw(-19)
+        left vw(28)
+        z-index 10000
+        font-size 12px
+        color $border-color-light
   .star-home
     padding vw(20)
     display flex

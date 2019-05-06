@@ -2,8 +2,8 @@
  * @Description: 服务产品支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 16:38:35
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:55:02
  */
 
 
@@ -159,6 +159,7 @@ import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
+import { Loading, ErrorMsg } from '@/utils/decorators';
 
 const namespace: string = 'global';
 
@@ -332,13 +333,9 @@ export default class ProductPayment extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取服务产品详情失败')
   private async getProductDetail(productId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
       if (res && res.code === '000') {
@@ -347,13 +344,11 @@ export default class ProductPayment extends CommonMixins {
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-      } else {
-        this.$toast(`获取服务产品详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 

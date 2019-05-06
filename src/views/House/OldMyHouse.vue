@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 17:44:11
+ * @Last Modified time: 2019-05-06 17:00:19
  */
 <template>
   <section class="my-house">
@@ -83,7 +83,7 @@ export default class OldMyHouse extends CommonMixins {
     },
     {
       name: '房源合同',
-      img: require('../../assets/images/icon/icon_bill.png'),
+      img: require('../../assets/images/icon/contract.png'),
       to: '/'
     },
     {
@@ -132,9 +132,8 @@ export default class OldMyHouse extends CommonMixins {
       const res: any = await this.axios.get(`${api.getOldHouseInfo}/${this.hosueId}`);
       if (res.code === '000') {
         this.houseBaseInfo = res.data;
-        this.updateOldHouseBaseInfo(res.data); // 更新vuex中的旧业主房源信息 - 因为账单接口中没有房源基础信息 - 只能全局使用
+        this.updateOldHouseBaseInfo(res.data); // 更新vuex中的旧业主房源信息 - 因为房源照片接口中没有房源基础信息 - 只能全局使用
       }
-      console.log(res, '房源基本信息');
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }

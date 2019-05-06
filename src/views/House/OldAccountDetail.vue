@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 16:55:04
+ * @Last Modified time: 2019-05-06 16:55:00
  */
 <template>
   <section class="account-detail">
@@ -11,7 +11,7 @@
       <h1>房源信息</h1>
       <section  class="detail">
         <span>房源信息：</span>
-        <span>{{oldHouseBaseInfo.communityName}}{{oldHouseBaseInfo.houseNumber}}</span>
+        <span>{{houseBaseInfo.communityName}}{{houseBaseInfo.houseNumber}}</span>
       </section>
     </section>
     <section  class="list">
@@ -77,6 +77,8 @@ const namespace: string = 'global';
 export default class OldAccountDetail extends CommonMixins {
   @Getter('getOldHouseBaseInfo', { namespace }) private oldHouseBaseInfo: any;
   private id: string = ''; // 账单详情
+  private houseId: string = ''; // 当前账单的房源id
+  private houseBaseInfo: string = ''; // 当前账单的房源基本信息
   private accountDetail: any = {};
   private accountDetailList: any[] = []; // 账单明细
 
@@ -84,8 +86,10 @@ export default class OldAccountDetail extends CommonMixins {
     console.log(this.oldHouseBaseInfo, '旧房源基础信息');
     if (this.$route.query.id) {
       this.id = String(this.$route.query.id);
+      this.houseId = String(this.$route.query.houseId);
     }
     this.getAccountDetail();
+    this.getHouseInfo();
   }
 
   // 获取 - 账单基本信息
@@ -100,7 +104,21 @@ export default class OldAccountDetail extends CommonMixins {
         this.accountDetail = data;
         this.accountDetailList = data.detailList || [];
       }
-      console.log(res, '账单基本信息');
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+   // 获取 - 房源基本信息
+  private async getHouseInfo() {
+    if (!this.houseId) {
+      return;
+    }
+    try {
+      const res: any = await this.axios.get(`${api.getOldHouseInfo}/${this.houseId}`);
+      if (res.code === '000') {
+        this.houseBaseInfo = res.data;
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }

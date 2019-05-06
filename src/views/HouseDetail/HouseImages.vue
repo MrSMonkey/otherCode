@@ -2,8 +2,8 @@
  * @Description: 房源照片
  * @Author: zhegu
  * @Date: 2019-04-02 10:44:52
- * @Last Modified by: zhegu
- * @Last Modified time: 2019-04-02 11:07:30
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:52:24
  */
 
 
@@ -34,6 +34,8 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { solveScrollBug } from '@/utils/utils';
 import ImagePreview from '@/components/ImagePreview.vue';
 import api from '@/api';
+import { Loading, ErrorMsg } from '@/utils/decorators';
+
 
 // 声明引入的组件
 @Component({
@@ -78,24 +80,18 @@ export default class MaintainChecked extends CommonMixins {
    * @returns void
    * @author zhegu
    */
+  @Loading()
+  @ErrorMsg('获取维修服务验收详情失败')
   private async getProductAcceptance(orderId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getProductAcceptance + `/${orderId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
-      } else {
-        this.$toast(`获取维修服务验收详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 

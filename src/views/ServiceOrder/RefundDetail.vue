@@ -2,8 +2,8 @@
  * @Description: 退款订单详情
  * @Author: chenmo
  * @Date: 2019-03-14 20:26:26
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-25 13:47:52
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:47:07
  */
 
 <template>
@@ -58,6 +58,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { getQueryString, returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
+import {Loading, ErrorMsg} from '@/utils/decorators';
 const namespace: string = 'global';
 
 
@@ -85,24 +86,18 @@ export default class RefundDetail extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取订单详情失败')
   private async getServiceOrder(orderId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getRefundDetail + `/${orderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-      } else {
-        this.$toast(`获取订单详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
