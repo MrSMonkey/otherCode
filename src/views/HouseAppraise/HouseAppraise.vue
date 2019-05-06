@@ -2,7 +2,7 @@
   <section class="house-appraise">
     <AppraiseLoading v-show="loading" @refresh="refresh"></AppraiseLoading>
     <section class="result-panel" v-show="!loading">
-      <div class="zero-result" v-if="appraiseResult.length === 0">
+      <div class="zero-result" v-if=" !isFromAppraiseHOuseInfo && appraiseResult.length === 0">
         <div>
           你所在小区房屋暂时无法估价，请敬请期待！
           <br/>
@@ -11,13 +11,13 @@
       </div>
       <SingleHouseAppraise
         v-if="isFromAppraiseHOuseInfo || appraiseResult.length === 1"
-        :appraise-info="appraiseResult"
+        :appraiseInfo="appraiseOneResult"
       ></SingleHouseAppraise>
       <MultiHouseAppraise
-        :appraise-info="appraiseResult"
+        :appraiseInfo="appraiseResult"
         v-else 
       ></MultiHouseAppraise>
-      <div class="submit-btn-panel" v-if="appraiseResult.length !== 0">
+      <div class="submit-btn-panel" >
         <van-button
           size="large" 
           class="submit-btn"
@@ -53,12 +53,12 @@ import api from '@/api';
 export default class HouseAppraise extends CommonMixins {
   private loading: boolean = false; // 请求接口过程中为true
   private isFromAppraiseHOuseInfo: boolean = false; // 从AppraiseHOuseInfo页面跳转过来时为true
-  private appraiseResult: any = {}; // 估价结果
+  private appraiseOneResult: any = {}; // 单个估价结果
+  private appraiseResult: any[] = []; // 多个估价结果
   private async mounted() {
     if (this.$route.params.communityId) { // 判断是否是从AppraiseHOuseInfo页面跳转过来
       this.isFromAppraiseHOuseInfo = true;
-      this.appraiseResult = this.$route.params;
-      console.log(this.$route);
+      this.appraiseOneResult = this.$route.params;
     } else {
       this.getHouseValuation();
     }
@@ -84,7 +84,8 @@ export default class HouseAppraise extends CommonMixins {
       if (res && res.code === '000') {
         if (res.data.valuationDetail && res.data.valuationDetail.length !== 0) {
           if (res.data.valuationDetail.length === 1)  {
-            this.appraiseResult = res.data.valuationDetail[0];
+            this.appraiseResult = res.data.valuationDetail;
+            this.appraiseOneResult = res.data.valuationDetail[0];
           } else {
             this.appraiseResult = res.data.valuationDetail;
           }
@@ -133,7 +134,7 @@ export default class HouseAppraise extends CommonMixins {
         span 
           color $main-color
     .submit-btn-panel
-      margin-top 15px
+      // margin-top 15px
       padding 0 vw(7.3)
       .submit-btn
         font-size 17px

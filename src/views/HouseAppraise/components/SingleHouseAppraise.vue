@@ -55,13 +55,23 @@ export default class SingleHouseAppraise extends CommonMixins {
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .single-house-appraise
+    position relative
+    &::after
+      display block
+      content ""
+      height 0
+      clear both
+      overflow hidden
+      visibility hidden
     .bg-panel
+      height 100%
       img
+        display inline-block
         width 100%
     .result-panel
-      position absolute
+      position relative
       left 0
-      top 0
+      top vw(-200)
       width 100%
       z-index 2
       .result-top

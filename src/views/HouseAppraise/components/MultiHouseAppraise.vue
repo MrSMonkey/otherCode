@@ -11,7 +11,7 @@
     <div class="appraise-item" v-for="(item, index) in appraiseInfo" :key="index">
       <div class="item-header">
         <p class="title">{{item.communityName}}</p>
-        <p class="header-desc">12栋2单元6楼602</p>
+        <!-- <p class="header-desc">12栋2单元6楼602</p> -->
       </div>
       <div class="item-footer">
         <div class="footer-left">
@@ -50,10 +50,10 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 // 类方式声明当前组件
 export default class MultiHouseAppraise extends CommonMixins {
   @Prop({
-    type: Object,
-    default: {}
+    type: Array,
+    default: () => []
   })
-  private appraiseInfo: any;
+  private appraiseInfo: any[];
 }
 </script>
 

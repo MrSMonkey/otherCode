@@ -7,6 +7,7 @@
  */
  <template>
   <section class="customer-main" ref="customerMain" id="customerMain">
+    <div>{{settingId}}</div>
   </section>
 </template>
 
@@ -55,7 +56,7 @@ export default class CustomerService extends CommonMixins {
     // if (!window.NTKF) {
     //   this.loadScript();
     // }
-    this.loadScript();
+    // this.loadScript();
   }
   private  mounted() {
     this.getUserInfo();

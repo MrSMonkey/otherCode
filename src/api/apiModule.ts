@@ -188,7 +188,7 @@ export default {
   getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
 
   /*单套房屋估价结果*/
-  getSingleHouseValuation: 'price/facing/pricing/house/valuation_ID',
+  getSingleHouseValuation: 'price/facing/pricing/house/valuation_id',
 
   /*根据关键词获取房屋估价的小区*/
   getAppraiseCommunityList: 'price/facing/pricing/community',
