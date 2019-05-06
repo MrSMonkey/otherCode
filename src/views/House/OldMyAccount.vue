@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-05-06 11:58:25
+ * @Last Modified time: 2019-05-06 16:51:55
  */
 <template>
   <section class="my-account">
@@ -33,7 +33,7 @@
           @load="onLoad"
           v-show="list && list.length" 
         >
-          <div class="tr" v-for="(item,index) in list" :key="index" @click="toLink(item.id)">
+          <div class="tr" v-for="(item,index) in list" :key="index" @click="toLink(item.id, item.houseId)">
             <span>{{item.batchTitle}}</span>
             <span>¥{{item.amountPaid}}</span>
             <span>{{item.lastPayTime | dateFilter}}</span>
@@ -54,7 +54,7 @@ import api from '@/api';
 import { List, Locale } from 'vant';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import { config } from '@vue/test-utils';
-import { Loading } from '@/utils/decorators';
+import { Loading, ErrorMsg } from '@/utils/decorators';
 
 const namespace: string = 'global';
 
@@ -86,13 +86,13 @@ export default class OldMyAccount extends CommonMixins {
   private url: string = ''; // api地址
 
   private created() {
-    console.log(this.$route.query.houseId, '11111111111');
     this.getAccountList();
     this.getUserHousecount();
   }
 
   // 获取 - 房源基本信息
   @Loading()
+  @ErrorMsg('获取账单列表')
   private async getAccountList() {
     if (this.$route.query.houseId) { // 房源账单列表
       this.hosueId = String(this.$route.query.houseId);
@@ -110,7 +110,6 @@ export default class OldMyAccount extends CommonMixins {
         }
         this.loading = false;
       }
-      console.log(res, '房源基本信息');
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -137,8 +136,8 @@ export default class OldMyAccount extends CommonMixins {
     this.getAccountList();
   }
 
-  private toLink(id: string) {
-    this.$router.push(`/OldAccountDetail?id=${id}`);
+  private toLink(id: string, houseId: string) {
+    this.$router.push(`/OldAccountDetail?id=${id}&houseId=${houseId}`);
   }
 }
 </script>
