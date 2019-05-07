@@ -4,9 +4,13 @@ import wx from 'weixin-js-sdk';
 
 
 export default function getWXConfig(apiList: string[]) {
-  const url: string = encodeURIComponent(window.location.href.split('#')[0]); // 此处进行一次编码
+  const wxUrl: string = encodeURIComponent(window.location.href.split('#')[0]); // 此处进行一次编码
   return new Promise((resolve, reject) => {
-    Vue.axios.get(`${api.getJssdkConfig}/${url}`)
+    Vue.axios.get(`${api.getJssdkConfig}`, {
+      params: {
+        url: wxUrl
+      }
+    })
     .then((res: any) => {
       const data = res.data; // 返回wx.config需要的参数
       wx.config({
