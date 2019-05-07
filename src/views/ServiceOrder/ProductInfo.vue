@@ -23,9 +23,13 @@
         <p>{{data.typeName || '无'}}</p>
       </div>
       <div class="block">
-        <span>服务总次数：</span>
-        <p v-if="data.typeId === 4 && data.serviceCount === 0">不限制次数</p>
-        <p v-else>{{data.serviceCount}}</p>
+        <span>服务总次数：
+          <em v-if="data.typeId === 4 && data.serviceCount === 0">不限制次数</em>
+          <em v-else>{{data.serviceCount}}</em>
+        </span>
+        <!-- <p v-if="data.typeId === 4 && data.serviceCount === 0" class="service-count">不限制次数</p>
+        <p v-else class="service-count">{{data.serviceCount}}</p> -->
+        <p>&emsp;</p>
       </div>
       <div class="block">
         <span>咨询电话：</span>
@@ -199,6 +203,8 @@ export default class ProductInfo extends CommonMixins {
         width vw(240)
         max-height vw(160)
         overflow-y scroll
+      .service-count
+        // margin-left vw(115)
       img
         padding-bottom vw(20)
     .service-footer

@@ -25,7 +25,7 @@
           <ServiceList :tableData="tableData" :entrustId="entrustId"></ServiceList>
         </section>
       </van-tab>
-      <van-tab title="退款">
+      <van-tab title="退款/售后">
         <section class="background-tips" v-if="tableRefundData.length === 0">
           <NoData tip="暂无退款订单" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>

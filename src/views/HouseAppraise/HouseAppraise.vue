@@ -82,18 +82,23 @@ export default class HouseAppraise extends CommonMixins {
       this.loading = true;
       const res: any = await this.axios.get(api.getAppraiseList);
       if (res && res.code === '000') {
-        if (res.data.valuationDetail && res.data.valuationDetail.length !== 0) {
-          if (res.data.valuationDetail.length === 1)  {
-            this.appraiseResult = res.data.valuationDetail;
-            this.appraiseOneResult = res.data.valuationDetail[0];
-          } else {
-            this.appraiseResult = res.data.valuationDetail;
-          }
+        if (res.data.houseCount === 0) {
+          // 房源数量为0
+          this.toAppraiseHouseInfo(); // 跳转
         } else {
-          this.appraiseResult = [];
+          if (res.data.valuationDetail && res.data.valuationDetail.length !== 0) {
+            if (res.data.valuationDetail.length === 1)  {
+              this.appraiseResult = res.data.valuationDetail;
+              this.appraiseOneResult = res.data.valuationDetail[0];
+            } else {
+              this.appraiseResult = res.data.valuationDetail;
+            }
+          } else {
+            this.appraiseResult = [];
+          }
         }
         this.loading = false;
-        console.log(res);
+        // console.log(res);
       } else {
         this.$toast(res.msg || '房屋估价获取失败');
       }

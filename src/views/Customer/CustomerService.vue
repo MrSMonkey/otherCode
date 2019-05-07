@@ -42,19 +42,19 @@ export default class CustomerService extends CommonMixins {
   private siteId: string = '';
   private settingId: string = '';
   private NTKF: any = {};
-  private str: string = '11111111';
+  private str: string = '';
   @Watch('window.NTKF')
   private search() {
-    // if (!window.NTKF) {
-    //   return;
-    // }
+    if (!window.NTKF) {
+      return;
+    }
     this.getUserInfo();
   }
 
   private  created() {
-    // if (!window.NTKF) {
-    //   this.loadScript();
-    // }
+    if (!window.NTKF) {
+      this.loadScript();
+    }
     // this.loadScript();
   }
   private  mounted() {
