@@ -18,13 +18,14 @@
           <div><img src="@/assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
         </div>
         <div class='list-no'>
-          <span>服务产品订单号：{{order.orderNum}}</span>
+          <span>{{order.orderNum}}</span>
+          <span class="list-refund-status">{{order.refundStatusName}}</span>
           <!-- <div><img src="@/assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div> -->
         </div>
       </div>
       <div class="list-main">
           <div class='list-item'>
-            <span>产品名称：{{order.productName}}</span>
+            <span class="list-item-name">产品名称：{{order.productName}}</span>
             <div :class="order.orderStatus === '7' ? 'list-item-close' : 'list-item-type'">
               {{getOrderStatusName(order.orderStatus)}}
             </div>
@@ -112,6 +113,9 @@ export default class RefundOrderList extends CommonMixins {
     align-items center
     font-size 15px
     color $tip-text-color
+    .list-refund-status
+      color $main-color
+      font-size 14px
     .icon-right
       display inline-block
       width vw(8)
@@ -134,6 +138,8 @@ export default class RefundOrderList extends CommonMixins {
       font-size 14px
       color $text-color
       padding vw(12) 0
+      .list-item-name
+        width vw(300)
       .list-item-type
         color $main-color
       .list-item-close

@@ -69,8 +69,6 @@ export default class House extends CommonMixins {
       const res: any = await this.axios.get(api.getMergeHouses);
       if (res && res.code === '000') {
         this.tableData = res.data || [];
-      } else {
-        this.$toast(`获取房源失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
