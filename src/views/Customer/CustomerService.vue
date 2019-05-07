@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-29 14:55:35
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-05-06 14:12:54
+ * @Last Modified time: 2019-05-07 14:18:07
  */
  <template>
   <section class="customer-main" ref="customerMain" id="customerMain">
@@ -58,7 +58,13 @@ export default class CustomerService extends CommonMixins {
     // this.loadScript();
   }
   private  mounted() {
-    this.getUserInfo();
+    if (this.userInfo) { // 用户登录
+      this.uname = this.userInfo.userId ? `${this.userInfo.Phone}(${this.userInfo.realName})` : this.userInfo.nickName;
+      this.uid = this.userInfo.userId;
+      this.getXiaoNengConfig();
+    } else { // 用户未登录
+      this.getUserInfo();
+    }
   }
 
   // 加载 - 第三方插件
@@ -80,16 +86,12 @@ export default class CustomerService extends CommonMixins {
       const res: any = await this.axios.get(`${api.getWXUserInfo}/${openId}/${accessToken}`);
       if (res.code === '000') {
         const data = res.data;
-        if (this.userInfo) { // 用户登录
-          this.uname = this.userInfo.userId ? `${this.userInfo.Phone}(${this.userInfo.realName})` : this.userInfo.nickName;
-          this.uid = this.userInfo.userId;
-        } else { // 用户未登录
-          this.uname = data.nickName;
-          this.uid = this.wxOAuth.openId;
-        }
-        this.getXiaoNengConfig();
+        this.uname = data.nickName;
+        this.uid = this.wxOAuth.openId;
       }
+      this.getXiaoNengConfig();
     } catch (err) {
+      this.getXiaoNengConfig(); // 浏览器 - 打开
       throw new Error(err || 'Unknow Error!');
     }
   }
