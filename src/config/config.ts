@@ -448,3 +448,15 @@ export const FORTUNE_SHARE_DATA: confInterface.ShareData = {
   desc: '财富自由第一定律,财神星马上告诉您',
   imgUrl: 'http://ooydngjcf.bkt.clouddn.com/WaterElectricGas.22AF1BA1.wechat_img_left.png'
 };
+
+// 不需要带token的
+export const NOT_TOKEN_URL: string[] = [
+  '/auth/asset/register_login/web/mobile2wechat',
+  '/verification_code',
+  '/partner/star/owner/config/get_config',
+  '/partner/star/owner/config/get_token',
+  '/partner/star/owner/config/get_jssdk_config',
+  '/partner/star/owner/config/check_token',
+  '/partner/star/owner/config/get_wechat_user_info',
+  '/partner/star/owner/config/get_xiaoneng_config'
+];

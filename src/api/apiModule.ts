@@ -134,25 +134,31 @@ export default {
   countPrice: '/partner/owner/product/amount',
 
   /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
-  getWechatConfig: '/partner/star/owner/get_config',
+  getWechatConfig: '/partner/star/owner/config/get_config',
 
   /* 通过code换取网页授权*/
-  getAccesstoken: '/partner/star/owner/get_token',
+  getAccesstoken: '/partner/star/owner/config/get_token',
 
   /*旧公众号-获取房源合同详情*/
-  getContractInfo: '/partner/star/owner/get_landlord_contract',
+  getContractInfo: '/partner/star/owner/config/get_landlord_contract',
+
+  /*获取JsSDK配置*/
+  getJssdkConfig: `/partner/star/owner/config/get_jssdk_config`,
+
+  /*获取星空业主号效能客服SDK（旧业主）*/
+  getXiaoNengConfig: '/partner/star/owner/config/get_xiaoneng_config',
 
   /* 如果已缓存用户信息,进行验证 */
-  checkAccessToken: '/partner/star/owner/check_token',
+  checkAccessToken: '/partner/star/owner/config/check_token',
+
+   /*获取微信号（旧业主）基本信息*/
+   getWXUserInfo: '/partner/star/owner/config/get_wechat_user_info',
 
   /*获取资产管家列表*/
   getStewards: 'partner/owner/entrust/asset/list',
 
   /*设置资产代理管家*/
   setAgency: 'partner/owner/entrust/asset/agency',
-
-  /*获取微信号（旧业主）基本信息*/
-  getWXUserInfo: '/partner/star/owner/get_wechat_user_info',
 
   /*获取聚合房源列表*/
   getMergeHouses: '/partner/merge/owner/merge_houses',
@@ -180,12 +186,6 @@ export default {
 
   /*获取房间图片信息（旧业主）*/
   getHousePictures: '/partner/star/owner/get_landlord_contract_img',
-
-  /*获取JsSDK配置*/
-  getJssdkConfig: `/partner/star/owner/get_jssdk_config`,
-
-  /*获取星空业主号效能客服SDK（旧业主）*/
-  getXiaoNengConfig: '/partner/star/owner/get_xiaoneng_config',
 
   /*单套房屋估价结果*/
   getSingleHouseValuation: 'price/facing/pricing/house/valuation_id',
