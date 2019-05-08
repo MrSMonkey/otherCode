@@ -66,7 +66,7 @@ export default class CityInput extends CommonMixins {
   private placeholderText: string;
   @Prop({
     type: String,
-    default: ''
+    default: '成都市'
   })
   private cityName: string; // 默认城市名称
   @Prop({

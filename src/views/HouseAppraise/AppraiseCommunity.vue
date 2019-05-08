@@ -2,8 +2,8 @@
  * @Description: 房屋估价选择小区页面
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 17:47:16
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-08 11:59:37
  */
 
 <template>
@@ -14,6 +14,7 @@
         placeholder="请输入您爱屋所在的小区" 
         autofocus="true"
         clearable
+        @change="communutyChange"
       />
     </section>
     <main class="main">
@@ -103,6 +104,7 @@ import { BAIDU_AK } from '@/config/config';
 import api from '@/api';
 import { Point } from '@/interface/utilInterface';
 import { config } from '@vue/test-utils';
+import { debounce } from '@/utils/utils';
 const namespace: string = 'global';
 
 // 声明引入的组件
@@ -137,11 +139,11 @@ export default class AppraiseCommunity extends CommonMixins {
     lat: '', // 维度
     lon: ''  // 经度
   };
-  @Watch('searchInputValue')
-  private handlerSearchInputValue(newVal: string) {
-    console.log(this.searchInputValue);
-    this.getCommunityList(); // 请求小区数据
-  }
+  // @Watch('searchInputValue')
+  // private handlerSearchInputValue(newVal: string) {
+  //   console.log(this.searchInputValue);
+  //   this.getCommunityList(); // 请求小区数据
+  // }
   // computed
   get isActive(): boolean {
     return (this.searchInputValue === '' && this.communityId !== '') || this.searchInputValue !== '';
@@ -153,6 +155,9 @@ export default class AppraiseCommunity extends CommonMixins {
       return false;
     }
     return true;
+  }
+  private communutyChange() {
+     this.getCommunityList(); // 请求小区数据
   }
   /**
    * @description 获取小区

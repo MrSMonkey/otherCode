@@ -40,7 +40,7 @@
       </div>
     </section>
     <section>
-      <van-button slot="button" size="large" type="default" class="entrust-btn" @click="gotoEntrust">在线委托</van-button>
+      <van-button slot="button" size="large" type="default" class="entrust-btn" @click="gotoEntrust">一键加盟托管</van-button>
     </section>
   </section>
 </template>

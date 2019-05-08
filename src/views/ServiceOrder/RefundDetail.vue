@@ -29,19 +29,19 @@
     <div class="order-info">
       <div class="order-title"><h2>退款信息</h2></div>
       <div class='serviceName'>
-        <span>申请时间：{{orderInfo.productHouseName || '无'}}</span>
+        <span>申请时间：{{orderInfo.applyTime || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>处理完成时间：{{orderInfo.buyersName || '无'}}</span>
+        <span>处理完成时间：{{orderInfo.refundTime || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>处理状态：{{orderInfo.buyersPhone|| '无'}}</span>
+        <span>处理状态：{{orderInfo.refundStatusName|| '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>退款原因：{{orderInfo.buyersRemarks }}</span>
+        <span>退款原因：{{orderInfo.reason }}</span>
       </div>
       <div class='serviceName'>
-        <span>退款金额：{{orderInfo.buyersRemarks }}</span>
+        <span>退款金额：{{orderInfo.refundAmount }}</span>
       </div>
     </div>
     <!-- <section>

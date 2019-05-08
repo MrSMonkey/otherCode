@@ -366,7 +366,7 @@ export function debounce(func: any, wait: number) {
 /**
  * @description appType浏览器环境 deviceType设备系统
  * @return appType浏览器环境 deviceType设备系统
- * @author chemo
+ * @author chenmo
  */
 export function getRuntimeInfo() {
   const apptypeTest: any = {
@@ -429,7 +429,7 @@ export function getRuntimeInfo() {
  * @params transferUrl 微信transferUrl
  * @params scope 微信scope
  * @return 微信登录授权页面
- * @author chemo
+ * @author chenmo
  */
 export const toAuth = (appid: string, transferUrl: string, scope: string) => {
   const cur: any = window.location;

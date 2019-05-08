@@ -93,6 +93,17 @@
         </div>
       </van-tab>
     </van-tabs>
+
+    <van-popup v-model="cityShow" position="bottom" :overlay="true">
+      <van-picker
+        show-toolbar
+        :columns="cityList"
+        value-key="cityName"
+        @confirm="cityConfirm"
+        @cancel="cityShow = false"
+        title="选择城市"
+      />
+    </van-popup>
   </section>
 </template>
 
@@ -101,11 +112,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import NoData from '@/components/NoData.vue';
-import { getQueryString, addClass } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
-import { handleWebStorage } from '@/utils/utils';
+import { handleWebStorage, getQueryString, addClass } from '@/utils/utils';
 import api from '@/api';
+import { CityItem } from '@/interface/configInterface.ts';
 import { config } from '@vue/test-utils';
 
 // 声明引入的组件
@@ -126,8 +137,8 @@ export default class Purchase extends CommonMixins {
   };
 
   private entrustId: string = ''; // 委托房源ID
-  private cityId: string = '510100'; // 城市ID
-  private cityName: string = '成都';
+  private cityId: string = ''; // 城市ID
+  private cityName: string = '成都市';
   private tableData: any[] = []; // 服务包列表
   private productData: any[] = []; // 服务产品列表
   private isActive: number = 0; // 默认选择第一项
@@ -140,18 +151,23 @@ export default class Purchase extends CommonMixins {
   private productThreeMeum: any[] = [];
   private showDialog: boolean = false; // 弹窗显示
   private isTreeMeumActive: number = -1; // 第三级菜单选中
+  private cityShow: boolean = false; // 选择城市弹窗
+  private cityList: CityItem[] = [];
+  private activeIndex: number = 0; // 当前选中的tab
 
   private mounted() {
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
     this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
     this.getProductList(this.cityId); // 获取服务包列表
+    this.getCitys(); // 获取城市
   }
   private activated() {
     if (this.needActivated) {
       this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
       this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
       this.getProductList(this.cityId); // 获取服务包列表
+      this.getCitys(); // 获取城市
     } else {
       this.needActivated = true;
     }
@@ -250,11 +266,55 @@ export default class Purchase extends CommonMixins {
   }
 
   /**
+   * @description 获取城市列表
+   * @returns void
+   * @author chenmo
+   */
+  private async getCitys() {
+    try {
+      const res: any = await this.axios.get(api.getCitys);
+      if (res && res.code === '000' && res.data) {
+        this.cityList = res.data;
+        if (!(String(this.$route.query.cityId) === 'undefined')) {
+          await this.getCityName();
+        }
+      } else {
+        this.$toast(res.msg || '获取城市失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  private getCityName() {
+    const cityId: string = String(this.$route.query.cityId);
+    const newArr: any[] = this.cityList.filter((item: any) => {
+      return item.id === cityId;
+    });
+    this.cityName = newArr[0].cityName;
+  }
+
+  /**
    * @description 选择城市
    * @author linyu
    */
   private chooseCity() {
-    console.log('城市选择暂未开放。');
+    if (String(this.$route.query.cityId) === 'undefined') {
+      this.cityShow = true;
+    } else {
+      console.log('城市选择暂未开放。');
+    }
+  }
+
+  private cityConfirm(item: any, index: number) {
+    this.cityShow = false;
+    this.cityName = item.cityName;
+    this.cityId = item.id;
+    if (this.activeIndex === 0) {
+      this.getProductList(item.id);
+    } else if (this.activeIndex === 1) {
+      this.getServiceList(item.id);
+    }
   }
 
   /**
@@ -264,6 +324,7 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private onClick(index: any) {
+    this.activeIndex = index;
     if (index === 0) {
       this.getProductList(this.cityId); // 获取服务产品
     } else if (index === 1) {

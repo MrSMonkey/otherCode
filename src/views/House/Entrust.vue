@@ -119,8 +119,8 @@ const namespace: string = 'global';
 })
 // 类方式声明当前组件
 export default class Entrust extends CommonMixins {
-  private cityName: string = '';
-  private cityId: string = '';
+  private cityName: string = '成都市';
+  private cityId: string = '510100';
   private code: string = '';
   private cityShow: boolean = false;
   private cityList: string[] = []; // 城市列表

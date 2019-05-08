@@ -73,11 +73,11 @@ export default class HouseList extends CommonMixins {
    * @author chenmo
    */
   private linkHouseInfoTo(house: any) {
+    if (house.consociationType === 4) { // 优客自营的房源跳转到旧业主的我的房源页面
+      this.$router.push('/oldMyHouse?houseId=' + house.houseId);
+      return;
+    }
     if (house.handleStatus !== 1) {
-      if (house.consociationType === 4) { // 优客自营的房源跳转到旧业主的我的房源页面
-        this.$router.push('/oldMyHouse?houseId=' + house.houseId);
-        return;
-      }
       this.$router.push('/myHouse?entrustId=' + house.houseId);
     }
   }
