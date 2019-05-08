@@ -2,8 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-30 17:30:48
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-08 11:50:28
  */
 
 export default {
@@ -140,7 +140,7 @@ export default {
   getAccesstoken: '/partner/star/owner/config/get_token',
 
   /*旧公众号-获取房源合同详情*/
-  getContractInfo: '/partner/star/owner/config/get_landlord_contract',
+  getContractInfo: '/partner/star/owner/get_landlord_contract',
 
   /*获取JsSDK配置*/
   getJssdkConfig: `/partner/star/owner/config/get_jssdk_config`,

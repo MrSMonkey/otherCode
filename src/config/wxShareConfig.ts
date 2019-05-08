@@ -1,5 +1,11 @@
-import Vue from 'vue';
-import api from '@/api';
+/*
+ * @Description: 微信分享注册
+ * @Author: chenmo
+ * @Date: 2019-05-08 09:28:17
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-08 09:28:45
+ */
+
 import wx from 'weixin-js-sdk';
 
 export default function getWXShareConfig(shareData: any[]) {

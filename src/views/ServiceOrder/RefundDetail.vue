@@ -2,8 +2,8 @@
  * @Description: 退款订单详情
  * @Author: chenmo
  * @Date: 2019-03-14 20:26:26
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-05-06 17:47:07
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-08 11:35:51
  */
 
 <template>
@@ -14,7 +14,7 @@
         <span>订单号：{{orderInfo.orderNum || '无'}}</span>
       </div>
       <div class='serviceName'>
-        <span>订单类型：{{orderInfo.decType || '无'}}</span>
+        <span>订单类型：{{orderInfo.orderTypeName || '无'}}</span>
       </div>
       <div class='serviceName'>
         <span>产品名称：{{orderInfo.productName || '无'}}</span>
