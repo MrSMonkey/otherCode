@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-29 14:55:35
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-05-07 14:18:07
+ * @Last Modified time: 2019-05-08 16:44:46
  */
  <template>
   <section class="customer-main" ref="customerMain" id="customerMain">
@@ -48,18 +48,26 @@ export default class CustomerService extends CommonMixins {
     if (!window.NTKF) {
       return;
     }
-    this.getUserInfo();
+    this.getXiaoNengConfig();
   }
 
-  private  created() {
+  private async created() {
     if (!window.NTKF) {
-      this.loadScript();
+      await this.loadScript();
+      await this.fetchUserInfo();
+    } else {
+      this.fetchUserInfo();
     }
-    // this.loadScript();
   }
-  private  mounted() {
+
+  // 获取用户信息
+  private fetchUserInfo() {
     if (this.userInfo) { // 用户登录
-      this.uname = this.userInfo.userId ? `${this.userInfo.Phone}(${this.userInfo.realName})` : this.userInfo.nickName;
+      if (this.userInfo.userId) {
+        this.uname = `${this.userInfo.Phone}(${this.userInfo.realName})`;
+      } else {
+        this.uname = this.userInfo.nickName;
+      }
       this.uid = this.userInfo.userId;
       this.getXiaoNengConfig();
     } else { // 用户未登录
@@ -97,6 +105,9 @@ export default class CustomerService extends CommonMixins {
   }
   // 获取 - 星空业主号小能客服SDK
   private async getXiaoNengConfig() {
+    if (!window.NTKF) {
+      return;
+    }
     try {
       const res: any = await this.axios.get(`${api.getXiaoNengConfig}`);
       if (res.code === '000') {

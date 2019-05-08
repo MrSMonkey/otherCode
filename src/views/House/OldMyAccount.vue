@@ -3,7 +3,7 @@
  * @Author: zhegu
  * @Date: 2019-04-24 10:19:15
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-05-06 16:51:55
+ * @Last Modified time: 2019-05-08 16:57:27
  */
 <template>
   <section class="my-account">
@@ -97,6 +97,7 @@ export default class OldMyAccount extends CommonMixins {
     if (this.$route.query.houseId) { // 房源账单列表
       this.hosueId = String(this.$route.query.houseId);
       this.url = `${api.geLandlordBillList}/${this.hosueId}/${this.pageIndex}/${this.pageSize}`;
+      this.getUserHouseAll();
     } else { // 房东账单列表
       this.url = `${api.getLandlordList}/${this.pageIndex}/${this.pageSize}`;
     }
@@ -115,16 +116,30 @@ export default class OldMyAccount extends CommonMixins {
     }
   }
 
-  // 获取 - 房间数和总收入
+  // 获取 - 房东 房间数和总收入
   private async getUserHousecount() {
     try {
       const res: any = await this.axios.get(`${api.getHousecount}`);
       if (res.code === '000') {
         const data = res.data;
-        this.totalAmount = data ? data.totalAmount : 0;
+        if (!this.hosueId) {
+          this.totalAmount = data ? data.totalAmount : 0;
+        }
         this.houseCount = data ? data.houseCount : 0;
       }
       console.log(res, '房东房源数和账单收入');
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  // 获取 - 房源总收入
+  private async getUserHouseAll() {
+    try {
+      const res: any = await this.axios.get(`${api.getHouseTotalAccount}/${this.hosueId}`);
+      if (res.code === '000') {
+        this.totalAmount = res.data.totalAmount;
+      }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
