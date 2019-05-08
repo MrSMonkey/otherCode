@@ -110,7 +110,7 @@ export default {
   buildPass: '/partner/owner/product/service/renovation/passing',
 
   /*写真订单通过验收*/
-  photoPass: '/partner//owner/product/service/passing',
+  photoPass: '/partner/owner/product/service/passing',
 
   /*取消支付*/
   cancelPay: 'partner/owner/product/service/repair/cancel_pay',
