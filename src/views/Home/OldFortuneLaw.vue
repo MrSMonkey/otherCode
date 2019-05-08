@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-24 14:14:04
+ * @Last Modified time: 2019-05-07 17:52:28
  */
 
 <template>
@@ -68,10 +68,7 @@ export default class OldFortuneLaw extends CommonMixins {
   background-color $bg-color-default
   padding vw(15) vw(20)
   .law-header
-    font-family PingFang-SC-Medium
-    font-size vw(15)
-    color #474747
-    letter-spacing 0
+    font-size 15px
   .tit 
     font-weight bold
     font-size 14px /* no */
@@ -92,4 +89,6 @@ export default class OldFortuneLaw extends CommonMixins {
     vertical-align middle
   .text-spec 
     color $main-color
+  p 
+    font-size 14px
 </style>

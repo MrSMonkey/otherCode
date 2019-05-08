@@ -3,7 +3,7 @@
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
  * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-24 14:03:38
+ * @Last Modified time: 2019-05-07 17:18:06
  */
 
 <template>
@@ -104,6 +104,7 @@ export default class Fortune extends CommonMixins {
   private calcResult() {
     if (!this.isInteger(this.incomeValue)) {
       Notify('请输入大于0的数字!');
+      return;
     }
     this.isStopped = false;
     this.anim.play();
