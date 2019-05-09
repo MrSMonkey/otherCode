@@ -107,7 +107,7 @@ export default class Community extends CommonMixins {
   private tableList: any = []; // 小区列表
   private lon: number = 0; // 当前位置经度
   private lat: number = 0; // 当前位置纬度
-  private baiduAk: string = BAIDU_AK; // 百度地图key
+  private timer: any = null; // 延时操作定时器
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
   private point: any = {
@@ -116,7 +116,13 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    this.getCommunityList(1); // 请求小区数据
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
+        this.getCommunityList(1); // 请求小区数据
+        this.timer = null;
+    }, 500);
   }
   // computed
   get isActive(): boolean {
