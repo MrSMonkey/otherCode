@@ -132,7 +132,9 @@ export default class AppraiseCommunity extends CommonMixins {
   private phone: string = ''; // 电话
   private loading: boolean = false; // 加载更多请求是否完成，完成时值为false
   private dialogShow: boolean = false; // 是否显示dialog
-  private timer: any = null; // 延时操作定时器
+  private debounceGetCommunityList: any = debounce(() => { // 防抖处理
+    this.getCommunityList(); // 请求小区数据
+  }, 500);
   private tableList: any = []; // 小区列表
   private point: any = {
     lat: '', // 维度
@@ -140,13 +142,7 @@ export default class AppraiseCommunity extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-        this.getCommunityList(); // 请求小区数据
-        this.timer = null;
-    }, 500);
+    this.debounceGetCommunityList();
   }
   // computed
   get isActive(): boolean {
@@ -166,9 +162,10 @@ export default class AppraiseCommunity extends CommonMixins {
    * @author linyu
    */
   private async getCommunityList() {
+    console.log(this.searchInputValue, 444);
     if (this.searchInputValue !== '') {
       try {
-        console.log(this.searchInputValue);
+        console.log(this.searchInputValue, 5555);
         const res: any =  await this.axios.get(`${api.getAppraiseCommunityList}/${this.searchInputValue}/20`);
         this.updateSomeData(res);
       } catch (err) {
