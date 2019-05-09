@@ -10,5 +10,9 @@ declare global {
       [elem: string]: any;
     }
   }
-  interface Window { BMap: ((BMap: any) => any) | undefined; }
+  interface Window { 
+    BMap: any;
+    NTKF: any;
+    NTKF_PARAM: any;
+  }
 }

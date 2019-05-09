@@ -18,10 +18,6 @@ import { State, Getter, Mutation, Action } from 'vuex-class';
 
 const namespace: string = 'global';
 
-declare global {
-  interface Window { [x: string]: any; }
-}
-window.NTKF = window.NTKF || '';
 // 声明引入的组件
 @Component({
   name: 'CustomerService',
@@ -43,18 +39,19 @@ export default class CustomerService extends CommonMixins {
   private settingId: string = '';
   private NTKF: any = {};
   private str: string = '';
-  @Watch('window.NTKF')
-  private search() {
-    if (!window.NTKF) {
-      return;
-    }
-    this.getXiaoNengConfig();
-  }
+
+  // @Watch('window.NTKF')
+  // private search() {
+  //   if (!window.NTKF) {
+  //     return;
+  //   }
+  //   this.getXiaoNengConfig();
+  // }
 
   private async created() {
     if (!window.NTKF) {
       await this.loadScript();
-      await this.fetchUserInfo();
+      this.fetchUserInfo();
     } else {
       this.fetchUserInfo();
     }
