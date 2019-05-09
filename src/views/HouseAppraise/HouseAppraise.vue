@@ -12,18 +12,19 @@
       <SingleHouseAppraise
         v-if="isFromAppraiseHOuseInfo || appraiseResult.length === 1"
         :appraiseInfo="appraiseOneResult"
-      ></SingleHouseAppraise>
+      >
+        <div class="btn-panel">
+          <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
+        </div>
+      </SingleHouseAppraise>
       <MultiHouseAppraise
         :appraiseInfo="appraiseResult"
         v-else 
-      ></MultiHouseAppraise>
-      <div class="submit-btn-panel" >
-        <van-button
-          size="large" 
-          class="submit-btn"
-          @click="toAppraiseHouseInfo"
-        >查看其它房屋估价</van-button>
-      </div>
+      >
+        <div class="btn-panel">
+          <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
+        </div>
+      </MultiHouseAppraise>
     </section>
   </section>
 </template>
@@ -31,7 +32,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
-import { Button } from 'vant';
+import LastBtn from '@/components/LastBtn.vue';
 import MultiHouseAppraise from '@/views/HouseAppraise/components/MultiHouseAppraise.vue';
 import SingleHouseAppraise from '@/views/HouseAppraise/components/SingleHouseAppraise.vue';
 import AppraiseLoading from '@/views/HouseAppraise/components/AppraiseLoading.vue';
@@ -42,7 +43,7 @@ import api from '@/api';
 @Component({
   name: 'HouseAppraise',
   components: {
-    Button,
+    LastBtn,
     MultiHouseAppraise,
     SingleHouseAppraise,
     AppraiseLoading
@@ -115,7 +116,12 @@ export default class HouseAppraise extends CommonMixins {
    * @author linyu
    */
   private toAppraiseHouseInfo() {
-    this.$router.push('/appraiseHouseInfo');
+    this.$router.push({
+      name: 'appraiseHouseInfo',
+      params: {
+        refresh: '1'
+      }
+    });
   }
 }
 </script>
@@ -138,14 +144,8 @@ export default class HouseAppraise extends CommonMixins {
         font-size vw(14)
         span 
           color $main-color
-    .submit-btn-panel
-      // margin-top 15px
-      padding 0 vw(7.3)
-      .submit-btn
-        font-size 17px
-        border-radius 5px
-        background $main-color
-        color #ffffff
+      .btn-panel
+        margin-top vw(15)
 </style>
 </style>
 

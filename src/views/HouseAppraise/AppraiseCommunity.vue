@@ -134,7 +134,7 @@ export default class AppraiseCommunity extends CommonMixins {
   private dialogShow: boolean = false; // 是否显示dialog
   private debounceGetCommunityList: any = debounce(() => { // 防抖处理
     this.getCommunityList(); // 请求小区数据
-  }, 500);
+  }, 1000);
   private tableList: any = []; // 小区列表
   private point: any = {
     lat: '', // 维度
@@ -162,10 +162,8 @@ export default class AppraiseCommunity extends CommonMixins {
    * @author linyu
    */
   private async getCommunityList() {
-    console.log(this.searchInputValue, 444);
     if (this.searchInputValue !== '') {
       try {
-        console.log(this.searchInputValue, 5555);
         const res: any =  await this.axios.get(`${api.getAppraiseCommunityList}/${this.searchInputValue}/20`);
         this.updateSomeData(res);
       } catch (err) {

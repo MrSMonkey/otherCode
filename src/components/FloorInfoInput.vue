@@ -58,31 +58,21 @@ export default class FloorInfoInput extends CommonMixins {
 
   @Watch('floorNumText')
   private onFloorNumChange(val: string, oldVal: string) {
+    const num: RegExpExecArray | null = /(\d+)/g.exec(this.floorNumText);
+    this.floorNum = num ? num[0] : '';
+    this.floorNumChange();
     setTimeout(() => {
-      const num: RegExpExecArray | null = /(\d+)/g.exec(this.floorNumText);
-      if (num) {
-        this.floorNum = num[0];
-        this.floorNumText = `第${num[0]}层`;
-      } else {
-        this.floorNumText = '';
-        this.floorNum = '';
-      }
-      this.floorNumChange();
-    }, 1000);
+      this.floorNumText = num ? `第${num[0]}层` : '';
+    }, 800);
   }
   @Watch('floorTotalityText')
   private onFloorTotalityChange(val: string, oldVal: string) {
+    const num: RegExpExecArray | null = /(\d+)/g.exec(this.floorTotalityText);
+    this.floorTotality = num ? num[0] : '';
+    this.floorTotalityChange();
     setTimeout(() => {
-      const num: RegExpExecArray | null = /(\d+)/g.exec(this.floorTotalityText);
-      if (num) {
-        this.floorTotality = num[0];
-        this.floorTotalityText = `共${num[0]}层`;
-      } else {
-        this.floorTotalityText = '';
-        this.floorTotality = '';
-      }
-      this.floorTotalityChange();
-    }, 1000);
+      this.floorTotalityText = num ? `共${num[0]}层` : '';
+    }, 800);
   }
   /**
    * @description 房屋所在楼层变化触发事件

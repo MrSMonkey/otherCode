@@ -109,7 +109,7 @@ export default class Community extends CommonMixins {
   private lat: number = 0; // 当前位置纬度
   private debounceGetCommunityList: any = debounce(() => { // 防抖处理
     this.getCommunityList(1); // 请求小区数据
-  }, 500);
+  }, 1000);
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
   private point: any = {
