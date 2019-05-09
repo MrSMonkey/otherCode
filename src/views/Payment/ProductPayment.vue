@@ -36,7 +36,7 @@
           v-model="buyersName"
           required
           clearable
-          label="联系人"
+          label="联系人"@
           input-align="right"
           placeholder="请输入联系人姓名"
           type="text"
@@ -58,7 +58,7 @@
           input-align="right"
           label="房间数"
           placeholder="请输入房间数量"
-          type="text"
+          type="number"
           @change="changeRooms"
           v-if="data.productUnitId === '1' && data.housesUnitId === '1'"
         >
@@ -72,7 +72,7 @@
           input-align="right"
           label="面积"
           placeholder="请输入房屋面积"
-          type="text"
+          type="number"
           @change="changeAcreage"
           v-if="data.productUnitId === '2'"
         >
@@ -86,7 +86,7 @@
           input-align="right"
           label="服务时长"
           placeholder="请输入服务时长（小时）"
-          type="text"
+          type="number"
           @change="changeHour"
           v-if="data.productUnitId === '9'"
         >
@@ -100,7 +100,7 @@
           input-align="right"
           label="购买数量"
           placeholder="请输入购买数量"
-          type="text"
+          type="number"
           @change="changeCount"
           v-if="data.productUnitId === '7' || data.productUnitId === '8'"
         >
