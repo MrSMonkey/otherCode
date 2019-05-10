@@ -68,7 +68,18 @@ module.exports = {
           }
         }
       }
-    }
+    },
+    // plugins: [
+    //   new SkeletonWebpackPlugin({
+    //     webpackConfig: {
+    //       entry: {
+    //         app: path.join(__dirname, './src/components/skeleton/skeleton.js'),
+    //       },
+    //     },
+    //     minimize: true,
+    //     quiet: true,
+    //   }),
+    // ],
   },
   chainWebpack: (config) => {
     config.module
