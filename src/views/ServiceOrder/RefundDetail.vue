@@ -41,7 +41,7 @@
         <span>退款原因：{{orderInfo.reason }}</span>
       </div>
       <div class='serviceName'>
-        <span>退款金额：{{orderInfo.refundAmount }}</span>
+        <span>退款金额：{{orderInfo.refundAmount }}元</span>
       </div>
     </div>
     <!-- <section>
