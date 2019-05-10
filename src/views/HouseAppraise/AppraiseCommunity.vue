@@ -287,6 +287,14 @@ export default class AppraiseCommunity extends CommonMixins {
         source: '星空业主服务号'
       });
       if (res && res.code === '000') {
+        this.$dialog.alert({
+          title: '提示',
+          confirmButtonText: '确定',
+          className: 'dialogTips',
+          message: `提交成功！我们的工作人员会尽快联系您！`
+        }).then(() => {
+          this.$dialog.close();
+        });
         this.username = '';
         this.phone = '';
       } else {
@@ -378,6 +386,9 @@ export default class AppraiseCommunity extends CommonMixins {
         .van-cell:not(:last-child)::after
           left 0
           right 0
+.dialogTips
+  .van-dialog__content
+    color #2C2D2E !important
 </style>
 
 
