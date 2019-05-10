@@ -10,11 +10,7 @@
 <template>
   <section class="entrust-plan">
     <section class="header-img">
-      <img src="@/assets/images/plan_banner.png" alt=""/>
-    </section>
-    <section class="map-img">
-      <img src="@/assets/images/map.png" alt="6年，4城，服务13000个业主，10万租客"/>
-    </section>
+      <img src="@/assets/images/plan_banner.png" alt=""/></section>
     <section class="step-guide">
       <HrTitle title="轻松收租只需三步"></HrTitle>
       <div class="step-plant">
@@ -119,20 +115,10 @@ export default class EntrustPlan extends CommonMixins {
 .entrust-plan
   .header-img
     img 
-      display inline-block
+      display block
       width 100%
-  .map-img
-    padding: vw(20) 0
-    width 100%
-    background-color $global-background
-    text-align center
-    img
-      display inline-block
-      width vw(294)
-      height vw(138)
   .step-guide
-    margin-top vw(10)
-    padding vw(20) 0
+    padding vw(10) 0 vw(20)
     background-color $global-background
     .step-plant
       position relative
@@ -155,7 +141,7 @@ export default class EntrustPlan extends CommonMixins {
         width vw(30)
         border-top 1px solid $main-color /* no */
   .main-content
-    margin vw(10) 0 vw(65)
+    margin vw(10) 0 0
     &>div:first-child
       padding vw(10) 0
       background #fff

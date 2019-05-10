@@ -105,14 +105,14 @@ const namespace: string = 'global';
 @Component({
   name: 'Entrust',
   components: {
-    [Field.name]: Field,
-    [Row.name]: Row,
-    [Col.name]: Col,
-    [Button.name]: Button,
+    Field,
+    Row,
+    Col,
+    Button,
     CityInput,
     HouseDecorationInfo,
-    [List.name]: List,
-    [Cell.name]: Cell,
+    List,
+    Cell,
     HrTitle,
     ConfirmBtn
   }

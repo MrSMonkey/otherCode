@@ -50,62 +50,15 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .info-plant
-  margin vw(20) 0 vw(20)
+  margin vw(20) 0 0
   padding 0 vw(20)
-  .info-panel
+  .top-panel
     background-color: $global-background;
     border-radius 8px/* no */
     margin-bottom 10px
-  .top-panel
-    .info-header
-      width 100%
-      padding 13px 15px
-      background $main-color
-      background -ms-linear-gradient(left ,$main-color 0%, $color-main-light 100%)
-      background -webkit-linear-gradient(left ,$main-color 0%, $color-main-light 100%)
-      font-family PingFangSC-Semibold
-      color #FFFFFF
-      display flex
-      justify-content flex-start
-      align-items flex-end
-      span:first-child
-        font-size vw(21)
-        font-weight 600
-      span:last-child
-        font-size vw(14)
-        margin-left vw(15)
-    .info-body
-      padding vw(20)
-      li
-        &:first-child
-          margin-bottom 10px
-        h4
-          font-size 15px; /* no */
-          line-height 40px
-        p
-          color $next-text-color
-          font-size 13px /* no */
-          line-height 18px
-          letter-spacing 1px /* no */
-    .info-footer
-      padding: 0 vw(20)
-      border-top 1px solid $bg-color-default /* no */  
-      display flex
-      justify-content: space-between
-      align-items center
-      span
-        color: $main-color
-        font-size 15px /* no */
-        font-weight 600
-        line-height 44px
-        img
-          display inline-block
-          height 14px
-          &:first-child
-            opacity 0.2
-            margin-right -2px
-          &:last-child
-            opacity 0.5
+  .info-panel
+    background-color: $global-background;
+    border-radius 8px/* no */
   .table-panel
     padding 10px 15px  
 </style>

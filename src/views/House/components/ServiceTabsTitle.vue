@@ -13,7 +13,6 @@
       :line-width="lineWidth"
       :line-height="4"
       sticky
-      :style="[style1]"
       @scroll="stickChange"
     >
       <van-tab v-for="(item, index) in tabsTitleData" :key="index">
@@ -23,14 +22,15 @@
               <img :src="item.img"/>
             </div>
             <div class="title-text">{{item.serviceName}}</div>
-            <div class="title-desc">
+            <div class="title-desc" :ref="'tabsDesc' + index">
               {{item.serviceDesc}}
             </div>
           </div>
         </div>
-        <div class="tab-content">
+        <div class="tab-content" :style="[style1]">
           <slot :name="item.slotName"></slot>
         </div>
+        <div class="white-space"></div>
       </van-tab>
     </van-tabs>
   </section>
@@ -42,6 +42,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { Tab, Tabs  } from 'vant';
 import { transformVwToPx } from '@/utils/utils.ts';
 import api from '@/api';
+import { config } from '@vue/test-utils';
 
 // 声明引入的组件
 @Component({
@@ -67,7 +68,7 @@ export default class ServiceTabsTitle extends CommonMixins {
   private tabIsFixed: boolean = false; // tabs菜单是否吸顶
   private tabsOffsetTop: number = 0; // 获取tab菜单距页面顶部的高度
   private style1: any = {
-    paddingTop: '181px'
+    marginTop: '149px'
   };
 
   private mounted() {
@@ -89,12 +90,12 @@ export default class ServiceTabsTitle extends CommonMixins {
    */
   private stickChange(v: any): void {
     this.tabIsFixed = v.isFixed;
-    if (v.scrollTop === this.tabsOffsetTop) {
+    if (v.scrollTop !== 0 && Math.abs(v.scrollTop - this.tabsOffsetTop) < 5) {
       this.tabIsFixed = true;
     }
     this.$nextTick(() => {
       const tabsHeight: any = this.$refs.tabsPanel1[0].clientHeight + transformVwToPx(0.05);
-      this.style1.paddingTop = tabsHeight + 'px';
+      this.style1.marginTop = (tabsHeight - 33) + 'px';
     });
   }
 }
@@ -128,6 +129,10 @@ export default class ServiceTabsTitle extends CommonMixins {
     &.tab-fixed
       .title-desc
         display none
+  .white-space
+    background transparent
+    height 65px
+    width 100%
   .van-tabs--line .van-tabs__wrap
     height auto
     padding 0 vw(15)

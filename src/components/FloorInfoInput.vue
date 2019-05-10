@@ -17,6 +17,8 @@
           v-model="floorNumText"
           placeholder="第几层"
           input-align="center"
+          @focus="resetText('floorNumText')"
+          @change="setInputText('floorNumText')"
         />
       </van-col>
       <van-col span="6" class="house-info">
@@ -24,6 +26,8 @@
           v-model="floorTotalityText"
           placeholder="总楼层"
           input-align="center"
+          @focus="resetText('floorTotalityText')"
+          @change="setInputText('floorTotalityText')"
         />
       </van-col>
     </van-row>
@@ -61,19 +65,36 @@ export default class FloorInfoInput extends CommonMixins {
     const num: RegExpExecArray | null = /(\d+)/g.exec(this.floorNumText);
     this.floorNum = num ? num[0] : '';
     this.floorNumChange();
-    setTimeout(() => {
-      this.floorNumText = num ? `第${num[0]}层` : '';
-    }, 800);
   }
   @Watch('floorTotalityText')
   private onFloorTotalityChange(val: string, oldVal: string) {
     const num: RegExpExecArray | null = /(\d+)/g.exec(this.floorTotalityText);
     this.floorTotality = num ? num[0] : '';
     this.floorTotalityChange();
-    setTimeout(() => {
-      this.floorTotalityText = num ? `共${num[0]}层` : '';
-    }, 800);
   }
+
+  /**
+   * @description 获取焦点触发事件：重置输入框内容
+   * @returns void
+   * @author linyu
+   */
+  private resetText(propName: 'floorNumText' | 'floorTotalityText'): void {
+    this[propName] = '';
+  }
+
+  /**
+   * @description 输入框内容变化触发事件
+   * @returns void
+   * @author linyu
+   */
+  private setInputText(propName: 'floorNumText' | 'floorTotalityText'): void {
+    if (propName === 'floorNumText') {
+      this.floorNumText =  this.floorNum ? `第${this.floorNum}层` : '';
+    } else if (propName === 'floorTotalityText') {
+      this.floorTotalityText = this.floorTotality ? `共${this.floorTotality}层` : '';
+    }
+  }
+
   /**
    * @description 房屋所在楼层变化触发事件
    * @returns String 输入的最新楼层
@@ -83,6 +104,7 @@ export default class FloorInfoInput extends CommonMixins {
   private floorNumChange(): string {
     return this.floorNum;
   }
+
   /**
    * @description 总楼层变化触发事件
    * @returns String 输入的最新总楼层
