@@ -63,7 +63,7 @@
       justify-content flex-start
       align-items flex-end
       span:first-child
-        width vw(88)
+        width 86px
         font-size 20px
         font-weight 600
       span:last-child
