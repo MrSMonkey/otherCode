@@ -17,7 +17,10 @@
         :kitchen="{show: false}"
         @house-type-confirm="houseTypeConfirm"
       ></HouseTypeInput>
-      <FloorInfoInput @floor-num-change="floorNumChange" @floor-totality-change="floorTotalityChange"></FloorInfoInput>
+      <FloorInfoInput
+        @floor-num-change="floorNumChange"
+        @floor-totality-change="floorTotalityChange"
+      ></FloorInfoInput>
     </section>
     <section class="other">
       <LastBtn button-text="查看评估结果" @click="submitData" :disabled="isActive"></LastBtn>
@@ -103,15 +106,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
     }
     // 清除缓存数据
     if (this.$route.params.refresh) {
-      // this.houseTypeText = '';
-      // this.hallNum = '';
-      // this.roomNum = '';
-      // this.toiletNum = '';
-      // this.communityName = '';
-      // this.floorTotality = '';
-      // this.floorNum = '';
-      // this.form.buildAcreage = '';
-      // this.form.communityId = '';
+      window.location.reload();
     }
   }
   /**

@@ -17,6 +17,7 @@
           v-model="floorNumText"
           placeholder="第几层"
           input-align="center"
+          @focus="resetText('floorNumText')"
         />
       </van-col>
       <van-col span="6" class="house-info">
@@ -24,6 +25,7 @@
           v-model="floorTotalityText"
           placeholder="总楼层"
           input-align="center"
+          @focus="resetText('floorTotalityText')"
         />
       </van-col>
     </van-row>
@@ -74,6 +76,16 @@ export default class FloorInfoInput extends CommonMixins {
       this.floorTotalityText = num ? `共${num[0]}层` : '';
     }, 800);
   }
+
+  /**
+   * @description 重置输入框内容
+   * @returns void
+   * @author linyu
+   */
+  private resetText(propName: 'floorNumText' | 'floorTotalityText') {
+    this[propName] = '';
+  }
+
   /**
    * @description 房屋所在楼层变化触发事件
    * @returns String 输入的最新楼层
@@ -83,6 +95,7 @@ export default class FloorInfoInput extends CommonMixins {
   private floorNumChange(): string {
     return this.floorNum;
   }
+
   /**
    * @description 总楼层变化触发事件
    * @returns String 输入的最新总楼层
