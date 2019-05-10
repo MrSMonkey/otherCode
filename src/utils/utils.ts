@@ -348,18 +348,16 @@ export function throttle(func: any, delay: number) {
  * @param  {function} func 处理函数
  * @param  {number} delay 延迟时间
  */
-export function debounce(func: any, wait: number) {
-  let timeout: any = null;
-  let timeout2: any = 111;
+export function debounce(func: any, delay: number) {
+  let timer: any = null;
   return () => {
       const args = arguments;
-      if (timeout) {
-        clearTimeout(timeout);
+      if (timer) {
+        clearTimeout(timer);
       }
-      timeout = setTimeout(() => {
-        timeout2 = 4444;
+      timer = setTimeout(() => {
         func(...args);
-      }, wait);
+      }, delay);
   };
 }
 

@@ -20,14 +20,7 @@
       <FloorInfoInput @floor-num-change="floorNumChange" @floor-totality-change="floorTotalityChange"></FloorInfoInput>
     </section>
     <section class="other">
-      <div class="submit-btn-panel">
-          <van-button
-          size="large" 
-          :class="['submit-btn', isActive ? 'disabled-btn' : '']"
-          @click="submitData"
-          :disabled="isActive"
-        >查看评估结果</van-button>
-      </div>
+      <LastBtn button-text="查看评估结果" @click="submitData" :disabled="isActive"></LastBtn>
     </section>
   </section>  
 </template>
@@ -43,8 +36,8 @@ import CommunityInput from '@/components/CommunityInput.vue';
 import BuildAcreageInput from '@/components/BuildAcreageInput.vue';
 import HouseTypeInput from '@/components/HouseTypeInput.vue';
 import FloorInfoInput from '@/components/FloorInfoInput.vue';
+import LastBtn from '@/components/LastBtn.vue';
 import { TYPELIST, TOWARDLIST} from '@/config/config';
-// import { HouseAppraiseForm } from '@/interface/perfectInterface';
 import api from '@/api';
 import { returnDomain } from '../../utils/utils';
 const namespace: string = 'global';
@@ -61,7 +54,8 @@ const namespace: string = 'global';
     CommunityInput,
     BuildAcreageInput,
     HouseTypeInput,
-    FloorInfoInput
+    FloorInfoInput,
+    LastBtn
   }
 })
 // 类方式声明当前组件
@@ -69,7 +63,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private type: string = '';
   private dong: string = '';
   private cityShow: boolean = false;
-  private towardShow: boolean = false;
   private loading: boolean = false;
   private houseTypeText: string = ''; // 户型选择结果
   private hallNum: string = ''; // 厅数
@@ -107,6 +100,18 @@ export default class AppraiseHouseInfo extends CommonMixins {
     if (this.$route.params.communityName || this.$route.params.communityId) {
       this.form.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
+    }
+    // 清除缓存数据
+    if (this.$route.params.refresh) {
+      // this.houseTypeText = '';
+      // this.hallNum = '';
+      // this.roomNum = '';
+      // this.toiletNum = '';
+      // this.communityName = '';
+      // this.floorTotality = '';
+      // this.floorNum = '';
+      // this.form.buildAcreage = '';
+      // this.form.communityId = '';
     }
   }
   /**
@@ -146,17 +151,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
     this.$router.push({
       path: '/appraiseCommunity'
     });
-  }
-
-  /**
-   * @description 选择朝向确认
-   * @params item 选择的数
-   * @params index 索引值
-   * @returns void
-   * @author chenmo
-   */
-  private towrdConfirm(item: any, index: number) {
-    this.towardShow = false;
   }
 
   /**
@@ -241,28 +235,14 @@ export default class AppraiseHouseInfo extends CommonMixins {
       this.loading = false;
     }
   }
-
-  private plotCancel() {
-    window.location.href = '/#/house';
-  }
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 .pointer
   color red
   cursor pointer
 .appraise
   .other
-    margin-top 15px
-    .submit-btn-panel
-      padding 0 vw(7.3)
-      .submit-btn
-        font-size 17px
-        border-radius 5px
-        background $main-color
-        color #ffffff
-      .disabled-btn
-        opacity 1
-        background $disabled-color  
+    margin-top 15px 
 </style>

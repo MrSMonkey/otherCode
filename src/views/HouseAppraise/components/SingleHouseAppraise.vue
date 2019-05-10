@@ -28,6 +28,7 @@
           <li>估价参考范围：{{(parseFloat(appraiseInfo.loanSum)*0.95).toFixed(2)}}万-{{(parseFloat(appraiseInfo.loanSum)*1.05).toFixed(2)}}万</li>
         </ul>
       </div>
+      <slot></slot>
     </div>
   </section>
 </template>
@@ -55,23 +56,14 @@ export default class SingleHouseAppraise extends CommonMixins {
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .single-house-appraise
-    position relative
-    &::after
-      display block
-      content ""
-      height 0
-      clear both
-      overflow hidden
-      visibility hidden
     .bg-panel
-      height 100%
       img
         display inline-block
         width 100%
     .result-panel
-      position relative
+      position absolute
       left 0
-      top vw(-200)
+      top 0
       width 100%
       z-index 2
       .result-top
