@@ -73,7 +73,7 @@ export default class Table extends CommonMixins {
       padding vw(6) vw(10)
       border 1px solid #e7e7e7 /* no */
       &:first-child
-        width vw(105) 
+        width vw(109) 
       &.extra-class
         padding vw(14) vw(10)
 </style>

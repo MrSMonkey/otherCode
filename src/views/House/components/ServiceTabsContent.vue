@@ -50,12 +50,15 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .info-plant
-  margin vw(20) 0 vw(20)
+  margin vw(20) 0 0
   padding 0 vw(20)
-  .info-panel
+  .top-panel
     background-color: $global-background;
     border-radius 8px/* no */
     margin-bottom 10px
+  .info-panel
+    background-color: $global-background;
+    border-radius 8px/* no */
   .table-panel
     padding 10px 15px  
 </style>

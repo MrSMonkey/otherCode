@@ -141,7 +141,7 @@ export default class EntrustPlan extends CommonMixins {
         width vw(30)
         border-top 1px solid $main-color /* no */
   .main-content
-    margin vw(10) 0 65px
+    margin vw(10) 0 0
     &>div:first-child
       padding vw(10) 0
       background #fff

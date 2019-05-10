@@ -30,6 +30,7 @@
         <div class="tab-content" :style="[style1]">
           <slot :name="item.slotName"></slot>
         </div>
+        <div class="white-space"></div>
       </van-tab>
     </van-tabs>
   </section>
@@ -128,6 +129,10 @@ export default class ServiceTabsTitle extends CommonMixins {
     &.tab-fixed
       .title-desc
         display none
+  .white-space
+    background transparent
+    height 65px
+    width 100%
   .van-tabs--line .van-tabs__wrap
     height auto
     padding 0 vw(15)
