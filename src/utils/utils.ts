@@ -323,23 +323,29 @@ export function getErrorMessage(e: any, defaultMsg?: string): string {
 /**
  * 节流
  * @param  {function} func 处理函数
- * @param  {number} delay 延迟时间
+ * @param  {number} mustRunDelay 触发过程中的执行处理函数规定的时间间隔
+ * @param  {number} delay 停止触发及最后一次执行处理函数的延迟时间
  */
-export function throttle(func: any, delay: number) {
-  let timer: any = null;
-  let startTime: number = Date.now();
-  return (): void => {
-    const curTime: number = Date.now();
-    const remaining: number = delay - (curTime - startTime);
-    const args: IArguments = arguments;
-    clearTimeout(timer);
-    if (remaining <= 0) {
-      func(...args);
-      startTime = Date.now();
+export function throttle(method: any, mustRunDelay: number, delay: number) {
+  let timer: any;
+  let start: number;
+  return () => {
+    const now: number = Date.now();
+    if (!start) {
+      start = now;
+    }
+    if (timer) {
+      clearTimeout(timer);
+    }
+    if (now - start >= mustRunDelay) {
+      method(...arguments);
+      start = now;
     } else {
       timer = setTimeout(() => {
-        func();
-      }, remaining);
+        if (now !== start) {
+          method(...arguments);
+        }
+      }, delay);
     }
   };
 }

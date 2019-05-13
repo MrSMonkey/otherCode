@@ -14,6 +14,7 @@
       :line-height="4"
       sticky
       @scroll="stickChange"
+      @click="clickTabsTitle"
     >
       <van-tab v-for="(item, index) in tabsTitleData" :key="index">
         <div slot="title" :ref="'tabsPanel' + index">
@@ -37,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import { Tab, Tabs  } from 'vant';
 import { transformVwToPx } from '@/utils/utils.ts';
@@ -97,6 +98,18 @@ export default class ServiceTabsTitle extends CommonMixins {
       const tabsHeight: any = this.$refs.tabsPanel1[0].clientHeight + transformVwToPx(0.05);
       this.style1.marginTop = (tabsHeight - 33) + 'px';
     });
+  }
+
+  /**
+   * @description 点击tab菜单触发事件
+   * @params index number 选中的tab标签索引
+   * @params index string 选中的服务名称(此处结果始终是undefined)
+   * @return string 选中的服务名称
+   * @author linyu
+   */
+  @Emit('click')
+  private clickTabsTitle(index: number, title: any): string {
+    return this.tabsTitleData[index]['serviceName'];
   }
 }
 </script>
