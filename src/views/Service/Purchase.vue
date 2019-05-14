@@ -422,11 +422,11 @@ export default class Purchase extends CommonMixins {
     if (serviceType === 'pack') {
       handleWebStorage.setLocalData('serviceId', goodsId, 'sessionStorage');
       handleWebStorage.removeLocalData('productId', 'sessionStorage');
-      this.$router.push('/serviceInfo?entrustId=' + this.entrustId);
+      this.$router.push(`/serviceInfo?entrustId=${this.entrustId}&cityId=${this.cityId}`);
     } else {
       handleWebStorage.setLocalData('productId', goodsId, 'sessionStorage');
       handleWebStorage.removeLocalData('serviceId', 'sessionStorage');
-      this.$router.push('/productInfo?entrustId=' + this.entrustId);
+      this.$router.push(`/productInfo?entrustId=${this.entrustId}&cityId=${this.cityId}`);
     }
   }
 

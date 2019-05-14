@@ -103,6 +103,7 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class Payment extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
+  private cityId: string = ''; // 城市Id
   private serviceId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
   private ownerName: string = ''; // 联系人
@@ -151,8 +152,9 @@ export default class Payment extends CommonMixins {
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
+    this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
-    this.getServiceDetils(this.serviceId); // 获取服务包详情
+    this.getServiceDetils(); // 获取服务包详情
     this.ownerName = this.userInfo.realName;
     this.ownerPhone = this.userInfo.username;
     if (this.entrustId !== '') {
@@ -163,10 +165,11 @@ export default class Payment extends CommonMixins {
     if (this.needActivated) {
       this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
       this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
       this.pre = String(this.$route.query.pre);
       this.ownerName = this.userInfo && this.userInfo.realName;
       this.ownerPhone = this.userInfo && this.userInfo.username;
-      this.getServiceDetils(this.serviceId); // 获取服务包详情
+      this.getServiceDetils(); // 获取服务包详情
       if (this.entrustId !== '') {
         this.getHouserInfo(this.entrustId);
       }
@@ -207,15 +210,14 @@ export default class Payment extends CommonMixins {
 
   /**
    * @description 获取服务包详情
-   * @params serviceId 服务包id
    * @returns void
    * @author chenmo
    */
   @Loading()
   @ErrorMsg('获取服务包详情失败')
-  private async getServiceDetils(serviceId: string) {
+  private async getServiceDetils() {
     try {
-      const res: any = await this.axios.get(api.getServiceDetils + `/${serviceId}`);
+      const res: any = await this.axios.get(api.getServiceDetils + `/${this.serviceId}/${this.cityId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
       }

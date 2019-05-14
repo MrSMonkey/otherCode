@@ -76,6 +76,7 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class ProductInfo extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
+  private cityId: string = ''; // 城市Id
   private productId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
   private buyersName: string = ''; // 联系人
@@ -99,17 +100,19 @@ export default class ProductInfo extends CommonMixins {
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
+    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '' : String(this.$route.query.cityId);
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
-    this.getProductDetail(this.productId); // 获取服务包详情
+    this.getProductDetail(this.productId, this.cityId); // 获取服务包详情
   }
 
   /**
    * @description 获取服务产品详情
    * @params productId 服务产品id
+   * @params cityId 城市id
    * @returns void
    * @author chenmo
    */
-  private async getProductDetail(productId: string) {
+  private async getProductDetail(productId: string, cityId: string) {
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -117,7 +120,7 @@ export default class ProductInfo extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
+      const res: any = await this.axios.get(api.getProductDetail + `/${productId}/${cityId}`);
       if (res && res.code === '000') {
         this.data = res.data || {};
 

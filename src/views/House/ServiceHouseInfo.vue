@@ -108,6 +108,12 @@ export default class ServiceHouseInfo extends CommonMixins {
       this.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
     }
+    if (handleWebStorage.getLocalData('cityId', 'sessionStorage')) {
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
+      this.cityName = handleWebStorage.getLocalData('cityName', 'sessionStorage');
+    } else {
+      this.$toast('获取当前城市失败');
+    }
   }
 
   /**

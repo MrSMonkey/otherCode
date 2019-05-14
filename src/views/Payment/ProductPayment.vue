@@ -174,6 +174,7 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class ProductPayment extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
+  private cityId: string = ''; // 城市Id
   private productId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
   private buyersName: string = ''; // 联系人
@@ -287,8 +288,9 @@ export default class ProductPayment extends CommonMixins {
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
+    this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
-    this.getProductDetail(this.productId); // 获取服务包详情
+    this.getProductDetail(); // 获取服务包详情
     this.buyersName = this.userInfo.realName;
     this.buyersPhone = this.userInfo.username;
     if (this.entrustId !== '') {
@@ -300,10 +302,11 @@ export default class ProductPayment extends CommonMixins {
     if (this.needActivated) {
       this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
       this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
       this.pre = String(this.$route.query.pre);
       this.buyersName = this.userInfo.realName;
       this.buyersPhone = this.userInfo.username;
-      this.getProductDetail(this.productId); // 获取服务产品详情
+      this.getProductDetail(); // 获取服务产品详情
       if (this.entrustId !== '') {
         this.getHouserInfo(this.entrustId);
       }
@@ -345,15 +348,14 @@ export default class ProductPayment extends CommonMixins {
 
   /**
    * @description 获取服务产品详情
-   * @params productId 服务产品id
    * @returns void
    * @author chenmo
    */
   @Loading()
   @ErrorMsg('获取服务产品详情失败')
-  private async getProductDetail(productId: string) {
+  private async getProductDetail() {
     try {
-      const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
+      const res: any = await this.axios.get(api.getProductDetail + `/${this.productId}/${this.cityId}`);
       if (res && res.code === '000') {
         this.data = res.data || {};
         /**
