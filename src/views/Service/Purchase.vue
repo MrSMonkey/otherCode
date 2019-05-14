@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 20:50:24
+ * @Last Modified time: 2019-05-14 14:55:15
  */
 
 <template>
@@ -155,12 +155,18 @@ export default class Purchase extends CommonMixins {
   private cityList: CityItem[] = [];
   private activeIndex: number = 0; // 当前选中的tab
 
-  private mounted() {
+  private async mounted() {
+    const tempCityId: string = String(this.$route.query.cityId);
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
-    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
+    this.cityId = tempCityId === 'undefined' ? '510100' : tempCityId; // 默认成都市
     this.getProductList(this.cityId); // 获取服务包列表
-    this.getCitys(); // 获取城市
+    await this.getCitys(); // 获取城市列表
+    if (String(this.$route.query.cityId === 'undefined')) {
+      this.setCityStorage('510100', '成都');
+    } else {
+      this.setCityStorage(tempCityId, this.cityName);
+    }
   }
   private activated() {
     if (this.needActivated) {
@@ -310,13 +316,24 @@ export default class Purchase extends CommonMixins {
     this.cityShow = false;
     this.cityName = item.cityName;
     this.cityId = item.id;
+    // 缓存购买服务的城市
+    this.setCityStorage(this.cityId, this.cityName);
     if (this.activeIndex === 0) {
       this.getProductList(item.id);
     } else if (this.activeIndex === 1) {
       this.getServiceList(item.id);
     }
   }
-
+  /**
+   * @description 缓存购买服务的城市
+   * @params cityId 城市Id
+   * @params cityName 城市名称
+   * @author linyu
+   */
+  private setCityStorage(cityId: string, cityName: string): void {
+      handleWebStorage.setLocalData('cityId', cityId, 'sessionStorage');
+      handleWebStorage.setLocalData('cityName', cityName, 'sessionStorage');
+  }
   /**
    * @description tabs切换
    * @params index 当前tabs的索引值
