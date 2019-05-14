@@ -2,8 +2,8 @@
  * @Description: 房屋估价选择小区页面
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-05-08 11:59:37
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-05-14 16:19:50
  */
 
 <template>
@@ -85,7 +85,6 @@
             type="tel"
             label="电话："
             placeholder="请输入您的联系方式"
-            autofocus
           />
         </div>
       </div>
@@ -144,14 +143,35 @@ export default class AppraiseCommunity extends CommonMixins {
   private handlerSearchInputValue(newVal: string) {
     this.debounceGetCommunityList();
   }
+  @Watch('username')
+  private handlerUsername(newVal: string) {
+    if (newVal.length > 20) {
+      this.username = newVal.substr(0,20);
+    }
+  }
   // computed
   get isActive(): boolean {
     return (this.searchInputValue === '' && this.communityId !== '') || this.searchInputValue !== '';
   }
-  get validForm(): boolean {
+
+  /**
+   * @description 表单验证
+   * @returns void
+   * @author linyu
+   */
+  private validForm(): boolean {
     const usernamePattern = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/g;
     const PhonePattern = /^(\d{11})|(\d{7,8})$/g;
+    if (!this.username) {
+      this.$toast('请输入称呼');
+      return false;
+    }
+    if (!this.phone) {
+      this.$toast('请输入手机号');
+      return false;
+    }
     if (usernamePattern.test(this.username)) {
+       this.$toast('输入的称呼格式有误');
       return false;
     }
     return true;
@@ -252,14 +272,7 @@ export default class AppraiseCommunity extends CommonMixins {
 
   private async beforeClose(action: any, done: any) {
     if (action === 'confirm') {
-      // setTimeout(done, 1000);
-      if (!this.username) {
-        this.$toast('请输入称呼');
-        done(false);
-        return false;
-      }
-      if (!this.phone) {
-        this.$toast('请输入手机号');
+      if (!this.validForm()) {
         done(false);
         return false;
       }
