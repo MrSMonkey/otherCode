@@ -36,7 +36,7 @@
           v-model="buyersName"
           required
           clearable
-          label="联系人"@
+          label="联系人"
           input-align="right"
           placeholder="请输入联系人姓名"
           type="text"
