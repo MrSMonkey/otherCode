@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-14 16:33:28
+ * @Last Modified time: 2019-05-14 16:43:48
  */
 
 <template>
@@ -149,6 +149,12 @@ export default class AppraiseCommunity extends CommonMixins {
       this.username = newVal.substr(0, 20);
     }
   }
+  @Watch('phone')
+  private handlerPhone(newVal: string) {
+    if (newVal.length > 11) {
+      this.phone = newVal.substr(0, 11);
+    }
+  }
   // computed
   get isActive(): boolean {
     return (this.searchInputValue === '' && this.communityId !== '') || this.searchInputValue !== '';
@@ -160,8 +166,8 @@ export default class AppraiseCommunity extends CommonMixins {
    * @author linyu
    */
   private validForm(): boolean {
-    const usernamePattern = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/g;
-    const PhonePattern = /^(\d{11})|(\d{7,8})$/g;
+    const usernamePattern = /^[\u4E00-\u9FA5A-Za-z_]+$/g;
+    const phonePattern = /^\d{7,11}$/g;
     if (!this.username) {
       this.$toast('请输入称呼');
       return false;
@@ -170,8 +176,12 @@ export default class AppraiseCommunity extends CommonMixins {
       this.$toast('请输入手机号');
       return false;
     }
-    if (usernamePattern.test(this.username)) {
+    if (!usernamePattern.test(this.username)) {
       this.$toast('输入的称呼格式有误');
+      return false;
+    }
+    if (!phonePattern.test(this.phone)) {
+      this.$toast('输入的电话格式有误');
       return false;
     }
     return true;
