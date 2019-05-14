@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-14 16:19:50
+ * @Last Modified time: 2019-05-14 16:33:28
  */
 
 <template>
@@ -146,7 +146,7 @@ export default class AppraiseCommunity extends CommonMixins {
   @Watch('username')
   private handlerUsername(newVal: string) {
     if (newVal.length > 20) {
-      this.username = newVal.substr(0,20);
+      this.username = newVal.substr(0, 20);
     }
   }
   // computed
@@ -171,7 +171,7 @@ export default class AppraiseCommunity extends CommonMixins {
       return false;
     }
     if (usernamePattern.test(this.username)) {
-       this.$toast('输入的称呼格式有误');
+      this.$toast('输入的称呼格式有误');
       return false;
     }
     return true;
@@ -257,18 +257,6 @@ export default class AppraiseCommunity extends CommonMixins {
   private plotCancel() {
     this.$router.back();
   }
-
-  /**
-   * @description dialog确认按钮事件
-   * @returns void
-   * @author linyu
-   */
-  // private dialogConfirm(action: any, done: any) {
-  //  // console.log(action, done)
-  //   if (!this.username) {
-  //     this.$toast('称呼输入格式不正确');
-  //   }
-  // }
 
   private async beforeClose(action: any, done: any) {
     if (action === 'confirm') {
