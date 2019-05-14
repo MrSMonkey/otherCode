@@ -162,18 +162,24 @@ export default class Purchase extends CommonMixins {
     this.cityId = tempCityId === 'undefined' ? '510100' : tempCityId; // 默认成都市
     this.getProductList(this.cityId); // 获取服务包列表
     await this.getCitys(); // 获取城市列表
-    if (String(this.$route.query.cityId === 'undefined')) {
+    if (String(this.$route.query.cityId) === 'undefined') {
       this.setCityStorage('510100', '成都');
     } else {
       this.setCityStorage(tempCityId, this.cityName);
     }
   }
-  private activated() {
+  private async activated() {
     if (this.needActivated) {
+      const tempCityId: string = String(this.$route.query.cityId);
       this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
       this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
       this.getProductList(this.cityId); // 获取服务包列表
-      this.getCitys(); // 获取城市
+      await this.getCitys(); // 获取城市
+      if (String(this.$route.query.cityId) === 'undefined') {
+        this.setCityStorage('510100', '成都');
+      } else {
+        this.setCityStorage(tempCityId, this.cityName);
+      }
     } else {
       this.needActivated = true;
     }

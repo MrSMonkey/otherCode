@@ -414,6 +414,7 @@ export default class ProductPayment extends CommonMixins {
       entrustId: this.entrustId,
       buyersName: name,
       buyersPhone: phone,
+      cityId: this.cityId,
       productId: this.productId,
       productName: this.data.productName,
       buyersRemarks: this.buyersRemarks,
