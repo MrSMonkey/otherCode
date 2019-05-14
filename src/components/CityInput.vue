@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:39:25
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 14:02:42
+ * @Last Modified time: 2019-05-14 15:01:34
  */
 
 <template>
@@ -18,8 +18,8 @@
           right-icon="arrow"
           readonly
           :input-align="inputAlign"
-          @click="cityShow = true"
-          @click-right-icon="cityShow = true"
+          @click="cityShow = isSelect ? true : false"
+          @click-right-icon="cityShow = isSelect ? true : false"
         />
       </div>
     </div>
@@ -54,6 +54,11 @@ import { Field, Row, Col } from 'vant';
 })
 // 类方式声明当前组件
 export default class CityInput extends CommonMixins {
+  @Prop({
+    type: Boolean,
+    default: true
+  })
+  private isSelect: boolean;
   @Prop({
     type: Boolean,
     default: false
@@ -93,7 +98,6 @@ export default class CityInput extends CommonMixins {
   }
 }
 </script>
-
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .label

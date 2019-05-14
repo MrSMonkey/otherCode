@@ -3,14 +3,14 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-22 17:47:50
+ * @Last Modified time: 2019-05-14 15:06:19
  */
 
 <template>
   <section>
     <section class="serviceHouseInfo">
       <section class="area">
-        <CityInput :city-name="cityName" @city-confirm="cityConfirm" :city-list="cityList"></CityInput>
+        <CityInput :city-name="cityName" :is-select="false" @city-confirm="cityConfirm" :city-list="cityList"></CityInput>
         <div class="input-panel">
           <div class="label">小&emsp;&emsp;区*</div>
           <div class="village">
@@ -68,8 +68,8 @@ const namespace: string = 'global';
 })
 // 类方式声明当前组件
 export default class ServiceHouseInfo extends CommonMixins {
-  private cityName: string = '成都市';
-  private cityId: string = '510100';
+  private cityName: string = '';
+  private cityId: string = '';
   private code: string = '';
   private cityShow: boolean = false;
   private cityList: string[] = [];
@@ -88,6 +88,12 @@ export default class ServiceHouseInfo extends CommonMixins {
   private mounted() {
     this.sourceId = this.$route.query.sourceId;
     this.routeName = String(this.$route.name);
+    if (handleWebStorage.getLocalData('cityId', 'sessionStorage')) {
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
+      this.cityName = handleWebStorage.getLocalData('cityName', 'sessionStorage');
+    } else {
+      this.$toast('获取当前城市失败');
+    }
     this.getCitys(); // 获取城市
   }
 
@@ -110,7 +116,6 @@ export default class ServiceHouseInfo extends CommonMixins {
    * @author chenmo
    */
   private cityConfirm(item: any, index: number) {
-    console.log(item);
     this.cityName = item.cityName;
     this.cityId = item.id;
     this.communityId = '';
