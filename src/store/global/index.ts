@@ -32,7 +32,7 @@ export const state: GlobalState = {
   userInfo: null,
   communityId: '',
   communityName: '',
-  keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo,AppraiseHouseInfo',
+  keepAlive: 'Purchase,ServiceOrder,Entrust,ServiceHouseInfo,AppraiseHouseInfo',
   point: {
     lat: '', // 经度
     lon: ''  // 纬度

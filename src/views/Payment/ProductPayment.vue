@@ -225,6 +225,10 @@ export default class ProductPayment extends CommonMixins {
   @Watch('area')
   private handlerArea(newVal: string) {
     if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/.test(newVal)) {
+      if (parseFloat(newVal) === 0) {
+        this.isserviceCountErr = false;
+        return;
+      }
       this.isAreaErr = true;
     } else {
       this.isAreaErr = false;
@@ -234,6 +238,10 @@ export default class ProductPayment extends CommonMixins {
   @Watch('serviceHour')
   private handlerServiceHour(newVal: string) {
     if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,1})?$/.test(newVal)) {
+      if (parseFloat(newVal) === 0) {
+        this.isserviceCountErr = false;
+        return;
+      }
       this.isHourErr = true;
     } else {
       this.isHourErr = false;
@@ -243,6 +251,10 @@ export default class ProductPayment extends CommonMixins {
   @Watch('serviceCount')
   private handlerServiceCount(newVal: string) {
     if (newVal && /^(0|[1-9][0-9]*)$/.test(newVal)) {
+      if (parseFloat(newVal) === 0) {
+        this.isserviceCountErr = false;
+        return;
+      }
       this.isserviceCountErr = true;
     } else {
       this.isserviceCountErr = false;
@@ -252,6 +264,10 @@ export default class ProductPayment extends CommonMixins {
   @Watch('rooms')
   private handlerRooms(newVal: string) {
     if (newVal && /^(0|[1-9][0-9]*)$/.test(newVal)) {
+      if (parseFloat(newVal) === 0) {
+        this.isserviceCountErr = false;
+        return;
+      }
       this.isRoomsErr = true;
     } else {
       this.isRoomsErr = false;
@@ -551,7 +567,7 @@ export default class ProductPayment extends CommonMixins {
       this.$toast('请输入购买数量');
       return false;
     }
-    if (this.serviceCount === '0') {
+    if (parseFloat(this.serviceCount) === 0) {
       this.$toast('请输入正确的购买数量');
       return false;
     }
