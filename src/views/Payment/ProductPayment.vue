@@ -474,7 +474,7 @@ export default class ProductPayment extends CommonMixins {
     }
 
     if (!(/^\d+$/.test(this.rooms))) {
-      this.$toast('房间数只能是正整数');
+      this.$toast('房间数只能输入正整数');
       return false;
     }
     const params: any = {
@@ -505,7 +505,7 @@ export default class ProductPayment extends CommonMixins {
       return false;
     }
     if (!(/^-?\d+\.?\d{0,2}$/.test(this.area))) {
-      this.$toast('面积保留两位小数');
+      this.$toast('面积只能输入两位小数');
       return false;
     }
     const params: any = {
@@ -536,7 +536,7 @@ export default class ProductPayment extends CommonMixins {
       return false;
     }
     if (!(/^-?\d+\.?\d{0,1}$/.test(this.serviceHour))) {
-      this.$toast('服务时长保留一位小数');
+      this.$toast('服务时长只能输入一位小数');
       return false;
     }
     const params: any = {
@@ -571,7 +571,6 @@ export default class ProductPayment extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
     width 100%
@@ -585,7 +584,7 @@ export default class ProductPayment extends CommonMixins {
     .block
       font-size 15px
       color $text-color
-      font-family: PingFangSC-Regular;
+      font-family PingFangSC-Regular
       padding vw(10) 0 0
       position relative
       span 
