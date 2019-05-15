@@ -104,20 +104,20 @@ router = new Router({
     { path: '/houseImages', name: 'houseImages', meta: {title: '房源照片', requireAuth: true}, component: HouseImages},
     { path: '/productPayment', name: 'productPayment', meta: {title: '购买信息', requireAuth: true}, component: ProductPayment},
     { path: '/packPayment', name: 'packPayment', meta: {title: '购买信息', requireAuth: true}, component: PackPayment},
-    {
-      path: '/houseAppraise',
-      name: 'houseAppraise',
-      meta: {title: '房屋估价', requireAuth: true},
-      component: HouseAppraise,
-      beforeEnter: (to, from, next) => {
-        // const token: any = store.getters['global/getToken'];
-        // if (!token) {
-        //   next('/appraiseHouseInfo');
-        // }
-        // alert('111222');
-        next();
-      }
-    },
+    // {
+    //   path: '/houseAppraise',
+    //   name: 'houseAppraise',
+    //   meta: {title: '房屋估价', requireAuth: true},
+    //   component: HouseAppraise,
+    //   beforeEnter: (to, from, next) => {
+    //     // const token: any = store.getters['global/getToken'];
+    //     // if (!token) {
+    //     //   next('/appraiseHouseInfo');
+    //     // }
+    //     // alert('111222');
+    //     next();
+    //   }
+    // },
     { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: true}, component: AppraiseHouseInfo},
     { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: true}, component: AppraiseCommunity},
     // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
