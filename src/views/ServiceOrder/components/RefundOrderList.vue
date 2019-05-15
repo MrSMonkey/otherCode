@@ -12,7 +12,7 @@
 <template>
   <section>
     <div class="order-list" :key="index" v-for="(order, index) in tableData">
-      <div class="list-title-box" @click="pushDetile(order.orderId)">
+      <div class="list-title-box" @click="pushDetile(order)">
         <div class='list-title'>
           <div><img src="@/assets/images/icon/icon_order.png" alt=""/><span>{{order.productHouseName}}</span></div>
           <div><img src="@/assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
@@ -68,13 +68,13 @@ export default class RefundOrderList extends CommonMixins {
 
   /**
    * @description 跳转到详情
-   * @params orderId id
+   * @params order 订单
    * @returns string
    * @author chenmo
    */
-  private pushDetile(orderId: string) {
-    // status === 2 表示不是从支付进入详情，不需要弹出发起服务弹窗
-    this.$router.push(`/refundDetail?orderId=${orderId}&entrustId=${this.entrustId}&status=2`);
+  private pushDetile(order: any) {
+
+    this.$router.push(`/refundDetail?orderId=${order.orderId}&entrustId=${this.entrustId}&refundOrderId=${order.refundOrderId}`);
   }
 }
 </script>
