@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-14 16:43:48
+ * @Last Modified time: 2019-05-14 16:46:34
  */
 
 <template>
@@ -268,6 +268,11 @@ export default class AppraiseCommunity extends CommonMixins {
     this.$router.back();
   }
 
+  /**
+   * @description 表单弹窗dialog关闭前触发事件
+   * @returns void
+   * @author chenmo
+   */
   private async beforeClose(action: any, done: any) {
     if (action === 'confirm') {
       if (!this.validForm()) {
