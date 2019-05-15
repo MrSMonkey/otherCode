@@ -32,6 +32,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import store from '@/store';
 import LastBtn from '@/components/LastBtn.vue';
 import MultiHouseAppraise from '@/views/HouseAppraise/components/MultiHouseAppraise.vue';
 import SingleHouseAppraise from '@/views/HouseAppraise/components/SingleHouseAppraise.vue';
@@ -56,10 +57,13 @@ export default class HouseAppraise extends CommonMixins {
   private isFromAppraiseHOuseInfo: boolean = false; // 从AppraiseHOuseInfo页面跳转过来时为true
   private appraiseOneResult: any = {}; // 单个估价结果
   private appraiseResult: any[] = []; // 多个估价结果
-  private async mounted() {
+  private mounted() {
     if (this.$route.params.communityId) { // 判断是否是从AppraiseHOuseInfo页面跳转过来
       this.isFromAppraiseHOuseInfo = true;
       this.appraiseOneResult = this.$route.params;
+      window.InfoCollectInstance.detailViewEvent({ // 信息采集
+        eventId: 'CH002-ConclusionOfValue-detailview'
+      });
     } else {
       this.getHouseValuation();
     }
@@ -80,28 +84,41 @@ export default class HouseAppraise extends CommonMixins {
    */
   private async getHouseValuation() {
     try {
-      this.loading = true;
-      const res: any = await this.axios.get(api.getAppraiseList);
-      if (res && res.code === '000') {
-        if (res.data.houseCount === 0) {
-          // 房源数量为0
-          this.toAppraiseHouseInfo(); // 跳转
-        } else {
-          if (res.data.valuationDetail && res.data.valuationDetail.length !== 0) {
-            if (res.data.valuationDetail.length === 1)  {
-              this.appraiseResult = res.data.valuationDetail;
-              this.appraiseOneResult = res.data.valuationDetail[0];
-            } else {
-              this.appraiseResult = res.data.valuationDetail;
-            }
-          } else {
-            this.appraiseResult = [];
-          }
-        }
-        this.loading = false;
-        // console.log(res);
+      const token: any = store.getters['global/getToken'];
+      if (!token) { // 用户未登录系统
+        await window.InfoCollectInstance.menuSwitchEvent({ // 信息采集
+          eventId: 'CH002-housesourceestimate-menuswitch'
+        });
+        this.toAppraiseHouseInfo(); // 跳转
       } else {
-        this.$toast(res.msg || '房屋估价获取失败');
+        this.loading = true;
+        const res: any = await this.axios.get(api.getAppraiseList);
+        if (res && res.code === '000') {
+          if (res.data.houseCount === 0) {
+            await window.InfoCollectInstance.menuSwitchEvent({ // 信息采集
+              eventId: 'CH002-housesourceestimate-menuswitch'
+            });
+            // 房源数量为0
+            this.toAppraiseHouseInfo(); // 跳转
+          } else {
+            if (res.data.valuationDetail && res.data.valuationDetail.length !== 0) {
+              if (res.data.valuationDetail.length === 1)  {
+                this.appraiseResult = res.data.valuationDetail;
+                this.appraiseOneResult = res.data.valuationDetail[0];
+              } else {
+                this.appraiseResult = res.data.valuationDetail;
+              }
+              await window.InfoCollectInstance.detailViewEvent({ // 信息采集
+                eventId: 'CH002-ConclusionOfValue-detailview'
+              });
+            } else {
+              this.appraiseResult = [];
+            }
+          }
+          this.loading = false;
+        } else {
+          this.$toast(res.msg || '房屋估价获取失败');
+        }
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
@@ -115,7 +132,10 @@ export default class HouseAppraise extends CommonMixins {
    * @returns void
    * @author linyu
    */
-  private toAppraiseHouseInfo() {
+  private async toAppraiseHouseInfo() {
+    await window.InfoCollectInstance.handleClickEvent({ // 信息采集
+      eventId: 'CH002-OtherSuite-click'
+    });
     this.$router.push({
       name: 'appraiseHouseInfo',
       params: {

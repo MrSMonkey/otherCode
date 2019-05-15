@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-14 12:29:13
+ * @Last Modified time: 2019-05-15 15:50:50
  */
 
 <template>
@@ -24,6 +24,10 @@
     </section>
     <section class="other">
       <LastBtn button-text="查看评估结果" @click="submitData" :disabled="isActive"></LastBtn>
+    </section>
+    <section class="fast-login-panel">
+      <span @click="toLogin">星空业主登录快速估价</span>
+      <img :src="require('@/assets/images/icon/fast_login_icon_arrow.png')" alt="login" @click="toLogin">
     </section>
   </section>  
 </template>
@@ -217,6 +221,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.getSingleHouseValuation, data);
       if (res && res.code === '000') {
+        // await window.InfoCollectInstance.userLoginEvent({ // 信息采集
+        //   eventId: 'CH002-ViewResults-newitemsubmit'
+        // });
         this.$router.push({
           name: 'houseAppraise',
           params: res.data || {}
@@ -230,6 +237,12 @@ export default class AppraiseHouseInfo extends CommonMixins {
       this.loading = false;
     }
   }
+  private async toLogin() {
+    await window.InfoCollectInstance.userLoginEvent({ // 信息采集
+      eventId: 'CH002-SpeedyEstimation-click'
+    });
+    this.$router.push('/bind');
+  }
 }
 </script>
 
@@ -240,4 +253,14 @@ export default class AppraiseHouseInfo extends CommonMixins {
 .appraise
   .other
     margin-top 15px 
+  .fast-login-panel
+    padding 20px vw(7.3)
+    font-size 14px
+    color $main-color
+    text-align right 
+    line-height 24px 
+    img
+      height 24px
+      float right
+      margin-left 6px
 </style>
