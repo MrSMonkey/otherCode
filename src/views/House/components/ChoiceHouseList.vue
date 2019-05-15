@@ -75,7 +75,6 @@ export default class ChoiceHouseList extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .list
   width 100%
   margin-bottom vw(15)

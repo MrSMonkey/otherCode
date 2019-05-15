@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 14:22:42
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 11:55:27
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -28,6 +28,34 @@ export const START_HOME_IMG: confInterface.StartHomeImgInterface[] = [
   }
 ];
 
+/* 定义我的名片列表图片 */
+export const START_MYCARD_IMG: confInterface.StartHomeImgInterface[] = [
+  {
+    alt: '名片1',
+    src: require('../assets/images/card_1.jpg')
+  },
+  {
+    alt: '名片2',
+    src: require('../assets/images/card_2.jpg')
+  },
+  {
+    alt: '名片3',
+    src: require('../assets/images/card_3.jpg')
+  },
+  {
+    alt: '名片4',
+    src: require('../assets/images/card_4.jpg')
+  },
+  {
+    alt: '名片5',
+    src: require('../assets/images/card_5.jpg')
+  },
+  {
+    alt: '名片6',
+    src: require('../assets/images/card_6.jpg')
+  },
+];
+
  /* 定义购买链接 */
 export const SMART_LOCK_LINK: string =
 `http://coupon.m.jd.com/coupons/show.action?key=58840135e3f64759b6e648de6c8190d5&roleId=13925125&to=item.jd.com/28149452434.html`;
@@ -38,6 +66,7 @@ export const RENT_TYPE: confInterface.EnumInterface = {
   1: '加盟托管',
   2: '非加盟托管',
   3: '自主管理',
+  4: '优客自营',
 };
 
 /* 定义租赁类型 */
@@ -109,30 +138,141 @@ export const STEP: confInterface.StepInterface = [
   }
 ];
 
-/* 表格 */
-export const TABLES: confInterface.TablesInterface = [
+/* 加盟托管表格 */
+export const JMTG_TABLES: any = [
   {
-    title: '租前及租中费用承担表',
     data: [
-      { name: '装修费用', owner: false, uoko: true },
-      { name: '改造费', owner: false, uoko: true },
-      { name: '家电采购费', owner: false, uoko: true },
-      { name: '软装费', owner: false, uoko: true },
-      { name: '招租带看签约服务', owner: false, uoko: true }
+      [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
+      ['租金保底', '租金保底']
     ]
   },
   {
-    title: '租后费用承担表',
+    title: '加盟优客逸家，出租快，租金高',
     data: [
-      { name: '物业费', owner: false, uoko: true },
-      { name: '水电气', owner: false, uoko: true },
-      { name: '保洁', owner: false, uoko: true },
-      { name: '非甲方原因维修', owner: false, uoko: true },
-      { name: '租客服务', owner: false, uoko: true },
-      { name: '招租退租', owner: false, uoko: true }
+      ['装修标准', {text: '优客逸家提供租金溢价最高的装修方案及装修标准', rowspan: 4}],
+      ['改造标准'],
+      ['家电配置标准'],
+      ['软装标准']
+    ],
+    extra: true
+  },
+  {
+    title: '托管给星空，业主省心，更放心',
+    data: [
+      ['房屋写真', {text: '全部托管，业主很省心', rowspan: 9}],
+      ['租客审核'],
+      ['带看签约'],
+      ['费用催缴'],
+      ['专人管家'],
+      ['定期保洁'],
+      ['24小时维修'],
+      ['租后服务'],
+      ['退租服务']
     ]
   }
 ];
+
+/* 租务托管表格 */
+export const ZWTG_TABLES: any = [
+  {
+    data: [
+      [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
+      ['租金保底', '租金保底']
+    ]
+  },
+  {
+    title: '什么样的装修能出租最快？租金最高？',
+    data: [
+      ['改造费', {text: '优客逸家提供租金溢价最高的装修方案及装修标准', rowspan: 2}],
+      ['家电增配费']
+    ],
+    extra: true
+  },
+  {
+    title: '托管给星空，业主省心，更放心',
+    data: [
+      ['房屋写真', {text: '全部托管，业主很省心', rowspan: 9}],
+      ['租客审核'],
+      ['带看签约'],
+      ['费用催缴'],
+      ['专人管家'],
+      ['定期保洁'],
+      ['24小时维修'],
+      ['租后服务'],
+      ['退租服务']
+    ]
+  }
+];
+
+/* 自主管理表格 */
+export const ZZGL_TABLES: any = [
+  {
+    title: '平台保障业主权益',
+    data: [
+      ['一件招租', {text: '在线一键采购，业主更安心', rowspan: 11}],
+      ['一键带看'],
+      ['一键拍照'],
+      ['一键装修'],
+      ['一键装配'],
+      ['一键保洁'],
+      ['一键维修'],
+      ['一键跑腿'],
+      ['一键搬家'],
+      ['一键贷款'],
+      ['一键采购智能门锁']
+    ]
+  }
+];
+
+/* 加盟托管服务介绍 */
+export const JMTG_DESC: any = {
+  title: '加盟托管',
+  titleDesc: '加盟优客逸家 托管全部租务',
+  questions: [
+    {
+      question: 'Q：什么房屋适合加盟托管？',
+      answer: 'A：毛坯房、简单装修房'
+    },
+    {
+      question: 'Q：什么业主适合加盟托管？',
+      answer: 'A：房源自持几年后售卖增值，平常无暇打理，但希望有租金收入'
+    }
+  ],
+  linkText: '加盟品牌：优客逸家'
+};
+
+/* 租务托管服务介绍 */
+export const ZWTG_DESC: any = {
+  title: '租务托管',
+  titleDesc: '保持房屋原貌 托管全服务',
+  questions: [
+    {
+      question: 'Q：什么房屋适合加盟托管？',
+      answer: 'A：已装修房'
+    },
+    {
+      question: 'Q：什么业主适合租务托管？',
+      answer: 'A：已自费装修房屋，但无暇打理繁杂租务'
+    }
+  ],
+  linkText: '托管品牌：星空好房'
+};
+
+/* 自主管理服务介绍 */
+export const ZZGL_DESC: any = {
+  title: '自主管理',
+  titleDesc: '业主自己当房东 按需轻松采集服务',
+  questions: [
+    {
+      question: 'Q：什么房屋适合自主管理？',
+      answer: 'A：北京、成都、武汉、杭州所有类型房屋'
+    },
+    {
+      question: 'Q：什么业主适合自主管理？',
+      answer: 'A：有时间有精力，通过采购服务，可随时应对租客的各种难题'
+    }
+  ]
+};
 
 export const COLUMNS: confInterface.ColumnsInterface = [
   {
@@ -282,3 +422,41 @@ export const TIPSTWO: string = `注：本次支付仅支付装修设计费，装
 
 // 百度地图ak
 export const BAIDU_AK: string = `e0dzZmaImw9rUXxWyPBGgs78ZXoAfwhS`;
+
+/* 运行环境. */
+export const APP_TYPE: confInterface.AppType = {
+  wechat: 'wechat',
+  weibo: 'weibo',
+  qq: 'qq',
+  unknown: 'unknown'
+};
+
+// 设备系统
+export const APP_DEVICE: confInterface.AppDevice = {
+  android: 'android',
+  ios: 'ios',
+  unknown: 'unknown'
+};
+
+// 微信分享接口
+export const SHARE_API_LIST: string[] = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone'];
+
+// 微信分享内容
+export const FORTUNE_SHARE_DATA: confInterface.ShareData = {
+  title: '星空财神',
+  link: `${window.location.protocol}//${window.location.host}/fortune`,
+  desc: '财富自由第一定律,财神星马上告诉您',
+  imgUrl: 'http://ooydngjcf.bkt.clouddn.com/WaterElectricGas.22AF1BA1.wechat_img_left.png'
+};
+
+// 不需要带token的
+export const NOT_TOKEN_URL: string[] = [
+  '/auth/asset/register_login/web/mobile2wechat',
+  '/verification_code',
+  '/partner/star/owner/config/get_config',
+  '/partner/star/owner/config/get_token',
+  '/partner/star/owner/config/get_jssdk_config',
+  '/partner/star/owner/config/check_token',
+  '/partner/star/owner/config/get_wechat_user_info',
+  '/partner/star/owner/config/get_xiaoneng_config'
+];

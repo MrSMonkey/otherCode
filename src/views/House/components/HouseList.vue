@@ -2,13 +2,13 @@
  * @Description: 首页表格组件
  * @Author: chenmo
  * @Date: 2019-02-20 14:20:54
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-24 11:03:54
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 12:01:05
  */
 
 <template>
   <section class="house-list">
-    <section class="list" v-for="(house, index) in tableData" :key="house.entrustId" @click="linkHouseInfoTo(house)">
+    <section class="list" v-for="(house, index) in tableData" :key="house.houseId" @click="linkHouseInfoTo(house)">
       <HouseTitle :house="house"></HouseTitle>
       <div class="item-desc">
         <section class="item-dec-ok" v-if="house.handleStatus === 1">
@@ -16,7 +16,7 @@
           <div class="next">
             <van-button
               v-show="false"
-              @click.stop="getStewards(house.entrustId, index)"
+              @click.stop="getStewards(house.houseId, index)"
               size="mini"
               :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
               :disabled="house.allotAgency ? true : false"
@@ -29,7 +29,7 @@
         <section class="item-dec-ok" v-else>
           <van-button
             v-show="false"
-            @click.stop="getStewards(house.entrustId, index)"
+            @click.stop="getStewards(house.houseId, index)"
             size="mini"
             :class="['steward-choose-btn', house.allotAgency ? 'active' : '']"
             :disabled="house.allotAgency ? true : false"
@@ -73,8 +73,12 @@ export default class HouseList extends CommonMixins {
    * @author chenmo
    */
   private linkHouseInfoTo(house: any) {
+    if (house.consociationType === 4) { // 优客自营的房源跳转到旧业主的我的房源页面
+      this.$router.push('/oldMyHouse?houseId=' + house.houseId);
+      return;
+    }
     if (house.handleStatus !== 1) {
-      this.$router.push('/myHouse?entrustId=' + house.entrustId);
+      this.$router.push('/myHouse?entrustId=' + house.houseId);
     }
   }
 
@@ -116,7 +120,7 @@ export default class HouseList extends CommonMixins {
       this.$toast('小区审核不通过，暂无法修改!');
       return;
     } else {
-      this.$router.push(`/perfect?entrustId=${house.entrustId}`);
+      this.$router.push(`/perfect?entrustId=${house.houseId}`);
     }
   }
 

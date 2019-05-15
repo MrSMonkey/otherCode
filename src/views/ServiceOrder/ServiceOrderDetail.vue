@@ -2,8 +2,8 @@
  * @Description: 服务详情
  * @Author: zhegu
  * @Date: 2019-03-15 16:49:27
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-28 16:46:25
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:51:15
  */
 
 
@@ -21,6 +21,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { Button, CellGroup, Field, Icon } from 'vant';
 import LookServerDetail from './components/LookServerDetail.vue';
 import api from '@/api';
+import { Loading, ErrorMsg } from '@/utils/decorators';
 
 // 声明引入的组件
 @Component({
@@ -58,13 +59,9 @@ export default class ServiceRecord extends CommonMixins {
    * @returns void
    * @author zhegu
    */
+  @Loading()
+  @ErrorMsg('获取服务记录详情失败')
   private async getServiceDetail(orderId: string, statusId: string, rowId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       let res: any = [];
       if ( statusId === '-1034') {
@@ -74,20 +71,17 @@ export default class ServiceRecord extends CommonMixins {
       }
       if (res && res.code === '000') {
         this.data = res.data.logList[rowId].logDetails || [];
-      } else {
-        this.$toast(`获取服务记录详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .service-order-detail
   padding-bottom vw(70)
   .order,.log

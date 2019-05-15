@@ -23,9 +23,13 @@
         <p>{{data.typeName || '无'}}</p>
       </div>
       <div class="block">
-        <span>服务总次数：</span>
-        <p v-if="data.typeId === 4 && data.serviceCount === 0">不限制次数</p>
-        <p v-else>{{data.serviceCount}}</p>
+        <span>服务总次数：
+          <em v-if="data.typeId === 4 && data.serviceCount === 0">不限制次数</em>
+          <em v-else>{{data.serviceCount}}</em>
+        </span>
+        <!-- <p v-if="data.typeId === 4 && data.serviceCount === 0" class="service-count">不限制次数</p>
+        <p v-else class="service-count">{{data.serviceCount}}</p> -->
+        <p>&emsp;</p>
       </div>
       <div class="block">
         <span>咨询电话：</span>
@@ -72,6 +76,7 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class ProductInfo extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
+  private cityId: string = ''; // 城市Id
   private productId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
   private buyersName: string = ''; // 联系人
@@ -95,17 +100,19 @@ export default class ProductInfo extends CommonMixins {
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId);
+    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '' : String(this.$route.query.cityId);
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
-    this.getProductDetail(this.productId); // 获取服务包详情
+    this.getProductDetail(this.productId, this.cityId); // 获取服务包详情
   }
 
   /**
    * @description 获取服务产品详情
    * @params productId 服务产品id
+   * @params cityId 城市id
    * @returns void
    * @author chenmo
    */
-  private async getProductDetail(productId: string) {
+  private async getProductDetail(productId: string, cityId: string) {
     this.$toast.loading({
       duration: 0,
       mask: true,
@@ -113,7 +120,7 @@ export default class ProductInfo extends CommonMixins {
       message: '加载中...'
     });
     try {
-      const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
+      const res: any = await this.axios.get(api.getProductDetail + `/${productId}/${cityId}`);
       if (res && res.code === '000') {
         this.data = res.data || {};
 
@@ -171,7 +178,6 @@ export default class ProductInfo extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
     width 100%
@@ -200,6 +206,8 @@ export default class ProductInfo extends CommonMixins {
         width vw(240)
         max-height vw(160)
         overflow-y scroll
+      .service-count
+        // margin-left vw(115)
       img
         padding-bottom vw(20)
     .service-footer

@@ -2,12 +2,9 @@
  * @Description: 房源列表标题
  * @Author: chenmo
  * @Date: 2019-04-09 13:36:28
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 13:36:28
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-23 14:11:43
  */
-
-
-
 
 <template>
   <section class="house-title">
@@ -31,7 +28,6 @@ export default class HouseTitle extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../../assets/stylus/main.styl'
 .house-title
   h2 
     font-size 16px

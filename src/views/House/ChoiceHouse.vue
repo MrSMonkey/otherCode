@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-10 12:01:41
+ * @Last Modified time: 2019-05-14 15:06:16
  */
 
 <template>
@@ -49,11 +49,19 @@ export default class ChoiceHouse extends CommonMixins {
   private addHouseUrl: string = 'serviceHouseInfo'; // 新增房源跳转地址
   private tableData: any[] = []; // 委托房源列表
   private isData: boolean = false; // 默认不显示
+  private cityId: string = ''; // 城市ID
+  private cityName: string = ''; // 城市名称
   private mounted() {
     if (handleWebStorage.getLocalData('serviceId', 'sessionStorage')) {
       this.preUrl = 'packPayment';
     } else {
       this.preUrl = 'productPayment';
+    }
+    if (handleWebStorage.getLocalData('cityId', 'sessionStorage')) {
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
+      this.cityName = handleWebStorage.getLocalData('cityName', 'sessionStorage');
+    } else {
+      this.$toast('获取当前城市失败');
     }
     this.getHouseList(); // 获取房源列表
   }
@@ -72,7 +80,7 @@ export default class ChoiceHouse extends CommonMixins {
     });
     this.isData = false;
     try {
-      const res: any = await this.axios.get(api.getHouseList + '/' + '510100');
+      const res: any = await this.axios.get(`${api.getHouseList}/${this.cityId}`);
       if (res && res.code === '000') {
         this.tableData = res.data || [];
       } else {
@@ -113,7 +121,6 @@ export default class ChoiceHouse extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .house
   .adver
     img

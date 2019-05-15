@@ -7,7 +7,7 @@
  */
 
 <template>
-  <div class="fixture">
+  <div :class="['fixture', alignRight ? 'align-right' : '']">
     <div class="label">装修情况*</div>
     <div class="check">
       <span v-for="(item, index) in houseSetting" :key="index" :class="item.id === active ? 'active' : ''" @click="selectItem(item.id)"> {{item.name}} </span>
@@ -17,7 +17,7 @@
 
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import CommonMixins from '@/utils/mixins/commonMixins';
 
 // 声明引入的组件
@@ -26,6 +26,12 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 })
 // 类方式声明当前组件
 export default class HouseDecorationInfo extends CommonMixins {
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  private alignRight: boolean;
+
   private active: number = 1;
   private houseSetting: any[] = [
     {id: 1, name: '已装修'},
@@ -46,7 +52,6 @@ export default class HouseDecorationInfo extends CommonMixins {
 
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../../assets/stylus/main.styl'
 .area
   margin-bottom vw(10)
   .label
@@ -62,7 +67,7 @@ export default class HouseDecorationInfo extends CommonMixins {
   .fixture
     background $global-background
     height vw(55)
-    padding vw(20)
+    padding vw(15) vw(6) vw(20) vw(15)
     border-bottom 1px solid $separate-line-color
     display -webkit-flex
     display flex
@@ -83,4 +88,8 @@ export default class HouseDecorationInfo extends CommonMixins {
       .active
         background $main-color
         color #fff
+  .align-right
+    justify-content space-between
+    .check
+      margin 0 2vw 0 0
 </style>

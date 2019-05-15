@@ -6,12 +6,16 @@ import store from './store';
 import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
+import wx from 'weixin-js-sdk';
+import Lottie from 'vue-lottie';
 // import FastClick from 'fastclick';
 // import VueLazyload from 'vue-lazyload';
 import VueLazyComponent from '@xunlei/vue-lazy-component';
-import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, Dialog } from 'vant';
+import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, Dialog, Notify } from 'vant';
 import 'vant/lib/index.css';
 
+
+Vue.use(Lottie);
 Vue.use(Toast);
 Vue.use(Picker);
 Vue.use(Popup);
@@ -22,6 +26,7 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Icon);
 Vue.use(Dialog);
+Vue.use(Notify);
 Vue.use(Lazyload, {
   lazyComponent: true,
   loading: require('./assets/images/icon_loading.png'),

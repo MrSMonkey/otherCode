@@ -2,9 +2,10 @@
  * @Description: 自定义封装各种工具
  * @Author: LiuZhen
  * @Date: 2018-09-19 09:39:14
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 16:00:40
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-29 15:52:34
  */
+import { APP_TYPE, APP_DEVICE } from '@/config/config';
 
 /* 首字母大写 */
 export function firstUpperCase(str: string): string {
@@ -322,23 +323,29 @@ export function getErrorMessage(e: any, defaultMsg?: string): string {
 /**
  * 节流
  * @param  {function} func 处理函数
- * @param  {number} delay 延迟时间
+ * @param  {number} mustRunDelay 触发过程中的执行处理函数规定的时间间隔
+ * @param  {number} delay 停止触发及最后一次执行处理函数的延迟时间
  */
-export function throttle(func: any, delay: number) {
-  let timer: any = null;
-  let startTime: number = Date.now();
-  return (): void => {
-    const curTime: number = Date.now();
-    const remaining: number = delay - (curTime - startTime);
-    const args: IArguments = arguments;
-    clearTimeout(timer);
-    if (remaining <= 0) {
-      func(...args);
-      startTime = Date.now();
+export function throttle(method: any, mustRunDelay: number, delay: number) {
+  let timer: any;
+  let start: number;
+  return () => {
+    const now: number = Date.now();
+    if (!start) {
+      start = now;
+    }
+    if (timer) {
+      clearTimeout(timer);
+    }
+    if (now - start >= mustRunDelay) {
+      method(...arguments);
+      start = now;
     } else {
       timer = setTimeout(() => {
-        func();
-      }, remaining);
+        if (now !== start) {
+          method(...arguments);
+        }
+      }, delay);
     }
   };
 }
@@ -347,18 +354,139 @@ export function throttle(func: any, delay: number) {
  * @param  {function} func 处理函数
  * @param  {number} delay 延迟时间
  */
-export function debounce(func: any, wait: number) {
-  let timeout: any = null;
-  let timeout2: any = 111;
+export function debounce(func: any, delay: number) {
+  let timer: any = null;
   return () => {
       const args = arguments;
-      if (timeout) {
-        clearTimeout(timeout);
+      if (timer) {
+        clearTimeout(timer);
       }
-      timeout = setTimeout(() => {
-        timeout2 = 4444;
+      timer = setTimeout(() => {
         func(...args);
-      }, wait);
+      }, delay);
   };
 }
+
+/**
+ * @description appType浏览器环境 deviceType设备系统
+ * @return appType浏览器环境 deviceType设备系统
+ * @author chenmo
+ */
+export function getRuntimeInfo() {
+  const apptypeTest: any = {
+    qq(ua: any) {
+      return /QQ\/\d+\./.test(ua) && APP_TYPE.qq;
+    },
+    wechat(ua: any) {
+      return /MicroMessenger/.test(ua) && APP_TYPE.wechat;
+    },
+    weibo(ua: any) {
+      return /WeiBo/.test(ua) && APP_TYPE.weibo;
+    }
+  };
+
+  const deviceTypeTest: any = {
+    ios(ua: any) {
+      return /iphone|ipad|ipod/i.test(ua) && APP_DEVICE.ios;
+    },
+    android(ua: any) {
+      return /android/i.test(ua) && APP_DEVICE.android;
+    }
+  };
+
+  return {
+    appType: (() => {
+      const ua = navigator.userAgent;
+      let appType = APP_TYPE.unknown;
+
+      Object.keys(apptypeTest).some((k: any) => {
+        const result: any = apptypeTest[k](ua);
+        if (result) {
+          appType = result;
+        }
+        return result;
+      });
+
+      return appType;
+    })(),
+    deviceType: (() => {
+      const ua = navigator.userAgent;
+      let deviceType = APP_DEVICE.unknown;
+
+      Object.keys(deviceTypeTest).some((k: any) => {
+        const result: any = deviceTypeTest[k](ua);
+        if (result) {
+          deviceType = result;
+        }
+        return result;
+      });
+
+      return deviceType;
+    })(),
+    env: process.env.NODE_ENV
+  };
+}
+
+/**
+ * @description 微信认证
+ * @params appid 微信appid
+ * @params transferUrl 微信transferUrl
+ * @params scope 微信scope
+ * @return 微信登录授权页面
+ * @author chenmo
+ */
+export const toAuth = (appid: string, transferUrl: string, scope: string) => {
+  const cur: any = window.location;
+  const url: string = `${transferUrl}?appid=${appid}&scope=${scope}&callback=${encodeURIComponent(cur)}`;
+  return (window.location.href = url);
+};
+
+/**
+ * @description 计算年龄
+ * @params 出生年月
+ * @return 返回年龄
+ * @author chemo
+ */
+export const getAge = (date: string) => {
+  if (!date) {
+    return;
+  }
+  let returnAge;
+  const dateArr = date.split('-');
+  const birthYear = Number(dateArr[0]);
+  const birthMonth = Number(dateArr[1]);
+  const birthDay = Number(dateArr[2]);
+
+  const d = new Date();
+  const nowYear = d.getFullYear();
+  const nowMonth = d.getMonth() + 1;
+  const nowDay = d.getDate();
+
+  if (nowYear === birthYear) {
+    returnAge = 0; // 同年 则为0岁
+  } else {
+    const ageDiff = nowYear - birthYear ; // 年之差
+    if (ageDiff > 0) {
+      if (nowMonth === birthMonth) {
+        const dayDiff = nowDay - birthDay; // 日之差
+        if (dayDiff < 0) {
+          returnAge = ageDiff - 1;
+        } else {
+          returnAge = ageDiff ;
+        }
+      } else {
+        const monthDiff = nowMonth - birthMonth; // 月之差
+        if (monthDiff < 0) {
+          returnAge = ageDiff - 1;
+        } else {
+          returnAge = ageDiff;
+        }
+      }
+    } else {
+      returnAge = false; // 返回-1 表示出生日期输入错误 晚于今天
+    }
+  }
+
+  return returnAge; // 返回周岁年龄
+};
 

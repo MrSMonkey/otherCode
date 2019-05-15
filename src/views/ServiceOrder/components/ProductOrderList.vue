@@ -12,9 +12,13 @@
   <section>
     <div class="order-list" :key="index" v-for="(order, index) in tableData">
       <div class="list-title-box" @click="pushDetile(order.orderId)">
+        <!-- <div class='list-title'>
+          <div><img src="@/assets/images/icon/icon_order.png" alt=""/><span>{{order.houseName}}</span></div>
+          <div><img src="@/assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
+        </div> -->
         <div class='list-no'>
           <span>服务产品订单号：{{order.orderNum}}</span>
-          <div><img src="../../../assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
+          <div><img src="@/assets/images/icon/icon_arrow.png" alt="" class="icon-right"/></div>
         </div>
       </div>
       <div class="list-main">
@@ -74,7 +78,6 @@ export default class ProductOrderList extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../../assets/stylus/main.styl'
 .order-list
   background #fff
   margin-bottom 20px
@@ -97,7 +100,7 @@ export default class ProductOrderList extends CommonMixins {
     flex-wrap nowrap
     justify-content space-between
     align-items center
-    font-size 14px
+    font-size 15px
     color $tip-text-color
     .icon-right
       display inline-block

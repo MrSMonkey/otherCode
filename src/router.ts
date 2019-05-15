@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Home from '@/views/Home/Home.vue';
 import store from '@/store';
 import api from '@/api';
+import { getRuntimeInfo, handleWebStorage, toAuth, getQueryString } from '@/utils/utils';
+import { APP_TYPE } from '@/config/config';
 
 Vue.use(Router);
 
@@ -24,6 +26,8 @@ const HouseImages = () => import(/* webpackChunkName: 'houseImages' */ '@/views/
 const ServiceOrder = () => import(/* webpackChunkName: 'serviceOrder' */ '@/views/ServiceOrder/ServiceOrder.vue');
 const ServiceDetile = () => import(/* webpackChunkName: 'serviceDetile' */ '@/views/ServiceOrder/ServiceDetile.vue');
 const ProductDetile = () => import(/* webpackChunkName: 'productDetile' */ '@/views/ServiceOrder/ProductDetile.vue');
+const RefundDetail = () => import(/* webpackChunkName: 'RefundDetile' */ '@/views/ServiceOrder/RefundDetail.vue');
+
 const ServiceOrderDetail = () => import(/* webpackChunkName: 'serviceOrderDetail' */ '@/views/ServiceOrder/ServiceOrderDetail.vue');
 const ServiceInfo = () => import(/* webpackChunkName: 'serviceInfo' */ '@/views/ServiceOrder/ServiceInfo.vue');
 const ProductInfo = () => import(/* webpackChunkName: 'productInfo' */ '@/views/ServiceOrder/ProductInfo.vue');
@@ -38,14 +42,39 @@ const ServiceRecord = () => import(/* webpackChunkName: 'serviceRecord' */ '@/vi
 const ConfirmPay = () => import(/* webpackChunkName: 'confirmPay' */ '@/views/ServiceRecord/ConfirmPay.vue');
 const ServiceRecordLook = () => import(/* webpackChunkName: 'serviceRecordLook' */ '@/views/ServiceRecord/ServiceRecordLook.vue');
 
-// const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
-// const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+// 房屋估价
+const HouseAppraise = () => import(/* webpackChunkName: 'houseAppraise' */ '@/views/HouseAppraise/HouseAppraise.vue');
+const AppraiseHouseInfo = () => import(/* webpackChunkName: 'appraiseHouseInfo' */ '@/views/HouseAppraise/AppraiseHouseInfo.vue');
+const AppraiseCommunity = () => import(/* webpackChunkName: 'appraiseCommunity' */ '@/views/HouseAppraise/AppraiseCommunity.vue');
 
 // 服务产品支付
 const ProductPayment = () => import(/* webpackChunkName: 'productPayment' */ '@/views/Payment/ProductPayment.vue');
 
 // 服务包购买
 const PackPayment = () => import(/* webpackChunkName: 'packPayment' */ '@/views/Payment/PackPayment.vue');
+
+// 星空财神(旧公众号)
+const OldFortune = () => import(/* webpackChunkName: 'oldFortune' */ '@/views/Home/OldFortune.vue');
+const OldFortuneResult = () => import(/* webpackChunkName: 'oldFortuneResult' */ '@/views/Home/OldFortuneResult.vue');
+const OldFortuneLaw = () => import(/* webpackChunkName: 'oldFortuneLaw' */ '@/views/Home/OldFortuneLaw.vue');
+const OldMyQRecode = () => import(/* webpackChunkName: 'oldMyQRecode' */ '@/views/OldBusinessCard/OldMyQRecode.vue');
+const OldMyBusinessCard = () => import(/* webpackChunkName: 'oldMyBusinessCard' */ '@/views/OldBusinessCard/OldMyBusinessCard.vue');
+const CustomerService = () => import(/* webpackChunkName: 'customerService' */ '@/views/Customer/CustomerService.vue');
+
+// 旧公众号 我的房源
+const OldMyHouse = () => import(/* webpackChunkName: 'oldMyHouse' */ '@/views/House/OldMyHouse.vue');
+
+// 旧公众号 我的账单
+const OldMyAccount = () => import(/* webpackChunkName: 'oldMyAccount' */ '@/views/House/OldMyAccount.vue');
+
+// 旧公众号 账单详情
+const OldAccountDetail = () => import(/* webpackChunkName: 'oldAccountDetail' */ '@/views/House/OldAccountDetail.vue');
+
+// 旧公众号 账单详情
+const OldHouseContract = () => import(/* webpackChunkName: 'oldHouseContract' */ '@/views/House/OldHouseContract.vue');
+
+// 旧公众号 房源照片
+const OldHousePic = () => import(/* webpackChunkName: 'oldHousePic' */ '@/views/House/OldHousePic.vue');
 
 router = new Router({
   base: process.env.BASE_URL,
@@ -61,9 +90,10 @@ router = new Router({
     { path: '/serviceOrder', name: 'serviceOrder', meta: {title: '服务订单', requireAuth: true}, component: ServiceOrder},
     { path: '/serviceDetile', name: 'serviceDetile', meta: {title: '订单详情', requireAuth: true}, component: ServiceDetile},
     { path: '/productDetile', name: 'productDetile', meta: {title: '订单详情', requireAuth: true}, component: ProductDetile},
-    { path: '/purchase', name: 'purchase', meta: {title: '购买服务包', requireAuth: true}, component: Purchase},
-    { path: '/serviceInfo', name: 'serviceInfo', meta: {title: '服务包详情', requireAuth: true}, component: ServiceInfo},
-    { path: '/productInfo', name: 'productInfo', meta: {title: '服务产品详情', requireAuth: true}, component: ProductInfo},
+    { path: '/purchase', name: 'purchase', meta: {title: '购买服务', requireAuth: false}, component: Purchase},
+    { path: '/serviceInfo', name: 'serviceInfo', meta: {title: '服务包详情', requireAuth: false}, component: ServiceInfo},
+    { path: '/productInfo', name: 'productInfo', meta: {title: '服务产品详情', requireAuth: false}, component: ProductInfo},
+    { path: '/refundDetail', name: 'refundDetail', meta: {title: '退款/售后详情', requireAuth: true}, component: RefundDetail},
     { path: '/serviceType', name: 'serviceType', meta: {title: '选择服务类型', requireAuth: true}, component: ServiceType},
     { path: '/startService', name: 'startService', meta: {title: '发起服务', requireAuth: true}, component: StartService},
     { path: '/maintainChecked', name: 'maintainChecked', meta: {title: '确认验收', requireAuth: true}, component: MaintainChecked},
@@ -77,7 +107,37 @@ router = new Router({
     // {
     //   path: '/houseAppraise',
     //   name: 'houseAppraise',
-    //   meta: '房屋估价',
+    //   meta: {title: '房屋估价', requireAuth: true},
+    //   component: HouseAppraise,
+    //   beforeEnter: (to, from, next) => {
+    //     // const token: any = store.getters['global/getToken'];
+    //     // if (!token) {
+    //     //   next('/appraiseHouseInfo');
+    //     // }
+    //     // alert('111222');
+    //     next();
+    //   }
+    // },
+    { path: '/appraiseHouseInfo', name: 'appraiseHouseInfo', meta: {title: '估价房屋信息', requireAuth: true}, component: AppraiseHouseInfo},
+    { path: '/appraiseCommunity', name: 'appraiseCommunity', meta: {title: '选择小区', requireAuth: true}, component: AppraiseCommunity},
+    // { path: '/fortune', name: 'fortune', meta: {title: '星空财神', requireAuth: false}, component: Fortune},
+    { path: '/oldMyHouse', name: 'OldMyHouse', meta: {title: '我的房源', requireAuth: true}, component: OldMyHouse},
+    { path: '/oldMyAccount', name: 'OldMyAccount', meta: {title: '我的账单', requireAuth: true}, component: OldMyAccount},
+    { path: '/OldAccountDetail', name: 'OldAccountDetail', meta: {title: '账单详情', requireAuth: true}, component: OldAccountDetail},
+    { path: '/OldHouseContract', name: 'OldHouseContract', meta: {title: '房源合同', requireAuth: true}, component: OldHouseContract},
+    { path: '/OldHousePic', name: 'OldHousePic', meta: {title: '房源照片', requireAuth: true}, component: OldHousePic},
+
+    // 老公众号
+    { path: '/oldFortune', name: 'oldFortune', meta: {title: '星空财神', requireAuth: false}, component: OldFortune},
+    { path: '/oldFortuneResult', name: 'oldFortuneResult', meta: {title: '星空财神', requireAuth: false}, component: OldFortuneResult},
+    { path: '/oldFortuneLaw', name: 'oldFortuneLaw', meta: {title: '4321定律', requireAuth: false}, component: OldFortuneLaw},
+    { path: '/oldMyQRecode', name: 'oldMyQRecode', meta: {title: '我的二维码', requireAuth: true}, component: OldMyQRecode},
+    { path: '/oldMyBusinessCard', name: 'oldMyBusinessCard', meta: {title: '我的名片', requireAuth: true}, component: OldMyBusinessCard},
+    { path: '/customerService', name: 'customerService', meta: {title: '客服', requireAuth: false}, component: CustomerService},
+    // {
+    //   path: '/houseAppraise',
+    //   name: 'houseAppraise',
+    //   meta: '房屋估价',git
     //   component: HouseAppraise,
     //   children: [
     //     {path: 'appraiseHouseInfo', name: 'appraiseHouseInfo', meta: '估价房屋信息', component: AppraiseHouseInfo }
@@ -89,7 +149,7 @@ router = new Router({
   ]
 });
 
-router.beforeEach((to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, from: any, next: any) => {
   /* 路由发生变化修改页面title */
   if (to.meta) {
     document.title = to.meta.title;
@@ -103,62 +163,124 @@ router.beforeEach((to: any, from: any, next: any) => {
     next();
     return;
   }
-  if (to.meta.requireAuth) {
-    // 判断该路由是否需要登录权限
-    const token: any = store.getters['global/getToken'];
-    if (token) {
-      // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
-      const userInfo = store.getters['global/getUserInfo'];
-      if (!userInfo) {
-        // 不存在用户信息，查询用户信息
-        Vue.axios.get(api.getUserInfo).then((res: any) => {
+  /* 跳转微信授权后端中转页 */
+  /* 微信认证流程 */
+  const runtime: any = getRuntimeInfo();
+  // let redirected: boolean = false; // 如果被重定向到授权页  保持initiating状态，避免看到渲染的页面
+
+  // 获取微信access_token
+  const getAccesstoken = async (appId: string, code: string) => {
+    const res: any = await Vue.axios.get(api.getAccesstoken + `/${appId}/${code}`);
+    if (res && res.code === '000') {
+      /* 用code成功请求到 access_token后一起存在全局 */
+      handleWebStorage.setLocalData('uoko.fd.wx', Object.assign(res.data, { code })); // 本地存储appId
+      store.commit('global/updateWxOAuth', res.data); // 设置appId
+    }
+    loginFun(); // 进入页面
+  };
+
+
+  // 微信认证
+  const getWxAuth = async (code: string, wxOAuth: any) => {
+    const res: any = await Vue.axios.get(api.getWechatConfig);
+    if (res && res.code === '000') {
+      store.commit('global/updateWxOAuth', res.data); // 设置appId
+      handleWebStorage.setLocalData('uoko.fd.wx', res.data);
+      if (code && wxOAuth.appId) {
+        getAccesstoken(wxOAuth.appId, code);
+      } else {
+        await toAuth(res.data.appId, res.data.transferUrl, res.data.scope);
+      }
+    } else {
+      Vue.prototype.$toast(`获取微信认证失败`);
+    }
+  };
+
+  // 获取微信appid和redirectUrl
+  const getWxConfig = async () => {
+    const wxOAuth: any = store.getters['global/getWxOAuth'];
+    const code: any = getQueryString('code');
+    const { openId, accessToken } = wxOAuth;
+    // console.log(openId, accessToken);
+
+    /* 如果已缓存用户信息,进行验证 */
+    if (openId && accessToken) {
+      const res: any = await Vue.axios.get(api.checkAccessToken + `/${accessToken}/${openId}`);
+      if (res && res.code === '000') {
+        if (res.data) {
+          // 验证通过
+          loginFun();
+        } else {
+          getWxAuth(code, wxOAuth);
+        }
+      } else {
+        getWxAuth(code, wxOAuth);
+      }
+    } else {
+      getWxAuth(code, wxOAuth);
+    }
+  };
+
+  const loginFun = async () => {
+    if (to.meta.requireAuth) {
+      // 判断该路由是否需要登录权限
+      const token: any = store.getters['global/getToken'];
+      if (token) {
+        // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+        const userInfo = store.getters['global/getUserInfo'];
+        if (!userInfo) {
+          // 不存在用户信息，查询用户信息
+          const res: any = await Vue.axios.get(api.getUserInfo);
           if (res && res.code === '000') {
             store.commit('global/updateUserInfo', res.data); // 设置用户信息
           } else {
             Vue.prototype.$toast(`获取用户信息失败`);
           }
           next(); // 不要在next里面加"path:/",会陷入死循环
-        }).catch((err: any) => {
-          Vue.prototype.$toast(`获取用户信息失败`);
-          next(); // 不要在next里面加"path:/",会陷入死循环
-        });
-      } else {
-        next();
-      }
-    } else {
-      next({
-        path: '/bind',
-        query: {redirectUrl: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
-      });
-    }
-  } else {
-    const token: any = store.getters['global/getToken'];
-    if (to.patch === 'entrust') {
-      // 委托房源页面可登陆也可不
-      if (token) {
-        // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
-        const userInfo = store.getters['global/getUserInfo'];
-        if (!userInfo) {
-          // 不存在用户信息，查询用户信息
-          Vue.axios.get(api.getUserInfo).then((res: any) => {
-            if (res && res.code === '000') {
-              store.commit('global/updateUserInfo', res.data); // 设置用户信息
-            } else {
-              Vue.prototype.$toast(`获取用户信息失败`);
-            }
-            next(); // 不要在next里面加"path:/",会陷入死循环
-          }).catch((err: any) => {
-            Vue.prototype.$toast(`获取用户信息失败`);
-            next(); // 不要在next里面加"path:/",会陷入死循环
-          });
         } else {
           next();
         }
       } else {
-        next();
+        next({
+          path: '/bind',
+          query: {redirectUrl: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        });
       }
+    } else {
+      const token: any = store.getters['global/getToken'];
+      if (to.patch === 'entrust') {
+        // 委托房源页面可登陆也可不
+        if (token) {
+          // 通过封装好的vux读取token，如果存在，name接下一步如果不存在，那跳转回登录页
+          const userInfo = store.getters['global/getUserInfo'];
+          if (!userInfo) {
+            // 不存在用户信息，查询用户信息
+            Vue.axios.get(api.getUserInfo).then((res: any) => {
+              if (res && res.code === '000') {
+                store.commit('global/updateUserInfo', res.data); // 设置用户信息
+              } else {
+                Vue.prototype.$toast(`获取用户信息失败`);
+              }
+              next(); // 不要在next里面加"path:/",会陷入死循环
+            }).catch((err: any) => {
+              Vue.prototype.$toast(`获取用户信息失败`);
+              next(); // 不要在next里面加"path:/",会陷入死循环
+            });
+          } else {
+            next();
+          }
+        } else {
+          next();
+        }
+      }
+      next();
     }
-    next();
+  };
+  /* 如果是微信环境 */
+  if (runtime.appType === APP_TYPE.wechat) {
+    await getWxConfig(); // 判断是否微信授权
+  } else {
+    loginFun(); // 非微信环境路由拦截
   }
 });
 

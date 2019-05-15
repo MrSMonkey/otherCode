@@ -3,13 +3,72 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 14:43:20
+ * @Last Modified time: 2019-05-14 14:55:15
  */
 
 <template>
   <section class="purchase">
     <!-- 房源基本信息 -->
     <van-tabs @click="onClick" :sticky="true" @scroll="tabScroll">
+      <van-tab title="服务产品">
+        <section class="tree">
+          <div class="tree-left">
+            <div v-for="(item, index) in productData" :key="index" class="tree-left-item">
+              <p :class="index === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(index, item)">{{item.typeName}}</p>
+              <transition name="uokodown">
+                <section v-if="index === isSlide" class="childrenItem" ref="childrenItem">
+                  <div v-for="(ctx, idx) in item.children" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
+                    <div><span :class="idx === isActiveChildrenOne ? 'circle-active' : ''"></span><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
+                  </div>
+                </section>
+              </transition>
+            </div>
+          </div>
+          <div class="tree-right">
+            <transition name="van-slide-down">
+              <section class="toast-box" v-if="showDialog">
+                <div class="toast-content">
+                  <div class="toast-title">
+                    <span>全部分类</span>
+                    <img src="@/assets/images/buyservice_icon_close.png" alt="" class="meun-icon" @click="closeDialog"/>
+                  </div>
+                  <div class="toast-main">
+                  <span v-for="(meum, idx) in productThreeMeum" :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''" @click="clickMeum(meum, idx)">{{meum.typeName}}</span>
+                  </div>
+                </div>
+              </section>
+            </transition>
+            <section>
+              <section class="product-name" v-if="productThreeMeum.length > 0">
+                <div ref="typePanel">
+                  <span
+                    v-for="(meum, idx) in productThreeMeum"
+                    :key="idx" :class="isTreeMeumActive === idx ? 'three-active' : ''"
+                    @click="clickThreeMeum($event, meum, idx)"
+                    :ref="'type' + idx"
+                  >{{meum.typeName}}</span>
+                </div>
+                <img src="@/assets/images/buyservice_icon_more.png" alt="" class="meun-icon" @click="openDialog"/>
+              </section>
+              <section v-if="productItemData.length > 0">
+                <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
+                  <a @click="goodsClick('product', item.productId)">
+                    <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
+                    </div>
+                    <p  class="purchase-title">{{item.productName|| ''}}</p>
+                    <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
+                    <p class="purchase-money" v-else><span>{{item.price || 0}}</span>元</p>
+                  </a>
+                </div>
+              </section>
+              <section v-else class="list-no">
+                <img src="@/assets/images/404.png" alt=""/>
+                <p>暂无服务产品</p>
+              </section>
+            </section>
+          </div>
+        </section>
+      </van-tab>
       <van-tab title="服务包">
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
@@ -26,40 +85,6 @@
           <NoData tip="暂无服务包" :url="'/myHouse?entrustId=' + entrustId"/>
         </section>
       </van-tab>
-      <van-tab title="服务产品">
-        <section class="tree">
-          <div class="tree-left">
-            <div v-for="(item, index) in productData" :key="index" class="tree-left-item">
-              <p :class="index === isActive ? 'cname-active cname' : 'cname'" @click="checkActive(index, item)">{{item.name}}</p>
-              <transition name="uokodown">
-                <section v-if="index === isSlide" class="childrenItem" ref="childrenItem">
-                  <div v-for="(ctx, idx) in item.productDetails" :key="idx" class="next-item" @click="checkChildrenActive(idx, ctx)">
-                    <div><p :class="idx === isActiveChildrenOne ? 'active' : ''">{{ctx.typeName}}</p></div>
-                  </div>
-                </section>
-              </transition>
-            </div>
-          </div>
-          <div class="tree-right">
-            <section v-if="productItemData.length > 0">
-              <p class="product-name">{{productName}}</p>
-              <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
-                <a @click="goodsClick('product', item.productId)">
-                  <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
-                  </div>
-                  <p  class="purchase-title">{{item.productName|| ''}}</p>
-                  <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
-                  <p class="purchase-money" v-else><span>{{item.price || 0}}</span>元</p>
-                </a>
-              </div>
-            </section>
-            <section v-else class="list-no">
-              <img src="@/assets/images/404.png" alt=""/>
-              <p>暂无服务产品</p>
-            </section>
-          </div>
-        </section>
-      </van-tab>
       <van-tab disabled>
         <div slot="title" @click="chooseCity" class="pisition-tab">
           <span class="pisition">
@@ -68,7 +93,17 @@
         </div>
       </van-tab>
     </van-tabs>
-    
+
+    <van-popup v-model="cityShow" position="bottom" :overlay="true">
+      <van-picker
+        show-toolbar
+        :columns="cityList"
+        value-key="cityName"
+        @confirm="cityConfirm"
+        @cancel="cityShow = false"
+        title="选择城市"
+      />
+    </van-popup>
   </section>
 </template>
 
@@ -77,11 +112,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import NoData from '@/components/NoData.vue';
-import { getQueryString, addClass } from '@/utils/utils';
 import { Tab, Tabs } from 'vant';
 import { STATUS_NAME } from '@/config/config';
-import { handleWebStorage } from '@/utils/utils';
+import { handleWebStorage, getQueryString, addClass } from '@/utils/utils';
 import api from '@/api';
+import { CityItem } from '@/interface/configInterface.ts';
 import { config } from '@vue/test-utils';
 
 // 声明引入的组件
@@ -98,32 +133,53 @@ export default class Purchase extends CommonMixins {
   public $refs!: {
     [key: string]: any,
     childrenItem: HTMLFormElement,
+    typePanel: HTMLFormElement
   };
 
   private entrustId: string = ''; // 委托房源ID
-  private cityId: string = '510100'; // 城市ID
-  private cityName: string = '成都';
+  private cityId: string = ''; // 城市ID
+  private cityName: string = '成都市';
   private tableData: any[] = []; // 服务包列表
   private productData: any[] = []; // 服务产品列表
   private isActive: number = 0; // 默认选择第一项
   private isSlide: number = -1; // 默认不展开
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
-  private isActiveChildrenOne: number = 0; // 默认选择第一项
+  private isActiveChildrenOne: number = -1; // 无默认选择
   private productItemData: any[] = []; // 分类下的服务产品
   private productName: string = ''; // 当前选中的二级name
   private produciconLocationtName: string = require('@/assets/images/icon/icon_location.png');
+  private productThreeMeum: any[] = [];
+  private showDialog: boolean = false; // 弹窗显示
+  private isTreeMeumActive: number = -1; // 第三级菜单选中
+  private cityShow: boolean = false; // 选择城市弹窗
+  private cityList: CityItem[] = [];
+  private activeIndex: number = 0; // 当前选中的tab
 
-  private mounted() {
+  private async mounted() {
+    const tempCityId: string = String(this.$route.query.cityId);
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
-    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
-    this.getServiceList(this.cityId); // 获取服务包列表
+    this.cityId = tempCityId === 'undefined' ? '510100' : tempCityId; // 默认成都市
+    this.getProductList(this.cityId); // 获取服务包列表
+    await this.getCitys(); // 获取城市列表
+    if (String(this.$route.query.cityId) === 'undefined') {
+      this.setCityStorage('510100', '成都');
+    } else {
+      this.setCityStorage(tempCityId, this.cityName);
+    }
   }
-  private activated() {
+  private async activated() {
     if (this.needActivated) {
+      const tempCityId: string = String(this.$route.query.cityId);
       this.entrustId = String(this.$route.query.entrustId)  === 'undefined' ? '' : String(this.$route.query.entrustId); // 无房源进入购买页面默认空
       this.cityId = String(this.$route.query.cityId) === 'undefined' ? '510100' : String(this.$route.query.cityId); // 默认成都市
-      this.getServiceList(this.cityId); // 获取服务包列表
+      this.getProductList(this.cityId); // 获取服务包列表
+      await this.getCitys(); // 获取城市
+      if (String(this.$route.query.cityId) === 'undefined') {
+        this.setCityStorage('510100', '成都');
+      } else {
+        this.setCityStorage(tempCityId, this.cityName);
+      }
     } else {
       this.needActivated = true;
     }
@@ -171,20 +227,20 @@ export default class Purchase extends CommonMixins {
     try {
       const res: any = await this.axios.get(api.getProductList + `/${cityId}`);
       if (res && res.code === '000') {
-        this.productData = res.data.map((item: any) => {
-          // const arr: any = item.productDetails.map((ctx: any) => {
-          //   // 删除服务产品没有的情况
-          //   if (!(ctx.products.length === 0)) {
-          //     return ctx;
-          //   }
-          // });
-          return item;
+        let firstProducts: any[] = []; // 初始化全部的服务产品
+        this.productData = res.data;
+        firstProducts = await this.traversal(res.data);
+        this.productData.unshift({
+          typeName: '全部',
+          typeId: 0,
+          products: firstProducts,
+          children: []
         });
         // console.log(this.productData)
         this.isActive = 0; // 默认值
-        this.isActiveChildrenOne = 0; // 默认值
-        this.productItemData = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].products : []; // 进入页面默认第一条
-        this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
+        this.isSlide = -1; // 收起
+        this.productItemData = firstProducts; // 进入页面默认第一级全部
+        // this.productName = res.data[0].productDetails.length > 0 ? res.data[0].productDetails[0].typeName : ''; // 默认第一条的name
       } else {
         this.$toast(`获取服务产品列表失败`);
       }
@@ -193,6 +249,22 @@ export default class Purchase extends CommonMixins {
     } finally {
       this.$toast.clear();
     }
+  }
+
+  /**
+   * @description 循环递归取出全部服务产品
+   * @params arr 传入的数组
+   * @returns array
+   * @author chenmo
+   */
+  private traversal(arr: any[]) {
+    const product: any[] = [];
+    for (const item of arr) {
+     if (item.products.length > 0) {
+      product.unshift(...item.products);
+     }
+    }
+    return product;
   }
 
   /**
@@ -206,13 +278,68 @@ export default class Purchase extends CommonMixins {
   }
 
   /**
+   * @description 获取城市列表
+   * @returns void
+   * @author chenmo
+   */
+  private async getCitys() {
+    try {
+      const res: any = await this.axios.get(api.getCitys);
+      if (res && res.code === '000' && res.data) {
+        this.cityList = res.data;
+        if (!(String(this.$route.query.cityId) === 'undefined')) {
+          await this.getCityName();
+        }
+      } else {
+        this.$toast(res.msg || '获取城市失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+
+  private getCityName() {
+    const cityId: string = String(this.$route.query.cityId);
+    const newArr: any[] = this.cityList.filter((item: any) => {
+      return item.id === cityId;
+    });
+    this.cityName = newArr[0].cityName;
+  }
+
+  /**
    * @description 选择城市
    * @author linyu
    */
   private chooseCity() {
-    console.log('城市选择暂未开放。');
+    if (String(this.$route.query.cityId) === 'undefined') {
+      this.cityShow = true;
+    } else {
+      console.log('城市选择暂未开放。');
+    }
   }
 
+  private cityConfirm(item: any, index: number) {
+    this.cityShow = false;
+    this.cityName = item.cityName;
+    this.cityId = item.id;
+    // 缓存购买服务的城市
+    this.setCityStorage(this.cityId, this.cityName);
+    if (this.activeIndex === 0) {
+      this.getProductList(item.id);
+    } else if (this.activeIndex === 1) {
+      this.getServiceList(item.id);
+    }
+  }
+  /**
+   * @description 缓存购买服务的城市
+   * @params cityId 城市Id
+   * @params cityName 城市名称
+   * @author linyu
+   */
+  private setCityStorage(cityId: string, cityName: string): void {
+      handleWebStorage.setLocalData('cityId', cityId, 'sessionStorage');
+      handleWebStorage.setLocalData('cityName', cityName, 'sessionStorage');
+  }
   /**
    * @description tabs切换
    * @params index 当前tabs的索引值
@@ -220,10 +347,11 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private onClick(index: any) {
+    this.activeIndex = index;
     if (index === 0) {
-      this.getServiceList(this.cityId); // 获取服务包
-    } else if (index === 1) {
       this.getProductList(this.cityId); // 获取服务产品
+    } else if (index === 1) {
+      this.getServiceList(this.cityId); // 获取服务包
     } else if (index === 2) {
       // this.getRentInfo(this.entrustId);
     }
@@ -237,15 +365,25 @@ export default class Purchase extends CommonMixins {
    * @author chenmo
    */
   private checkActive(index: any, item: any) {
-    if (index === this.isSlide) {
-      this.isSlide = -1; // 再次点击收起
-      return false;
-    } else {
+    this.isTreeMeumActive = -1; // 重置
+    this.productThreeMeum = []; // 重置
+    this.isActiveChildrenOne = -1; // 重置
+    if (index === 0) {
+      // 全部
       this.isSlide = index; // 展开
       this.isActive = index;
-      this.isActiveChildrenOne = 0; // 默认第一个
-      this.productItemData = item.productDetails.length > 0 ? item.productDetails[0].products : []; // 当前选中的产品
-      this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
+      this.productItemData = item.products;
+    } else {
+      if (index === this.isSlide) {
+        this.isSlide = -1; // 再次点击收起
+        this.productItemData = item.products.length > 0 ? item.products : []; // 当前选中的产品
+        return false;
+      } else {
+        this.isSlide = index; // 展开
+        this.isActive = index;
+        this.productItemData = item.products && item.products.length > 0 ? item.products : []; // 当前选中的产品
+        // this.productName = item.productDetails.length > 0 ? item.productDetails[0].typeName : '';
+      }
     }
   }
 
@@ -260,6 +398,9 @@ export default class Purchase extends CommonMixins {
     this.isActiveChildrenOne = ctx;
     this.productItemData = item.products; // 当前选中的产品
     this.productName = item.typeName;
+    this.productThreeMeum = item.children && item.children.length > 0 ? item.children : [];
+    this.isTreeMeumActive = -1;
+    // console.log(this.productThreeMeum);
   }
 
   /**
@@ -287,19 +428,74 @@ export default class Purchase extends CommonMixins {
     if (serviceType === 'pack') {
       handleWebStorage.setLocalData('serviceId', goodsId, 'sessionStorage');
       handleWebStorage.removeLocalData('productId', 'sessionStorage');
-      this.$router.push('/serviceInfo?entrustId=' + this.entrustId);
+      this.$router.push(`/serviceInfo?entrustId=${this.entrustId}&cityId=${this.cityId}`);
     } else {
       handleWebStorage.setLocalData('productId', goodsId, 'sessionStorage');
       handleWebStorage.removeLocalData('serviceId', 'sessionStorage');
-      this.$router.push('/productInfo?entrustId=' + this.entrustId);
+      this.$router.push(`/productInfo?entrustId=${this.entrustId}&cityId=${this.cityId}`);
     }
   }
 
+  /**
+   * @description 打开三级菜单dialog
+   * @returns null
+   * @author chenmo
+   */
+  private openDialog() {
+    this.showDialog = true;
+  }
+
+  /**
+   * @description 关闭三级菜单dialog
+   * @returns null
+   * @author chenmo
+   */
+  private closeDialog() {
+    this.showDialog = false;
+  }
+
+  /**
+   * @description 点击三级菜单
+   * @params item  当前选中的三级菜单
+   * @params idx 当前选中的三级菜单索引值
+   * @params e
+   * @returns null
+   * @author chenmo
+   */
+  private clickThreeMeum(e: any, item: any, idx: number) {
+    this.isTreeMeumActive = idx;
+    this.productItemData = item.products || []; // 当前选中的产品
+    this.showDialog = false;
+  }
+
+  /**
+   * @description 点击三级菜单
+   * @params item  当前选中的三级菜单
+   * @params idx 当前选中的三级菜单索引值
+   * @params e
+   * @returns null
+   * @author chenmo
+   */
+  private clickMeum(item: any, idx: number) {
+    this.isTreeMeumActive = idx;
+    this.productItemData = item.products || []; // 当前选中的产品
+    this.showDialog = false;
+    this.scrollTo(this.$refs[`type${idx}`][0].offsetLeft - 15);
+  }
+
+  /**
+   * @description 滚动到某个位置
+   * @params offsetLeft  偏移量
+   * @returns null
+   * @author chenmo
+   */
+  private scrollTo(offsetLeft: number) {
+    this.$refs.typePanel.scrollTo(offsetLeft, 0);
+  }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../assets/stylus/main.styl'
 .purchase
   .purchase-item
     background $global-background
@@ -330,7 +526,7 @@ export default class Purchase extends CommonMixins {
         font-size 18px
         font-weight bold
         display inline-block
-        padding-right 10px
+        padding-right vw(4)
     .purchase-left
       position absolute
       top vw(15)
@@ -394,15 +590,24 @@ export default class Purchase extends CommonMixins {
             display -webkit-flex
             display flex
             align-items center
+            span
+              display inline-block
+              width vw(5)
+              height vw(5)
+              border-radius 50%
+              background $disabled-color
+              margin-right vw(5)
+            .circle-active
+              background $main-color
             p
-              width vw(50)
+              width vw(60)
               // height vw(40)
               display -webkit-box
               -webkit-box-orient vertical
               -webkit-line-clamp 2
               overflow hidden
             .active
-              color $main-color
+              color $main-color       
     .tree-right
       max-height 100%
       overflow-y scroll
@@ -413,12 +618,75 @@ export default class Purchase extends CommonMixins {
       bottom 0
       margin-bottom vw(0)
       // background #fff
+      .toast-box
+        width 100%
+        height 100%
+        position fixed
+        top 0
+        left vw(80)
+        background rgba(0,0,0,0.3)
+        z-index 100
+        .toast-content
+          width 100% 
+          position absolute
+          top 44px
+          right 0
+          left 0
+          background-color #fff
+          .toast-title
+            width 80%
+            display flex
+            justify-content space-between
+            align-items center
+            span
+              font-size 15px
+              color #000
+              margin vw(10)
+            img 
+              display inline-block
+              width vw(15)
+              height 100%
+              margin-right vw(15)
+          .toast-main
+            width 80%
+            span
+              display inline-block
+              height vw(30)
+              line-height vw(30)
+              background #FAFAFA
+              color $tip-text-color
+              font-size 14px
+              margin vw(10) vw(10)
+              padding 0 vw(20)
+              border-radius 4px
+              text-align center
+            .three-active
+              background #FAF6F0
+              color $main-color
       .product-name
         background #fff
-        font-size 14px
-        padding vw(15) 0 vw(0)
+        padding vw(15) 0 vw(15)
         padding-left vw(15)
-        color $tip-text-color
+        display flex
+        align-items center
+        // border-bottom 1px solid $tip-text-color
+        div
+          width vw(250)
+          white-space nowrap
+          overflow-x auto
+          display inline-block
+          span
+            font-size 15px
+            display inline-block
+            color $tip-text-color
+            margin-right vw(15)
+          .three-active
+            color $main-color
+        .meun-icon
+          display inline-block
+          width vw(15)
+          height 100%
+          margin-right vw(15)
       .list-no
         text-align center
         margin-top vw(100)

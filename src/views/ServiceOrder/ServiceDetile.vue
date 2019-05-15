@@ -2,8 +2,8 @@
  * @Description: 服务包订单详情
  * @Author: chenmo
  * @Date: 2019-02-20 09:29:37
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-21 18:47:13
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:46:22
  */
 
 <template>
@@ -68,6 +68,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { getQueryString, returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
 import api from '@/api';
+import {Loading, ErrorMsg} from '@/utils/decorators';
 const namespace: string = 'global';
 
 // 声明引入的组件
@@ -94,24 +95,18 @@ export default class ServiceDetile extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取订单详情失败')
   private async getServiceOrder(servicePackageId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     try {
       const res: any = await this.axios.get(api.getOrderDetils + `/${servicePackageId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
-      } else {
-        this.$toast(`获取订单详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
@@ -156,7 +151,6 @@ export default class ServiceDetile extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
 .order-detils
   height auto
   .order

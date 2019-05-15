@@ -2,8 +2,8 @@
  * @Description: api地址
  * @Author: chenmo
  * @Date: 2019-03-14 15:29:27
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 11:36:21
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-08 11:50:28
  */
 
 export default {
@@ -15,6 +15,9 @@ export default {
 
   /*登录*/
   login: '/auth/asset/register_login/web/mobile',
+
+  /*注册登录(一体接口)*/
+  newLogin: '/auth/asset/register_login/web/mobile2wechat',
 
   /*获取房源信息*/
   getHouseInfo: '/partner/owner/entrust',
@@ -58,7 +61,7 @@ export default {
   /*根据当前地理位置获取附近小区*/
   getNearCommunityList: '/es/community/search/location',
 
-  /*根据关键词获取小区*/
+  /*根据关键词获取委托房源的小区*/
   getKeyCommunityList: '/es/community/search/name',
 
   /*获取城市列表*/
@@ -68,7 +71,7 @@ export default {
   pushEntrust: '/partner/owner/entrust',
 
   /*获取服务产品列表*/
-  getProductList: '/partner/owner/product/list',
+  getProductList: '/partner/owner/product/list2',
 
   /*获取服务产品订单列表*/
   getProductOrderList: '/partner/owner/product/order/list',
@@ -106,6 +109,9 @@ export default {
   /*装修订单通过验收*/
   buildPass: '/partner/owner/product/service/renovation/passing',
 
+  /*写真订单通过验收*/
+  photoPass: '/partner/owner/product/service/passing',
+
   /*取消支付*/
   cancelPay: 'partner/owner/product/service/repair/cancel_pay',
 
@@ -118,9 +124,78 @@ export default {
   /*创建装修订单*/
   creatBuildOrder: 'partner/owner/product/service/build',
 
+  /*退款订单列表*/
+  getRefundOrderList: '/partner/owner/product/refund/list',
+
+  /*退款订单详情*/
+  getRefundDetail: '/partner/owner/product/refund/detail',
+
+  /*服务产品--计算产品价格*/
+  countPrice: '/partner/owner/product/amount',
+
+  /* 获取w微信配置 （认证跳转路由、appid,scope等）*/
+  getWechatConfig: '/partner/star/owner/config/get_config',
+
+  /* 通过code换取网页授权*/
+  getAccesstoken: '/partner/star/owner/config/get_token',
+
+  /*旧公众号-获取房源合同详情*/
+  getContractInfo: '/partner/star/owner/get_landlord_contract',
+
+  /*获取JsSDK配置*/
+  getJssdkConfig: `/partner/star/owner/config/get_jssdk_config`,
+
+  /*获取星空业主号效能客服SDK（旧业主）*/
+  getXiaoNengConfig: '/partner/star/owner/config/get_xiaoneng_config',
+
+  /* 如果已缓存用户信息,进行验证 */
+  checkAccessToken: '/partner/star/owner/config/check_token',
+
+   /*获取微信号（旧业主）基本信息*/
+   getWXUserInfo: '/partner/star/owner/config/get_wechat_user_info',
+
   /*获取资产管家列表*/
   getStewards: 'partner/owner/entrust/asset/list',
 
   /*设置资产代理管家*/
-  setAgency: 'partner/owner/entrust/asset/agency'
+  setAgency: 'partner/owner/entrust/asset/agency',
+
+  /*获取聚合房源列表*/
+  getMergeHouses: '/partner/merge/owner/merge_houses',
+
+  /*获取优客自营（旧业主）基本房源信息*/
+  getOldHouseInfo: '/partner/star/owner/get_house_detail',
+
+  /*获取优客自营（旧业主）基本房源信息 - 房间信息*/
+  getOldHouseRoomsInfo: '/partner/star/owner/get_rooms',
+
+  /*获取房源账单累计收入（旧业主）*/
+  getHouseTotalAccount: '/partner/star/owner/get_house_total_amount',
+
+  /*获取房源账单列表（旧业主）*/
+  geLandlordBillList: '/partner/star/owner/get_landlord_bill_paged_result',
+
+  /*获取房东账单列表（旧业主）*/
+  getLandlordList: '/partner/star/owner/get_my_bill',
+
+  /*获取房源账单详情（旧业主）*/
+  getAccountDetail: '/partner/star/owner/get_landlord_bill',
+
+  /*获取业主房间数和总收入（旧业主）*/
+  getHousecount: '/partner/star/owner/get_total_amount',
+
+  /*获取房间图片信息（旧业主）*/
+  getHousePictures: '/partner/star/owner/get_landlord_contract_img',
+
+  /*单套房屋估价结果*/
+  getSingleHouseValuation: 'price/facing/pricing/house/valuation_id',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseCommunityList: 'price/facing/pricing/community',
+
+  /*根据关键词获取房屋估价的小区*/
+  getAppraiseList: '/partner/facingpricing/house_valuation',
+
+  /*房屋估价小区未找到email通知*/
+  sendMail: '/partner/merge/owner/send_email'
 };

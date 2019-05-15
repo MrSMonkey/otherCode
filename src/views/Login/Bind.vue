@@ -54,6 +54,7 @@ import CommonMixins from '@/utils/mixins/commonMixins';
 import { handleWebStorage } from '@/utils/utils';
 import { Field, Row, Col, Button } from 'vant';
 import api from '@/api';
+import { config } from '@vue/test-utils';
 // global vuex
 const namespace: string = 'global';
 // 声明引入的组件
@@ -76,6 +77,7 @@ export default class Bind extends CommonMixins {
 
   @Mutation('updateToken', { namespace }) private updateToken: any;
   @Mutation('updateUserInfo', { namespace }) private updateUserInfo: any;
+  @Getter('getWxOAuth', { namespace }) private wxOAuth: any;
 
   private phone: string = '';
   private code: string = '';
@@ -128,13 +130,14 @@ export default class Bind extends CommonMixins {
   private async submitLogin() {
     try {
       this.loading = true;
-      const res: any = await this.axios.post(api.login, {
+      const res: any = await this.axios.post(api.newLogin, {
         mobile: this.phone,
+        openId: this.wxOAuth.openId,
         verificationCode: this.code,
         registerSource: 1
       });
       if (res && res.code === '000') {
-        handleWebStorage.setLocalData('siteToken', res.data.access_token); // 本地存储token
+        handleWebStorage.setLocalData('access_token', res.data.access_token); // 本地存储token
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
         await this.getUserInfo();
@@ -188,7 +191,7 @@ export default class Bind extends CommonMixins {
     }
   }
   private mounted() {
-    console.log('redirectUrl', this.$route.query.redirectUrl);
+    // console.log('redirectUrl', this.$route.query.redirectUrl);
     if (this.$route.query.redirectUrl) {
       this.redirectUrl = String(this.$route.query.redirectUrl);
     } else {

@@ -2,8 +2,8 @@
  * @Description: 选择小区页面
  * @Author: linyu
  * @Date: 2019-04-09 12:40:00
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-15 15:27:14
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-04-23 14:41:39
  */
 
 <template>
@@ -107,7 +107,9 @@ export default class Community extends CommonMixins {
   private tableList: any = []; // 小区列表
   private lon: number = 0; // 当前位置经度
   private lat: number = 0; // 当前位置纬度
-  private baiduAk: string = BAIDU_AK; // 百度地图key
+  private debounceGetCommunityList: any = debounce(() => { // 防抖处理
+    this.getCommunityList(1); // 请求小区数据
+  }, 1000);
   private page: number = 1; // 当前请求页码
   private pageSize: number = 20; // 每页条数
   private point: any = {
@@ -116,7 +118,7 @@ export default class Community extends CommonMixins {
   };
   @Watch('searchInputValue')
   private handlerSearchInputValue(newVal: string) {
-    this.getCommunityList(1); // 请求小区数据
+    this.debounceGetCommunityList();
   }
   // computed
   get isActive(): boolean {
@@ -179,6 +181,7 @@ export default class Community extends CommonMixins {
 
   /**
    * @description 获取小区
+   * @params page 非必需，当刷新页面或者下拉刷新或者是搜索关键词发生改变时应传1，反之则不传
    * @returns void
    * @author linyu
    */
@@ -192,6 +195,7 @@ export default class Community extends CommonMixins {
 
   /**
    * @description 根据关键词获取小区
+   * @params page 非必需，当刷新页面或者下拉刷新或者是搜索关键词发生改变时应传1，反之则不传
    * @returns void
    * @author chenmo
    */
@@ -219,6 +223,7 @@ export default class Community extends CommonMixins {
 
   /**
    * @description 根据当前定位获取小区
+   * @params page 非必需，当刷新页面或者下拉刷新或者是搜索关键词发生改变时应传1，反之则不传
    * @returns void
    * @author linyu
    */
@@ -276,6 +281,7 @@ export default class Community extends CommonMixins {
 
   /**
    * @description 选择小区
+   * @params item <object> 选中小区的item
    * @returns void
    * @author chenmo
    */
@@ -347,7 +353,6 @@ export default class Community extends CommonMixins {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/stylus/main.styl'
   .community
     // overflow auto
     display flex

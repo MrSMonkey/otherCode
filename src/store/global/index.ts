@@ -2,8 +2,8 @@
  * @Description: Global模块主入口文件
  * @Author: LiuZhen
  * @Date: 2018-11-07 18:01:02
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-09 19:36:26
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 16:31:18
  */
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { GlobalState } from './types';
@@ -16,7 +16,13 @@ import { Point } from '@/interface/utilInterface';
 
 // 从本地获取token
 const getTokenFromLocal = () => {
-  const data: any = localStorage.getItem('siteToken');
+  const data: any = localStorage.getItem('access_token');
+  return data ? data : null;
+};
+
+// 从本地获取wx.fd
+const getWxFromLocal = () => {
+  const data: any = handleWebStorage.getLocalData('uoko.fd.wx');
   return data ? data : null;
 };
 
@@ -26,12 +32,20 @@ export const state: GlobalState = {
   userInfo: null,
   communityId: '',
   communityName: '',
-  keepAlive: 'Purchase,ServiceOrder,Entrust,ProductPayment,PackPayment,ServiceHouseInfo',
+  keepAlive: 'Purchase,ServiceOrder,Entrust,ServiceHouseInfo,AppraiseHouseInfo',
   point: {
     lat: '', // 经度
     lon: ''  // 纬度
   },
   isGainPoint: false,
+  wxOAuth: getWxFromLocal() || {
+    appid: '',
+    accessToken: '',
+    openId: '',
+    refresh_token: '',
+    code: ''
+  },
+  oldHouseBaseInfo: {}, // 旧业主的房源基础信息
 };
 
 // getters
@@ -56,6 +70,12 @@ export const getters: GetterTree<GlobalState, RootState> = {
   },
   getIsGainPoint(state: GlobalState): any {
     return state.isGainPoint;
+  },
+  getWxOAuth(state: GlobalState): any {
+    return state.wxOAuth;
+  },
+  getOldHouseBaseInfo(state: GlobalState): any {
+    return state.oldHouseBaseInfo;
   },
 };
 
@@ -82,6 +102,12 @@ export const mutations: MutationTree<GlobalState> = {
   },
   updateIsGainPoint: (state, data: boolean) => {
     state.isGainPoint = data;
+  },
+  updateWxOAuth: (state, data: any) => {
+    state.wxOAuth = data;
+  },
+  updateOldHouseBaseInfo: (state, data: any) => {
+    state.oldHouseBaseInfo = data;
   },
 };
 

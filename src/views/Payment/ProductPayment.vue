@@ -2,8 +2,8 @@
  * @Description: 服务产品支付页面
  * @Author: chenmo
  * @Date: 2019-04-09 14:23:57
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 16:38:35
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:55:02
  */
 
 
@@ -50,6 +50,62 @@
           placeholder="请输入联系人电话"
           type="number"
         />
+        <!-- productUnitId === 1（次） housesUnitId === 1 （间）-->
+        <van-field
+          v-model="rooms"
+          required
+          clearable
+          input-align="right"
+          label="房间数"
+          placeholder="请输入房间数量"
+          type="number"
+          @change="changeRooms"
+          v-if="data.productUnitId === '1' && data.housesUnitId === '1'"
+        >
+        <!-- <span slot="button" >㎡</span> -->
+        </van-field>
+        <!-- productUnitId === 2（面积） -->
+        <van-field
+          v-model="area"
+          required
+          clearable
+          input-align="right"
+          label="面积"
+          placeholder="请输入房屋面积"
+          type="number"
+          @change="changeAcreage"
+          v-if="data.productUnitId === '2'"
+        >
+        <span slot="button" >㎡</span>
+        </van-field>
+        <!-- productUnitId === 9（小时） -->
+        <van-field
+          v-model="serviceHour"
+          required
+          clearable
+          input-align="right"
+          label="服务时长"
+          placeholder="请输入服务时长（小时）"
+          type="number"
+          @change="changeHour"
+          v-if="data.productUnitId === '9'"
+        >
+        <!-- <span slot="button" >小时</span> -->
+        </van-field>
+        <!-- productUnitId === 7 || 项、台 -->
+        <van-field
+          v-model="serviceCount"
+          required
+          clearable
+          input-align="right"
+          label="购买数量"
+          placeholder="请输入购买数量"
+          type="number"
+          @change="changeCount"
+          v-if="data.productUnitId === '7' || data.productUnitId === '8'"
+        >
+        <!-- <span slot="button" >小时</span> -->
+        </van-field>
         <van-field
           v-model="introducePhone"
           clearable
@@ -79,7 +135,14 @@
         :isActive="!isActive"
       >
         <template slot="confirm">
-          <span>购买应付<span class="plot-price">¥{{data.typeId === 4 ? '0.00' : parseFloat(data.price).toFixed(2)}}</span></span>
+          <span>购买应付
+            <!-- 带看 -->
+            <span class="plot-price" v-if="data.typeId === 4">¥0.00</span>
+            <span class="plot-price" v-else>
+              <span v-if ="data.productUnitId === '1' && data.housesUnitId === '0'"> ¥{{(data.price).toFixed(2)}}</span>
+              <span v-else>¥{{productPrice}}</span>
+            </span>
+          </span>
         </template>
       </confirmBtn>
     </div>
@@ -96,6 +159,7 @@ import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME, TIPSONE, TIPSTWO } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
 import api from '@/api';
+import { Loading, ErrorMsg } from '@/utils/decorators';
 
 const namespace: string = 'global';
 
@@ -110,6 +174,7 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class ProductPayment extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
+  private cityId: string = ''; // 城市Id
   private productId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
   private buyersName: string = ''; // 联系人
@@ -126,14 +191,25 @@ export default class ProductPayment extends CommonMixins {
   private pre: string = ''; // 判断入口
   private houseInfo: any = {}; // 房源信息
   private houseName: string = ''; // 房源名称
+  private area: string = ''; // 房屋面积
+  private rooms: string = ''; // 房间数
+  private serviceHour: string = ''; // 服务时长
+  private serviceCount: string = ''; // 购买数量
   private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
+  private productPrice: string = '0.00'; // 服务产品购买价格
+  private isAreaErr: boolean = false;
+  private isHourErr: boolean = false;
+  private isserviceCountErr: boolean = false;
+  private isRoomsErr: boolean = false;
 
   @Getter('getUserInfo', { namespace }) private userInfo: any;
   @Action('payment', { namespace }) private payment: any;
 
   // computed
   get isActive(): boolean {
-    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId;
+    return !this.buyersName || !this.isphoneErr || (!!this.introducePhone && !this.isintroducePhoneErr) || !this.entrustId || ((this.data.productUnitId === '2') && !this.isAreaErr)
+    || ((this.data.productUnitId === '9') && !this.isHourErr) || ((this.data.productUnitId === '7' || this.data.productUnitId === '8') && !this.isserviceCountErr) ||
+    ((this.data.productUnitId === '1' && this.data.housesUnitId === '1') && !this.isRoomsErr);
   }
 
   // Watch
@@ -147,13 +223,64 @@ export default class ProductPayment extends CommonMixins {
     }
   }
 
+  @Watch('area')
+  private handlerArea(newVal: string) {
+    if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/.test(newVal)) {
+      if (parseFloat(newVal) === 0 || parseFloat(newVal) < 5) {
+        this.isserviceCountErr = false;
+        return;
+      }
+      this.isAreaErr = true;
+    } else {
+      this.isAreaErr = false;
+    }
+  }
+
+  @Watch('serviceHour')
+  private handlerServiceHour(newVal: string) {
+    if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,1})?$/.test(newVal)) {
+      if (parseFloat(newVal) === 0 || parseFloat(newVal) < 0.5) {
+        this.isserviceCountErr = false;
+        return;
+      }
+      this.isHourErr = true;
+    } else {
+      this.isHourErr = false;
+    }
+  }
+
+  @Watch('serviceCount')
+  private handlerServiceCount(newVal: string) {
+    if (newVal && /^(0|[1-9][0-9]*)$/.test(newVal)) {
+      if (parseFloat(newVal) === 0) {
+        this.isserviceCountErr = false;
+        return;
+      }
+      this.isserviceCountErr = true;
+    } else {
+      this.isserviceCountErr = false;
+    }
+  }
+
+  @Watch('rooms')
+  private handlerRooms(newVal: string) {
+    if (newVal && /^(0|[1-9][0-9]*)$/.test(newVal)) {
+      if (parseFloat(newVal) === 0) {
+        this.isserviceCountErr = false;
+        return;
+      }
+      this.isRoomsErr = true;
+    } else {
+      this.isRoomsErr = false;
+    }
+  }
+
   @Watch('introducePhone')
   private handlerIntroducePhone(newVal: string) {
     if (newVal && /^1[345789]\d{9}$/.test(newVal)) {
       this.isintroducePhoneErr = true;
     } else {
       this.isintroducePhoneErr = false;
-      // this.$refs.phoneErrorInfo.innerHTML = '请输入正确的手机号';
     }
   }
 
@@ -161,8 +288,9 @@ export default class ProductPayment extends CommonMixins {
     this.needActivated = false;
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
     this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
+    this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
     this.pre = String(this.$route.query.pre);
-    this.getProductDetail(this.productId); // 获取服务包详情
+    this.getProductDetail(); // 获取服务包详情
     this.buyersName = this.userInfo.realName;
     this.buyersPhone = this.userInfo.username;
     if (this.entrustId !== '') {
@@ -174,10 +302,11 @@ export default class ProductPayment extends CommonMixins {
     if (this.needActivated) {
       this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
       this.productId = handleWebStorage.getLocalData('productId', 'sessionStorage');
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
       this.pre = String(this.$route.query.pre);
       this.buyersName = this.userInfo.realName;
       this.buyersPhone = this.userInfo.username;
-      this.getProductDetail(this.productId); // 获取服务产品详情
+      this.getProductDetail(); // 获取服务产品详情
       if (this.entrustId !== '') {
         this.getHouserInfo(this.entrustId);
       }
@@ -219,32 +348,25 @@ export default class ProductPayment extends CommonMixins {
 
   /**
    * @description 获取服务产品详情
-   * @params productId 服务产品id
    * @returns void
    * @author chenmo
    */
-  private async getProductDetail(productId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
+  @Loading()
+  @ErrorMsg('获取服务产品详情失败')
+  private async getProductDetail() {
     try {
-      const res: any = await this.axios.get(api.getProductDetail + `/${productId}`);
+      const res: any = await this.axios.get(api.getProductDetail + `/${this.productId}/${this.cityId}`);
       if (res && res.code === '000') {
         this.data = res.data || {};
         /**
          * @params productId = 118062916141300008 工程维修产品 && 118062916145800009 家电维修产品
          * @params typeId = 9 装修设计产品id
          */
-      } else {
-        this.$toast(`获取服务产品详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
@@ -292,10 +414,15 @@ export default class ProductPayment extends CommonMixins {
       entrustId: this.entrustId,
       buyersName: name,
       buyersPhone: phone,
+      cityId: this.cityId,
       productId: this.productId,
       productName: this.data.productName,
       buyersRemarks: this.buyersRemarks,
-      introducePhone: this.introducePhone
+      introducePhone: this.introducePhone,
+      roomQuantity: (this.data.productUnitId === '1' && this.data.housesUnitId === '1') ? this.rooms : null,
+      hour: this.data.productUnitId === '9' ? this.serviceHour : null,
+      purchaseQuantity: (this.data.productUnitId === '7' || this.data.productUnitId === '8') ? this.serviceCount : null,
+      acreage: this.data.productUnitId === '2' ? this.area : null,
     };
     this.loading = true;
     try {
@@ -331,11 +458,149 @@ export default class ProductPayment extends CommonMixins {
   private plotCancel() {
     history.back();
   }
+
+  /**
+   * @description 计算产品价格
+   * @params 参数
+   * @returns void
+   * @author chenmo
+   */
+  private async countPrice(params: any ) {
+    const data = Object.assign(params, {cityId: this.cityId});
+    try {
+      const res: any = await this.axios.post(api.countPrice, data);
+      if (res && res.code === '000') {
+        this.productPrice = res.data;
+      } else {
+        this.$toast(res.msg || '获取数据失败');
+      }
+    } catch (err) {
+      throw new Error(err || 'Unknow Error!');
+    }
+  }
+  /**
+   * @description 房间数输入
+   * @returns void
+   * @author chenmo
+   */
+  private changeRooms() {
+    if (!this.rooms) {
+      this.$toast('请输入房间数量');
+      return false;
+    }
+    if (parseFloat(this.rooms) === 0) {
+      this.$toast('输入房间数量不能为0');
+      return false;
+    }
+
+    if (!(/^\d+$/.test(this.rooms))) {
+      this.$toast('房间数只能输入正整数');
+      return false;
+    }
+    const params: any = {
+      productId: this.productId,
+      roomQuantity: this.rooms
+    };
+    this.countPrice(params);
+  }
+
+  /**
+   * @description 面积输入
+   * @returns void
+   * @author chenmo
+   */
+  private changeAcreage() {
+    if (!this.area) {
+      this.$toast('请输入面积');
+      return false;
+    }
+
+    if (parseFloat(this.area) === 0) {
+      this.$toast('请输入正确的面积');
+      return false;
+    }
+
+    if (!(/^(?!(0[0-9]{0,}$))[0-9]{1,}[.]{0,}[0-9]{0,}$/).test(this.area)) {
+      this.$toast('请输入正数');
+      return false;
+    }
+    if (!(/^-?\d+\.?\d{0,2}$/.test(this.area))) {
+      this.$toast('面积只能输入两位小数');
+      return false;
+    }
+
+    if (parseFloat(this.area) < 5) {
+      this.$toast('购买面积必须大于等于5㎡');
+      return false;
+    }
+    const params: any = {
+      productId: this.productId,
+      acreage: this.area
+    };
+    this.countPrice(params);
+  }
+
+  /**
+   * @description 服务时长输入
+   * @returns void
+   * @author chenmo
+   */
+  private changeHour() {
+    if (!this.serviceHour) {
+      this.$toast('请输入服务时长');
+      return false;
+    }
+
+    if (parseFloat(this.serviceHour) === 0) {
+      this.$toast('请输入正确的服务时长');
+      return false;
+    }
+
+    if (!(/^(?!(0[0-9]{0,}$))[0-9]{1,}[.]{0,}[0-9]{0,}$/).test(this.serviceHour)) {
+      this.$toast('请输入正数');
+      return false;
+    }
+    if (!(/^-?\d+\.?\d{0,1}$/.test(this.serviceHour))) {
+      this.$toast('服务时长只能输入一位小数');
+      return false;
+    }
+
+    if (parseFloat(this.serviceHour) < 0.5) {
+      this.$toast('服务时长必须大于等于0.5小时');
+      return false;
+    }
+    const params: any = {
+      productId: this.productId,
+      hour: this.serviceHour
+    };
+    this.countPrice(params);
+  }
+
+  private changeCount() {
+    if (!this.serviceCount) {
+      this.$toast('请输入购买数量');
+      return false;
+    }
+    if (parseFloat(this.serviceCount) === 0) {
+      this.$toast('请输入正确的购买数量');
+      return false;
+    }
+
+    if (!(/^(0|[1-9][0-9]*)$/).test(this.serviceCount)) {
+      this.$toast('请输入正整数');
+      return false;
+    }
+
+    const params: any = {
+      productId: this.productId,
+      purchaseQuantity: this.serviceCount
+    };
+    this.countPrice(params);
+  }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../../assets/stylus/main.styl'
   .service-info
     padding 0 vw(0)
     width 100%
@@ -349,7 +614,7 @@ export default class ProductPayment extends CommonMixins {
     .block
       font-size 15px
       color $text-color
-      font-family: PingFangSC-Regular;
+      font-family PingFangSC-Regular
       padding vw(10) 0 0
       position relative
       span 

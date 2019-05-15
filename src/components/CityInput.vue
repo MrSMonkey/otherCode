@@ -3,13 +3,13 @@
  * @Author: linyu
  * @Date: 2019-04-09 12:39:25
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-09 12:40:47
+ * @Last Modified time: 2019-05-14 15:01:34
  */
 
 <template>
   <section>
-    <div class="city">
-      <div class="label">城&emsp;&emsp;市*</div>
+    <div class="input-panel">
+      <div class="label">{{ star ? '城&emsp;&emsp;市' : '城&emsp;&emsp;市*' }}</div>
       <div class="village">
         <van-field
           v-model="cityName"
@@ -17,16 +17,18 @@
           type="text"
           right-icon="arrow"
           readonly
-          @click="cityShow = true"
-          @click-right-icon="cityShow = true"
+          :input-align="inputAlign"
+          @click="cityShow = isSelect ? true : false"
+          @click-right-icon="cityShow = isSelect ? true : false"
         />
       </div>
     </div>
-    <!-- 城市弹窗 -->
+    <!-- 城市picker -->
     <van-popup v-model="cityShow" position="bottom" :overlay="true">
       <van-picker
         show-toolbar
         :columns="cityList"
+        value-key="cityName"
         @confirm="cityConfirm"
         @cancel="cityShow = false"
         title="选择城市"
@@ -53,10 +55,30 @@ import { Field, Row, Col } from 'vant';
 // 类方式声明当前组件
 export default class CityInput extends CommonMixins {
   @Prop({
+    type: Boolean,
+    default: true
+  })
+  private isSelect: boolean;
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  private star: boolean;
+  @Prop({
     type: String,
     default: '请选择您爱屋所在城市'
   })
   private placeholderText: string;
+  @Prop({
+    type: String,
+    default: '成都市'
+  })
+  private cityName: string; // 默认城市名称
+  @Prop({
+    type: String,
+    default: 'right'
+  })
+  private inputAlign: string;
   @Prop({
     type: Array,
     default: [],
@@ -64,24 +86,20 @@ export default class CityInput extends CommonMixins {
   })
   private cityList: CityItem[];
   private cityShow: boolean = false;
-  private cityName: string = '成都市';
+
   /**
    * @description 选择城市确认
    * @returns void
    * @author linyu
    */
-
   @Emit()
   private cityConfirm(item: any, index: number) {
-    this.cityName = item.text;
     this.cityShow = false;
   }
 }
 </script>
 
-
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-@import '../assets/stylus/main.styl'
   .label
     display inline-block
     width 83px
@@ -94,10 +112,10 @@ export default class CityInput extends CommonMixins {
       width 100%
   .just
     text-align justify
-  .city
+  .input-panel
       background $global-background
       height vw(55)
-      padding vw(20)
+      padding vw(15) vw(6) vw(20) vw(15)
       border-bottom 1px solid $bg-color-default
       display -webkit-flex
       display flex

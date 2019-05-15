@@ -2,13 +2,14 @@
  * @Description: axios网络请求库二次封装
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 16:27:01
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-04-28 14:18:52
  */
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios';
 import store from '../store';
 import router from '../router';
+import { NOT_TOKEN_URL } from '@/config/config';
 import { getRedirectUrl } from '@/utils/utils';
 import Vue from 'vue';
 const Axios = axios.create({
@@ -37,8 +38,20 @@ const Axios = axios.create({
 //   }
 //   console.log(pending);
 // };
-
 // http request请求拦截器(所有请求发送都要执行的操作)
+
+/**
+ * @description 判断不需要带token的请求地址
+ * @params configUrl 当前请求的url
+ * @return boolen
+ * @author chemo
+ */
+const NotToken = (configUrl: string) => {
+  return NOT_TOKEN_URL.some((item: any) => {
+    return configUrl.indexOf(item) > -1;
+  });
+};
+
 Axios.interceptors.request.use(
   (config: any) => {
     // 取消重复请求
@@ -58,18 +71,17 @@ Axios.interceptors.request.use(
       // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
       // config.baseURL = 'http://192.168.200.44:7070/';
       config.baseURL = 'http://api-gateway.testuoko.com/';
+      // config.baseURL = 'http://172.16.3.3:7070/';
       // config.baseURL = 'http://172.16.3.103:8008';
     }
 
     /*登录授权, 登录接口修改 Authorization */
-    if (config.url.indexOf('/auth/asset/register_login/web/mobile') > -1
-      || config.url.indexOf('/verification_code') > -1) {
+    if (NotToken(config.url)) {
       config.headers.Authorization = 'Basic b3duZXI6MTIzNDU2';
     } else {
-      const token: string | null = localStorage.getItem('siteToken');
+      const token: string | null = localStorage.getItem('access_token');
       config.headers.Authorization = token !== null ? `Bearer ${ token}` : '';
     }
-
     return config;
   }, (error) => {
     return Promise.reject(error);
@@ -82,7 +94,7 @@ Axios.interceptors.response.use(
     const redirectUrl: string | null = getRedirectUrl();
     // 这里可以做一些响应拦截的操作
     if (response.status === '401' || response.data.code === '70001' || response.data.code === '20001') {
-      localStorage.removeItem('siteToken'); // 清除token
+      localStorage.removeItem('access_token'); // 清除token
       localStorage.removeItem('userId'); // 清除userId
       router.push(`/bind?redirectUrl=${redirectUrl}`);
     }
@@ -91,6 +103,8 @@ Axios.interceptors.response.use(
     const redirectUrl: string | null = getRedirectUrl();
     const status: any = error.response.status || 500;
     if (status === 401) {
+      localStorage.removeItem('access_token'); // 清除token
+      localStorage.removeItem('userId'); // 清除userId
       Vue.prototype.$toast({
         duration: 3000,       // 持续展示 toast
         type: 'fail',

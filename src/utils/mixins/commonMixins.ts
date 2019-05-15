@@ -2,11 +2,12 @@
  * @Description: 公共Mixins
  * @Author: LiuZhen
  * @Date: 2018-09-18 16:32:24
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-08 16:48:41
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 11:59:19
  */
 import { Component, Vue } from 'vue-property-decorator';
 import { Row, Col, Collapse, CollapseItem } from 'vant';
+
 
 @Component({
   components: {

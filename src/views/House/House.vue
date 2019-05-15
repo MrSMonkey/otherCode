@@ -2,8 +2,8 @@
  * @Description: 提交房源
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: linyu
- * @Last Modified time: 2019-04-23 14:04:34
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-08 11:02:57
  */
 
 <template>
@@ -31,6 +31,7 @@ import StewardChoose from '@/views/House/components/StewardChoose.vue';
 import HouseList from '@/views/House/components/HouseList.vue';
 import NoHouseList from '@/views/House/components/NoHouseList.vue';
 import api from '@/api';
+import { Loading, ErrorMsg } from '@/utils/decorators';
 
 // 声明引入的组件
 @Component({
@@ -60,26 +61,19 @@ export default class House extends CommonMixins {
    * @returns void
    * @author chenmo
    */
+  @Loading()
+  @ErrorMsg('获取房源列表失败')
   private async getHouseList() {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
     this.isData = false;
     try {
-      const res: any = await this.axios.get(api.getHouseList);
+      const res: any = await this.axios.get(api.getMergeHouses);
       if (res && res.code === '000') {
         this.tableData = res.data || [];
-      } else {
-        this.$toast(`获取房源失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
       this.isData = true;
-      this.$toast.clear();
     }
   }
 

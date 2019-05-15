@@ -3,15 +3,15 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-11 16:37:44
+ * @Last Modified time: 2019-05-14 15:06:19
  */
 
 <template>
   <section>
     <section class="serviceHouseInfo">
       <section class="area">
-        <CityInput @city-confirm="cityConfirm" :city-list="cityList"></CityInput>
-        <div class="city">
+        <CityInput :city-name="cityName" :is-select="false" @city-confirm="cityConfirm" :city-list="cityList"></CityInput>
+        <div class="input-panel">
           <div class="label">小&emsp;&emsp;区*</div>
           <div class="village">
             <van-field
@@ -20,12 +20,13 @@
               type="text"
               readonly
               right-icon="arrow"
+              input-align="right"
               @click-right-icon="toCommunity"
               @click="toCommunity"
             />
           </div>
         </div>
-        <HouseDecorationInfo @on-change="selectItem"></HouseDecorationInfo>
+        <HouseDecorationInfo :alignRight="true" @on-change="selectItem"></HouseDecorationInfo>
       </section>
       <section>
         <van-button slot="button" size="large" type="default" class="entrust-btn bg-active" v-if="!communityName">立即提交</van-button>
@@ -67,8 +68,8 @@ const namespace: string = 'global';
 })
 // 类方式声明当前组件
 export default class ServiceHouseInfo extends CommonMixins {
-  private cityName: string = '成都市';
-  private cityId: string = '510100';
+  private cityName: string = '';
+  private cityId: string = '';
   private code: string = '';
   private cityShow: boolean = false;
   private cityList: string[] = [];
@@ -87,6 +88,12 @@ export default class ServiceHouseInfo extends CommonMixins {
   private mounted() {
     this.sourceId = this.$route.query.sourceId;
     this.routeName = String(this.$route.name);
+    if (handleWebStorage.getLocalData('cityId', 'sessionStorage')) {
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
+      this.cityName = handleWebStorage.getLocalData('cityName', 'sessionStorage');
+    } else {
+      this.$toast('获取当前城市失败');
+    }
     this.getCitys(); // 获取城市
   }
 
@@ -101,6 +108,12 @@ export default class ServiceHouseInfo extends CommonMixins {
       this.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
     }
+    if (handleWebStorage.getLocalData('cityId', 'sessionStorage')) {
+      this.cityId = handleWebStorage.getLocalData('cityId', 'sessionStorage');
+      this.cityName = handleWebStorage.getLocalData('cityName', 'sessionStorage');
+    } else {
+      this.$toast('获取当前城市失败');
+    }
   }
 
   /**
@@ -109,8 +122,8 @@ export default class ServiceHouseInfo extends CommonMixins {
    * @author chenmo
    */
   private cityConfirm(item: any, index: number) {
-    this.cityName = item.text;
-    this.cityId = item.value;
+    this.cityName = item.cityName;
+    this.cityId = item.id;
     this.communityId = '';
     this.communityName = '';
     this.cityShow = false;
@@ -150,11 +163,8 @@ export default class ServiceHouseInfo extends CommonMixins {
       const res: any = await this.axios.get(api.getCitys);
       if (res && res.code === '000') {
         this.cityList = res.data && res.data.map((item: any) => {
-          return {
-            text: item.cityName,
-            value: item.id,
-            disabled: item.id !== '510100'
-          };
+          item.disabled = item.id !== '510100';
+          return item;
         });
       } else {
         this.$toast(res.msg || '获取城市失败');
@@ -164,6 +174,11 @@ export default class ServiceHouseInfo extends CommonMixins {
     }
   }
 
+  /**
+   * @description 跳转到小区选择页面
+   * @return void
+   * @author linyu
+   */
   private toCommunity() {
     this.$router.push({
       path: '/community',
@@ -175,7 +190,7 @@ export default class ServiceHouseInfo extends CommonMixins {
   }
 
   /**
-   * @description // 立即提交
+   * @description 立即提交
    * @return void
    * @author chenmo
    */
@@ -229,10 +244,10 @@ export default class ServiceHouseInfo extends CommonMixins {
         content ''
         display inline-block
         width 100%
-    .city
+    .input-panel
       background $global-background
       height vw(55)
-      padding vw(20)
+      padding vw(15) vw(6) vw(20) vw(15)
       border-bottom 1px solid $bg-color-default
       display -webkit-flex
       display flex

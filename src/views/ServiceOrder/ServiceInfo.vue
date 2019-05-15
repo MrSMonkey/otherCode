@@ -2,8 +2,8 @@
  * @Description: 购买服务包
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
- * @Last Modified by: chenmo
- * @Last Modified time: 2019-04-11 17:44:13
+ * @Last Modified by: LongWei
+ * @Last Modified time: 2019-05-06 17:49:16
  */
 
 <template>
@@ -48,6 +48,7 @@ import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import { returnDomain } from '@/utils/utils';
 import { STATUS_NAME } from '@/config/config';
 import { handleWebStorage } from '@/utils/utils';
+import {Loading, ErrorMsg} from '@/utils/decorators';
 import api from '@/api';
 
 const namespace: string = 'global';
@@ -64,6 +65,7 @@ const namespace: string = 'global';
 // 类方式声明当前组件
 export default class ServiceInfo extends CommonMixins {
   private entrustId: string = ''; // 委托房源ID
+  private cityId: string = ''; // 城市Id
   private serviceId: string = ''; // 服务包ID
   private data: any = {}; // 服务订单详情
 
@@ -72,34 +74,30 @@ export default class ServiceInfo extends CommonMixins {
 
   private mounted() {
     this.entrustId = String(this.$route.query.entrustId) === 'undefined' ? '' : String(this.$route.query.entrustId);
+    this.cityId = String(this.$route.query.cityId) === 'undefined' ? '' : String(this.$route.query.cityId);
     this.serviceId = handleWebStorage.getLocalData('serviceId', 'sessionStorage');
-    this.getServiceDetils(this.serviceId); // 获取服务包详情
+    this.getServiceDetils(this.serviceId, this.cityId); // 获取服务包详情
   }
 
   /**
    * @description 获取服务包详情
    * @params serviceId 服务包id
+   * @params cityId 城市Id
    * @returns void
    * @author chenmo
    */
-  private async getServiceDetils(serviceId: string) {
-    this.$toast.loading({
-      duration: 0,
-      mask: true,
-      loadingType: 'spinner',
-      message: '加载中...'
-    });
+  @Loading()
+  @ErrorMsg('获取服务包详情失败')
+  private async getServiceDetils(serviceId: string, cityId: string) {
     try {
-      const res: any = await this.axios.get(api.getServiceDetils + `/${serviceId}`);
+      const res: any = await this.axios.get(api.getServiceDetils + `/${serviceId}/${cityId}`);
       if (res && res.code === '000') {
         this.data = res.data || [];
-      } else {
-        this.$toast(`获取服务包详情失败`);
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     } finally {
-      this.$toast.clear();
+      // this.$toast.clear();
     }
   }
 
