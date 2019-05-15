@@ -414,6 +414,7 @@ export default class ProductPayment extends CommonMixins {
       entrustId: this.entrustId,
       buyersName: name,
       buyersPhone: phone,
+      cityId: this.cityId,
       productId: this.productId,
       productName: this.data.productName,
       buyersRemarks: this.buyersRemarks,
@@ -465,8 +466,9 @@ export default class ProductPayment extends CommonMixins {
    * @author chenmo
    */
   private async countPrice(params: any ) {
+    const data = Object.assign(params, {cityId: this.cityId});
     try {
-      const res: any = await this.axios.post(api.countPrice, params);
+      const res: any = await this.axios.post(api.countPrice, data);
       if (res && res.code === '000') {
         this.productPrice = res.data;
       } else {
