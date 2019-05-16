@@ -2,7 +2,7 @@
   <section class="house-appraise">
     <AppraiseLoading v-show="loading" @refresh="refresh"></AppraiseLoading>
     <section class="result-panel" v-show="!loading">
-      <div class="zero-result" v-if=" !isFromAppraiseHOuseInfo && appraiseResult.length === 0">
+      <div class="zero-result" v-show="isLogin" v-if=" !isFromAppraiseHOuseInfo && appraiseResult.length === 0">
         <div>
           你所在小区房屋暂时无法估价，请敬请期待！
           <br/>
@@ -17,7 +17,7 @@
           <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
         </div>
       </SingleHouseAppraise>
-      <MultiHouseAppraise
+      <MultiHouseAppraise v-show="isLogin"
         :appraiseInfo="appraiseResult"
         v-else 
       >
@@ -54,16 +54,18 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class HouseAppraise extends CommonMixins {
   private loading: boolean = false; // 请求接口过程中为true
+  private isLogin: boolean = true; // 默认为登录
   private isFromAppraiseHOuseInfo: boolean = false; // 从AppraiseHOuseInfo页面跳转过来时为true
   private appraiseOneResult: any = {}; // 单个估价结果
   private appraiseResult: any[] = []; // 多个估价结果
   private mounted() {
+    this.getIsLogin(); //获取登录状态
     if (this.$route.params.communityId) { // 判断是否是从AppraiseHOuseInfo页面跳转过来
       this.isFromAppraiseHOuseInfo = true;
       this.appraiseOneResult = this.$route.params;
-      window.InfoCollectInstance.detailViewEvent({ // 信息采集
+      window.InfoCollectInstance.handleEventReport({ // 信息采集
         eventId: 'CH002-ConclusionOfValue-detailview'
-      });
+      }, 'detailview');
     } else {
       this.getHouseValuation();
     }
@@ -76,7 +78,15 @@ export default class HouseAppraise extends CommonMixins {
   private refresh() {
     this.getHouseValuation();
   }
-
+  /**
+   * @description 获取登录状态
+   * @returns void
+   * @author linyu
+   */
+  private getIsLogin() {
+    const token: any = store.getters['global/getToken'];
+    this.isLogin = token ? true : false;
+  }
   /**
    * @description 已有房源直接获取估价结果
    * @returns void
@@ -85,19 +95,19 @@ export default class HouseAppraise extends CommonMixins {
   private async getHouseValuation() {
     try {
       const token: any = store.getters['global/getToken'];
-      if (!token) { // 用户未登录系统
-        await window.InfoCollectInstance.menuSwitchEvent({ // 信息采集
-          eventId: 'CH002-housesourceestimate-menuswitch'
-        });
+      if (this.isLogin) { // 用户未登录系统
+          await window.InfoCollectInstance.handleEventReport({ // 信息采集
+            eventId: 'CH002-housesourceestimate-menuswitch'
+          }, 'menuswitch');
         this.toAppraiseHouseInfo(); // 跳转
       } else {
         this.loading = true;
         const res: any = await this.axios.get(api.getAppraiseList);
         if (res && res.code === '000') {
           if (res.data.houseCount === 0) {
-            await window.InfoCollectInstance.menuSwitchEvent({ // 信息采集
+            await window.InfoCollectInstance.handleEventReport({ // 信息采集
               eventId: 'CH002-housesourceestimate-menuswitch'
-            });
+            }, 'menuswitch');
             // 房源数量为0
             this.toAppraiseHouseInfo(); // 跳转
           } else {
@@ -108,9 +118,9 @@ export default class HouseAppraise extends CommonMixins {
               } else {
                 this.appraiseResult = res.data.valuationDetail;
               }
-              await window.InfoCollectInstance.detailViewEvent({ // 信息采集
+              await window.InfoCollectInstance.handleEventReport({ // 信息采集
                 eventId: 'CH002-ConclusionOfValue-detailview'
-              });
+              }, 'detailview');
             } else {
               this.appraiseResult = [];
             }
@@ -133,9 +143,9 @@ export default class HouseAppraise extends CommonMixins {
    * @author linyu
    */
   private async toAppraiseHouseInfo() {
-    await window.InfoCollectInstance.handleClickEvent({ // 信息采集
+    await window.InfoCollectInstance.handleEventReport({ // 信息采集
       eventId: 'CH002-OtherSuite-click'
-    });
+    }, 'click');
     this.$router.push({
       name: 'appraiseHouseInfo',
       params: {

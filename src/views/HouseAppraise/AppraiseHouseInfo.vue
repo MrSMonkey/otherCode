@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-15 15:50:50
+ * @Last Modified time: 2019-05-16 12:05:47
  */
 
 <template>
@@ -221,9 +221,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.getSingleHouseValuation, data);
       if (res && res.code === '000') {
-        // await window.InfoCollectInstance.userLoginEvent({ // 信息采集
-        //   eventId: 'CH002-ViewResults-newitemsubmit'
-        // });
+        await window.InfoCollectInstance.handleEventReport({ // 信息采集
+          eventId: 'CH002-ViewResults-newitemsubmit'
+        }, 'newitemsubmit');
         this.$router.push({
           name: 'houseAppraise',
           params: res.data || {}
@@ -238,9 +238,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
     }
   }
   private async toLogin() {
-    await window.InfoCollectInstance.userLoginEvent({ // 信息采集
+    await window.InfoCollectInstance.handleEventReport({ // 信息采集
       eventId: 'CH002-SpeedyEstimation-click'
-    });
+    }, 'click');
     this.$router.push('/bind');
   }
 }
