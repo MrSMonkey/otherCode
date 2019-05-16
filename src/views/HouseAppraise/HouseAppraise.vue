@@ -2,7 +2,7 @@
   <section class="house-appraise">
     <AppraiseLoading v-show="loading" @refresh="refresh"></AppraiseLoading>
     <section class="result-panel" v-show="!loading">
-      <div class="zero-result" v-show="isLogin" v-if=" !isFromAppraiseHOuseInfo && appraiseResult.length === 0">
+      <div class="zero-result" v-if=" isLogin || (!isFromAppraiseHOuseInfo && appraiseResult.length === 0)">
         <div>
           你所在小区房屋暂时无法估价，请敬请期待！
           <br/>
@@ -17,9 +17,9 @@
           <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
         </div>
       </SingleHouseAppraise>
-      <MultiHouseAppraise v-show="isLogin"
+      <MultiHouseAppraise
         :appraiseInfo="appraiseResult"
-        v-else 
+        v-if="isLogin && !isFromAppraiseHOuseInfo && appraiseResult.length > 1" 
       >
         <div class="btn-panel">
           <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
@@ -59,7 +59,7 @@ export default class HouseAppraise extends CommonMixins {
   private appraiseOneResult: any = {}; // 单个估价结果
   private appraiseResult: any[] = []; // 多个估价结果
   private mounted() {
-    this.getIsLogin(); //获取登录状态
+    this.getIsLogin(); // 获取登录状态
     if (this.$route.params.communityId) { // 判断是否是从AppraiseHOuseInfo页面跳转过来
       this.isFromAppraiseHOuseInfo = true;
       this.appraiseOneResult = this.$route.params;
@@ -96,9 +96,9 @@ export default class HouseAppraise extends CommonMixins {
     try {
       const token: any = store.getters['global/getToken'];
       if (this.isLogin) { // 用户未登录系统
-          await window.InfoCollectInstance.handleEventReport({ // 信息采集
-            eventId: 'CH002-housesourceestimate-menuswitch'
-          }, 'menuswitch');
+        await window.InfoCollectInstance.handleEventReport({ // 信息采集
+          eventId: 'CH002-housesourceestimate-menuswitch'
+        }, 'menuswitch');
         this.toAppraiseHouseInfo(); // 跳转
       } else {
         this.loading = true;
