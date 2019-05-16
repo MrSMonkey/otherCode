@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-16 12:05:47
+ * @Last Modified time: 2019-05-16 13:46:43
  */
 
 <template>
@@ -26,7 +26,7 @@
       <LastBtn button-text="查看评估结果" @click="submitData" :disabled="isActive"></LastBtn>
     </section>
     <section class="fast-login-panel">
-      <span @click="toLogin">星空业主登录快速估价</span>
+      <span @click="toLogin">已是业主，一键评估</span>
       <img :src="require('@/assets/images/icon/fast_login_icon_arrow.png')" alt="login" @click="toLogin">
     </section>
   </section>  
