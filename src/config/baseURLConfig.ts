@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-05-15 16:07:32
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-16 15:48:46
+ * @Last Modified time: 2019-05-16 17:50:39
  */
 
 // 根据环境设置应用内部请求的baseURL
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'prod
 } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
   infoCollectBaseURL = 'http://api-gateway.testuoko.com/';
 } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
-  infoCollectBaseURL = 'https://api-gateway.uoko.com/';
+  infoCollectBaseURL = 'http://api-gateway.testuoko.com/';
 } else {
   infoCollectBaseURL = 'http://api-gateway.testuoko.com/';
 }
