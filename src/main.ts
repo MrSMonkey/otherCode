@@ -7,7 +7,7 @@ import Axios from './plugins/axios';
 import Vueaxios from 'vue-axios';
 import Footer from '@/components/Footer.vue';
 import BehaviorInfoCollection from 'info-collection';
-import { baseURL } from '@/config/baseURLConfig';
+import { infoCollectBaseURL } from '@/config/baseURLConfig';
 import api from '@/api';
 import wx from 'weixin-js-sdk';
 import Lottie from 'vue-lottie';
@@ -66,7 +66,7 @@ try {
   // 实例化信息采集实例
   const InfoCollectInstance = new BehaviorInfoCollection({
     startCollectionOfEnv: ['development', 'production'],  // 测试临时使用 默认只在生产环境下启用采集
-    uploadInfoAddr: `${baseURL}${api.uploadInfoAddr}`,
+    uploadInfoAddr: `${infoCollectBaseURL}${api.uploadInfoAddr}`,
     appVersion: packageInfo.version,
     appName: packageInfo.name,
   });

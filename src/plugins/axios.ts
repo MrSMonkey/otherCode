@@ -3,14 +3,14 @@
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-15 16:15:54
+ * @Last Modified time: 2019-05-16 15:49:04
  */
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios';
 import store from '../store';
 import router from '../router';
 import { NOT_TOKEN_URL } from '@/config/config';
-import { baseURL } from '@/config/baseURLConfig';
+import { appBaseURL } from '@/config/baseURLConfig';
 import { getRedirectUrl } from '@/utils/utils';
 import Vue from 'vue';
 const Axios = axios.create({
@@ -62,7 +62,7 @@ Axios.interceptors.request.use(
     //   pending.push({ url: config.url + '&request_type=' + config.method, cancel: c });
     // });
     // 根据环境设置baseURL
-    config.baseURL = baseURL;
+    config.baseURL = appBaseURL;
 
     /*登录授权, 登录接口修改 Authorization */
     if (NotToken(config.url)) {
