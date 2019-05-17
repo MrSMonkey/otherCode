@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 11:55:27
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-05-17 10:54:54
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -247,7 +247,7 @@ export const ZWTG_DESC: any = {
   titleDesc: '保持房屋原貌 托管全服务',
   questions: [
     {
-      question: 'Q：什么房屋适合加盟托管？',
+      question: 'Q：什么房屋适合租务托管？',
       answer: 'A：已装修房'
     },
     {
