@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-17 10:54:54
+ * @Last Modified time: 2019-05-17 11:58:44
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -143,7 +143,7 @@ export const JMTG_TABLES: any = [
   {
     data: [
       [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
-      ['租金保底', '租金保底']
+      ['租金保底', '租金分成']
     ]
   },
   {
@@ -177,7 +177,7 @@ export const ZWTG_TABLES: any = [
   {
     data: [
       [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
-      ['租金保底', '租金保底']
+      ['租金保底', '租金分成']
     ]
   },
   {
