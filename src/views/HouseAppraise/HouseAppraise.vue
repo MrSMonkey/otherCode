@@ -127,7 +127,7 @@ export default class HouseAppraise extends CommonMixins {
           this.loading = false;
         } else if (res && res.code === '40001') {
           this.$toast(res.msg || '系统繁忙，请稍后重试');
-        } else{
+        } else {
           this.$toast(res.msg || '房屋估价获取失败');
         }
       }

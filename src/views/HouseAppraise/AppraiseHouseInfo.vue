@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-17 16:20:37
+ * @Last Modified time: 2019-05-17 18:16:57
  */
 
 <template>
@@ -25,7 +25,7 @@
     <section class="other">
       <LastBtn button-text="查看评估结果" @click="submitData" :disabled="isActive"></LastBtn>
     </section>
-    <section class="fast-login-panel">
+    <section class="fast-login-panel" v-if="!isLogin">
       <span @click="toLogin">已是业主，一键评估</span>
       <img :src="require('@/assets/images/icon/fast_login_icon_arrow.png')" alt="login" @click="toLogin">
     </section>
@@ -36,6 +36,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
+import store from '@/store';
 import { Field, Row, Col, Button } from 'vant';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import CityInput from '@/components/CityInput.vue';
@@ -71,6 +72,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private dong: string = '';
   private cityShow: boolean = false;
   private loading: boolean = false;
+  private isLogin: boolean = false; // 默认值为未登录
   private houseTypeText: string = ''; // 户型选择结果
   private hallNum: string = ''; // 厅数
   private roomNum: string = ''; // 房间数
@@ -97,12 +99,16 @@ export default class AppraiseHouseInfo extends CommonMixins {
       && Boolean(this.houseTypeText);
     return !result;
   }
+  private mounted() {
+    this.getIsLogin();
+  }
   /**
    * @description keep-alive缓存载入钩子函数
    * @returns void
    * @author linyu
    */
   private activated() {
+    this.getIsLogin();
     // 获取小区信息
     if (this.$route.params.communityName || this.$route.params.communityId) {
       this.form.communityId = this.$route.params.communityId;
@@ -232,6 +238,15 @@ export default class AppraiseHouseInfo extends CommonMixins {
     } finally {
       this.loading = false;
     }
+  }
+  /**
+   * @description 获取登录状态
+   * @returns void
+   * @author linyu
+   */
+  private getIsLogin() {
+    const token: any = store.getters['global/getToken'];
+    this.isLogin = token ? true : false;
   }
   private async toLogin() {
     await window.InfoCollectInstance.handleEventReport({ // 信息采集
