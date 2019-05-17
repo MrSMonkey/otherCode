@@ -53,7 +53,7 @@
               <section v-if="productItemData.length > 0">
                 <div class="purchase-item" v-for="(item, index) in productItemData" :key="index">
                   <a @click="goodsClick('product', item.productId)">
-                    <div class="purchase-left" v-lazy:background-image="item.productImgs && item.productImgs[0]">
+                    <div class="purchase-left" v-lazy:background-image="item.productImgs && (item.productImgs[0] + '?imageView2/1/w/100/h/100')">
                     </div>
                     <p  class="purchase-title">{{item.productName|| ''}}</p>
                     <p class="purchase-money" v-if ="item.typeId === 4">提成<span>{{item.commission}}</span></p>
@@ -73,7 +73,7 @@
         <section v-if="tableData.length > 0">
           <div class="purchase-item" v-for="(item, index) in tableData" :key="index">
             <a @click="goodsClick('pack', item.serviceId)">
-              <div class="purchase-left" v-lazy:background-image="item.imgUrls && item.imgUrls[0]">
+              <div class="purchase-left" v-lazy:background-image="item.imgUrls && (item.imgUrls[0] + '?imageView2/1/w/100/h/100')">
                 <!-- <img :src="item.imgUrls[0]" alt=""/> -->
               </div>
               <p  class="purchase-title">{{item.serviceName|| 1}}</p>
@@ -497,6 +497,7 @@ export default class Purchase extends CommonMixins {
 
 <style lang="stylus" rel="stylesheet/stylus">
 .purchase
+  height 100%
   .purchase-item
     background $global-background
     padding vw(15) vw(15) 0
@@ -544,13 +545,25 @@ export default class Purchase extends CommonMixins {
     display -webkit-flex
     display flex
     justify-content space-between
+    height 100%
     .tree-left
       width vw(80)
+      max-height 100%
+      overflow-y scroll
+      position absolute
+      top 44px
+      left 0
+      right 0
+      bottom 0
+      // overflow-y scroll
+      // max-height 100%
       // .childrenItem
       //   overflow: hidden;
       //   max-height: 0;
       //   -webkit-transition: max-height .3s ease-in-out;
       //   transition: max-height .3s ease-in-out;
+      &::-webkit-scrollbar
+        width 0 !important
       .uokodown-enter-active
         transition: transform .3s
       .uokodown-enter
@@ -611,7 +624,7 @@ export default class Purchase extends CommonMixins {
     .tree-right
       max-height 100%
       overflow-y scroll
-      position fixed
+      position absolute
       top 44px
       left vw(80)
       right 0
