@@ -2,14 +2,15 @@
  * @Description: axios网络请求库二次封装
  * @Author: LiuZhen
  * @Date: 2018-09-18 11:49:38
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 14:18:52
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-05-16 15:49:04
  */
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios';
 import store from '../store';
 import router from '../router';
 import { NOT_TOKEN_URL } from '@/config/config';
+import { appBaseURL } from '@/config/baseURLConfig';
 import { getRedirectUrl } from '@/utils/utils';
 import Vue from 'vue';
 const Axios = axios.create({
@@ -61,19 +62,7 @@ Axios.interceptors.request.use(
     //   pending.push({ url: config.url + '&request_type=' + config.method, cancel: c });
     // });
     // 根据环境设置baseURL
-    if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'production') {  // 生产
-      config.baseURL = 'https://api-gateway.uoko.com/';
-    } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
-      config.baseURL = 'http://api-gateway.testuoko.com/';
-    } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
-      config.baseURL = 'https://api-gateway-pre.uoko.com/';
-    } else {
-      // config.baseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
-      // config.baseURL = 'http://192.168.200.44:7070/';
-      config.baseURL = 'http://api-gateway.testuoko.com/';
-      // config.baseURL = 'http://172.16.3.3:7070/';
-      // config.baseURL = 'http://172.16.3.103:8008';
-    }
+    config.baseURL = appBaseURL;
 
     /*登录授权, 登录接口修改 Authorization */
     if (NotToken(config.url)) {

@@ -14,5 +14,6 @@ declare global {
     BMap: any;
     NTKF: any;
     NTKF_PARAM: any;
+    InfoCollectInstance: any;
   }
 }
