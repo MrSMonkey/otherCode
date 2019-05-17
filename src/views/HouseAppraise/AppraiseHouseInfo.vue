@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-16 13:46:43
+ * @Last Modified time: 2019-05-17 09:30:15
  */
 
 <template>
@@ -258,9 +258,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
     font-size 14px
     color $main-color
     text-align right 
-    line-height 24px 
+    line-height 22px 
     img
-      height 24px
+      height 22px
       float right
-      margin-left 6px
+      margin-left 2px
 </style>
