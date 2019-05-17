@@ -14,7 +14,6 @@
       :line-height="4"
       sticky
       @scroll="stickChange"
-      @click="clickTabsTitle"
     >
       <van-tab v-for="(item, index) in tabsTitleData" :key="index">
         <div slot="title" :ref="'tabsPanel' + index">
@@ -107,10 +106,10 @@ export default class ServiceTabsTitle extends CommonMixins {
    * @return string 选中的服务名称
    * @author linyu
    */
-  @Emit('click')
-  private clickTabsTitle(index: number, title: any): string {
-    return this.tabsTitleData[index]['serviceName'];
-  }
+  // @Emit('click')
+  // private clickTabsTitle(index: number, title: any): string {
+  //   return this.tabsTitleData[index]['serviceName'];
+  // }
 }
 </script>
 

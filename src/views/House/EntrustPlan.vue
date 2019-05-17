@@ -28,7 +28,7 @@
         <HrTitle title="三种方式供您选择"></HrTitle>
       </div>
       <div>
-        <ServiceTabsTitle :tabs-title-data="serviceType" @click="clickTabsTitle">
+        <ServiceTabsTitle :tabs-title-data="serviceType">
           <ServiceTabsContent :service-desc-data="jmtgServiceDesc" :table-data="jmtgTableData" slot="jiamengtuoguan"></ServiceTabsContent>
           <ServiceTabsContent :service-desc-data="zwtgServiceDesc" :table-data="zwtgTableData" slot="zuwutuoguan"></ServiceTabsContent>
           <ServiceTabsContent :service-desc-data="zzglServiceDesc" :table-data="zzglTableData" slot="zizhuguanli"></ServiceTabsContent>
@@ -36,7 +36,7 @@
       </div>
     </section>
     <section>
-      <van-button slot="button" size="large" type="default" class="entrust-btn" @click="gotoEntrust">一键{{serviceName}}</van-button>
+      <van-button slot="button" size="large" type="default" class="entrust-btn" @click="gotoEntrust">一键委托</van-button>
     </section>
   </section>
 </template>
@@ -76,7 +76,7 @@ export default class EntrustPlan extends CommonMixins {
   private zwtgServiceDesc: any = ZWTG_DESC;
   private badges: BadgesInterface = BADGES;
   private list: ListInterface = LIST;
-  private serviceName: string = '加盟托管'; // 选中的服务名称
+  // private serviceName: string = '加盟托管'; // 选中的服务名称
   private sourceId: any = ''; // 来源渠道id
   private serviceType: any[] = [  // 服务种类tab的title数据
     {
@@ -106,9 +106,9 @@ export default class EntrustPlan extends CommonMixins {
    * @params serviceName string 选中的服务名称
    * @author linyu
    */
-  private clickTabsTitle(serviceName: string) {
-    this.serviceName = serviceName;
-  }
+  // private clickTabsTitle(serviceName: string) {
+  //   this.serviceName = serviceName;
+  // }
 
   /**
    * @description 点击底部按钮触发事件：跳转至委托页面
