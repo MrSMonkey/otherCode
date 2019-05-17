@@ -17,7 +17,6 @@ import VueLazyComponent from '@xunlei/vue-lazy-component';
 import {Toast, Picker, Popup, Lazyload, Button, Field, Loading, Row, Col, Icon, Dialog, Notify } from 'vant';
 import 'vant/lib/index.css';
 
-
 Vue.use(Lottie);
 Vue.use(Toast);
 Vue.use(Picker);
@@ -69,6 +68,7 @@ try {
     uploadInfoAddr: `${infoCollectBaseURL}${api.uploadInfoAddr}`,
     appVersion: packageInfo.version,
     appName: packageInfo.name,
+    sysCode: 'CH002'
   });
   // 获取需要上报的信息对象
   InfoCollectInstance.dataInfo().then((result: any) => {

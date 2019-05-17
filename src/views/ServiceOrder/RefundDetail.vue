@@ -71,26 +71,27 @@ export default class RefundDetail extends CommonMixins {
   private orderId: string = ''; // 订单id
   private entrustId: string = ''; // 房源id
   private orderInfo: any = {}; // 服务订单详情
+  private refundOrderId: string = ''; // 退款id
 
   @Action('payment', { namespace }) private payment: any;
 
   private mounted() {
     this.orderId = String(this.$route.query.orderId).split('?')[0];
+    this.refundOrderId = String(this.$route.query.refundOrderId).split('?')[0];
     this.entrustId =  String(this.$route.query.entrustId).split('?')[0];
-    this.getServiceOrder(this.orderId); // 获取订单列表
+    this.getServiceOrder(); // 获取订单列表
   }
 
   /**
    * @description 获取订单详情
-   * @params orderId 订单id
    * @returns void
    * @author chenmo
    */
   @Loading()
   @ErrorMsg('获取订单详情失败')
-  private async getServiceOrder(orderId: string) {
+  private async getServiceOrder() {
     try {
-      const res: any = await this.axios.get(api.getRefundDetail + `/${orderId}`);
+      const res: any = await this.axios.get(api.getRefundDetail + `/${this.orderId}/${this.refundOrderId}`);
       if (res && res.code === '000') {
         this.orderInfo = res.data || [];
       }

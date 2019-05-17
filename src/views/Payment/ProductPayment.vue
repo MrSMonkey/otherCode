@@ -226,7 +226,7 @@ export default class ProductPayment extends CommonMixins {
   @Watch('area')
   private handlerArea(newVal: string) {
     if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/.test(newVal)) {
-      if (parseFloat(newVal) === 0) {
+      if (parseFloat(newVal) === 0 || parseFloat(newVal) < 5) {
         this.isserviceCountErr = false;
         return;
       }
@@ -239,7 +239,7 @@ export default class ProductPayment extends CommonMixins {
   @Watch('serviceHour')
   private handlerServiceHour(newVal: string) {
     if (newVal && /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,1})?$/.test(newVal)) {
-      if (parseFloat(newVal) === 0) {
+      if (parseFloat(newVal) === 0 || parseFloat(newVal) < 0.5) {
         this.isserviceCountErr = false;
         return;
       }
@@ -488,7 +488,7 @@ export default class ProductPayment extends CommonMixins {
       this.$toast('请输入房间数量');
       return false;
     }
-    if (this.rooms === '0') {
+    if (parseFloat(this.rooms) === 0) {
       this.$toast('输入房间数量不能为0');
       return false;
     }
@@ -515,7 +515,7 @@ export default class ProductPayment extends CommonMixins {
       return false;
     }
 
-    if (this.area === '0') {
+    if (parseFloat(this.area) === 0) {
       this.$toast('请输入正确的面积');
       return false;
     }
@@ -526,6 +526,11 @@ export default class ProductPayment extends CommonMixins {
     }
     if (!(/^-?\d+\.?\d{0,2}$/.test(this.area))) {
       this.$toast('面积只能输入两位小数');
+      return false;
+    }
+
+    if (parseFloat(this.area) < 5) {
+      this.$toast('购买面积必须大于等于5㎡');
       return false;
     }
     const params: any = {
@@ -546,7 +551,7 @@ export default class ProductPayment extends CommonMixins {
       return false;
     }
 
-    if (this.serviceHour === '0') {
+    if (parseFloat(this.serviceHour) === 0) {
       this.$toast('请输入正确的服务时长');
       return false;
     }
@@ -557,6 +562,11 @@ export default class ProductPayment extends CommonMixins {
     }
     if (!(/^-?\d+\.?\d{0,1}$/.test(this.serviceHour))) {
       this.$toast('服务时长只能输入一位小数');
+      return false;
+    }
+
+    if (parseFloat(this.serviceHour) < 0.5) {
+      this.$toast('服务时长必须大于等于0.5小时');
       return false;
     }
     const params: any = {
