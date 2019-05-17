@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-17 09:30:15
+ * @Last Modified time: 2019-05-17 16:20:37
  */
 
 <template>
@@ -107,10 +107,6 @@ export default class AppraiseHouseInfo extends CommonMixins {
     if (this.$route.params.communityName || this.$route.params.communityId) {
       this.form.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
-    }
-    // 清除缓存数据
-    if (this.$route.params.refresh) {
-      window.location.reload();
     }
   }
   /**

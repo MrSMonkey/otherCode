@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-17 11:58:44
+ * @Last Modified time: 2019-05-17 16:48:15
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -458,5 +458,8 @@ export const NOT_TOKEN_URL: string[] = [
   '/partner/star/owner/config/get_jssdk_config',
   '/partner/star/owner/config/check_token',
   '/partner/star/owner/config/get_wechat_user_info',
-  '/partner/star/owner/config/get_xiaoneng_config'
+  '/partner/star/owner/config/get_xiaoneng_config',
+  'price/facing/pricing/community',
+  'price/facing/pricing/house/valuation_id',
+  'netflow/client/netflow_trace'
 ];
