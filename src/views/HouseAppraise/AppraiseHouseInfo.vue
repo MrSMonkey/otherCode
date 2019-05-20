@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-20 15:32:23
+ * @Last Modified time: 2019-05-20 16:42:52
  */
 
 <template>
@@ -38,6 +38,7 @@ import { State, Getter, Mutation, Action } from 'vuex-class';
 import CommonMixins from '@/utils/mixins/commonMixins';
 import store from '@/store';
 import { Field, Row, Col, Button } from 'vant';
+import { handleWebStorage } from '@/utils/utils';
 import ConfirmBtn from '@/components/ConfirmBtn.vue';
 import CityInput from '@/components/CityInput.vue';
 import CommunityInput from '@/components/CommunityInput.vue';
@@ -82,6 +83,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
   private floorNum: string = '';  // 楼层
   private cityId: string = '510100';
   private cityName: string = '成都';
+  private needActivated: boolean = true; // 是否需要执行activated，默认第一次进来不需要执行是否需要执行activated，因为第一次进来只需要执行mounted
   private cityList: object[] = [
       {cityId: '510100', cityName: '成都'},
       {cityId: '', cityName: '敬请期待', disabled: true}
@@ -100,7 +102,8 @@ export default class AppraiseHouseInfo extends CommonMixins {
     return !result;
   }
   private mounted() {
-    this.getIsLogin();
+    this.needActivated = false;
+    this.recordcUserView();
   }
   /**
    * @description keep-alive缓存载入钩子函数
@@ -108,15 +111,19 @@ export default class AppraiseHouseInfo extends CommonMixins {
    * @author linyu
    */
   private activated() {
-    this.getIsLogin();
-    // 获取小区信息
-    if (this.$route.params.communityName || this.$route.params.communityId) {
-      this.form.communityId = this.$route.params.communityId;
-      this.communityName = this.$route.params.communityName;
-    } else {
-      if (this.$route.params.isRefresh) {
-        window.location.reload();
+    if (this.needActivated) {
+      // 获取小区信息
+      if (this.$route.params.communityName || this.$route.params.communityId) {
+        this.form.communityId = this.$route.params.communityId;
+        this.communityName = this.$route.params.communityName;
+      } else {
+        if (this.$route.params.isRefresh) {
+          window.location.reload();
+        }
       }
+      this.recordcUserView();
+    } else {
+      this.needActivated = true;
     }
   }
   /**
@@ -180,6 +187,21 @@ export default class AppraiseHouseInfo extends CommonMixins {
     this.roomNum = houseType.roomNum;
     this.toiletNum = houseType.toiletNum;
     this.houseTypeText = items.join('');
+  }
+
+  /**
+   * @description 用户点击菜单进入本页面是触发的埋点事件
+   * @returns void
+   * @author linyu
+   */
+  private recordcUserView(): void {
+    console.log(handleWebStorage.getLocalData('CH002-housesourceestimate-menuswitch', 'sessionStorage'));
+    if (!handleWebStorage.getLocalData('CH002-housesourceestimate-menuswitch', 'sessionStorage') && this.$route.query.fromWay === 'wxMenu') {
+      handleWebStorage.setLocalData('CH002-housesourceestimate-menuswitch', '1', 'sessionStorage');
+      window.InfoCollectInstance.handleEventReport({ // 信息采集
+        eventId: 'CH002-housesourceestimate-menuswitch'
+      }, 'menuswitch');
+    }
   }
 
   /**
