@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: linyu
- * @Last Modified time: 2019-05-17 16:48:15
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-20 15:33:45
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -444,9 +444,9 @@ export const SHARE_API_LIST: string[] = ['onMenuShareTimeline', 'onMenuShareAppM
 // 微信分享内容
 export const FORTUNE_SHARE_DATA: confInterface.ShareData = {
   title: '星空财神',
-  link: `${window.location.protocol}//${window.location.host}/fortune`,
+  link: `${window.location.protocol}//${window.location.host}/#/oldFortune`,
   desc: '财富自由第一定律,财神星马上告诉您',
-  imgUrl: 'http://ooydngjcf.bkt.clouddn.com/WaterElectricGas.22AF1BA1.wechat_img_left.png'
+  imgUrl: 'https://image.uoko.com/lALPDgQ9qslFHVXNASzNASw_300_300.png'
 };
 
 // 不需要带token的
