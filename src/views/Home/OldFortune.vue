@@ -2,8 +2,8 @@
  * @Description: 星空财神
  * @Author: LongWei
  * @Date: 2019-04-23 15:46:54
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-05-07 17:18:06
+ * @Last Modified by: chenmo
+ * @Last Modified time: 2019-05-20 15:17:19
  */
 
 <template>
@@ -103,7 +103,7 @@ export default class Fortune extends CommonMixins {
   // 计算
   private calcResult() {
     if (!this.isInteger(this.incomeValue)) {
-      Notify('请输入大于0的数字!');
+      this.$toast('请输入大于0的数字!');
       return;
     }
     this.isStopped = false;
