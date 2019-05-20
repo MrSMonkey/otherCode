@@ -18,8 +18,8 @@ if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'prod
 } else {
   // appBaseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
   // appBaseURL = 'http://192.168.200.44:7070/';
-  appBaseURL = 'https://api-gateway-pre.uoko.com/';
-  // appBaseURL = 'http://api-gateway.testuoko.com/';
+  // appBaseURL = 'https://api-gateway-pre.uoko.com/';
+  appBaseURL = 'http://api-gateway.testuoko.com/';
   // appBaseURL = 'http://172.16.3.3:7070/';
   // appBaseURL = 'http://172.16.3.103:8008';
 }

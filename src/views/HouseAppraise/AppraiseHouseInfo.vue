@@ -113,6 +113,16 @@ export default class AppraiseHouseInfo extends CommonMixins {
     if (this.$route.params.communityName || this.$route.params.communityId) {
       this.form.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
+    } else {
+      this.houseTypeText = '';
+      this.hallNum = '';
+      this.roomNum = '';
+      this.toiletNum = '';
+      this.communityName = '';
+      this.floorTotality = '';
+      this.floorNum = '';
+      this.form.buildAcreage = '';
+      this.form.communityId = '';
     }
   }
   /**
@@ -252,7 +262,12 @@ export default class AppraiseHouseInfo extends CommonMixins {
     await window.InfoCollectInstance.handleEventReport({ // 信息采集
       eventId: 'CH002-SpeedyEstimation-click'
     }, 'click');
-    this.$router.push('/bind');
+    this.$router.push({
+      path: '/bind',
+      query: {
+        redirectUrl: '/appraiseHouseInfo'
+      }
+    });
   }
 }
 </script>
