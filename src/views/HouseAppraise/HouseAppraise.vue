@@ -63,9 +63,7 @@ export default class HouseAppraise extends CommonMixins {
     if (this.$route.params.communityId) { // 判断是否是从AppraiseHOuseInfo页面跳转过来
       this.isFromAppraiseHOuseInfo = true;
       this.appraiseOneResult = this.$route.params;
-      window.InfoCollectInstance.handleEventReport({ // 信息采集
-        eventId: 'CH002-ConclusionOfValue-detailview'
-      }, 'detailview');
+      this.handleEventReport('CH002-ConclusionOfValue-detailview', 'detailview'); // 信息采集
     } else {
       this.getHouseValuation();
     }
@@ -111,9 +109,7 @@ export default class HouseAppraise extends CommonMixins {
               } else {
                 this.appraiseResult = res.data.valuationDetail;
               }
-              await window.InfoCollectInstance.handleEventReport({ // 信息采集
-                eventId: 'CH002-ConclusionOfValue-detailview'
-              }, 'detailview');
+              await this.handleEventReport('CH002-ConclusionOfValue-detailview', 'detailview'); // 信息采集
             } else {
               this.appraiseResult = [];
             }
@@ -136,9 +132,7 @@ export default class HouseAppraise extends CommonMixins {
    * @author linyu
    */
   private async toAppraiseHouseInfo(isRefresh?: boolean) {
-    await window.InfoCollectInstance.handleEventReport({ // 信息采集
-      eventId: 'CH002-OtherSuite-click'
-    }, 'click');
+    await this.handleEventReport('CH002-OtherSuite-click', 'click'); // 信息采集
     if (isRefresh) {
       this.$router.push({
         name: 'appraiseHouseInfo',

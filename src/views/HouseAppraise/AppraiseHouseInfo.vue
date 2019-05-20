@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-20 16:42:52
+ * @Last Modified time: 2019-05-20 17:16:33
  */
 
 <template>
@@ -195,12 +195,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
    * @author linyu
    */
   private recordcUserView(): void {
-    console.log(handleWebStorage.getLocalData('CH002-housesourceestimate-menuswitch', 'sessionStorage'));
     if (!handleWebStorage.getLocalData('CH002-housesourceestimate-menuswitch', 'sessionStorage') && this.$route.query.fromWay === 'wxMenu') {
       handleWebStorage.setLocalData('CH002-housesourceestimate-menuswitch', '1', 'sessionStorage');
-      window.InfoCollectInstance.handleEventReport({ // 信息采集
-        eventId: 'CH002-housesourceestimate-menuswitch'
-      }, 'menuswitch');
+      this.handleEventReport('CH002-housesourceestimate-menuswitch', 'menuswitch'); // 信息采集
     }
   }
 
@@ -249,9 +246,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
     try {
       const res: any = await this.axios.post(api.getSingleHouseValuation, data);
       if (res && res.code === '000') {
-        await window.InfoCollectInstance.handleEventReport({ // 信息采集
-          eventId: 'CH002-ViewResults-newitemsubmit'
-        }, 'newitemsubmit');
+        await this.handleEventReport('CH002-ViewResults-newitemsubmit', 'newitemsubmit'); // 信息采集
         this.$router.push({
           name: 'houseAppraise',
           params: res.data || {}
@@ -275,9 +270,7 @@ export default class AppraiseHouseInfo extends CommonMixins {
     this.isLogin = token ? true : false;
   }
   private async toHouseAppraise() {
-    await window.InfoCollectInstance.handleEventReport({ // 信息采集
-      eventId: 'CH002-SpeedyEstimation-click'
-    }, 'click');
+    await this.handleEventReport('CH002-SpeedyEstimation-click', 'click'); // 信息采集
     this.$router.push('/houseAppraise');
   }
 }

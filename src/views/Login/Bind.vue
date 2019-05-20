@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 13:42:19
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-16 12:06:28
+ * @Last Modified time: 2019-05-20 17:25:04
  */
 <template>
   <section class="login">
@@ -141,9 +141,7 @@ export default class Bind extends CommonMixins {
         handleWebStorage.setLocalData('userId', res.data.userId); // 本地存储userId
         this.updateToken(res.data.access_token);
         await this.getUserInfo();
-        await window.InfoCollectInstance.handleEventReport({ // 信息采集
-          eventId: 'CH002-Userlogin-loginin'
-        }, 'loginin');
+        await this.handleEventReport('CH002-Userlogin-loginin', 'loginin'); // 信息采集
         this.$router.push(this.redirectUrl); // 跳转
       } else {
         this.$toast(res.msg || '登录失败');
