@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-19 14:43:28
  * @Last Modified by: chenmo
- * @Last Modified time: 2019-03-15 15:27:47
+ * @Last Modified time: 2019-05-20 16:46:14
  */
 
 <template>
@@ -65,7 +65,6 @@ export default class ImagePreviewPage extends CommonMixins {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../assets/stylus/main.styl'
 .imgView
   background $global-background
   padding vw(20) 0 vw(20) vw(20)
