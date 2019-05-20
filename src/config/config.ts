@@ -2,8 +2,8 @@
  * @Description: 全局信息配置文件
  * @Author: chenmo
  * @Date: 2019-02-15 10:52:27
- * @Last Modified by: LongWei
- * @Last Modified time: 2019-04-28 11:55:27
+ * @Last Modified by: linyu
+ * @Last Modified time: 2019-05-17 16:48:15
  */
 
 import * as confInterface from '@/interface/configInterface';
@@ -143,7 +143,7 @@ export const JMTG_TABLES: any = [
   {
     data: [
       [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
-      ['租金保底', '租金保底']
+      ['租金保底', '租金分成']
     ]
   },
   {
@@ -177,7 +177,7 @@ export const ZWTG_TABLES: any = [
   {
     data: [
       [{text: '合作方式', rowspan: 2}, '方式一', '方式二'],
-      ['租金保底', '租金保底']
+      ['租金保底', '租金分成']
     ]
   },
   {
@@ -247,7 +247,7 @@ export const ZWTG_DESC: any = {
   titleDesc: '保持房屋原貌 托管全服务',
   questions: [
     {
-      question: 'Q：什么房屋适合加盟托管？',
+      question: 'Q：什么房屋适合租务托管？',
       answer: 'A：已装修房'
     },
     {
@@ -458,5 +458,8 @@ export const NOT_TOKEN_URL: string[] = [
   '/partner/star/owner/config/get_jssdk_config',
   '/partner/star/owner/config/check_token',
   '/partner/star/owner/config/get_wechat_user_info',
-  '/partner/star/owner/config/get_xiaoneng_config'
+  '/partner/star/owner/config/get_xiaoneng_config',
+  'price/facing/pricing/community',
+  'price/facing/pricing/house/valuation_id',
+  'netflow/client/netflow_trace'
 ];

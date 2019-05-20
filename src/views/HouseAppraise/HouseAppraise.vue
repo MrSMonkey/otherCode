@@ -2,7 +2,7 @@
   <section class="house-appraise">
     <AppraiseLoading v-show="loading" @refresh="refresh"></AppraiseLoading>
     <section class="result-panel" v-show="!loading">
-      <div class="zero-result" v-if=" isLogin || (!isFromAppraiseHOuseInfo && appraiseResult.length === 0)">
+      <div class="zero-result" v-if=" isLogin && (!isFromAppraiseHOuseInfo && appraiseResult.length === 0)">
         <div>
           你所在小区房屋暂时无法估价，请敬请期待！
           <br/>
@@ -19,7 +19,7 @@
       </SingleHouseAppraise>
       <MultiHouseAppraise
         :appraiseInfo="appraiseResult"
-        v-if="isLogin && !isFromAppraiseHOuseInfo && appraiseResult.length > 1" 
+        v-if=" isLogin && !isFromAppraiseHOuseInfo && appraiseResult.length > 1" 
       >
         <div class="btn-panel">
           <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
@@ -54,12 +54,12 @@ import api from '@/api';
 // 类方式声明当前组件
 export default class HouseAppraise extends CommonMixins {
   private loading: boolean = false; // 请求接口过程中为true
-  private isLogin: boolean = true; // 默认为登录
+  private isLogin: boolean = false; // 默认值为未登录
   private isFromAppraiseHOuseInfo: boolean = false; // 从AppraiseHOuseInfo页面跳转过来时为true
   private appraiseOneResult: any = {}; // 单个估价结果
   private appraiseResult: any[] = []; // 多个估价结果
-  private mounted() {
-    this.getIsLogin(); // 获取登录状态
+  private async mounted() {
+    await this.getIsLogin(); // 获取登录状态
     if (this.$route.params.communityId) { // 判断是否是从AppraiseHOuseInfo页面跳转过来
       this.isFromAppraiseHOuseInfo = true;
       this.appraiseOneResult = this.$route.params;
@@ -94,8 +94,7 @@ export default class HouseAppraise extends CommonMixins {
    */
   private async getHouseValuation() {
     try {
-      const token: any = store.getters['global/getToken'];
-      if (this.isLogin) { // 用户未登录系统
+      if (!this.isLogin) { // 用户未登录系统
         await window.InfoCollectInstance.handleEventReport({ // 信息采集
           eventId: 'CH002-housesourceestimate-menuswitch'
         }, 'menuswitch');
@@ -126,14 +125,14 @@ export default class HouseAppraise extends CommonMixins {
             }
           }
           this.loading = false;
+        } else if (res && res.code === '40001') {
+          this.$toast(res.msg || '系统繁忙，请稍后重试');
         } else {
           this.$toast(res.msg || '房屋估价获取失败');
         }
       }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
-    } finally {
-      this.loading = false;
     }
   }
 
@@ -146,12 +145,7 @@ export default class HouseAppraise extends CommonMixins {
     await window.InfoCollectInstance.handleEventReport({ // 信息采集
       eventId: 'CH002-OtherSuite-click'
     }, 'click');
-    this.$router.push({
-      name: 'appraiseHouseInfo',
-      params: {
-        refresh: '1'
-      }
-    });
+    this.$router.push('/appraiseHouseInfo');
   }
 }
 </script>

@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-05-15 16:07:32
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-16 15:48:46
+ * @Last Modified time: 2019-05-17 16:23:33
  */
 
 // 根据环境设置应用内部请求的baseURL
@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'prod
 } else {
   // appBaseURL = 'http://front-end.testuoko.com:3000/mock/22/'; // mock地址
   // appBaseURL = 'http://192.168.200.44:7070/';
-  appBaseURL = 'http://api-gateway.testuoko.com/';
+  appBaseURL = 'https://api-gateway-pre.uoko.com/';
+  // appBaseURL = 'http://api-gateway.testuoko.com/';
   // appBaseURL = 'http://172.16.3.3:7070/';
   // appBaseURL = 'http://172.16.3.103:8008';
 }
@@ -31,7 +32,7 @@ if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'prod
 } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'test') {  // 测试
   infoCollectBaseURL = 'http://api-gateway.testuoko.com/';
 } else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_TITLE === 'pre-release') {  // pre
-  infoCollectBaseURL = 'https://api-gateway.uoko.com/';
+  infoCollectBaseURL = 'http://api-gateway.testuoko.com/';
 } else {
   infoCollectBaseURL = 'http://api-gateway.testuoko.com/';
 }

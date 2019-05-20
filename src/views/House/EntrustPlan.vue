@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-04-29 11:05:14
  * @Last Modified by: linyu
- * @Last Modified time: 2019-04-29 11:37:00
+ * @Last Modified time: 2019-05-17 11:58:21
  */
 
 
@@ -82,7 +82,7 @@ export default class EntrustPlan extends CommonMixins {
     {
       img: require('@/assets/images/icon/icon_jiamengtuoguan.png'),
       serviceName: '加盟托管',
-      serviceDesc: '主加盟优客逸家，托管全部租务',
+      serviceDesc: '业主加盟优客逸家，托管全部租务',
       slotName: 'jiamengtuoguan'
     }, {
       img: require('@/assets/images/icon/icon_zuwutuoguan.png'),
