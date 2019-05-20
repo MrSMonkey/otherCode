@@ -3,7 +3,7 @@
  * @Author: linyu
  * @Date: 2019-04-25 13:48:33
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-17 18:16:57
+ * @Last Modified time: 2019-05-20 15:32:23
  */
 
 <template>
@@ -25,9 +25,9 @@
     <section class="other">
       <LastBtn button-text="查看评估结果" @click="submitData" :disabled="isActive"></LastBtn>
     </section>
-    <section class="fast-login-panel" v-if="!isLogin">
-      <span @click="toLogin">已是业主，一键评估</span>
-      <img :src="require('@/assets/images/icon/fast_login_icon_arrow.png')" alt="login" @click="toLogin">
+    <section class="fast-login-panel">
+      <span @click="toHouseAppraise">已是业主，一键评估</span>
+      <img :src="require('@/assets/images/icon/fast_login_icon_arrow.png')" alt="login" @click="toHouseAppraise">
     </section>
   </section>  
 </template>
@@ -114,15 +114,9 @@ export default class AppraiseHouseInfo extends CommonMixins {
       this.form.communityId = this.$route.params.communityId;
       this.communityName = this.$route.params.communityName;
     } else {
-      this.houseTypeText = '';
-      this.hallNum = '';
-      this.roomNum = '';
-      this.toiletNum = '';
-      this.communityName = '';
-      this.floorTotality = '';
-      this.floorNum = '';
-      this.form.buildAcreage = '';
-      this.form.communityId = '';
+      if (this.$route.params.isRefresh) {
+        window.location.reload();
+      }
     }
   }
   /**
@@ -258,16 +252,11 @@ export default class AppraiseHouseInfo extends CommonMixins {
     const token: any = store.getters['global/getToken'];
     this.isLogin = token ? true : false;
   }
-  private async toLogin() {
+  private async toHouseAppraise() {
     await window.InfoCollectInstance.handleEventReport({ // 信息采集
       eventId: 'CH002-SpeedyEstimation-click'
     }, 'click');
-    this.$router.push({
-      path: '/bind',
-      query: {
-        redirectUrl: '/appraiseHouseInfo'
-      }
-    });
+    this.$router.push('/houseAppraise');
   }
 }
 </script>
