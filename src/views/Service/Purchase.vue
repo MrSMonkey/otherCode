@@ -3,7 +3,7 @@
  * @Author: chenmo
  * @Date: 2019-02-15 14:43:22
  * @Last Modified by: linyu
- * @Last Modified time: 2019-05-14 14:55:15
+ * @Last Modified time: 2019-05-20 16:34:19
  */
 
 <template>
@@ -337,8 +337,8 @@ export default class Purchase extends CommonMixins {
    * @author linyu
    */
   private setCityStorage(cityId: string, cityName: string): void {
-      handleWebStorage.setLocalData('cityId', cityId, 'sessionStorage');
-      handleWebStorage.setLocalData('cityName', cityName, 'sessionStorage');
+    handleWebStorage.setLocalData('cityId', cityId, 'sessionStorage');
+    handleWebStorage.setLocalData('cityName', cityName, 'sessionStorage');
   }
   /**
    * @description tabs切换

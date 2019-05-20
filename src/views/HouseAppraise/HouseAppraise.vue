@@ -14,7 +14,7 @@
         :appraiseInfo="appraiseOneResult"
       >
         <div class="btn-panel">
-          <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
+          <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo(true)"></LastBtn>
         </div>
       </SingleHouseAppraise>
       <MultiHouseAppraise
@@ -22,7 +22,7 @@
         v-if=" isLogin && !isFromAppraiseHOuseInfo && appraiseResult.length > 1" 
       >
         <div class="btn-panel">
-          <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo"></LastBtn>
+          <LastBtn button-text="查看其它房屋估价" @click="toAppraiseHouseInfo(true)"></LastBtn>
         </div>
       </MultiHouseAppraise>
     </section>
@@ -94,19 +94,13 @@ export default class HouseAppraise extends CommonMixins {
    */
   private async getHouseValuation() {
     try {
-      if (!this.isLogin) { // 用户未登录系统
-        await window.InfoCollectInstance.handleEventReport({ // 信息采集
-          eventId: 'CH002-housesourceestimate-menuswitch'
-        }, 'menuswitch');
-        this.toAppraiseHouseInfo(); // 跳转
-      } else {
+      // if (!this.isLogin) { // 用户未登录系统
+      //   this.toAppraiseHouseInfo(); // 跳转
+      // } else {
         this.loading = true;
         const res: any = await this.axios.get(api.getAppraiseList);
         if (res && res.code === '000') {
           if (res.data.houseCount === 0) {
-            await window.InfoCollectInstance.handleEventReport({ // 信息采集
-              eventId: 'CH002-housesourceestimate-menuswitch'
-            }, 'menuswitch');
             // 房源数量为0
             this.toAppraiseHouseInfo(); // 跳转
           } else {
@@ -130,7 +124,7 @@ export default class HouseAppraise extends CommonMixins {
         } else {
           this.$toast(res.msg || '房屋估价获取失败');
         }
-      }
+      // }
     } catch (err) {
       throw new Error(err || 'Unknow Error!');
     }
@@ -141,11 +135,20 @@ export default class HouseAppraise extends CommonMixins {
    * @returns void
    * @author linyu
    */
-  private async toAppraiseHouseInfo() {
+  private async toAppraiseHouseInfo(isRefresh?: boolean) {
     await window.InfoCollectInstance.handleEventReport({ // 信息采集
       eventId: 'CH002-OtherSuite-click'
     }, 'click');
-    this.$router.push('/appraiseHouseInfo');
+    if (isRefresh) {
+      this.$router.push({
+        name: 'appraiseHouseInfo',
+        params: {
+          isRefresh: isRefresh ? '1' : ''
+        }
+      });
+    } else {
+      this.$router.push('/appraiseHouseInfo');
+    }
   }
 }
 </script>
